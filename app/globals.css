@@ -804,6 +804,222 @@ button {
   font-weight: 800;
 }
 
+.anatomy-visual,
+.evidence-visual,
+.audit-report-visual,
+.security-boundary-visual {
+  max-width: 1080px;
+  margin: 0 auto;
+}
+
+.anatomy-grid {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 12px;
+  padding: 20px;
+}
+
+.anatomy-stage {
+  position: relative;
+  display: grid;
+  min-height: 220px;
+  align-content: start;
+  gap: 10px;
+  border: 1px solid rgba(246, 244, 240, 0.12);
+  border-radius: 8px;
+  background:
+    linear-gradient(180deg, rgba(246, 244, 240, 0.08), rgba(246, 244, 240, 0.035)),
+    rgba(7, 21, 36, 0.5);
+  padding: 16px;
+}
+
+.anatomy-stage::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  right: -14px;
+  z-index: 1;
+  width: 16px;
+  height: 2px;
+  background: linear-gradient(90deg, var(--teal-soft), var(--gold));
+}
+
+.anatomy-stage:last-child::after {
+  display: none;
+}
+
+.anatomy-stage svg {
+  color: var(--gold);
+}
+
+.anatomy-stage strong,
+.evidence-question strong,
+.evidence-center strong,
+.boundary-zone h3 {
+  color: var(--paper);
+}
+
+.anatomy-stage small,
+.evidence-question small,
+.evidence-center small,
+.audit-bar-row small {
+  color: var(--muted);
+}
+
+.evidence-grid {
+  display: grid;
+  grid-template-columns: 1fr 0.72fr 1.15fr;
+  gap: 16px;
+  padding: 20px;
+}
+
+.evidence-question,
+.evidence-center,
+.evidence-sources {
+  border: 1px solid rgba(246, 244, 240, 0.12);
+  border-radius: 8px;
+  background: rgba(7, 21, 36, 0.48);
+  padding: 18px;
+}
+
+.evidence-question {
+  display: grid;
+  align-content: center;
+  gap: 9px;
+}
+
+.evidence-center {
+  display: grid;
+  place-items: center;
+  gap: 8px;
+  text-align: center;
+}
+
+.evidence-center .mark {
+  width: 54px;
+  height: 54px;
+  border-radius: 16px;
+  font-size: 2rem;
+}
+
+.evidence-sources {
+  display: grid;
+  gap: 10px;
+}
+
+.audit-report-body {
+  display: grid;
+  grid-template-columns: 0.7fr 1.3fr;
+  gap: 20px;
+  padding: 20px;
+}
+
+.audit-score-orb {
+  display: grid;
+  min-height: 270px;
+  place-items: center;
+  border: 1px solid rgba(214, 162, 74, 0.28);
+  border-radius: 8px;
+  background:
+    radial-gradient(circle, rgba(214, 162, 74, 0.2), transparent 68%),
+    rgba(7, 21, 36, 0.52);
+  padding: 22px;
+  text-align: center;
+}
+
+.audit-score-orb strong {
+  display: block;
+  color: var(--gold);
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: clamp(5rem, 12vw, 8.5rem);
+  font-weight: 500;
+  line-height: 0.9;
+}
+
+.audit-score-orb span {
+  max-width: 230px;
+  color: var(--paper);
+  font-weight: 800;
+}
+
+.audit-bars {
+  display: grid;
+  gap: 12px;
+}
+
+.audit-bar-row {
+  display: grid;
+  gap: 10px;
+  border: 1px solid rgba(246, 244, 240, 0.12);
+  border-radius: 8px;
+  background: rgba(7, 21, 36, 0.48);
+  padding: 14px;
+}
+
+.audit-bar-row div {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.audit-bar-row strong {
+  color: var(--paper);
+}
+
+.audit-bar-row span {
+  display: block;
+  height: 9px;
+  overflow: hidden;
+  border-radius: 999px;
+  background: rgba(246, 244, 240, 0.1);
+}
+
+.audit-bar-row i {
+  display: block;
+  height: 100%;
+  border-radius: inherit;
+  background: linear-gradient(90deg, var(--teal-soft), var(--gold));
+}
+
+.security-boundary-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 18px;
+  padding: 20px;
+}
+
+.boundary-zone {
+  display: grid;
+  align-content: start;
+  gap: 12px;
+  min-height: 330px;
+  border: 1px solid rgba(246, 244, 240, 0.12);
+  border-radius: 8px;
+  background:
+    linear-gradient(180deg, rgba(246, 244, 240, 0.08), rgba(246, 244, 240, 0.035)),
+    rgba(7, 21, 36, 0.48);
+  padding: 20px;
+}
+
+.boundary-zone > svg {
+  color: var(--gold);
+}
+
+.boundary-zone h3 {
+  margin: 0;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 1.8rem;
+  font-weight: 500;
+}
+
+.review-zone {
+  border-color: rgba(111, 183, 183, 0.28);
+  background:
+    linear-gradient(180deg, rgba(111, 183, 183, 0.11), rgba(246, 244, 240, 0.035)),
+    rgba(7, 21, 36, 0.48);
+}
+
 .cta-band {
   border: 1px solid rgba(214, 162, 74, 0.22);
   border-radius: 8px;
@@ -1018,8 +1234,26 @@ button {
   }
 
   .memory-loop-grid,
-  .notion-window {
+  .notion-window,
+  .anatomy-grid,
+  .evidence-grid,
+  .audit-report-body,
+  .security-boundary-grid {
     grid-template-columns: 1fr;
+  }
+
+  .anatomy-stage {
+    min-height: auto;
+  }
+
+  .anatomy-stage::after {
+    top: auto;
+    right: auto;
+    bottom: -14px;
+    left: 28px;
+    width: 2px;
+    height: 16px;
+    background: linear-gradient(180deg, var(--teal-soft), var(--gold));
   }
 
   .notion-sidebar {

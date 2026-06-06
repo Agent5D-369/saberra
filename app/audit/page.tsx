@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Audit } from "@/components/Audit";
+import { AuditReportVisual } from "@/components/VisualPanels";
 
 export const metadata: Metadata = {
   title: "Organizational Memory Audit",
@@ -18,6 +19,11 @@ export default function AuditPage() {
             Take the 10-question Organizational Memory Audit and see where decisions, context, tasks, and institutional
             knowledge are leaking from your system.
           </p>
+        </div>
+      </section>
+      <section className="section tight">
+        <div className="container">
+          <AuditReportVisual />
         </div>
       </section>
       <section className="section tight">

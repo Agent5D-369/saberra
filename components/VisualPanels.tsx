@@ -1,5 +1,18 @@
 import type { CSSProperties } from "react";
-import { Archive, CheckCircle, Database, FileCheck, LockKeyhole, Mail, Network, ShieldCheck, Sparkles } from "lucide-react";
+import {
+  Archive,
+  CheckCircle,
+  ClipboardCheck,
+  Database,
+  FileCheck,
+  FileSearch,
+  Inbox,
+  LockKeyhole,
+  Mail,
+  Network,
+  ShieldCheck,
+  Sparkles
+} from "lucide-react";
 
 export function MemoryLoopVisual() {
   const inputs = ["Transcript", "Email thread", "Decision", "Task", "Risk", "Role change"];
@@ -157,6 +170,142 @@ export function SegmentMemoryVisual({ type }: { type: "governance" | "nonprofit"
             <small>{index % 2 === 0 ? "Reviewed" : "Candidate"}</small>
           </div>
         ))}
+      </div>
+    </div>
+  );
+}
+
+export function PipelineAnatomyVisual() {
+  const stages = [
+    ["Capture inbox", "Google Meet outputs and forwarded context", Inbox],
+    ["Extraction pass", "Decisions, tasks, risks, roles, policies", Sparkles],
+    ["Review queue", "Human approval before trusted memory", ClipboardCheck],
+    ["Notion record", "17 databases with source traceability", Database],
+    ["Sera answer", "Plain-English answer with citations", FileSearch]
+  ];
+
+  return (
+    <div className="visual-panel anatomy-visual" aria-label="Detailed Saberra pipeline visual">
+      <div className="visual-header">
+        <span className="eyebrow">Pipeline anatomy</span>
+        <strong>Every record has a path back to the source.</strong>
+      </div>
+      <div className="anatomy-grid">
+        {stages.map(([title, copy, Icon], index) => {
+          const IconComponent = Icon as typeof Inbox;
+          return (
+            <div className="anatomy-stage" key={title as string}>
+              <span className="stack-index">{index + 1}</span>
+              <IconComponent size={24} aria-hidden="true" />
+              <strong>{title as string}</strong>
+              <small>{copy as string}</small>
+            </div>
+          );
+        })}
+      </div>
+    </div>
+  );
+}
+
+export function SeraEvidenceVisual() {
+  const sources = ["Board Meeting", "Decision Candidate", "Vendor Email", "Task Record"];
+
+  return (
+    <div className="visual-panel evidence-visual" aria-label="Sera evidence graph visual">
+      <div className="visual-header">
+        <span className="eyebrow">Sera evidence graph</span>
+        <strong>Answers are assembled from reviewed sources.</strong>
+      </div>
+      <div className="evidence-grid">
+        <div className="evidence-question">
+          <small>Question</small>
+          <strong>What did we decide about the vendor contract?</strong>
+        </div>
+        <div className="evidence-center">
+          <span className="mark">S</span>
+          <strong>Sera</strong>
+          <small>Reviewed memory only</small>
+        </div>
+        <div className="evidence-sources">
+          {sources.map((source) => (
+            <div className="record-row" key={source}>
+              <FileSearch size={15} aria-hidden="true" />
+              <span>{source}</span>
+              <small>Cited</small>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+export function AuditReportVisual() {
+  const leaks = [
+    ["Decision retrieval", "Serious leakage", 78],
+    ["Key-person memory", "Critical exposure", 91],
+    ["Meeting follow-through", "Early leakage", 54],
+    ["Onboarding context", "Serious leakage", 72]
+  ];
+
+  return (
+    <div className="visual-panel audit-report-visual" aria-label="Organizational Memory Audit report visual">
+      <div className="visual-header">
+        <span className="eyebrow">Audit output</span>
+        <strong>A diagnosis your team can act on.</strong>
+      </div>
+      <div className="audit-report-body">
+        <div className="audit-score-orb">
+          <strong>37</strong>
+          <span>Serious institutional memory risk</span>
+        </div>
+        <div className="audit-bars">
+          {leaks.map(([name, label, value]) => (
+            <div className="audit-bar-row" key={name as string}>
+              <div>
+                <strong>{name as string}</strong>
+                <small>{label as string}</small>
+              </div>
+              <span>
+                <i style={{ width: `${value}%` }} />
+              </span>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+export function SecurityBoundaryVisual() {
+  const owned = ["Notion workspace", "Railway project", "Google Workspace", "Dedicated inbox"];
+  const reviewed = ["Draft records", "Review queue", "Approved memory", "Sera citations"];
+
+  return (
+    <div className="visual-panel security-boundary-visual" aria-label="Saberra security boundary visual">
+      <div className="visual-header">
+        <span className="eyebrow">Ownership boundary</span>
+        <strong>Client-controlled systems, reviewed memory.</strong>
+      </div>
+      <div className="security-boundary-grid">
+        <div className="boundary-zone owned-zone">
+          <LockKeyhole size={24} aria-hidden="true" />
+          <h3>Your infrastructure</h3>
+          {owned.map((item) => (
+            <div className="visual-chip" key={item}>
+              <ShieldCheck size={14} aria-hidden="true" /> {item}
+            </div>
+          ))}
+        </div>
+        <div className="boundary-zone review-zone">
+          <ClipboardCheck size={24} aria-hidden="true" />
+          <h3>Trusted memory path</h3>
+          {reviewed.map((item) => (
+            <div className="visual-chip" key={item}>
+              <CheckCircle size={14} aria-hidden="true" /> {item}
+            </div>
+          ))}
+        </div>
       </div>
     </div>
   );

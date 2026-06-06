@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { CaptureGrid, ProcessFlow, SeraDemoSection, TrustSection } from "@/components/HomeSections";
 import { CTABand, SectionHeader } from "@/components/UI";
+import { PipelineAnatomyVisual } from "@/components/VisualPanels";
 
 export const metadata: Metadata = {
   title: "How Saberra Works",
@@ -22,6 +23,11 @@ export default function HowItWorksPage() {
         </div>
       </section>
       <ProcessFlow />
+      <section className="section tight">
+        <div className="container">
+          <PipelineAnatomyVisual />
+        </div>
+      </section>
       <section className="section tight">
         <div className="container split">
           <SectionHeader title="The team keeps working. The memory keeps growing.">

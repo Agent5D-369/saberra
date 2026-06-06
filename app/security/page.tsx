@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { CTABand, SectionHeader } from "@/components/UI";
+import { SecurityBoundaryVisual } from "@/components/VisualPanels";
 
 export const metadata: Metadata = {
   title: "Security and Data Ownership",
@@ -17,6 +18,11 @@ export default function SecurityPage() {
           <p>
             Saberra is built around data ownership, human review, clear sources, and client-controlled infrastructure.
           </p>
+        </div>
+      </section>
+      <section className="section tight">
+        <div className="container">
+          <SecurityBoundaryVisual />
         </div>
       </section>
       <section className="section">

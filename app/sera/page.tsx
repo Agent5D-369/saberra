@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { SeraDemoSection, TrustSection } from "@/components/HomeSections";
 import { CTABand, SectionHeader } from "@/components/UI";
+import { SeraEvidenceVisual } from "@/components/VisualPanels";
 
 export const metadata: Metadata = {
   title: "Sera, Your AI Memory Colleague",
@@ -22,6 +23,11 @@ export default function SeraPage() {
         </div>
       </section>
       <SeraDemoSection />
+      <section className="section tight">
+        <div className="container">
+          <SeraEvidenceVisual />
+        </div>
+      </section>
       <section className="section tight">
         <div className="container split">
           <SectionHeader title="A trusted colleague needs a trusted record.">
