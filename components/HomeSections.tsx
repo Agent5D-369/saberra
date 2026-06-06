@@ -250,19 +250,19 @@ export function AudienceCards() {
       "Self-managing teams",
       "For Teal, Holacracy, Sociocracy, regenerative, cooperative, and distributed governance organizations.",
       "Explore governance memory",
-      "/for-self-managing-teams"
+      "/teal"
     ],
     [
       "Nonprofits and social enterprises",
       "For mission-driven teams that lose program history when people leave.",
       "Preserve program memory",
-      "/for-nonprofits"
+      "/nonprofit"
     ],
     [
       "Consultancies and agencies",
       "For knowledge-intensive teams where client context lives in senior people's heads.",
       "Protect delivery memory",
-      "/for-consultancies"
+      "/consultancy"
     ]
   ];
   return (

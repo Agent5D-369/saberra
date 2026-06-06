@@ -7,6 +7,9 @@ export default function sitemap(): MetadataRoute.Sitemap {
   const routes = [
     "",
     "/how-it-works",
+    "/teal",
+    "/nonprofit",
+    "/consultancy",
     "/for-self-managing-teams",
     "/for-nonprofits",
     "/for-consultancies",

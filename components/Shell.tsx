@@ -55,9 +55,9 @@ export function Footer() {
         </div>
         <div>
           <strong>Teams</strong>
-          <Link href="/for-self-managing-teams">Self-managing teams</Link>
-          <Link href="/for-nonprofits">Nonprofits</Link>
-          <Link href="/for-consultancies">Consultancies</Link>
+          <Link href="/teal">Teal organizations</Link>
+          <Link href="/nonprofit">Nonprofits</Link>
+          <Link href="/consultancy">Consultancies</Link>
         </div>
         <div>
           <strong>Trust</strong>
