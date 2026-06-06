@@ -7,7 +7,7 @@ function BrandLogo({ variant = "light" }: { variant?: "light" | "dark" }) {
   return (
     <Image
       className="brand-logo"
-      src={variant === "light" ? "/saberra-logo-light-web.png" : "/saberra-logo-dark-web.png"}
+      src={variant === "light" ? "/saberra-logo-dark-web.png" : "/saberra-logo-light-web.png"}
       alt="Saberra"
       width={520}
       height={130}
