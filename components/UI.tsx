@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import type { ReactNode } from "react";
 import { CheckCircle, ShieldCheck } from "lucide-react";
 
@@ -53,6 +54,28 @@ export function SourceBackedBadge() {
     <span className="badge">
       <ShieldCheck size={14} aria-hidden="true" /> Source-backed
     </span>
+  );
+}
+
+export function SeraPortrait({
+  variant = "primary",
+  size = "md"
+}: {
+  variant?: "primary" | "environment";
+  size?: "sm" | "md" | "lg";
+}) {
+  const src = variant === "environment" ? "/sera-avatar-environment-web.jpg" : "/sera-realistic-web.jpg";
+  const dimensions = size === "lg" ? 420 : size === "md" ? 220 : 76;
+
+  return (
+    <Image
+      className={`sera-portrait sera-portrait-${size}`}
+      src={src}
+      alt="Sera, Saberra's AI memory colleague"
+      width={dimensions}
+      height={dimensions}
+      priority={size === "lg"}
+    />
   );
 }
 

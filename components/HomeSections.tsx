@@ -15,7 +15,7 @@ import {
   Users
 } from "lucide-react";
 import { captureItems, faqs } from "@/lib/site";
-import { CTAButton, CTABand, HumanReviewBadge, SectionHeader, SourceBackedBadge } from "@/components/UI";
+import { CTAButton, CTABand, HumanReviewBadge, SectionHeader, SeraPortrait, SourceBackedBadge } from "@/components/UI";
 import { SeraDemo } from "@/components/SeraDemo";
 import {
   DatabaseMapVisual,
@@ -92,6 +92,13 @@ function HeroVisual() {
         <div className="mock-column">
           <div className="mock-title">Ask Sera</div>
           <div className="sera-card">
+            <div className="sera-identity">
+              <SeraPortrait size="sm" />
+              <div>
+                <strong>Sera</strong>
+                <small>AI memory colleague</small>
+              </div>
+            </div>
             <div className="query">What did we decide about the vendor contract in April?</div>
             <div className="answer">
               On April 14, the team decided to extend the vendor contract for 12 months with revised pricing.
@@ -229,6 +236,17 @@ export function ProductProof() {
           Saberra is not a summary screen. It is a working memory console with intake health, review queues, governance
           signals, role ownership, source records, and workspace-level controls.
         </SectionHeader>
+        <div className="sera-proof-callout">
+          <SeraPortrait variant="environment" size="md" />
+          <div>
+            <div className="eyebrow">Sera in the loop</div>
+            <h3>Sera gives the system a face without turning it into a gimmick.</h3>
+            <p>
+              She answers from reviewed records, surfaces what needs attention, and keeps the memory system legible to
+              people who do not want to inspect databases every day.
+            </p>
+          </div>
+        </div>
         <ProductDashboardVisual />
         <div className="product-proof-grid">
           <GovernanceConsoleVisual />

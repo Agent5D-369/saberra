@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { SeraDemoSection, TrustSection } from "@/components/HomeSections";
-import { CTABand, SectionHeader } from "@/components/UI";
+import { CTABand, SectionHeader, SeraPortrait } from "@/components/UI";
 import { SeraEvidenceVisual } from "@/components/VisualPanels";
 
 export const metadata: Metadata = {
@@ -14,12 +14,21 @@ export default function SeraPage() {
   return (
     <main>
       <section className="page-hero">
-        <div className="container">
-          <h1>Sera answers from what your organization has actually documented.</h1>
-          <p>
-            Sera is not an internet answer engine. She is the retrieval layer on top of your reviewed institutional
-            memory.
-          </p>
+        <div className="container sera-page-hero">
+          <div>
+            <h1>Sera answers from what your organization has actually documented.</h1>
+            <p>
+              Sera is not an internet answer engine. She is the retrieval layer on top of your reviewed institutional
+              memory.
+            </p>
+          </div>
+          <div className="sera-hero-frame">
+            <SeraPortrait variant="environment" size="lg" />
+            <div className="sera-hero-note">
+              <strong>Sera</strong>
+              <span>AI memory colleague inside Saberra</span>
+            </div>
+          </div>
         </div>
       </section>
       <SeraDemoSection />
