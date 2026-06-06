@@ -363,6 +363,12 @@ button {
   font-weight: 800;
 }
 
+.answer-panel .badge {
+  border-color: rgba(30, 109, 120, 0.34);
+  background: rgba(30, 109, 120, 0.1);
+  color: #0b4650;
+}
+
 .source-pill {
   display: inline-flex;
   margin-top: 10px;

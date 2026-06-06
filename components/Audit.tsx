@@ -12,16 +12,46 @@ const segments = [
 ];
 
 const questions = [
-  "When a key team member leaves, how long does it take the next person to reach the same effectiveness?",
-  "In the last 6 months, how many times has your team re-debated something that was already decided?",
-  "How long would it take to find every decision made about one important topic in the last 12 months?",
-  "What percentage of meeting outcomes are documented and findable 3 months later?",
-  "How often do important tasks fall through the cracks after meetings?",
-  "If your most tenured person left tomorrow, what percentage of their institutional knowledge would be lost?",
-  "How long does it take a new team member to become effective without constant hand-holding?",
-  "Do you have a reliable record of what your organization has agreed to in the last 24 months?",
-  "When making a decision today, how easily can your team access related past decisions?",
-  "How much time do senior people spend each week answering questions that should already be documented?"
+  {
+    text: "When a key team member leaves, how long does it take the next person to reach the same effectiveness?",
+    options: ["Same week", "2 to 4 weeks", "1 to 2 months", "3 to 6 months", "They start from scratch"]
+  },
+  {
+    text: "In the last 6 months, how many times has your team re-debated something that was already decided?",
+    options: ["Not once", "Once", "2 or 3 times", "Monthly", "Almost every week"]
+  },
+  {
+    text: "How long would it take to find every decision made about one important topic in the last 12 months?",
+    options: ["A few minutes", "Under an hour", "Half a day", "A full day", "We probably could not"]
+  },
+  {
+    text: "What percentage of meeting outcomes are documented and findable 3 months later?",
+    options: ["Nearly all", "Most", "About half", "A small portion", "Almost none"]
+  },
+  {
+    text: "How often do important tasks fall through the cracks after meetings?",
+    options: ["Rarely", "Occasionally", "Monthly", "Often", "Constantly"]
+  },
+  {
+    text: "If your most tenured person left tomorrow, what percentage of their institutional knowledge would be lost?",
+    options: ["Very little", "Some", "About half", "Most", "Nearly all"]
+  },
+  {
+    text: "How long does it take a new team member to become effective without constant hand-holding?",
+    options: ["Days", "A few weeks", "1 to 2 months", "3 to 6 months", "Longer than 6 months"]
+  },
+  {
+    text: "Do you have a reliable record of what your organization has agreed to in the last 24 months?",
+    options: ["Yes, searchable", "Mostly", "Partially", "Scattered", "No reliable record"]
+  },
+  {
+    text: "When making a decision today, how easily can your team access related past decisions?",
+    options: ["Instantly", "With a quick search", "After asking around", "Only if someone remembers", "We usually cannot"]
+  },
+  {
+    text: "How much time do senior people spend each week answering questions that should already be documented?",
+    options: ["Under 1 hour", "1 to 2 hours", "3 to 5 hours", "6 to 10 hours", "More than 10 hours"]
+  }
 ];
 
 function band(score: number) {
@@ -131,15 +161,18 @@ export function Audit() {
           Question {step + 1} of {questions.length}
         </div>
         <h2 className="serif" style={{ fontSize: "clamp(1.8rem, 5vw, 3.4rem)", lineHeight: 1.05 }}>
-          {questions[step]}
+          {questions[step].text}
         </h2>
         <div className="audit-options">
-          {[1, 2, 3, 4, 5].map((value) => (
+          {questions[step].options.map((label, index) => {
+            const value = index + 1;
+            return (
             <button className={`score-button ${answers[step] === value ? "active" : ""}`} key={value} onClick={() => updateAnswer(value)}>
               <span className="score-number">{value}</span>
-              <span>{value === 1 ? "Low risk" : value === 5 ? "High risk" : "Moderate signal"}</span>
+              <span>{label}</span>
             </button>
-          ))}
+            );
+          })}
         </div>
         <div className="cta-row">
           <button className="btn btn-secondary" disabled={step === 0} onClick={() => setStep((current) => Math.max(0, current - 1))}>
