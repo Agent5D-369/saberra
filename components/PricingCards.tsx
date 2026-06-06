@@ -47,7 +47,7 @@ export function PricingCards() {
                 ))}
               </ul>
               <div className="cta-row">
-                <CTAButton href="mailto:rick@amora.cr?subject=Saberra%20Founding%20Access">Apply for founding access</CTAButton>
+                <CTAButton href="/founding-access">Apply for founding access</CTAButton>
               </div>
             </article>
           ))}

@@ -45,7 +45,7 @@ export default function ResourcesPage() {
             title="Get the free Notion structure, then automate it."
             copy="The pipeline is simple: take the audit, get the free Notion template, map what your team can actually find, then use Saberra to capture and review memory automatically from meetings and email."
             primary="Get the Free Notion Template"
-            primaryHref="mailto:rick@amora.cr?subject=Institutional%20Memory%20OS%20for%20Notion"
+            primaryHref="/notion-template"
           />
         </div>
       </section>

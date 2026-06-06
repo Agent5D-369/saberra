@@ -34,7 +34,7 @@ export function Hero() {
           </div>
           <div className="cta-row">
             <CTAButton href="/audit">Take the Memory Audit</CTAButton>
-            <CTAButton href="mailto:rick@amora.cr?subject=Saberra%20Memory%20Demo" variant="secondary">
+            <CTAButton href="/demo" variant="secondary">
               Book a Memory Demo
             </CTAButton>
           </div>
@@ -341,7 +341,7 @@ export function LeadMagnets() {
               <li>Automate the capture and review loop with Saberra.</li>
             </ul>
             <div className="cta-row">
-              <CTAButton href="mailto:rick@amora.cr?subject=Institutional%20Memory%20OS%20for%20Notion" variant="secondary">
+              <CTAButton href="/notion-template" variant="secondary">
                 Get the Free Notion Template
               </CTAButton>
             </div>
@@ -368,7 +368,7 @@ export function FoundingOffer() {
           title="Founding Memory Partner Program"
           copy="We are onboarding a small number of high-fit teams using Google Workspace and Notion. Founding partners receive done-for-you setup, founder-led onboarding, and a memory audit before and after deployment."
           primary="Apply for Founding Access"
-          primaryHref="mailto:rick@amora.cr?subject=Saberra%20Founding%20Access"
+          primaryHref="/founding-access"
         />
         <div className="grid-3" style={{ marginTop: 16 }}>
           {criteria.map((item) => (

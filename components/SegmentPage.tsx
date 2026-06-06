@@ -22,7 +22,7 @@ export function SegmentPage({ headline, subheadline, cta, pains, captures, visua
             <a className="btn btn-primary" href="/audit">
               {cta}
             </a>
-            <a className="btn btn-secondary" href="mailto:rick@amora.cr?subject=Saberra%20Memory%20Demo">
+            <a className="btn btn-secondary" href="/demo">
               Book a Memory Demo
             </a>
           </div>

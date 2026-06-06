@@ -62,7 +62,7 @@ export function CTABand({
   primary = "Take the Memory Audit",
   primaryHref = "/audit",
   secondary = "Book a Memory Demo",
-  secondaryHref = "mailto:rick@amora.cr?subject=Saberra%20Memory%20Demo"
+  secondaryHref = "/demo"
 }: {
   title: string;
   copy: string;

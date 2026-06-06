@@ -13,6 +13,9 @@ export default function sitemap(): MetadataRoute.Sitemap {
     "/sera",
     "/pricing",
     "/audit",
+    "/notion-template",
+    "/demo",
+    "/founding-access",
     "/resources",
     "/security"
   ];

@@ -51,6 +51,7 @@ export function Footer() {
         <div>
           <strong>Trust</strong>
           <Link href="/audit">Memory Audit</Link>
+          <Link href="/notion-template">Notion Template</Link>
           <Link href="/resources">Resources</Link>
           <Link href="/security">Security</Link>
         </div>

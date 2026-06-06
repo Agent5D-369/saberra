@@ -1,5 +1,13 @@
 export const siteUrl = "https://saberra.com";
 
+export const notionTemplateUrl = "REPLACE_WITH_NOTION_DUPLICATE_URL";
+
+export const formspreeForms = {
+  notionTemplate: "https://formspree.io/f/REPLACE_NOTION_TEMPLATE_FORM_ID",
+  demoRequest: "https://formspree.io/f/REPLACE_DEMO_REQUEST_FORM_ID",
+  foundingAccess: "https://formspree.io/f/REPLACE_FOUNDING_ACCESS_FORM_ID"
+};
+
 export const navItems = [
   { href: "/how-it-works", label: "How it works" },
   { href: "/sera", label: "Sera" },

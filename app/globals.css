@@ -40,6 +40,7 @@ a {
 
 button,
 input,
+textarea,
 select {
   font: inherit;
 }
@@ -1160,6 +1161,7 @@ button {
 }
 
 .field input,
+.field textarea,
 .field select {
   min-height: 48px;
   border: 1px solid var(--line);
@@ -1169,8 +1171,35 @@ button {
   padding: 0 12px;
 }
 
+.field textarea {
+  min-height: 128px;
+  padding: 12px;
+  resize: vertical;
+}
+
 .field select option {
   color: #102232;
+}
+
+.lead-form {
+  display: grid;
+  gap: 14px;
+}
+
+.lead-form .btn {
+  width: fit-content;
+}
+
+.form-note {
+  margin: 0;
+  color: var(--muted);
+  font-size: 0.86rem;
+}
+
+.bot-field {
+  position: absolute;
+  left: -9999px;
+  opacity: 0;
 }
 
 @keyframes flow {
@@ -1293,6 +1322,10 @@ button {
 
   .cta-row,
   .btn {
+    width: 100%;
+  }
+
+  .lead-form .btn {
     width: 100%;
   }
 

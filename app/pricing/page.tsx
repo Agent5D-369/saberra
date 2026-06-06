@@ -47,7 +47,7 @@ export default function PricingPage() {
             title="Apply for Founding Memory Partner access."
             copy="Best fit teams have 15 to 200 people, run on Google Workspace, use or are willing to use Notion, and feel real pain from lost decisions or key-person knowledge."
             primary="Apply for founding access"
-            primaryHref="mailto:rick@amora.cr?subject=Saberra%20Founding%20Access"
+            primaryHref="/founding-access"
           />
         </div>
       </section>

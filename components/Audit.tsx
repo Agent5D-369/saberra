@@ -124,10 +124,10 @@ export function Audit() {
             live, then identifies what Saberra would capture automatically.
           </p>
           <div className="cta-row">
-            <CTAButton href={`mailto:rick@amora.cr?subject=Saberra%20Audit%20Result&body=Score:%20${score}%20of%2050%0ASegment:%20${encodeURIComponent(segment)}`}>
+            <CTAButton href="/demo">
               Book a Memory Audit
             </CTAButton>
-            <CTAButton href="mailto:rick@amora.cr?subject=Institutional%20Memory%20OS%20for%20Notion" variant="secondary">
+            <CTAButton href="/notion-template" variant="secondary">
               Get the Notion Template
             </CTAButton>
             <button className="btn btn-secondary" onClick={() => setStep(0)}>
