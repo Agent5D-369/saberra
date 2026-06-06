@@ -33,16 +33,16 @@ export default function SecurityPage() {
           </SectionHeader>
           <ul className="list">
             <li>Client data lives in the client&apos;s Notion workspace and infrastructure.</li>
-            <li>Claude extraction creates draft or candidate records for human review.</li>
+            <li>AI extraction creates draft or candidate records for human review.</li>
             <li>Sera answers from reviewed organizational records with source context.</li>
-            <li>The current version requires Google Workspace, Google Meet, Notion, Anthropic, Railway, and a dedicated inbox.</li>
+            <li>The current version requires Google Workspace, Google Meet, Notion, an AI provider account, Railway, and a dedicated inbox.</li>
             <li>The current version does not process Zoom or Teams.</li>
           </ul>
         </div>
       </section>
       <section className="section">
         <div className="container">
-          <CTABand title="Memory infrastructure should make trust easier to inspect." copy="Use the audit to decide whether Saberra fits your team's current tools and risk profile." />
+          <CTABand title="Memory infrastructure should make trust easier to inspect." copy="Start with the free Notion structure, then book a focused call when you want to evaluate fit, tools, and review ownership." />
         </div>
       </section>
     </main>

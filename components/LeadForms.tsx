@@ -147,9 +147,9 @@ export function DemoRequestForm() {
   return (
     <FormShell
       action={formspreeForms.demoRequest}
-      name="Memory Demo Request"
+      name="30-Minute Call Request"
       redirectPath="/demo-thank-you"
-      submitLabel="Request a memory demo"
+      submitLabel="Request a 30-minute call"
     >
       <div className="form-grid">
         {commonFields.map((field) => (
@@ -169,6 +169,7 @@ export function DemoRequestForm() {
         <span>What should Saberra help you remember?</span>
         <textarea name="demo_context" placeholder="Tell us about the decisions, risks, roles, or context your team cannot reliably find." />
       </label>
+      <p className="form-note">Most calls are 30 minutes and focused on fit, current tools, and memory review capacity.</p>
     </FormShell>
   );
 }
@@ -179,7 +180,7 @@ export function FoundingAccessForm() {
       action={formspreeForms.foundingAccess}
       name="Founding Memory Partner Application"
       redirectPath="/founding-thank-you"
-      submitLabel="Apply for founding access"
+      submitLabel="Submit fit details"
     >
       <div className="form-grid">
         {commonFields.map((field) => (
@@ -217,7 +218,7 @@ export function TemplateDeliveryCard() {
       />
       <h2 className="serif">Your manual memory OS is ready.</h2>
       <p>
-        The template gives you the structure: 17 Notion databases, suggested views, and example records for decisions,
+        The template gives you the structure: 20 Notion databases, suggested views, and example records for decisions,
         risks, roles, tasks, meetings, policies, review queues, source records, and organizational context.
       </p>
       <p>
@@ -232,7 +233,7 @@ export function TemplateDeliveryCard() {
           <span className="btn btn-secondary">Template duplicate link pending</span>
         )}
         <CTAButton href="/demo" variant="secondary">
-          See the automated pipeline
+          Book a 30-minute call
         </CTAButton>
       </div>
     </article>

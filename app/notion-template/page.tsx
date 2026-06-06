@@ -6,7 +6,7 @@ import { NotionTemplateVisual } from "@/components/VisualPanels";
 export const metadata: Metadata = {
   title: "Institutional Memory OS for Notion",
   description:
-    "Get the free manual Notion template for institutional memory: 17 structured databases for decisions, risks, roles, tasks, meetings, policies, review queues, and source records.",
+    "Get the free manual Notion template for institutional memory: 20 structured databases for decisions, risks, roles, tasks, meetings, policies, review queues, and source records.",
   alternates: { canonical: "/notion-template" }
 };
 
@@ -38,7 +38,7 @@ export default function NotionTemplatePage() {
         <div className="container">
           <div className="grid-3">
             {[
-              ["17 structured databases", "Decisions, tasks, risks, roles, policies, meetings, people, sources, review queues, and institutional context."],
+              ["20 structured databases", "Decisions, tasks, risks, roles, policies, meetings, people, sources, review queues, and institutional context."],
               ["Views and example records", "Start with a working manual system instead of a blank Notion page."],
               ["Clear upgrade gap", "When manual updates become the bottleneck, Saberra automates the capture and review loop."]
             ].map(([title, copy]) => (

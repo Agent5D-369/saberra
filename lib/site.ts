@@ -68,7 +68,7 @@ export const faqs = [
   ],
   [
     "Does Saberra require behavior change?",
-    "No. Your team keeps using Google Meet and email. A Memory Admin reviews extracted records before they become trusted memory."
+    "No. Your team keeps using Google Meet and email. A Memory Admin reviews extracted records before they become trusted memory, typically about 1-2 hours per week."
   ],
   [
     "Where does our data live?",
@@ -80,11 +80,11 @@ export const faqs = [
   ],
   [
     "Does Saberra replace human judgment?",
-    "No. Claude proposes structured records, humans review them, and Sera answers from the approved record."
+    "No. AI extraction proposes structured records, humans review them, and Sera answers from the approved record."
   ],
   [
     "What tools are required?",
-    "The current version requires Google Workspace, Google Meet, Notion, Anthropic, Railway, and a dedicated inbox."
+    "The current version requires Google Workspace, Google Meet, Notion, an AI provider account, Railway, and a dedicated inbox."
   ],
   [
     "Does Saberra work with Zoom or Teams?",

@@ -19,7 +19,7 @@ export default function DemoThankYouPage() {
             way to sharpen the conversation.
           </p>
           <div className="cta-row">
-            <CTAButton href="/audit">Take the Memory Audit</CTAButton>
+            <CTAButton href="/notion-template">Get the free Notion template</CTAButton>
             <CTAButton href="/how-it-works" variant="secondary">
               See how Saberra works
             </CTAButton>

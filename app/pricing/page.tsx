@@ -26,8 +26,8 @@ export default function PricingPage() {
       <section className="section tight">
         <div className="container split">
           <SectionHeader title="Your data. Your tools. Your memory.">
-            Saberra is deployed inside infrastructure your organization controls: Google Workspace, Notion, Anthropic,
-            Railway, and a dedicated capture inbox. We handle the technical setup and memory workflow, but your
+            Saberra is deployed inside infrastructure your organization controls: Google Workspace, Notion, your AI
+            provider account, Railway, and a dedicated capture inbox. We handle the technical setup and memory workflow, but your
             organizational record stays in your workspace.
           </SectionHeader>
           <ul className="list">
@@ -44,10 +44,12 @@ export default function PricingPage() {
       <section className="section">
         <div className="container">
           <CTABand
-            title="Apply for Founding Memory Partner access."
+            title="Talk through fit before deployment."
             copy="Best fit teams have 15 to 200 people, run on Google Workspace, use or are willing to use Notion, and feel real pain from lost decisions or key-person knowledge."
-            primary="Apply for founding access"
-            primaryHref="/founding-access"
+            primary="Get the free Notion template"
+            primaryHref="/notion-template"
+            secondary="Book a 30-minute call"
+            secondaryHref="/demo"
           />
         </div>
       </section>

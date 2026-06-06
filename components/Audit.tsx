@@ -125,12 +125,12 @@ export function Audit() {
           </p>
           <div className="cta-row">
             <CTAButton href="/demo">
-              Book a Memory Audit
+              Book a 30-minute call
             </CTAButton>
             <CTAButton href="/notion-template" variant="secondary">
-              Get the Notion Template
+              Get the free Notion template
             </CTAButton>
-            <button className="btn btn-secondary" onClick={() => setStep(0)}>
+            <button className="btn btn-secondary audit-retake" onClick={() => setStep(0)}>
               Retake audit
             </button>
           </div>

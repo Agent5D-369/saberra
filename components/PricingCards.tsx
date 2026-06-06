@@ -47,11 +47,18 @@ export function PricingCards() {
                 ))}
               </ul>
               <div className="cta-row">
-                <CTAButton href="/founding-access">Apply for founding access</CTAButton>
+                <CTAButton href="/demo">Book a 30-minute call</CTAButton>
               </div>
             </article>
           ))}
         </div>
+        <article className="card" style={{ marginTop: 16 }}>
+          <h3>Memory Admin requirement</h3>
+          <p>
+            Works best when one person owns memory review (~1-2 hours/week). Saberra reduces the capture burden, but
+            trusted organizational memory still needs a human reviewer who can approve, correct, and steward records.
+          </p>
+        </article>
       </div>
     </section>
   );

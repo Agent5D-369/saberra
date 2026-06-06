@@ -33,11 +33,12 @@ export function Hero() {
             No new workflows. No new habits. Human-reviewed memory. Sourced answers from your own organizational record.
           </div>
           <div className="cta-row">
-            <CTAButton href="/audit">Take the Memory Audit</CTAButton>
+            <CTAButton href="/notion-template">Get the free Notion template</CTAButton>
             <CTAButton href="/demo" variant="secondary">
-              Book a Memory Demo
+              Book a 30-minute call
             </CTAButton>
           </div>
+          <p className="cta-note">Includes 20 databases, pre-wired for Saberra, ready in under five minutes.</p>
         </div>
         <HeroVisual />
       </div>
@@ -75,7 +76,7 @@ function HeroVisual() {
             <span className="flow-line" />
           </div>
           <div className="process-list">
-            {["Dedicated inbox", "Claude extraction", "Human review", "Notion memory"].map((item) => (
+            {["Dedicated inbox", "AI extraction", "Human review", "Notion memory"].map((item) => (
               <div className="process-pill" key={item}>
                 <CheckCircle size={15} aria-hidden="true" /> {item}
               </div>
@@ -159,7 +160,7 @@ export function ProcessFlow() {
   const pipeline = [
     ["Google Meet", Mail],
     ["Email", Inbox],
-    ["Claude extraction", Sparkles],
+    ["AI extraction", Sparkles],
     ["Human review", ClipboardCheck],
     ["Notion memory", Database],
     ["Ask Sera", Brain]
@@ -324,25 +325,30 @@ export function LeadMagnets() {
               institutional knowledge are leaking from your system.
             </p>
             <div className="cta-row">
-              <CTAButton href="/audit">Take the Memory Audit</CTAButton>
+              <CTAButton href="/notion-template">Get the free Notion template</CTAButton>
+              <CTAButton href="/demo" variant="secondary">
+                Book a 30-minute call
+              </CTAButton>
             </div>
           </article>
           <article className="card">
             <NotionTemplateVisual />
             <h2 className="serif">Institutional Memory OS for Notion</h2>
             <p>
-              A free Notion template for decisions, risks, roles, meetings, policies, and review queues. Use it to see
-              what institutional memory should look like before asking Saberra to keep it updated automatically.
+              Get the free Notion template: 20 databases, pre-wired for Saberra, ready in under five minutes. Use it to
+              see what institutional memory should look like before asking Saberra to keep it updated automatically.
             </p>
             <ul className="list" style={{ marginTop: 14 }}>
-              <li>Take the Memory Audit.</li>
-              <li>Get the free Notion structure.</li>
+              <li>Duplicate the 20-database Notion structure.</li>
               <li>Map what your team can actually find.</li>
               <li>Automate the capture and review loop with Saberra.</li>
             </ul>
             <div className="cta-row">
               <CTAButton href="/notion-template" variant="secondary">
-                Get the Free Notion Template
+                Get the free Notion template
+              </CTAButton>
+              <CTAButton href="/demo" variant="secondary">
+                Book a 30-minute call
               </CTAButton>
             </div>
           </article>
@@ -359,7 +365,7 @@ export function FoundingOffer() {
     "Notion or willingness to use Notion",
     "Meeting-heavy operations",
     "Real knowledge loss pain",
-    "One person willing to serve as Memory Admin"
+    "One person owns memory review (~1-2 hours/week)"
   ];
   return (
     <section className="section">
@@ -367,8 +373,10 @@ export function FoundingOffer() {
         <CTABand
           title="Founding Memory Partner Program"
           copy="We are onboarding a small number of high-fit teams using Google Workspace and Notion. Founding partners receive done-for-you setup, founder-led onboarding, and a memory audit before and after deployment."
-          primary="Apply for Founding Access"
-          primaryHref="/founding-access"
+          primary="Get the free Notion template"
+          primaryHref="/notion-template"
+          secondary="Book a 30-minute call"
+          secondaryHref="/demo"
         />
         <div className="grid-3" style={{ marginTop: 16 }}>
           {criteria.map((item) => (

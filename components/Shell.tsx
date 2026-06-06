@@ -29,8 +29,8 @@ export function Header() {
             </Link>
           ))}
         </nav>
-        <Link className="btn btn-primary" href="/audit">
-          Take the Memory Audit <ArrowRight size={16} aria-hidden="true" />
+        <Link className="btn btn-primary" href="/notion-template">
+          Get the free template <ArrowRight size={16} aria-hidden="true" />
         </Link>
       </div>
     </header>
@@ -63,6 +63,7 @@ export function Footer() {
           <strong>Trust</strong>
           <Link href="/audit">Memory Audit</Link>
           <Link href="/notion-template">Notion Template</Link>
+          <Link href="/founding-access">Founding Access</Link>
           <Link href="/resources">Resources</Link>
           <Link href="/security">Security</Link>
         </div>

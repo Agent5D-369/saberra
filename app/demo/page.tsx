@@ -4,9 +4,9 @@ import { SectionHeader } from "@/components/UI";
 import { PipelineAnatomyVisual } from "@/components/VisualPanels";
 
 export const metadata: Metadata = {
-  title: "Book a Memory Demo",
+  title: "Book a 30-Minute Call",
   description:
-    "Request a Saberra memory demo and see how Google Meet outputs and email become reviewed, sourced institutional memory.",
+    "Book a 30-minute Saberra call and see how Google Meet outputs and email become reviewed, sourced institutional memory.",
   alternates: { canonical: "/demo" }
 };
 
@@ -17,7 +17,7 @@ export default function DemoPage() {
         <div className="container">
           <h1>See how Saberra would remember for your team.</h1>
           <p>
-            Request a focused walkthrough of the capture, extraction, human review, Notion memory, and Sera answer
+            Request a 30-minute walkthrough of the capture, extraction, human review, Notion memory, and Sera answer
             workflow.
           </p>
         </div>

@@ -11,7 +11,7 @@ type SegmentPageProps = {
   visualType: "governance" | "nonprofit" | "consultancy";
 };
 
-export function SegmentPage({ headline, subheadline, cta, pains, captures, visualType }: SegmentPageProps) {
+export function SegmentPage({ headline, subheadline, pains, captures, visualType }: SegmentPageProps) {
   return (
     <main>
       <section className="page-hero">
@@ -19,11 +19,11 @@ export function SegmentPage({ headline, subheadline, cta, pains, captures, visua
           <h1>{headline}</h1>
           <p>{subheadline}</p>
           <div className="cta-row">
-            <a className="btn btn-primary" href="/audit">
-              {cta}
+            <a className="btn btn-primary" href="/notion-template">
+              Get the free Notion template
             </a>
             <a className="btn btn-secondary" href="/demo">
-              Book a Memory Demo
+              Book a 30-minute call
             </a>
           </div>
         </div>
@@ -64,7 +64,10 @@ export function SegmentPage({ headline, subheadline, cta, pains, captures, visua
       <TrustSection />
       <section className="section">
         <div className="container">
-          <CTABand title="Find the leaks in your organizational memory." copy="The audit gives you a practical diagnosis before any demo conversation." primary={cta} />
+          <CTABand
+            title="Find the leaks in your organizational memory."
+            copy="Start with the free Notion template, then book a focused call when you want to talk through the automated capture and review loop."
+          />
         </div>
       </section>
     </main>

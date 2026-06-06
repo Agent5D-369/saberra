@@ -42,7 +42,7 @@ export function MemoryLoopVisual() {
           </div>
           <div className="converter-card">
             <Sparkles size={22} aria-hidden="true" />
-            <strong>Claude extraction</strong>
+            <strong>AI extraction</strong>
             <small>Structured candidates, never trusted memory yet</small>
           </div>
           <div className="converter-card approved">
@@ -109,7 +109,7 @@ export function SovereigntyVisual() {
   const stack = [
     ["Google Workspace", "Meeting and email output"],
     ["Dedicated inbox", "Capture point your team controls"],
-    ["Anthropic", "Extraction inside your deployment"],
+    ["AI provider account", "Extraction inside your deployment"],
     ["Notion", "Inspectable organizational record"],
     ["Railway", "Client-controlled runtime"]
   ];
@@ -180,7 +180,7 @@ export function PipelineAnatomyVisual() {
     ["Capture inbox", "Google Meet outputs and forwarded context", Inbox],
     ["Extraction pass", "Decisions, tasks, risks, roles, policies", Sparkles],
     ["Review queue", "Human approval before trusted memory", ClipboardCheck],
-    ["Notion record", "17 databases with source traceability", Database],
+    ["Notion record", "20 databases with source traceability", Database],
     ["Sera answer", "Plain-English answer with citations", FileSearch]
   ];
 

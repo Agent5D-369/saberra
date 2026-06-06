@@ -59,9 +59,9 @@ export function SourceBackedBadge() {
 export function CTABand({
   title,
   copy,
-  primary = "Take the Memory Audit",
-  primaryHref = "/audit",
-  secondary = "Book a Memory Demo",
+  primary = "Get the free Notion template",
+  primaryHref = "/notion-template",
+  secondary = "Book a 30-minute call",
   secondaryHref = "/demo"
 }: {
   title: string;

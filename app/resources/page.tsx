@@ -43,9 +43,11 @@ export default function ResourcesPage() {
         <div className="container">
           <CTABand
             title="Get the free Notion structure, then automate it."
-            copy="The pipeline is simple: take the audit, get the free Notion template, map what your team can actually find, then use Saberra to capture and review memory automatically from meetings and email."
-            primary="Get the Free Notion Template"
+            copy="Get the free Notion template: 20 databases, pre-wired for Saberra, ready in under five minutes. Use it manually first, then use Saberra to capture and review memory automatically from meetings and email."
+            primary="Get the free Notion template"
             primaryHref="/notion-template"
+            secondary="Book a 30-minute call"
+            secondaryHref="/demo"
           />
         </div>
       </section>
