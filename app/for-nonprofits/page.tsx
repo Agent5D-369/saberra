@@ -14,6 +14,7 @@ export default function NonprofitsPage() {
       headline="When a program leader leaves, the program history should not leave with them."
       subheadline="Saberra preserves the decisions, risks, relationships, and context your mission depends on."
       cta="Audit your organizational memory"
+      visualType="nonprofit"
       pains={[
         "Board history is reconstructed from old minutes and scattered email threads.",
         "Program continuity depends too heavily on long-tenured people.",

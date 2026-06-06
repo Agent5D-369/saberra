@@ -14,6 +14,7 @@ export default function ConsultanciesPage() {
       headline="Your best people should not be your only memory system."
       subheadline="Saberra captures client decisions, delivery context, risks, commitments, and institutional knowledge before it disappears into calls and inboxes."
       cta="Audit your delivery memory"
+      visualType="consultancy"
       pains={[
         "Client history lives in senior people who cannot be in every delivery conversation.",
         "Delivery commitments get made in calls but do not always become operational records.",

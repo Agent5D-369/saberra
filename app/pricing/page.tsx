@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { PricingCards } from "@/components/PricingCards";
 import { CTABand, SectionHeader } from "@/components/UI";
+import { SovereigntyVisual } from "@/components/VisualPanels";
 
 export const metadata: Metadata = {
   title: "Pricing",
@@ -35,6 +36,9 @@ export default function PricingPage() {
             <li>Saberra does not put your organizational history in a black-box database.</li>
             <li>Sera answers from records your team can inspect, edit, and govern.</li>
           </ul>
+        </div>
+        <div className="container" style={{ marginTop: 26 }}>
+          <SovereigntyVisual />
         </div>
       </section>
       <section className="section">

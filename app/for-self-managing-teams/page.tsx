@@ -14,6 +14,7 @@ export default function SelfManagingPage() {
       headline="Self-management without institutional memory becomes chaos management."
       subheadline="Saberra captures governance decisions, role changes, policies, risks, and commitments automatically, so distributed teams can remember what they have already agreed to."
       cta="Audit your governance memory"
+      visualType="governance"
       pains={[
         "Role transitions lose context even when role descriptions are documented.",
         "Governance decisions get made, then become impossible to find six months later.",

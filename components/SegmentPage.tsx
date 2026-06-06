@@ -1,5 +1,6 @@
 import { CTABand, SectionHeader } from "@/components/UI";
 import { ProcessFlow, SeraDemoSection, TrustSection } from "@/components/HomeSections";
+import { SegmentMemoryVisual } from "@/components/VisualPanels";
 
 type SegmentPageProps = {
   headline: string;
@@ -7,9 +8,10 @@ type SegmentPageProps = {
   cta: string;
   pains: string[];
   captures: string[];
+  visualType: "governance" | "nonprofit" | "consultancy";
 };
 
-export function SegmentPage({ headline, subheadline, cta, pains, captures }: SegmentPageProps) {
+export function SegmentPage({ headline, subheadline, cta, pains, captures, visualType }: SegmentPageProps) {
   return (
     <main>
       <section className="page-hero">
@@ -37,6 +39,11 @@ export function SegmentPage({ headline, subheadline, cta, pains, captures }: Seg
               <li key={pain}>{pain}</li>
             ))}
           </ul>
+        </div>
+      </section>
+      <section className="section tight">
+        <div className="container">
+          <SegmentMemoryVisual type={visualType} />
         </div>
       </section>
       <ProcessFlow />

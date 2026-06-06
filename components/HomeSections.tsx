@@ -17,6 +17,7 @@ import {
 import { captureItems, faqs } from "@/lib/site";
 import { CTAButton, CTABand, HumanReviewBadge, SectionHeader, SourceBackedBadge } from "@/components/UI";
 import { SeraDemo } from "@/components/SeraDemo";
+import { MemoryLoopVisual, NotionTemplateVisual } from "@/components/VisualPanels";
 
 export function Hero() {
   return (
@@ -199,6 +200,7 @@ export function CaptureGrid() {
         <SectionHeader eyebrow="Capture" title="What Saberra captures">
           The output is structured enough for review, retrieval, governance, and source-backed answers.
         </SectionHeader>
+        <MemoryLoopVisual />
         <div className="capture-grid">
           {captureItems.map(([title, copy]) => (
             <article className="card capture-card" key={title}>
@@ -326,7 +328,7 @@ export function LeadMagnets() {
             </div>
           </article>
           <article className="card">
-            <Database color="#6FB7B7" size={30} aria-hidden="true" />
+            <NotionTemplateVisual />
             <h2 className="serif">Institutional Memory OS for Notion</h2>
             <p>
               A free Notion template for decisions, risks, roles, meetings, policies, and review queues. Use it to see
