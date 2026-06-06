@@ -329,12 +329,18 @@ export function LeadMagnets() {
             <Database color="#6FB7B7" size={30} aria-hidden="true" />
             <h2 className="serif">Institutional Memory OS for Notion</h2>
             <p>
-              Get the manual Notion structure for decisions, risks, roles, meetings, policies, and review queues.
-              Then see how Saberra keeps it updated automatically.
+              A free Notion template for decisions, risks, roles, meetings, policies, and review queues. Use it to see
+              what institutional memory should look like before asking Saberra to keep it updated automatically.
             </p>
+            <ul className="list" style={{ marginTop: 14 }}>
+              <li>Take the Memory Audit.</li>
+              <li>Get the free Notion structure.</li>
+              <li>Map what your team can actually find.</li>
+              <li>Automate the capture and review loop with Saberra.</li>
+            </ul>
             <div className="cta-row">
               <CTAButton href="mailto:rick@amora.cr?subject=Institutional%20Memory%20OS%20for%20Notion" variant="secondary">
-                Get the Notion Template
+                Get the Free Notion Template
               </CTAButton>
             </div>
           </article>

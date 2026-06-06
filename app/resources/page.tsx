@@ -12,7 +12,7 @@ export default function ResourcesPage() {
   const resources = [
     ["What is an institutional memory system?", "A plain-English guide to capture, review, retrieval, and organizational continuity."],
     ["Meeting summaries are not memory", "Why per-call notes fail to become durable organizational intelligence."],
-    ["Institutional Memory OS for Notion", "A manual structure for decisions, tasks, risks, roles, meetings, and review queues."],
+    ["Institutional Memory OS for Notion", "A free template for decisions, tasks, risks, roles, meetings, policies, and review queues."],
     ["The cost of key-person memory loss", "How founder bottlenecks, departures, and slow onboarding create invisible operations debt."]
   ];
 
@@ -42,9 +42,9 @@ export default function ResourcesPage() {
       <section className="section">
         <div className="container">
           <CTABand
-            title="Get the Notion structure, then automate it."
-            copy="The template shows the shape of institutional memory. Saberra is what keeps it updated from meetings and email."
-            primary="Get the Notion Template"
+            title="Get the free Notion structure, then automate it."
+            copy="The pipeline is simple: take the audit, get the free Notion template, map what your team can actually find, then use Saberra to capture and review memory automatically from meetings and email."
+            primary="Get the Free Notion Template"
             primaryHref="mailto:rick@amora.cr?subject=Institutional%20Memory%20OS%20for%20Notion"
           />
         </div>

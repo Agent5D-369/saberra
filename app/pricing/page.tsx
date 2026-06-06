@@ -24,15 +24,16 @@ export default function PricingPage() {
       <PricingCards />
       <section className="section tight">
         <div className="container split">
-          <SectionHeader title="Transparent infrastructure reality.">
-            Your team provides Google Workspace, Notion, Anthropic, Railway, and a dedicated inbox. We handle the
-            technical setup and configure the memory workflow.
+          <SectionHeader title="Your data. Your tools. Your memory.">
+            Saberra is deployed inside infrastructure your organization controls: Google Workspace, Notion, Anthropic,
+            Railway, and a dedicated capture inbox. We handle the technical setup and memory workflow, but your
+            organizational record stays in your workspace.
           </SectionHeader>
           <ul className="list">
-            <li>No self-serve signup is implied.</li>
-            <li>No per-seat pricing pressure for team-wide memory.</li>
-            <li>Human review is part of the operating model.</li>
-            <li>Infrastructure costs stay visible and client-controlled.</li>
+            <li>Your memory lives in your Notion workspace.</li>
+            <li>Your infrastructure accounts stay yours.</li>
+            <li>Saberra does not put your organizational history in a black-box database.</li>
+            <li>Sera answers from records your team can inspect, edit, and govern.</li>
           </ul>
         </div>
       </section>
