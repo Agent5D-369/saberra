@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import type { ReactNode } from "react";
 import { formspreeForms, notionTemplateUrl, siteUrl } from "@/lib/site";
 import { CTAButton } from "@/components/UI";
@@ -207,6 +208,13 @@ export function TemplateDeliveryCard() {
 
   return (
     <article className="card light">
+      <Image
+        className="brand-logo brand-logo-dark"
+        src="/saberra-logo-dark-web.png"
+        alt="Saberra"
+        width={520}
+        height={130}
+      />
       <h2 className="serif">Your manual memory OS is ready.</h2>
       <p>
         The template gives you the structure: 17 Notion databases, suggested views, and example records for decisions,

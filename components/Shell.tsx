@@ -1,14 +1,26 @@
 import Link from "next/link";
+import Image from "next/image";
 import { ArrowRight } from "lucide-react";
 import { navItems } from "@/lib/site";
+
+function BrandLogo({ variant = "light" }: { variant?: "light" | "dark" }) {
+  return (
+    <Image
+      className="brand-logo"
+      src={variant === "light" ? "/saberra-logo-light-web.png" : "/saberra-logo-dark-web.png"}
+      alt="Saberra"
+      width={520}
+      height={130}
+    />
+  );
+}
 
 export function Header() {
   return (
     <header className="header">
       <div className="container header-inner">
         <Link className="brand" href="/">
-          <span className="mark">S</span>
-          <span>Saberra</span>
+          <BrandLogo />
         </Link>
         <nav className="nav" aria-label="Primary navigation">
           {navItems.map((item) => (
@@ -31,8 +43,7 @@ export function Footer() {
       <div className="container footer-grid">
         <div>
           <Link className="brand" href="/">
-            <span className="mark">S</span>
-            <span>Saberra</span>
+            <BrandLogo />
           </Link>
           <p>Institutional memory for teams that cannot afford to forget.</p>
         </div>

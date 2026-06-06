@@ -28,6 +28,13 @@ export const metadata: Metadata = {
     title: "Saberra | Institutional Memory Infrastructure",
     description:
       "Ask your organization what it already knows."
+  },
+  icons: {
+    icon: [
+      { url: "/saberra-icon-512.png", type: "image/png", sizes: "512x512" }
+    ],
+    shortcut: "/saberra-icon-512.png",
+    apple: "/saberra-icon-512.png"
   }
 };
 
