@@ -2,8 +2,10 @@ import type { CSSProperties } from "react";
 import {
   Archive,
   CheckCircle,
+  CircleAlert,
   ClipboardCheck,
   Database,
+  Languages,
   FileCheck,
   FileSearch,
   Inbox,
@@ -11,7 +13,9 @@ import {
   Mail,
   Network,
   ShieldCheck,
-  Sparkles
+  Sparkles,
+  TableProperties,
+  UserRound
 } from "lucide-react";
 
 export function MemoryLoopVisual() {
@@ -303,6 +307,179 @@ export function SecurityBoundaryVisual() {
           {reviewed.map((item) => (
             <div className="visual-chip" key={item}>
               <CheckCircle size={14} aria-hidden="true" /> {item}
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+export function ProductDashboardVisual() {
+  const metrics = [
+    ["Est. hours saved", "12", "meetings, emails, tasks"],
+    ["Emails processed", "52", "filed, extracted, remembered"],
+    ["Meetings captured", "1", "recordings, transcripts, notes"],
+    ["People known", "22", "profiles auto-built"]
+  ];
+  const ops = [
+    ["Success rate", "100%", "10 of last 10 processed"],
+    ["Access failures", "1", "needs review"],
+    ["Pipeline failures", "0", "all clear"]
+  ];
+
+  return (
+    <div className="visual-panel product-dashboard" aria-label="Saberra dashboard product preview">
+      <div className="product-topbar">
+        <strong>Sera · Client Memory</strong>
+        <span><i /> Online</span>
+        <small>Cached 1m ago · Next poll ready</small>
+      </div>
+      <div className="product-tabs">
+        {["Overview", "Chat with Sera", "Queues", "Governance", "People", "Activity & Ops", "Settings"].map((tab, index) => (
+          <span className={index === 0 ? "active" : ""} key={tab}>{tab}</span>
+        ))}
+      </div>
+      <div className="product-body">
+        <div className="dashboard-metrics">
+          {metrics.map(([label, value, copy], index) => (
+            <div className={`metric-tile metric-${index}`} key={label}>
+              <span>{label}</span>
+              <strong>{value}</strong>
+              <small>{copy}</small>
+            </div>
+          ))}
+        </div>
+        <div className="dashboard-grid">
+          <div className="dashboard-chart">
+            <div className="dashboard-title">Emails processed · last 7 days</div>
+            <div className="bar-chart" aria-hidden="true">
+              {[2, 1, 5, 1, 1, 1, 0].map((height, index) => (
+                <span style={{ height: `${height * 18 + 8}px` }} key={index} />
+              ))}
+            </div>
+          </div>
+          <div className="ops-stack">
+            <div className="dashboard-title">Activity & Ops</div>
+            {ops.map(([label, value, copy]) => (
+              <div className="ops-row" key={label}>
+                <span>{label}</span>
+                <strong>{value}</strong>
+                <small>{copy}</small>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+export function GovernanceConsoleVisual() {
+  const risks = [
+    ["No shared vision", "Clear", "No signals"],
+    ["Poor governance", "Warning", "1"],
+    ["Financial fragility", "Warning", "1"],
+    ["Interpersonal conflict", "Clear", "No signals"],
+    ["Burnout", "Warning", "1"],
+    ["Wrong people", "Clear", "No signals"]
+  ];
+  const roles = [
+    ["Admin Facilitator", "Vacant", "-"],
+    ["AI Secretary (Sera)", "Sera", "May 1, 2026"],
+    ["Ceremony Steward", "Rick B.", "Jun 2, 2026"],
+    ["Rep Steward", "Vacant", "-"],
+    ["Visionary Director", "Jessica F.", "May 28, 2026"]
+  ];
+
+  return (
+    <div className="visual-panel governance-console" aria-label="Governance dashboard product preview">
+      <div className="visual-header">
+        <span className="eyebrow">Governance memory</span>
+        <strong>Signals, roles, and decisions stay visible.</strong>
+      </div>
+      <div className="governance-layout">
+        <div>
+          <div className="dashboard-title">Health monitor</div>
+          <p className="product-note">Sera watches processed meetings and email for early risk signals, then routes candidates to review.</p>
+          <div className="risk-grid">
+            {risks.map(([name, status, value]) => (
+              <div className={status === "Warning" ? "risk-card warning" : "risk-card"} key={name}>
+                <CircleAlert size={18} aria-hidden="true" />
+                <strong>{name}</strong>
+                <span>{status}</span>
+                <small>{value}</small>
+              </div>
+            ))}
+          </div>
+        </div>
+        <div>
+          <div className="dashboard-title">Active role holders</div>
+          <div className="role-table">
+            {roles.map(([role, holder, since]) => (
+              <div className="role-row" key={role}>
+                <span>{role}</span>
+                <strong className={holder === "Vacant" ? "vacant" : ""}>{holder}</strong>
+                <small>{since}</small>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+export function DatabaseMapVisual() {
+  const core = [
+    "Knowledge Base",
+    "Profiles",
+    "Tasks",
+    "Projects",
+    "Meetings",
+    "Meeting Assets",
+    "Policies",
+    "Circles",
+    "Roles",
+    "Role Assignments",
+    "Canon Change Requests",
+    "Memory Review Queue",
+    "Decision Candidates",
+    "Risks",
+    "CCOS Ledger Entries",
+    "Source Emails",
+    "Messages",
+    "Processing Events",
+    "Interactions"
+  ];
+  const admin = ["Hub Settings", "Sensitive Review"];
+
+  return (
+    <div className="visual-panel database-map" aria-label="Saberra Notion database map">
+      <div className="visual-header">
+        <span className="eyebrow">Notion memory backend</span>
+        <strong>The record is structured, inspectable, and yours.</strong>
+      </div>
+      <div className="database-map-body">
+        <div>
+          <div className="dashboard-title">Core memory databases</div>
+          <div className="database-list">
+            {core.map((name, index) => (
+              <div className="database-row" key={name}>
+                {index % 3 === 0 ? <Archive size={15} aria-hidden="true" /> : index % 3 === 1 ? <UserRound size={15} aria-hidden="true" /> : <TableProperties size={15} aria-hidden="true" />}
+                <span>{name}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+        <div className="admin-box">
+          <Languages size={22} aria-hidden="true" />
+          <h3>Operational controls</h3>
+          <p>Timezone, response language, review settings, and sensitive records stay configurable inside the workspace.</p>
+          {admin.map((name) => (
+            <div className="database-row" key={name}>
+              <Database size={15} aria-hidden="true" />
+              <span>{name}</span>
             </div>
           ))}
         </div>

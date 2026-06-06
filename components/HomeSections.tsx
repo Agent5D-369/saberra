@@ -17,7 +17,13 @@ import {
 import { captureItems, faqs } from "@/lib/site";
 import { CTAButton, CTABand, HumanReviewBadge, SectionHeader, SourceBackedBadge } from "@/components/UI";
 import { SeraDemo } from "@/components/SeraDemo";
-import { MemoryLoopVisual, NotionTemplateVisual } from "@/components/VisualPanels";
+import {
+  DatabaseMapVisual,
+  GovernanceConsoleVisual,
+  MemoryLoopVisual,
+  NotionTemplateVisual,
+  ProductDashboardVisual
+} from "@/components/VisualPanels";
 
 export function Hero() {
   return (
@@ -209,6 +215,24 @@ export function CaptureGrid() {
               <p>{copy}</p>
             </article>
           ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+export function ProductProof() {
+  return (
+    <section className="section">
+      <div className="container">
+        <SectionHeader eyebrow="Product reality" title="This is what institutional memory looks like when it is operating.">
+          Saberra is not a summary screen. It is a working memory console with intake health, review queues, governance
+          signals, role ownership, source records, and workspace-level controls.
+        </SectionHeader>
+        <ProductDashboardVisual />
+        <div className="product-proof-grid">
+          <GovernanceConsoleVisual />
+          <DatabaseMapVisual />
         </div>
       </div>
     </section>

@@ -11,6 +11,7 @@ import {
   LeadMagnets,
   PainCards,
   ProcessFlow,
+  ProductProof,
   SeraDemoSection,
   TrustSection
 } from "@/components/HomeSections";
@@ -66,6 +67,7 @@ export default function HomePage() {
       <PainCards />
       <CategoryBreak />
       <ProcessFlow />
+      <ProductProof />
       <CaptureGrid />
       <SeraDemoSection />
       <BuiltFor />

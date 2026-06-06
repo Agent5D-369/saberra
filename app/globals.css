@@ -1045,6 +1045,296 @@ button {
     rgba(7, 21, 36, 0.48);
 }
 
+.product-dashboard {
+  margin-bottom: 18px;
+}
+
+.product-topbar,
+.product-tabs {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  border-bottom: 1px solid rgba(246, 244, 240, 0.1);
+  padding: 14px 18px;
+  background: rgba(7, 21, 36, 0.62);
+}
+
+.product-topbar strong {
+  color: var(--paper);
+}
+
+.product-topbar span {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: #cfd8db;
+}
+
+.product-topbar i {
+  width: 9px;
+  height: 9px;
+  border-radius: 999px;
+  background: #11d89a;
+  box-shadow: 0 0 16px rgba(17, 216, 154, 0.65);
+}
+
+.product-topbar small {
+  margin-left: auto;
+  color: var(--muted);
+}
+
+.product-tabs {
+  flex-wrap: wrap;
+  gap: 8px;
+  background: rgba(11, 29, 45, 0.72);
+}
+
+.product-tabs span {
+  border-bottom: 2px solid transparent;
+  padding: 8px 10px;
+  color: #8fa3c8;
+  font-size: 0.88rem;
+}
+
+.product-tabs .active {
+  border-color: #666bff;
+  color: #dfe4ff;
+}
+
+.product-body,
+.governance-layout,
+.database-map-body {
+  padding: 20px;
+}
+
+.dashboard-metrics {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 14px;
+}
+
+.metric-tile,
+.ops-row,
+.risk-card,
+.role-row,
+.admin-box {
+  border: 1px solid rgba(246, 244, 240, 0.12);
+  border-radius: 8px;
+  background: rgba(7, 21, 36, 0.48);
+}
+
+.metric-tile {
+  min-height: 122px;
+  padding: 18px;
+  background: linear-gradient(135deg, #f59e0b, #ef4444);
+}
+
+.metric-1 {
+  background: linear-gradient(135deg, #3b82f6, #6563f1);
+}
+
+.metric-2 {
+  background: linear-gradient(135deg, #14b8a6, #3b82f6);
+}
+
+.metric-3 {
+  background: linear-gradient(135deg, #8b5cf6, #ec4899);
+}
+
+.metric-tile span,
+.dashboard-title {
+  color: #9db1d8;
+  font-size: 0.78rem;
+  font-weight: 900;
+  letter-spacing: 0.11em;
+  text-transform: uppercase;
+}
+
+.metric-tile strong {
+  display: block;
+  color: white;
+  font-size: 2.8rem;
+  line-height: 1;
+}
+
+.metric-tile small,
+.ops-row small,
+.role-row small,
+.product-note {
+  color: #94a8c9;
+}
+
+.dashboard-grid {
+  display: grid;
+  grid-template-columns: 1.45fr 0.75fr;
+  gap: 16px;
+  margin-top: 16px;
+}
+
+.dashboard-chart,
+.ops-stack {
+  border: 1px solid rgba(246, 244, 240, 0.12);
+  border-radius: 8px;
+  background: rgba(7, 21, 36, 0.48);
+  padding: 18px;
+}
+
+.bar-chart {
+  display: flex;
+  min-height: 150px;
+  align-items: flex-end;
+  gap: 18px;
+  border-bottom: 1px solid rgba(246, 244, 240, 0.1);
+  margin-top: 22px;
+  padding: 0 18px;
+}
+
+.bar-chart span {
+  flex: 1;
+  max-width: 70px;
+  border-radius: 7px 7px 0 0;
+  background: linear-gradient(180deg, #666bff, #4c55b8);
+}
+
+.ops-stack {
+  display: grid;
+  gap: 10px;
+}
+
+.ops-row {
+  display: grid;
+  gap: 2px;
+  padding: 12px;
+}
+
+.ops-row strong {
+  color: var(--gold);
+  font-size: 1.8rem;
+  line-height: 1;
+}
+
+.ops-row:first-of-type strong {
+  color: #11d89a;
+}
+
+.product-proof-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr);
+  gap: 18px;
+}
+
+.governance-layout {
+  display: grid;
+  gap: 18px;
+}
+
+.product-note {
+  margin: 12px 0 18px;
+  font-style: italic;
+}
+
+.risk-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+}
+
+.risk-card {
+  display: grid;
+  gap: 7px;
+  min-height: 128px;
+  padding: 14px;
+}
+
+.risk-card svg,
+.database-row svg,
+.admin-box svg {
+  color: var(--teal-soft);
+}
+
+.risk-card.warning {
+  border-color: rgba(214, 162, 74, 0.78);
+}
+
+.risk-card.warning svg,
+.risk-card.warning small {
+  color: var(--gold);
+}
+
+.risk-card strong,
+.role-row span,
+.admin-box h3 {
+  color: var(--paper);
+}
+
+.risk-card span {
+  color: #11d89a;
+  font-size: 0.78rem;
+  font-weight: 800;
+}
+
+.risk-card.warning span,
+.vacant {
+  color: #ff5565 !important;
+}
+
+.role-table {
+  overflow: hidden;
+  border: 1px solid rgba(246, 244, 240, 0.12);
+  border-radius: 8px;
+  margin-top: 12px;
+}
+
+.role-row {
+  display: grid;
+  grid-template-columns: 1.15fr 0.8fr 0.65fr;
+  gap: 12px;
+  border: 0;
+  border-bottom: 1px solid rgba(246, 244, 240, 0.08);
+  border-radius: 0;
+  padding: 12px 14px;
+}
+
+.role-row:last-child {
+  border-bottom: 0;
+}
+
+.role-row strong {
+  color: #dfe7ff;
+}
+
+.database-map-body {
+  display: grid;
+  grid-template-columns: 1fr 0.75fr;
+  gap: 18px;
+}
+
+.database-list {
+  columns: 2;
+  column-gap: 12px;
+  margin-top: 12px;
+}
+
+.database-row {
+  display: flex;
+  break-inside: avoid;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 8px;
+  color: #e4eaee;
+  font-size: 0.9rem;
+  font-weight: 800;
+}
+
+.admin-box {
+  align-self: start;
+  padding: 18px;
+}
+
+.admin-box p {
+  color: #c6d0d3;
+}
+
 .cta-band {
   border: 1px solid rgba(214, 162, 74, 0.22);
   border-radius: 8px;
@@ -1291,7 +1581,11 @@ button {
   .anatomy-grid,
   .evidence-grid,
   .audit-report-body,
-  .security-boundary-grid {
+  .security-boundary-grid,
+  .dashboard-metrics,
+  .dashboard-grid,
+  .product-proof-grid,
+  .database-map-body {
     grid-template-columns: 1fr;
   }
 
@@ -1358,8 +1652,26 @@ button {
   .grid-4,
   .grid-2,
   .form-grid,
-  .pricing-grid {
+  .pricing-grid,
+  .risk-grid {
     grid-template-columns: 1fr;
+  }
+
+  .product-topbar {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .product-topbar small {
+    margin-left: 0;
+  }
+
+  .role-row {
+    grid-template-columns: 1fr;
+  }
+
+  .database-list {
+    columns: 1;
   }
 
   .visual-header {

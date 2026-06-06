@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { NotionTemplateGateForm } from "@/components/LeadForms";
 import { SectionHeader } from "@/components/UI";
-import { NotionTemplateVisual } from "@/components/VisualPanels";
+import { DatabaseMapVisual, NotionTemplateVisual } from "@/components/VisualPanels";
 
 export const metadata: Metadata = {
   title: "Institutional Memory OS for Notion",
@@ -48,6 +48,11 @@ export default function NotionTemplatePage() {
               </article>
             ))}
           </div>
+        </div>
+      </section>
+      <section className="section tight">
+        <div className="container">
+          <DatabaseMapVisual />
         </div>
       </section>
     </main>
