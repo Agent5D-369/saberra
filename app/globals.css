@@ -1617,6 +1617,16 @@ button {
   font-size: clamp(1.9rem, 4vw, 3.4rem);
 }
 
+.vignette-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 18px;
+}
+
+.vignette-grid .case-vignette {
+  height: 100%;
+}
+
 .case-vignette h2 {
   max-width: 840px;
   margin: 10px 0 18px;
@@ -1646,6 +1656,104 @@ button {
   color: #e5ecee;
   font-size: 0.86rem;
   font-weight: 800;
+}
+
+.comparison-table {
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  overflow: hidden;
+  background: rgba(246, 244, 240, 0.035);
+  box-shadow: var(--shadow);
+}
+
+.comparison-row {
+  display: grid;
+  grid-template-columns: 0.7fr 1fr 1.1fr;
+  border-top: 1px solid var(--border);
+}
+
+.comparison-row:first-child {
+  border-top: 0;
+}
+
+.comparison-row > * {
+  padding: 18px;
+  border-left: 1px solid var(--border);
+}
+
+.comparison-row > *:first-child {
+  border-left: 0;
+}
+
+.comparison-head {
+  background: rgba(111, 183, 183, 0.1);
+  color: var(--muted);
+  font-size: 0.78rem;
+  font-weight: 900;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.comparison-row strong {
+  color: var(--paper);
+}
+
+.comparison-row span {
+  color: var(--muted);
+  line-height: 1.55;
+}
+
+.comparison-row.featured {
+  background: linear-gradient(90deg, rgba(214, 162, 74, 0.16), rgba(111, 183, 183, 0.1));
+}
+
+.comparison-row.featured strong,
+.comparison-row.featured span {
+  color: var(--paper);
+}
+
+.deployment-path {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 16px;
+}
+
+.deployment-step {
+  min-height: 240px;
+  padding: 22px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.06), rgba(255, 255, 255, 0.025)),
+    var(--panel);
+  box-shadow: var(--shadow);
+}
+
+.deployment-step span {
+  display: inline-flex;
+  margin-bottom: 28px;
+  color: var(--gold);
+  font-size: 0.78rem;
+  font-weight: 900;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.deployment-step h3 {
+  margin: 0 0 12px;
+}
+
+.deployment-step p {
+  margin: 0;
+  color: var(--muted);
+}
+
+.challenge-card {
+  margin: 20px 0;
+  border-color: rgba(214, 162, 74, 0.42);
+  background:
+    linear-gradient(135deg, rgba(214, 162, 74, 0.12), rgba(111, 183, 183, 0.08)),
+    var(--panel);
 }
 
 .fit-grid {
@@ -1941,7 +2049,9 @@ button {
   .pipeline,
   .capture-grid,
   .grid-4,
-  .pricing-grid {
+  .pricing-grid,
+  .deployment-path,
+  .vignette-grid {
     grid-template-columns: repeat(2, 1fr);
   }
 
@@ -1988,6 +2098,19 @@ button {
   .footer-grid {
     grid-template-columns: 1fr;
   }
+
+  .comparison-row {
+    grid-template-columns: 1fr;
+  }
+
+  .comparison-row > * {
+    border-left: 0;
+    border-top: 1px solid var(--border);
+  }
+
+  .comparison-row > *:first-child {
+    border-top: 0;
+  }
 }
 
 @media (max-width: 620px) {
@@ -2020,6 +2143,11 @@ button {
 
   .lead-form .btn {
     width: 100%;
+  }
+
+  .deployment-path,
+  .vignette-grid {
+    grid-template-columns: 1fr;
   }
 
   .pipeline,

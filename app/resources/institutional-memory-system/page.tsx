@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { CTABand } from "@/components/UI";
+import { siteUrl } from "@/lib/site";
 
 export const metadata: Metadata = {
   title: "What Is an Institutional Memory System?",
@@ -9,8 +10,19 @@ export const metadata: Metadata = {
 };
 
 export default function InstitutionalMemorySystemPage() {
+  const schema = {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    headline: "What is an institutional memory system?",
+    description: metadata.description,
+    author: { "@type": "Organization", name: "Saberra" },
+    publisher: { "@type": "Organization", name: "Saberra" },
+    mainEntityOfPage: `${siteUrl}/resources/institutional-memory-system/`
+  };
+
   return (
     <main>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }} />
       <section className="page-hero">
         <div className="container">
           <h1>What is an institutional memory system?</h1>

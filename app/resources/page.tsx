@@ -27,6 +27,21 @@ export default function ResourcesPage() {
       "/resources/notion-institutional-memory-template"
     ],
     [
+      "Saberra vs meeting notetakers",
+      "Why summaries are useful, but reviewed organizational memory is a different category.",
+      "/resources/saberra-vs-meeting-notetakers"
+    ],
+    [
+      "Notion AI vs Saberra",
+      "The difference between answering from written pages and capturing what teams forget to write down.",
+      "/resources/notion-ai-vs-saberra"
+    ],
+    [
+      "Google Meet institutional memory",
+      "How native Google Meet capture and emailed transcripts become reviewed memory.",
+      "/resources/google-meet-institutional-memory"
+    ],
+    [
       "The cost of key-person memory loss",
       "How founder bottlenecks, departures, and slow onboarding create invisible operations debt.",
       "/notion-template"

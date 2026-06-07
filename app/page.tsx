@@ -4,6 +4,8 @@ import {
   BuiltFor,
   CaptureGrid,
   CategoryBreak,
+  CompetitiveComparison,
+  DeploymentPath,
   FAQ,
   FitQualifier,
   FinalCTA,
@@ -44,7 +46,7 @@ export default function HomePage() {
         applicationCategory: "BusinessApplication",
         operatingSystem: "Web",
         description:
-          "Institutional Memory Infrastructure that turns Google Meet meetings, emails, decisions, tasks, risks, and roles into searchable organizational memory."
+          "Institutional Memory Infrastructure that turns Google Meet meetings, emailed transcripts, emails, decisions, tasks, risks, and roles into searchable organizational memory."
       },
       {
         "@type": "Product",
@@ -52,6 +54,18 @@ export default function HomePage() {
         brand: { "@type": "Brand", name: "Saberra" },
         description:
           "Done-for-you institutional memory deployment with Sera, human review, Notion memory backend, and source-backed answers."
+      },
+      {
+        "@type": "HowTo",
+        name: "How Saberra builds institutional memory",
+        description:
+          "Saberra captures meeting and email output, creates structured candidates, routes them through human review, stores approved memory in an inspectable backend, and lets teams ask Sera for source-backed answers.",
+        step: [
+          { "@type": "HowToStep", name: "Capture", text: "Capture Google Meet output, emailed transcripts, and email context through a dedicated inbox." },
+          { "@type": "HowToStep", name: "Extract", text: "Create structured candidates for decisions, tasks, risks, roles, policies, and source records." },
+          { "@type": "HowToStep", name: "Review", text: "Human reviewers approve, correct, or reject records before they become trusted memory." },
+          { "@type": "HowToStep", name: "Retrieve", text: "Sera answers questions from reviewed records with source context." }
+        ]
       },
       {
         "@type": "FAQPage",
@@ -70,7 +84,9 @@ export default function HomePage() {
       <Hero />
       <PainCards />
       <CategoryBreak />
+      <CompetitiveComparison />
       <ProcessFlow />
+      <DeploymentPath />
       <ProductProof />
       <WorkspaceProof />
       <CaptureGrid />

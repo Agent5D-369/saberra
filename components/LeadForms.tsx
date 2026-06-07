@@ -105,23 +105,8 @@ export function NotionTemplateGateForm() {
       submitLabel="Send me the Memory OS"
     >
       <div className="form-grid">
-        {commonFields.map((field) => (
-          <TextField field={field} key={field.name} />
-        ))}
+        <TextField field={{ label: "Work email", name: "email", type: "email", required: true, placeholder: "you@organization.org" }} />
         <SegmentField />
-        <label className="field">
-          <span>Team size</span>
-          <select name="team_size" required defaultValue="">
-            <option value="" disabled>
-              Select one
-            </option>
-            <option>1 to 14</option>
-            <option>15 to 30</option>
-            <option>31 to 100</option>
-            <option>101 to 200</option>
-            <option>More than 200</option>
-          </select>
-        </label>
         <label className="field">
           <span>Current tools</span>
           <select name="current_tools" required defaultValue="">
@@ -135,10 +120,6 @@ export function NotionTemplateGateForm() {
           </select>
         </label>
       </div>
-      <label className="field">
-        <span>Biggest memory pain</span>
-        <textarea name="memory_pain" placeholder="What keeps getting lost, re-asked, or re-decided?" />
-      </label>
     </FormShell>
   );
 }

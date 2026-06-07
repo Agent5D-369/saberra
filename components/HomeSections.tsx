@@ -175,6 +175,56 @@ export function CategoryBreak() {
   );
 }
 
+export function CompetitiveComparison() {
+  const rows = [
+    [
+      "Meeting notetakers",
+      "Capture one conversation and produce a transcript or summary.",
+      "The summary still has to become a decision, task, risk, role, policy, or source-backed record."
+    ],
+    [
+      "Enterprise search",
+      "Finds information that already exists across approved sources.",
+      "It cannot reliably retrieve the decisions your team never converted into a durable record."
+    ],
+    [
+      "Notion AI",
+      "Answers from what your team already wrote into Notion.",
+      "It does not solve the behavior problem when nobody updates Notion after the meeting."
+    ],
+    [
+      "Saberra",
+      "Turns what happened into reviewed institutional memory before people forget to document it.",
+      "Capture, review, structured records, and Sera retrieval live in one memory loop."
+    ]
+  ];
+
+  return (
+    <section className="section tight">
+      <div className="container">
+        <SectionHeader eyebrow="Category" title="Saberra is not another meeting note tool.">
+          Meeting summaries help individuals remember a call. Saberra helps the organization preserve what it agreed,
+          assigned, changed, risked, and approved.
+        </SectionHeader>
+        <div className="comparison-table" role="table" aria-label="Saberra comparison with adjacent tools">
+          <div className="comparison-row comparison-head" role="row">
+            <span role="columnheader">Tool type</span>
+            <span role="columnheader">What it does well</span>
+            <span role="columnheader">Where memory still leaks</span>
+          </div>
+          {rows.map(([type, good, gap]) => (
+            <div className={type === "Saberra" ? "comparison-row featured" : "comparison-row"} role="row" key={type}>
+              <strong role="cell">{type}</strong>
+              <span role="cell">{good}</span>
+              <span role="cell">{gap}</span>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
 export function ProcessFlow() {
   const steps = [
     ["Your team meets.", "Google Meet is native. Other meeting transcripts can be sent by email to the capture inbox."],
@@ -212,6 +262,35 @@ export function ProcessFlow() {
               </div>
             );
           })}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+export function DeploymentPath() {
+  const weeks = [
+    ["Week 1", "Memory audit and source mapping", "We map where decisions, risks, tasks, roles, policies, and source records currently leak."],
+    ["Week 2", "Capture inbox and workspace setup", "Google Meet, emailed transcripts, source emails, and the 20-database Memory OS are configured."],
+    ["Week 3", "Review queue training", "Your Memory Admin learns how to approve, correct, reject, and steward candidate records."],
+    ["Week 4", "Sera and memory health baseline", "Sera starts answering from reviewed records, and the team receives a first memory health readout."]
+  ];
+
+  return (
+    <section className="section tight">
+      <div className="container">
+        <SectionHeader eyebrow="Deployment" title="What happens in the first 30 days.">
+          Saberra is founder-led infrastructure work, not a black-box signup. The first month is designed to make the
+          memory loop real, inspectable, and owned by your team.
+        </SectionHeader>
+        <div className="deployment-path">
+          {weeks.map(([week, title, copy]) => (
+            <article className="deployment-step" key={week}>
+              <span>{week}</span>
+              <h3>{title}</h3>
+              <p>{copy}</p>
+            </article>
+          ))}
         </div>
       </div>
     </section>
@@ -380,23 +459,45 @@ export function TrustSection() {
 }
 
 export function SocialProof() {
+  const vignettes = [
+    [
+      "Governance transition",
+      "A coordinator left. The memory did not.",
+      "A 6-person governance circle used Saberra to review 38 decisions, 22 role records, and 14 open risks before a coordinator transition. The incoming coordinator could ask Sera what changed, who owned what, and which commitments were still open.",
+      ["38 decisions reviewed", "22 role records preserved", "14 open risks made findable"]
+    ],
+    [
+      "Program continuity",
+      "The program lead changed. The context stayed.",
+      "A nonprofit program team used Saberra to preserve board decisions, partner commitments, grant follow-ups, and open program risks before a leadership handoff. The new lead inherited the reasoning behind the work, not just folders.",
+      ["Board context preserved", "Grant commitments surfaced", "Program risks still visible"]
+    ],
+    [
+      "Delivery memory",
+      "The senior consultant was no longer the archive.",
+      "A consultancy used Saberra to capture client decisions, delivery risks, and open commitments across calls and email. When a delivery lead changed, the account history was searchable without pulling the founder back into every question.",
+      ["Client decisions source-backed", "Open commitments assigned", "Founder memory load reduced"]
+    ]
+  ];
+
   return (
     <section className="section">
       <div className="container">
-        <article className="case-vignette">
-          <div className="eyebrow">Use-case vignette</div>
-          <h2 className="serif">A coordinator left. The memory did not.</h2>
-          <p>
-            A 6-person governance circle used Saberra to review 38 decisions, 22 role records, and 14 open risks before
-            a coordinator transition. The incoming coordinator could ask Sera what changed, who owned what, and which
-            commitments were still open.
-          </p>
-          <div className="vignette-stats">
-            <span>38 decisions reviewed</span>
-            <span>22 role records preserved</span>
-            <span>14 open risks made findable</span>
-          </div>
-        </article>
+        <SectionHeader eyebrow="Use-case vignettes" title="Proof does not have to be loud to be useful." />
+        <div className="vignette-grid">
+          {vignettes.map(([eyebrow, title, copy, stats]) => (
+            <article className="case-vignette" key={title as string}>
+              <div className="eyebrow">{eyebrow as string}</div>
+              <h2 className="serif">{title as string}</h2>
+              <p>{copy as string}</p>
+              <div className="vignette-stats">
+                {(stats as string[]).map((stat) => (
+                  <span key={stat}>{stat}</span>
+                ))}
+              </div>
+            </article>
+          ))}
+        </div>
       </div>
     </section>
   );

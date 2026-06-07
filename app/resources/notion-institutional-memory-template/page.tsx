@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { CTABand } from "@/components/UI";
 import { DatabaseMapVisual } from "@/components/VisualPanels";
+import { siteUrl } from "@/lib/site";
 
 export const metadata: Metadata = {
   title: "Notion Institutional Memory Template",
@@ -10,8 +11,19 @@ export const metadata: Metadata = {
 };
 
 export default function NotionInstitutionalMemoryTemplatePage() {
+  const schema = {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    headline: "Notion institutional memory template",
+    description: metadata.description,
+    author: { "@type": "Organization", name: "Saberra" },
+    publisher: { "@type": "Organization", name: "Saberra" },
+    mainEntityOfPage: `${siteUrl}/resources/notion-institutional-memory-template/`
+  };
+
   return (
     <main>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }} />
       <section className="page-hero">
         <div className="container">
           <h1>A Notion template for institutional memory.</h1>

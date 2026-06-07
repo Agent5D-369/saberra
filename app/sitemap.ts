@@ -23,6 +23,9 @@ export default function sitemap(): MetadataRoute.Sitemap {
     "/resources/institutional-memory-system",
     "/resources/meeting-notes-are-not-memory",
     "/resources/notion-institutional-memory-template",
+    "/resources/saberra-vs-meeting-notetakers",
+    "/resources/notion-ai-vs-saberra",
+    "/resources/google-meet-institutional-memory",
     "/security"
   ];
 

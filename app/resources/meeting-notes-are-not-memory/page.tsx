@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { CTABand } from "@/components/UI";
+import { siteUrl } from "@/lib/site";
 
 export const metadata: Metadata = {
   title: "Meeting Notes Are Not Organizational Memory",
@@ -9,8 +10,19 @@ export const metadata: Metadata = {
 };
 
 export default function MeetingNotesAreNotMemoryPage() {
+  const schema = {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    headline: "Meeting notes are not organizational memory",
+    description: metadata.description,
+    author: { "@type": "Organization", name: "Saberra" },
+    publisher: { "@type": "Organization", name: "Saberra" },
+    mainEntityOfPage: `${siteUrl}/resources/meeting-notes-are-not-memory/`
+  };
+
   return (
     <main>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }} />
       <section className="page-hero">
         <div className="container">
           <h1>Meeting notes are not organizational memory.</h1>
