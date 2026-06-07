@@ -1,0 +1,122 @@
+import type { Metadata } from "next";
+import { Handshake, Landmark, Network, UsersRound } from "lucide-react";
+import { CTABand, SectionHeader } from "@/components/UI";
+
+export const metadata: Metadata = {
+  title: "Saberra Partner Referrals",
+  description:
+    "Refer teams that need institutional memory. Saberra works with trusted advisors, Notion consultants, governance consultants, and operations partners.",
+  alternates: { canonical: "/partners" },
+  keywords: [
+    "Saberra partner program",
+    "institutional memory referral",
+    "Notion consultant partner",
+    "governance consultant referral",
+    "operations consultant partner"
+  ]
+};
+
+const partners = [
+  {
+    icon: Network,
+    title: "Governance and self-management advisors",
+    copy: "For consultants supporting Teal, Holacracy, Sociocracy, cooperative, and distributed authority teams."
+  },
+  {
+    icon: Landmark,
+    title: "Nonprofit and social enterprise operators",
+    copy: "For advisors helping mission-driven teams preserve program history, decisions, and continuity."
+  },
+  {
+    icon: UsersRound,
+    title: "Fractional COOs and Chiefs of Staff",
+    copy: "For operators who see the cost of founder memory, senior-person bottlenecks, and missing decision records."
+  },
+  {
+    icon: Handshake,
+    title: "Notion and Google Workspace consultants",
+    copy: "For implementation partners whose clients need more than a workspace. They need a memory loop that stays updated."
+  }
+];
+
+export default function PartnersPage() {
+  return (
+    <main>
+      <section className="page-hero">
+        <div className="container">
+          <div className="eyebrow">Partner referrals</div>
+          <h1>Know a team that cannot afford to forget?</h1>
+          <p>
+            Saberra works best when a trusted advisor can see the pattern before the team has language for it: decisions
+            get buried, role history disappears, context lives in a few people, and nobody wants another tool to manage.
+          </p>
+          <div className="cta-row">
+            <a className="btn btn-primary" href="/demo">
+              Refer a team
+            </a>
+            <a className="btn btn-secondary" href="/audit">
+              Send the Memory Audit
+            </a>
+          </div>
+        </div>
+      </section>
+
+      <section className="section tight">
+        <div className="container">
+          <SectionHeader eyebrow="Who it is for" title="A private referral path for high-trust advisors.">
+            This is not a public coupon program. It is a curated partner path for people who already advise teams where
+            memory loss creates real operational risk.
+          </SectionHeader>
+          <div className="grid-4">
+            {partners.map((partner) => {
+              const Icon = partner.icon;
+              return (
+                <article className="card" key={partner.title}>
+                  <Icon size={28} color="#D6A24A" aria-hidden="true" />
+                  <h3>{partner.title}</h3>
+                  <p>{partner.copy}</p>
+                </article>
+              );
+            })}
+          </div>
+        </div>
+      </section>
+
+      <section className="section tight alt">
+        <div className="container split">
+          <div>
+            <div className="eyebrow">Referral fit</div>
+            <h2 className="serif">The right referral is already feeling memory pain.</h2>
+            <p>
+              Good-fit referrals use Google Workspace, Notion or a Notion-ready workflow, and have recurring decisions,
+              risks, roles, policies, meetings, or client context that should survive beyond the people currently
+              holding it.
+            </p>
+          </div>
+          <div className="card">
+            <h3>Best referrals usually say:</h3>
+            <ul className="list">
+              <li>We already decided this, but nobody can find where.</li>
+              <li>Everything important is in one senior person&apos;s head.</li>
+              <li>We use Notion, but the records do not stay current.</li>
+              <li>We need source-backed answers, not another meeting summary.</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <section className="section tight">
+        <div className="container">
+          <CTABand
+            title="Refer a team, or send them the Memory Audit."
+            copy="Use the 30-minute call form for a warm referral, or send the audit when the team needs to diagnose the problem first."
+            primary="Refer a team"
+            primaryHref="/demo"
+            secondary="Send the Memory Audit"
+            secondaryHref="/audit"
+          />
+        </div>
+      </section>
+    </main>
+  );
+}

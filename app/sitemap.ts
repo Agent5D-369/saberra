@@ -19,6 +19,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     "/notion-template",
     "/demo",
     "/founding-access",
+    "/partners",
     "/institutional-memory-system",
     "/institutional-memory-infrastructure",
     "/resources",
