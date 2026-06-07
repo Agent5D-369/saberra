@@ -102,7 +102,7 @@ export function NotionTemplateGateForm() {
       action={formspreeForms.notionTemplate}
       name="Institutional Memory OS for Notion"
       redirectPath="/template-thank-you"
-      submitLabel="Send me the template"
+      submitLabel="Send me the Memory OS"
     >
       <div className="form-grid">
         {commonFields.map((field) => (
@@ -178,7 +178,7 @@ export function FoundingAccessForm() {
   return (
     <FormShell
       action={formspreeForms.foundingAccess}
-      name="Founding Memory Partner Application"
+      name="Founder-Led Memory Deployment"
       redirectPath="/founding-thank-you"
       submitLabel="Submit fit details"
     >
@@ -222,15 +222,19 @@ export function TemplateDeliveryCard() {
         risks, roles, tasks, meetings, policies, review queues, source records, and organizational context.
       </p>
       <p>
-        Saberra adds the missing infrastructure: capture, extraction, human review, source traceability, and Sera.
+        Saberra adds the missing infrastructure: automatic capture, review routing, source traceability, weekly pulse,
+        and Sera answering from the reviewed record.
+      </p>
+      <p>
+        If your team manually maintains this for even one week, you will feel exactly why the full system exists.
       </p>
       <div className="cta-row">
         {hasTemplate ? (
           <Link className="btn btn-primary" href={notionTemplateUrl}>
-            Duplicate the Notion Template
+            Duplicate the Memory OS
           </Link>
         ) : (
-          <span className="btn btn-secondary">Template duplicate link pending</span>
+          <span className="btn btn-secondary">Notion duplicate link pending</span>
         )}
         <CTAButton href="/demo" variant="secondary">
           Book a 30-minute call

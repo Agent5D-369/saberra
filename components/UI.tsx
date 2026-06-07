@@ -82,7 +82,7 @@ export function SeraPortrait({
 export function CTABand({
   title,
   copy,
-  primary = "Get the free Notion template",
+  primary = "Get the manual Memory OS",
   primaryHref = "/notion-template",
   secondary = "Book a 30-minute call",
   secondaryHref = "/demo"

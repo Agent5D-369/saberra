@@ -2,8 +2,8 @@ import type { Metadata } from "next";
 import { TemplateDeliveryCard } from "@/components/LeadForms";
 
 export const metadata: Metadata = {
-  title: "Your Notion Template",
-  description: "Duplicate the Institutional Memory OS for Notion and see what the full Saberra system automates.",
+  title: "Your Manual Memory OS",
+  description: "Duplicate the manual Institutional Memory OS for Notion and see what the full Saberra system automates.",
   alternates: { canonical: "/template-thank-you" },
   robots: { index: false, follow: false }
 };

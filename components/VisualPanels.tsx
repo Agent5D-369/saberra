@@ -81,7 +81,7 @@ export function NotionTemplateVisual() {
   return (
     <div className="visual-panel notion-template-visual" aria-label="Institutional Memory OS for Notion preview">
       <div className="visual-header">
-        <span className="eyebrow">Free template</span>
+        <span className="eyebrow">Manual Memory OS</span>
         <strong>Institutional Memory OS for Notion</strong>
       </div>
       <div className="notion-window">

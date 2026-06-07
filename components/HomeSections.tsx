@@ -41,12 +41,12 @@ export function Hero() {
             No new workflows. No new habits. Human-reviewed memory. Sourced answers from your own organizational record.
           </div>
           <div className="cta-row">
-            <CTAButton href="/notion-template">Get the free Notion template</CTAButton>
+            <CTAButton href="/notion-template">Get the manual Memory OS</CTAButton>
             <CTAButton href="/demo" variant="secondary">
               Book a 30-minute call
             </CTAButton>
           </div>
-          <p className="cta-note">Includes 20 databases, pre-wired for Saberra, ready in under five minutes.</p>
+          <p className="cta-note">20 Notion databases for decisions, risks, roles, meetings, policies, and review queues.</p>
         </div>
         <HeroVisual />
       </div>
@@ -89,6 +89,14 @@ function HeroVisual() {
                 <CheckCircle size={15} aria-hidden="true" /> {item}
               </div>
             ))}
+          </div>
+          <div className="extraction-proof">
+            <small>After one meeting</small>
+            <strong>Decision candidate</strong>
+            <span>Extend vendor contract for 12 months</span>
+            <span>Owner: Maya R.</span>
+            <span>Risk: legal review pending</span>
+            <em>Review status: approved</em>
           </div>
         </div>
         <div className="mock-column">
@@ -378,15 +386,14 @@ export function SocialProof() {
           <div className="eyebrow">Use-case vignette</div>
           <h2 className="serif">A coordinator left. The memory did not.</h2>
           <p>
-            A 6-person governance circle used Saberra to capture 3 months of meeting decisions before their coordinator
-            transitioned out. Role changes, open commitments, policy decisions, and risks were preserved in reviewed
-            records, so the next coordinator could ask Sera what had already happened instead of reconstructing it from
-            people&apos;s memories.
+            A 6-person governance circle used Saberra to review 38 decisions, 22 role records, and 14 open risks before
+            a coordinator transition. The incoming coordinator could ask Sera what changed, who owned what, and which
+            commitments were still open.
           </p>
           <div className="vignette-stats">
-            <span>3 months captured</span>
-            <span>Reviewed decisions preserved</span>
-            <span>Coordinator handoff protected</span>
+            <span>38 decisions reviewed</span>
+            <span>22 role records preserved</span>
+            <span>14 open risks made findable</span>
           </div>
         </article>
       </div>
@@ -452,7 +459,7 @@ export function LeadMagnets() {
               institutional knowledge are leaking from your system.
             </p>
             <div className="cta-row">
-              <CTAButton href="/notion-template">Get the free Notion template</CTAButton>
+              <CTAButton href="/notion-template">Get the manual Memory OS</CTAButton>
               <CTAButton href="/demo" variant="secondary">
                 Book a 30-minute call
               </CTAButton>
@@ -462,8 +469,8 @@ export function LeadMagnets() {
             <NotionTemplateVisual />
             <h2 className="serif">Institutional Memory OS for Notion</h2>
             <p>
-              Get the free Notion template: 20 databases, pre-wired for Saberra, ready in under five minutes. Use it to
-              see what institutional memory should look like before asking Saberra to keep it updated automatically.
+              Get the manual Memory OS: 20 Notion databases, pre-wired for Saberra, ready in under five minutes. It is
+              useful on its own, and every manual update shows the exact pain Saberra removes.
             </p>
             <ul className="list" style={{ marginTop: 14 }}>
               <li>Duplicate the 20-database Notion structure.</li>
@@ -472,7 +479,7 @@ export function LeadMagnets() {
             </ul>
             <div className="cta-row">
               <CTAButton href="/notion-template" variant="secondary">
-                Get the free Notion template
+                Get the manual Memory OS
               </CTAButton>
               <CTAButton href="/demo" variant="secondary">
                 Book a 30-minute call
@@ -498,9 +505,9 @@ export function FoundingOffer() {
     <section className="section">
       <div className="container">
         <CTABand
-          title="Founding Memory Partner Program"
-          copy="We are onboarding a small number of high-fit teams using Google Workspace and Notion. Founding partners receive done-for-you setup, founder-led onboarding, and a memory audit before and after deployment."
-          primary="Get the free Notion template"
+          title="Founder-led memory deployment"
+          copy="We are onboarding high-fit teams using Google Workspace and Notion. Deployments include done-for-you setup, founder-led onboarding, review workflow design, and a memory audit before and after implementation."
+          primary="Get the manual Memory OS"
           primaryHref="/notion-template"
           secondary="Book a 30-minute call"
           secondaryHref="/demo"
@@ -543,6 +550,40 @@ export function FinalCTA() {
           title="Your organization already knows more than it can find."
           copy="Saberra makes it remember."
         />
+      </div>
+    </section>
+  );
+}
+
+export function SeraLimitations() {
+  const limits = [
+    "Answer from the open internet.",
+    "Treat unreviewed extractions as trusted memory.",
+    "Invent a decision if no reviewed record exists.",
+    "Replace human judgment.",
+    "Process Zoom or Teams in the current version."
+  ];
+
+  return (
+    <section className="section tight">
+      <div className="container">
+        <div className="limits-panel">
+          <div>
+            <div className="eyebrow">Trust by restraint</div>
+            <h2>Sera is useful because she has boundaries.</h2>
+            <p>
+              Saberra should make your organization easier to inspect, not harder to question. Sera answers from reviewed
+              memory and is expected to say when the record does not contain an answer.
+            </p>
+          </div>
+          <ul className="list">
+            {limits.map((item) => (
+              <li key={item}>
+                <CircleAlert size={18} color="#D6A24A" aria-hidden="true" /> Sera will not {item}
+              </li>
+            ))}
+          </ul>
+        </div>
       </div>
     </section>
   );

@@ -4,9 +4,9 @@ import { SectionHeader } from "@/components/UI";
 import { SovereigntyVisual } from "@/components/VisualPanels";
 
 export const metadata: Metadata = {
-  title: "Founding Memory Partner Access",
+  title: "Founder-Led Memory Deployment",
   description:
-    "Founding Memory Partner access details for high-fit Saberra teams using Google Workspace and Notion.",
+    "Founder-led memory deployment details for high-fit Saberra teams using Google Workspace and Notion.",
   alternates: { canonical: "/founding-access" }
 };
 
@@ -15,10 +15,10 @@ export default function FoundingAccessPage() {
     <main>
       <section className="page-hero">
         <div className="container">
-          <h1>Founding Memory Partner access.</h1>
+          <h1>Founder-led memory deployment.</h1>
           <p>
-            Saberra is currently delivered as a done-for-you implementation for teams with real institutional memory
-            pain, not as self-serve software.
+            Saberra is currently delivered as done-for-you memory infrastructure for teams with real institutional
+            memory pain, not as self-serve software.
           </p>
         </div>
       </section>

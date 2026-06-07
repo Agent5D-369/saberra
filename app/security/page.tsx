@@ -42,7 +42,10 @@ export default function SecurityPage() {
       </section>
       <section className="section">
         <div className="container">
-          <CTABand title="Memory infrastructure should make trust easier to inspect." copy="Start with the free Notion structure, then book a focused call when you want to evaluate fit, tools, and review ownership." />
+          <CTABand
+            title="Memory infrastructure should make trust easier to inspect."
+            copy="Start with the manual Memory OS, then book a focused call when you want to evaluate fit, tools, and review ownership."
+          />
         </div>
       </section>
     </main>

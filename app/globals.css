@@ -346,6 +346,54 @@ button {
   font-size: 0.78rem;
 }
 
+.extraction-proof {
+  position: absolute;
+  right: 14px;
+  bottom: 184px;
+  left: 14px;
+  display: grid;
+  gap: 6px;
+  border: 1px solid rgba(214, 162, 74, 0.34);
+  border-radius: 8px;
+  background:
+    linear-gradient(135deg, rgba(214, 162, 74, 0.14), rgba(111, 183, 183, 0.08)),
+    rgba(7, 21, 36, 0.82);
+  padding: 12px;
+  box-shadow: 0 16px 44px rgba(0, 0, 0, 0.22);
+}
+
+.extraction-proof small {
+  color: var(--gold);
+  font-size: 0.68rem;
+  font-weight: 900;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.extraction-proof strong {
+  color: var(--paper);
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 1.15rem;
+  font-weight: 500;
+  line-height: 1.05;
+}
+
+.extraction-proof span {
+  color: #dce7e9;
+  font-size: 0.76rem;
+}
+
+.extraction-proof em {
+  width: fit-content;
+  border-radius: 999px;
+  background: rgba(111, 183, 183, 0.15);
+  padding: 4px 8px;
+  color: var(--teal-soft);
+  font-size: 0.68rem;
+  font-style: normal;
+  font-weight: 900;
+}
+
 .sera-card {
   display: grid;
   gap: 14px;
@@ -521,6 +569,19 @@ button {
 
 .card.light p {
   color: #465760;
+}
+
+.text-link {
+  display: inline-flex;
+  width: fit-content;
+  margin-top: 18px;
+  color: var(--teal-soft);
+  font-size: 0.9rem;
+  font-weight: 900;
+}
+
+.text-link:hover {
+  color: var(--gold);
 }
 
 .statement {
@@ -1548,6 +1609,14 @@ button {
   padding: clamp(24px, 5vw, 48px);
 }
 
+.segment-vignette {
+  padding: clamp(22px, 4vw, 34px);
+}
+
+.segment-vignette h2 {
+  font-size: clamp(1.9rem, 4vw, 3.4rem);
+}
+
 .case-vignette h2 {
   max-width: 840px;
   margin: 10px 0 18px;
@@ -1604,6 +1673,34 @@ button {
 
 .fit-no {
   border-color: rgba(214, 162, 74, 0.22);
+}
+
+.limits-panel {
+  display: grid;
+  grid-template-columns: minmax(0, 0.95fr) minmax(0, 1.05fr);
+  gap: 26px;
+  border: 1px solid rgba(214, 162, 74, 0.24);
+  border-radius: 8px;
+  background:
+    linear-gradient(135deg, rgba(214, 162, 74, 0.1), rgba(111, 183, 183, 0.08)),
+    rgba(246, 244, 240, 0.055);
+  padding: clamp(22px, 4vw, 38px);
+}
+
+.limits-panel h2 {
+  max-width: 620px;
+  margin: 8px 0 14px;
+  color: var(--paper);
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: clamp(2rem, 4vw, 3.8rem);
+  font-weight: 500;
+  line-height: 1;
+}
+
+.limits-panel p {
+  max-width: 620px;
+  margin: 0;
+  color: #cbd7da;
 }
 
 .cta-band {
@@ -1838,7 +1935,7 @@ button {
   }
 
   .mock-column:nth-child(2) {
-    min-height: 220px;
+    min-height: 390px;
   }
 
   .pipeline,
@@ -1860,6 +1957,10 @@ button {
   .database-map-body,
   .workspace-preview-grid,
   .fit-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .limits-panel {
     grid-template-columns: 1fr;
   }
 
@@ -1980,6 +2081,10 @@ button {
   .demo-shell,
   .cta-band {
     padding: 12px;
+  }
+
+  .extraction-proof {
+    bottom: 176px;
   }
 
   .header-inner {

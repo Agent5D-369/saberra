@@ -128,7 +128,7 @@ export function Audit() {
               Book a 30-minute call
             </CTAButton>
             <CTAButton href="/notion-template" variant="secondary">
-              Get the free Notion template
+              Get the manual Memory OS
             </CTAButton>
             <button className="btn btn-secondary audit-retake" onClick={() => setStep(0)}>
               Retake audit

@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { SeraDemoSection, TrustSection } from "@/components/HomeSections";
+import { SeraDemoSection, SeraLimitations, TrustSection } from "@/components/HomeSections";
 import { CTABand, SectionHeader, SeraPortrait } from "@/components/UI";
 import { SeraEvidenceVisual } from "@/components/VisualPanels";
 
@@ -51,10 +51,14 @@ export default function SeraPage() {
           </ul>
         </div>
       </section>
+      <SeraLimitations />
       <TrustSection />
       <section className="section">
         <div className="container">
-          <CTABand title="Ask Sera the questions your team keeps asking each other." copy="Start with the audit, then see whether Saberra is a fit for your current workflow." />
+          <CTABand
+            title="Ask Sera the questions your team keeps asking each other."
+            copy="Start with the manual Memory OS, then see whether Saberra is a fit for your current workflow."
+          />
         </div>
       </section>
     </main>

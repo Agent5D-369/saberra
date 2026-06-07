@@ -2,8 +2,8 @@ import type { Metadata } from "next";
 import { CTAButton } from "@/components/UI";
 
 export const metadata: Metadata = {
-  title: "Founding Access Application Received",
-  description: "Saberra Founding Memory Partner application confirmation.",
+  title: "Deployment Request Received",
+  description: "Saberra founder-led deployment request confirmation.",
   alternates: { canonical: "/founding-thank-you" },
   robots: { index: false, follow: false }
 };

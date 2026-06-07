@@ -30,7 +30,7 @@ export function Header() {
           ))}
         </nav>
         <Link className="btn btn-primary" href="/notion-template">
-          Get the free template <ArrowRight size={16} aria-hidden="true" />
+          Get the manual Memory OS <ArrowRight size={16} aria-hidden="true" />
         </Link>
       </div>
     </header>

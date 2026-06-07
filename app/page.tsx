@@ -14,6 +14,7 @@ import {
   ProcessFlow,
   ProductProof,
   SocialProof,
+  SeraLimitations,
   SeraDemoSection,
   TrustSection,
   WorkspaceProof
@@ -74,6 +75,7 @@ export default function HomePage() {
       <WorkspaceProof />
       <CaptureGrid />
       <SeraDemoSection />
+      <SeraLimitations />
       <BuiltFor />
       <AudienceCards />
       <SocialProof />

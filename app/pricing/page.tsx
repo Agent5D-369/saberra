@@ -6,7 +6,7 @@ import { SovereigntyVisual } from "@/components/VisualPanels";
 export const metadata: Metadata = {
   title: "Pricing",
   description:
-    "Founding Memory Partner pricing for Saberra, including done-for-you setup, Sera Q&A, Notion memory backend, and human review workflow.",
+    "Founder-led deployment pricing for Saberra, including done-for-you setup, Sera Q&A, Notion memory backend, and human review workflow.",
   alternates: { canonical: "/pricing" }
 };
 
@@ -46,7 +46,7 @@ export default function PricingPage() {
           <CTABand
             title="Talk through fit before deployment."
             copy="Best fit teams have 15 to 200 people, run on Google Workspace, use or are willing to use Notion, and feel real pain from lost decisions or key-person knowledge."
-            primary="Get the free Notion template"
+            primary="Get the manual Memory OS"
             primaryHref="/notion-template"
             secondary="Book a 30-minute call"
             secondaryHref="/demo"

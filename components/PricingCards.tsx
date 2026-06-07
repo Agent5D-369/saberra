@@ -7,14 +7,14 @@ const tiers = [
     price: "$3,000 to $5,000 setup",
     monthly: "$750 to $1,250 monthly",
     best: "Best for small serious teams up to 30 people.",
-    features: ["Done-for-you setup", "Sera Q&A", "Notion memory backend", "Human review workflow"]
+    features: ["Done-for-you setup", "Sera Q&A", "Notion memory backend", "Human review workflow", "Memory operations support"]
   },
   {
     name: "Growth Deployment",
     price: "$5,000 to $8,000 setup",
     monthly: "$1,500 to $2,500 monthly",
     best: "Best for 30 to 100 people.",
-    features: ["Expanded schema tuning", "Review queue training", "Founder-led onboarding", "Monthly optimization"]
+    features: ["Expanded schema tuning", "Review queue training", "Founder-led onboarding", "Monthly memory health review"]
   },
   {
     name: "Enterprise",
@@ -29,8 +29,8 @@ export function PricingCards() {
   return (
     <section className="section">
       <div className="container">
-        <SectionHeader title="Founding Memory Partner pricing.">
-          Saberra is currently delivered as done-for-you implementation, not self-serve signup.
+        <SectionHeader title="Founder-led deployment pricing.">
+          Saberra is currently delivered as done-for-you memory infrastructure, not self-serve signup.
         </SectionHeader>
         <div className="pricing-grid">
           {tiers.map((tier) => (
