@@ -50,7 +50,7 @@ export function Footer() {
         <div>
           <strong>Product</strong>
           <Link href="/how-it-works">How it works</Link>
-          <Link href="/sera">Sera</Link>
+          <Link href="/sera">Ask Sera</Link>
           <Link href="/pricing">Pricing</Link>
         </div>
         <div>

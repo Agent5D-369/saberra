@@ -561,7 +561,7 @@ export function LeadMagnets() {
               institutional knowledge are leaking from your system.
             </p>
             <div className="cta-row">
-              <CTAButton href="/notion-template">Get the manual Memory OS</CTAButton>
+              <CTAButton href="/audit">Take the Memory Audit</CTAButton>
               <CTAButton href="/demo" variant="secondary">
                 Book a 30-minute call
               </CTAButton>

@@ -10,7 +10,7 @@ export const formspreeForms = {
 
 export const navItems = [
   { href: "/how-it-works", label: "How it works" },
-  { href: "/sera", label: "Sera" },
+  { href: "/sera", label: "Ask Sera" },
   { href: "/pricing", label: "Pricing" },
   { href: "/audit", label: "Audit" }
 ];
