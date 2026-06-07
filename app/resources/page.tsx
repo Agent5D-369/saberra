@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { EditorialVisual } from "@/components/EditorialVisuals";
 import { CTABand, SectionHeader } from "@/components/UI";
 
 export const metadata: Metadata = {
@@ -51,11 +52,20 @@ export default function ResourcesPage() {
   return (
     <main>
       <section className="page-hero">
-        <div className="container">
-          <h1>The institutional memory resource hub.</h1>
-          <p>
-            A future home for guides, templates, and category-defining content on organizational memory infrastructure.
-          </p>
+        <div className="container split">
+          <div>
+            <h1>The institutional memory resource hub.</h1>
+            <p>
+              A future home for guides, templates, and category-defining content on organizational memory infrastructure.
+            </p>
+          </div>
+          <EditorialVisual
+            src="/editorial-category-map.svg"
+            alt="A category map contrasting meeting notes, knowledge bases, enterprise search, and institutional memory infrastructure."
+            eyebrow="Category"
+            title="Help buyers name the missing system."
+            copy="The best resource content should make institutional memory feel like a necessary operating layer."
+          />
         </div>
       </section>
       <section className="section">

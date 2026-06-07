@@ -1,0 +1,54 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="860" viewBox="0 0 1200 860" role="img" aria-labelledby="title desc">
+  <title id="title">Saberra partner referral network visual</title>
+  <desc id="desc">A premium abstract network showing trusted advisors referring teams into Saberra's institutional memory workflow.</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#061725"/><stop offset="1" stop-color="#163443"/></linearGradient>
+    <linearGradient id="node" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#243E4B"/><stop offset="1" stop-color="#102A38"/></linearGradient>
+    <linearGradient id="gold" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#F2C76C"/><stop offset="1" stop-color="#D6A24A"/></linearGradient>
+    <linearGradient id="teal" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#6FB7B7"/><stop offset="1" stop-color="#1E6D78"/></linearGradient>
+    <filter id="shadow"><feDropShadow dx="0" dy="20" stdDeviation="22" flood-color="#000" flood-opacity=".35"/></filter>
+  </defs>
+  <rect width="1200" height="860" rx="42" fill="url(#bg)"/>
+  <g opacity=".58" stroke="#6FB7B7" stroke-width="3">
+    <path d="M600 416 270 236M600 416l-312 348M600 416l342-284M600 416l310 344"/>
+    <path d="M600 416 208 510M600 416l390 4" stroke="#D6A24A" stroke-opacity=".6"/>
+  </g>
+  <g filter="url(#shadow)">
+    <circle cx="600" cy="416" r="134" fill="#0B1D2D" stroke="url(#gold)" stroke-width="4"/>
+    <text x="552" y="392" fill="#D6A24A" font-family="Inter, Arial" font-size="18" font-weight="800" letter-spacing="3">SABERRA</text>
+    <text x="496" y="438" fill="#F6F4F0" font-family="Georgia, serif" font-size="38" font-weight="700">Memory</text>
+    <text x="520" y="486" fill="#F6F4F0" font-family="Georgia, serif" font-size="38" font-weight="700">Partner</text>
+  </g>
+  <g filter="url(#shadow)" font-family="Inter, Arial">
+    <g>
+      <rect x="116" y="134" width="300" height="148" rx="24" fill="url(#node)" stroke="#6FB7B7" stroke-opacity=".28"/>
+      <text x="150" y="186" fill="#F6F4F0" font-size="22" font-weight="800">Governance advisors</text>
+      <text x="150" y="224" fill="#6FB7B7" font-size="16">Teal, Holacracy, Sociocracy</text>
+    </g>
+    <g>
+      <rect x="770" y="84" width="320" height="158" rx="24" fill="url(#node)" stroke="#6FB7B7" stroke-opacity=".28"/>
+      <text x="804" y="138" fill="#F6F4F0" font-size="22" font-weight="800">Notion consultants</text>
+      <text x="804" y="176" fill="#6FB7B7" font-size="16">Workspace plus memory loop</text>
+    </g>
+    <g>
+      <rect x="92" y="650" width="340" height="156" rx="24" fill="url(#node)" stroke="#D6A24A" stroke-opacity=".25"/>
+      <text x="126" y="704" fill="#F6F4F0" font-size="22" font-weight="800">Fractional operators</text>
+      <text x="126" y="742" fill="#D6A24A" font-size="16">Founder memory bottlenecks</text>
+    </g>
+    <g>
+      <rect x="790" y="636" width="330" height="158" rx="24" fill="url(#node)" stroke="#D6A24A" stroke-opacity=".25"/>
+      <text x="824" y="690" fill="#F6F4F0" font-size="22" font-weight="800">Mission-driven teams</text>
+      <text x="824" y="728" fill="#D6A24A" font-size="16">Program continuity risk</text>
+    </g>
+    <g>
+      <rect x="70" y="420" width="236" height="110" rx="22" fill="#102A38" stroke="#6FB7B7" stroke-opacity=".2"/>
+      <text x="104" y="468" fill="#F6F4F0" font-size="20" font-weight="800">Warm referral</text>
+      <text x="104" y="502" fill="#6FB7B7" font-size="15">Not a coupon code</text>
+    </g>
+    <g>
+      <rect x="906" y="354" width="248" height="126" rx="22" fill="#102A38" stroke="#D6A24A" stroke-opacity=".25"/>
+      <text x="940" y="408" fill="#F6F4F0" font-size="20" font-weight="800">Memory Audit</text>
+      <text x="940" y="444" fill="#D6A24A" font-size="15">Low-friction diagnosis</text>
+    </g>
+  </g>
+</svg>

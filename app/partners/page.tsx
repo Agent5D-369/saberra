@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Handshake, Landmark, Network, UsersRound } from "lucide-react";
+import { EditorialVisual } from "@/components/EditorialVisuals";
 import { CTABand, SectionHeader } from "@/components/UI";
 
 export const metadata: Metadata = {
@@ -43,21 +44,31 @@ export default function PartnersPage() {
   return (
     <main>
       <section className="page-hero">
-        <div className="container">
-          <div className="eyebrow">Partner referrals</div>
-          <h1>Know a team that cannot afford to forget?</h1>
-          <p>
-            Saberra works best when a trusted advisor can see the pattern before the team has language for it: decisions
-            get buried, role history disappears, context lives in a few people, and nobody wants another tool to manage.
-          </p>
-          <div className="cta-row">
-            <a className="btn btn-primary" href="/demo">
-              Refer a team
-            </a>
-            <a className="btn btn-secondary" href="/audit">
-              Send the Memory Audit
-            </a>
+        <div className="container split">
+          <div>
+            <div className="eyebrow">Partner referrals</div>
+            <h1>Know a team that cannot afford to forget?</h1>
+            <p>
+              Saberra works best when a trusted advisor can see the pattern before the team has language for it:
+              decisions get buried, role history disappears, context lives in a few people, and nobody wants another tool
+              to manage.
+            </p>
+            <div className="cta-row">
+              <a className="btn btn-primary" href="/demo">
+                Refer a team
+              </a>
+              <a className="btn btn-secondary" href="/audit">
+                Send the Memory Audit
+              </a>
+            </div>
           </div>
+          <EditorialVisual
+            src="/editorial-partner-network.svg"
+            alt="A trusted advisor network visual showing referral paths into Saberra."
+            eyebrow="Trusted network"
+            title="The best referrals come from people who see the risk early."
+            copy="Partners do not need to sell software. They need to recognize when a team is running without durable memory."
+          />
         </div>
       </section>
 

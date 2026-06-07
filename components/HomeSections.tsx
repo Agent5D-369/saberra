@@ -18,6 +18,7 @@ import {
 import { captureItems, faqs } from "@/lib/site";
 import { CTAButton, CTABand, HumanReviewBadge, SectionHeader, SeraPortrait, SourceBackedBadge } from "@/components/UI";
 import { SeraDemo } from "@/components/SeraDemo";
+import { EditorialStoryStrip } from "@/components/EditorialVisuals";
 import {
   DatabaseMapVisual,
   GovernanceConsoleVisual,
@@ -224,6 +225,8 @@ export function CompetitiveComparison() {
     </section>
   );
 }
+
+export { EditorialStoryStrip };
 
 export function ProcessFlow() {
   const steps = [

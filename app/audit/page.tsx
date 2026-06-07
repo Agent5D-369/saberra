@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Audit } from "@/components/Audit";
+import { EditorialVisual } from "@/components/EditorialVisuals";
 import { AuditReportVisual } from "@/components/VisualPanels";
 
 export const metadata: Metadata = {
@@ -22,7 +23,14 @@ export default function AuditPage() {
         </div>
       </section>
       <section className="section tight">
-        <div className="container">
+        <div className="container split">
+          <EditorialVisual
+            src="/editorial-audit-diagnosis.svg"
+            alt="An Organizational Memory Audit diagnosis visual showing memory leakage scores and risk bands."
+            eyebrow="Diagnosis"
+            title="Make memory risk visible."
+            copy="The audit turns repeated decisions, key-person dependency, missing follow-through, and onboarding drag into a concrete score."
+          />
           <AuditReportVisual />
         </div>
       </section>

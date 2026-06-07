@@ -6,6 +6,7 @@ import {
   CategoryBreak,
   CompetitiveComparison,
   DeploymentPath,
+  EditorialStoryStrip,
   FAQ,
   FitQualifier,
   FinalCTA,
@@ -85,6 +86,7 @@ export default function HomePage() {
       <PainCards />
       <CategoryBreak />
       <CompetitiveComparison />
+      <EditorialStoryStrip />
       <ProcessFlow />
       <DeploymentPath />
       <ProductProof />

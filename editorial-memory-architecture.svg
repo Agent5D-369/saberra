@@ -1,0 +1,96 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1400" height="920" viewBox="0 0 1400 920" role="img" aria-labelledby="title desc">
+  <title id="title">Saberra memory architecture visual</title>
+  <desc id="desc">A dark premium abstract interface showing scattered work output becoming reviewed institutional memory.</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#061725"/>
+      <stop offset="0.58" stop-color="#0B1D2D"/>
+      <stop offset="1" stop-color="#102E3A"/>
+    </linearGradient>
+    <linearGradient id="card" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#243E4B"/>
+      <stop offset="1" stop-color="#142938"/>
+    </linearGradient>
+    <linearGradient id="teal" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#6FB7B7"/>
+      <stop offset="1" stop-color="#1E6D78"/>
+    </linearGradient>
+    <linearGradient id="gold" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#F2C76C"/>
+      <stop offset="1" stop-color="#D6A24A"/>
+    </linearGradient>
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="24" stdDeviation="28" flood-color="#000000" flood-opacity="0.35"/>
+    </filter>
+  </defs>
+  <rect width="1400" height="920" rx="44" fill="url(#bg)"/>
+  <path d="M92 164C220 72 386 78 514 168c94 66 158 71 258 24 154-72 338-20 452 118 86 104 111 239 78 356" fill="none" stroke="#6FB7B7" stroke-opacity=".18" stroke-width="2"/>
+  <g opacity=".72">
+    <circle cx="150" cy="184" r="7" fill="#D6A24A"/>
+    <circle cx="213" cy="252" r="10" fill="#6FB7B7"/>
+    <circle cx="292" cy="164" r="6" fill="#F6F4F0"/>
+    <circle cx="1124" cy="142" r="8" fill="#6FB7B7"/>
+    <circle cx="1212" cy="230" r="5" fill="#D6A24A"/>
+    <circle cx="1265" cy="674" r="9" fill="#6FB7B7"/>
+  </g>
+  <g filter="url(#shadow)">
+    <rect x="96" y="142" width="350" height="600" rx="28" fill="url(#card)" stroke="#6FB7B7" stroke-opacity=".2"/>
+    <text x="132" y="198" fill="#D6A24A" font-family="Inter, Arial, sans-serif" font-size="18" font-weight="700" letter-spacing="3">SCATTERED</text>
+    <g>
+      <rect x="132" y="242" width="270" height="82" rx="16" fill="#0B1D2D" stroke="#6FB7B7" stroke-opacity=".26"/>
+      <text x="154" y="276" fill="#6FB7B7" font-family="Inter, Arial" font-size="15" font-weight="700">Email thread</text>
+      <rect x="154" y="292" width="184" height="8" rx="4" fill="#F6F4F0" opacity=".72"/>
+      <rect x="154" y="308" width="132" height="8" rx="4" fill="#F6F4F0" opacity=".42"/>
+    </g>
+    <g>
+      <rect x="176" y="352" width="258" height="86" rx="16" fill="#0B1D2D" stroke="#D6A24A" stroke-opacity=".28"/>
+      <text x="198" y="386" fill="#D6A24A" font-family="Inter, Arial" font-size="15" font-weight="700">Meeting output</text>
+      <rect x="198" y="402" width="172" height="8" rx="4" fill="#F6F4F0" opacity=".7"/>
+      <rect x="198" y="418" width="104" height="8" rx="4" fill="#F6F4F0" opacity=".4"/>
+    </g>
+    <g>
+      <rect x="122" y="466" width="286" height="92" rx="16" fill="#0B1D2D" stroke="#6FB7B7" stroke-opacity=".22"/>
+      <text x="144" y="500" fill="#6FB7B7" font-family="Inter, Arial" font-size="15" font-weight="700">Decision buried in notes</text>
+      <rect x="144" y="518" width="210" height="8" rx="4" fill="#F6F4F0" opacity=".62"/>
+      <rect x="144" y="536" width="126" height="8" rx="4" fill="#F6F4F0" opacity=".38"/>
+    </g>
+    <g>
+      <rect x="188" y="586" width="236" height="80" rx="16" fill="#0B1D2D" stroke="#D6A24A" stroke-opacity=".24"/>
+      <text x="210" y="620" fill="#F6F4F0" font-family="Inter, Arial" font-size="15" font-weight="700">Open risk</text>
+      <rect x="210" y="638" width="142" height="8" rx="4" fill="#F6F4F0" opacity=".52"/>
+    </g>
+  </g>
+  <g filter="url(#shadow)">
+    <rect x="520" y="202" width="360" height="480" rx="30" fill="#102A38" stroke="#D6A24A" stroke-opacity=".26"/>
+    <text x="560" y="258" fill="#D6A24A" font-family="Inter, Arial" font-size="18" font-weight="700" letter-spacing="3">REVIEW LOOP</text>
+    <circle cx="700" cy="404" r="116" fill="#0B1D2D" stroke="#6FB7B7" stroke-width="2" stroke-opacity=".36"/>
+    <path d="M625 396c34-48 90-48 124 0M616 430c42 56 126 56 168 0" fill="none" stroke="url(#teal)" stroke-width="10" stroke-linecap="round"/>
+    <circle cx="700" cy="404" r="22" fill="url(#gold)"/>
+    <rect x="586" y="560" width="228" height="54" rx="18" fill="#243E4B" stroke="#6FB7B7" stroke-opacity=".3"/>
+    <text x="620" y="594" fill="#F6F4F0" font-family="Inter, Arial" font-size="18" font-weight="700">Human reviewed</text>
+  </g>
+  <g filter="url(#shadow)">
+    <rect x="958" y="142" width="346" height="600" rx="28" fill="url(#card)" stroke="#D6A24A" stroke-opacity=".22"/>
+    <text x="994" y="198" fill="#D6A24A" font-family="Inter, Arial" font-size="18" font-weight="700" letter-spacing="3">REMEMBERED</text>
+    <g>
+      <rect x="994" y="248" width="270" height="74" rx="16" fill="#0B1D2D" stroke="#6FB7B7" stroke-opacity=".26"/>
+      <text x="1016" y="292" fill="#F6F4F0" font-family="Inter, Arial" font-size="20" font-weight="700">Decision record</text>
+    </g>
+    <g>
+      <rect x="994" y="344" width="270" height="74" rx="16" fill="#0B1D2D" stroke="#6FB7B7" stroke-opacity=".26"/>
+      <text x="1016" y="388" fill="#F6F4F0" font-family="Inter, Arial" font-size="20" font-weight="700">Risk record</text>
+    </g>
+    <g>
+      <rect x="994" y="440" width="270" height="74" rx="16" fill="#0B1D2D" stroke="#6FB7B7" stroke-opacity=".26"/>
+      <text x="1016" y="484" fill="#F6F4F0" font-family="Inter, Arial" font-size="20" font-weight="700">Role history</text>
+    </g>
+    <g>
+      <rect x="994" y="556" width="270" height="98" rx="18" fill="#102A38" stroke="#D6A24A" stroke-opacity=".32"/>
+      <text x="1018" y="596" fill="#6FB7B7" font-family="Inter, Arial" font-size="15" font-weight="700">Sera answer</text>
+      <rect x="1018" y="616" width="172" height="9" rx="4.5" fill="#F6F4F0" opacity=".74"/>
+      <rect x="1018" y="636" width="116" height="9" rx="4.5" fill="#D6A24A" opacity=".86"/>
+    </g>
+  </g>
+  <path d="M450 444C498 444 506 382 540 382" fill="none" stroke="#6FB7B7" stroke-width="3" stroke-linecap="round" stroke-dasharray="8 12" opacity=".8"/>
+  <path d="M880 382C930 382 928 444 958 444" fill="none" stroke="#D6A24A" stroke-width="3" stroke-linecap="round" stroke-dasharray="8 12" opacity=".8"/>
+</svg>
