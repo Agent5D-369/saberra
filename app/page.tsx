@@ -27,7 +27,7 @@ import { siteUrl, faqs } from "@/lib/site";
 export const metadata: Metadata = {
   title: "Saberra | Institutional Memory for Teams That Can't Afford to Forget",
   description:
-    "Saberra turns Google Meet meetings, emails, decisions, tasks, risks, and roles into searchable institutional memory. Ask Sera what your organization already knows.",
+    "Saberra turns meetings, emails, decisions, tasks, risks, and roles into reviewed institutional memory. Ask Sera, your AI memory colleague, what your organization already knows.",
   alternates: { canonical: "/" }
 };
 

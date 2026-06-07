@@ -11,7 +11,7 @@ export const metadata: Metadata = {
     template: "%s | Saberra"
   },
   description:
-    "Saberra turns Google Meet meetings, emailed transcripts, emails, decisions, tasks, risks, and roles into searchable institutional memory. Ask Sera what your organization already knows.",
+    "Saberra turns meetings, emails, decisions, tasks, risks, and roles into reviewed institutional memory. Ask Sera, your AI memory colleague, what your organization already knows.",
   keywords: [
     "institutional memory system",
     "institutional memory software",
@@ -47,7 +47,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: "Saberra | Institutional Memory Infrastructure",
     description:
-      "Human-reviewed organizational memory from Google Meet, emailed transcripts, email, Notion, and sourced Sera answers.",
+      "Saberra turns meetings, email, decisions, tasks, risks, and roles into reviewed institutional memory. Ask Sera, your AI memory colleague, for sourced answers.",
     url: siteUrl,
     siteName: "Saberra",
     type: "website",
@@ -57,7 +57,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "Saberra | Institutional Memory Infrastructure",
     description:
-      "Ask your organization what it already knows."
+      "Ask Sera, your AI memory colleague, what your organization already knows."
   },
   icons: {
     icon: [
