@@ -5,6 +5,7 @@ import {
   CaptureGrid,
   CategoryBreak,
   FAQ,
+  FitQualifier,
   FinalCTA,
   FoundingOffer,
   Hero,
@@ -12,8 +13,10 @@ import {
   PainCards,
   ProcessFlow,
   ProductProof,
+  SocialProof,
   SeraDemoSection,
-  TrustSection
+  TrustSection,
+  WorkspaceProof
 } from "@/components/HomeSections";
 import { siteUrl, faqs } from "@/lib/site";
 
@@ -68,10 +71,13 @@ export default function HomePage() {
       <CategoryBreak />
       <ProcessFlow />
       <ProductProof />
+      <WorkspaceProof />
       <CaptureGrid />
       <SeraDemoSection />
       <BuiltFor />
       <AudienceCards />
+      <SocialProof />
+      <FitQualifier />
       <TrustSection />
       <LeadMagnets />
       <FoundingOffer />

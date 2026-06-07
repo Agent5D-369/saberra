@@ -3,6 +3,7 @@ import {
   Archive,
   Brain,
   CheckCircle,
+  CircleAlert,
   ClipboardCheck,
   Database,
   FileSearch,
@@ -21,6 +22,7 @@ import {
   DatabaseMapVisual,
   GovernanceConsoleVisual,
   MemoryLoopVisual,
+  NotionWorkspaceVisual,
   NotionTemplateVisual,
   ProductDashboardVisual
 } from "@/components/VisualPanels";
@@ -257,6 +259,20 @@ export function ProductProof() {
   );
 }
 
+export function WorkspaceProof() {
+  return (
+    <section className="section tight">
+      <div className="container split">
+        <SectionHeader eyebrow="Notion output" title="This is what your team actually receives.">
+          Saberra does not stop at a transcript or summary. Reviewed meeting and email output becomes structured Notion
+          records, task updates, source links, and a weekly pulse your team can scan.
+        </SectionHeader>
+        <NotionWorkspaceVisual />
+      </div>
+    </section>
+  );
+}
+
 export function BuiltFor() {
   const items = [
     ["Automatic capture", Mail],
@@ -348,6 +364,75 @@ export function TrustSection() {
               </li>
             ))}
           </ul>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+export function SocialProof() {
+  return (
+    <section className="section">
+      <div className="container">
+        <article className="case-vignette">
+          <div className="eyebrow">Use-case vignette</div>
+          <h2 className="serif">A coordinator left. The memory did not.</h2>
+          <p>
+            A 6-person governance circle used Saberra to capture 3 months of meeting decisions before their coordinator
+            transitioned out. Role changes, open commitments, policy decisions, and risks were preserved in reviewed
+            records, so the next coordinator could ask Sera what had already happened instead of reconstructing it from
+            people&apos;s memories.
+          </p>
+          <div className="vignette-stats">
+            <span>3 months captured</span>
+            <span>Reviewed decisions preserved</span>
+            <span>Coordinator handoff protected</span>
+          </div>
+        </article>
+      </div>
+    </section>
+  );
+}
+
+export function FitQualifier() {
+  const bestFor = [
+    "Teams using Google Workspace and Google Meet",
+    "Notion-based workflows or willingness to use Notion",
+    "5 to 50 people for the first deployment, with a path up to 200",
+    "One Memory Admin who can review records about 1-2 hours per week"
+  ];
+  const notYet = [
+    "Microsoft Teams or Zoom-first organizations",
+    "Teams that do not want a Notion workspace",
+    "Self-serve buyers looking for instant signup",
+    "Teams that cannot assign anyone to review memory"
+  ];
+
+  return (
+    <section className="section tight">
+      <div className="container">
+        <SectionHeader eyebrow="Fit" title="Is Saberra right for you?" />
+        <div className="fit-grid">
+          <article className="card fit-card fit-yes">
+            <h3>Best for</h3>
+            <ul className="list">
+              {bestFor.map((item) => (
+                <li key={item}>
+                  <CheckCircle size={18} color="#6FB7B7" aria-hidden="true" /> {item}
+                </li>
+              ))}
+            </ul>
+          </article>
+          <article className="card fit-card fit-no">
+            <h3>Not yet for</h3>
+            <ul className="list">
+              {notYet.map((item) => (
+                <li key={item}>
+                  <CircleAlert size={18} color="#D6A24A" aria-hidden="true" /> {item}
+                </li>
+              ))}
+            </ul>
+          </article>
         </div>
       </div>
     </section>

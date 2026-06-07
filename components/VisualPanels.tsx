@@ -487,3 +487,62 @@ export function DatabaseMapVisual() {
     </div>
   );
 }
+
+export function NotionWorkspaceVisual() {
+  const tasks = [
+    ["Confirm vendor renewal owner", "Maya R.", "Open", "Board Meeting"],
+    ["Review onboarding flow", "People Circle", "In review", "Ops Weekly"],
+    ["Publish conflict policy update", "Governance", "Due Jun 18", "Policy Review"],
+    ["Prepare donor briefing", "Maria L.", "Open", "Program Sync"]
+  ];
+  const pulse = [
+    "7 decisions captured",
+    "12 tasks created or updated",
+    "3 risks need review",
+    "2 role changes detected"
+  ];
+
+  return (
+    <div className="visual-panel notion-workspace-visual" aria-label="Saberra Notion workspace and weekly pulse preview">
+      <div className="visual-header">
+        <span className="eyebrow">Workspace output</span>
+        <strong>Reviewed memory becomes records your team can use.</strong>
+      </div>
+      <div className="workspace-preview-grid">
+        <div className="task-db-preview">
+          <div className="dashboard-title">Task database</div>
+          <div className="workspace-table">
+            <div className="workspace-row workspace-head">
+              <span>Task</span>
+              <span>Owner</span>
+              <span>Status</span>
+              <span>Source</span>
+            </div>
+            {tasks.map(([task, owner, status, source]) => (
+              <div className="workspace-row" key={task}>
+                <span>{task}</span>
+                <strong>{owner}</strong>
+                <small>{status}</small>
+                <em>{source}</em>
+              </div>
+            ))}
+          </div>
+        </div>
+        <div className="pulse-preview">
+          <div className="dashboard-title">Weekly Pulse email</div>
+          <h3>What changed this week</h3>
+          <p>Sera summarizes newly reviewed memory so the team sees decisions, risks, tasks, and role changes without searching.</p>
+          <div className="pulse-list">
+            {pulse.map((item) => (
+              <div className="pulse-row" key={item}>
+                <CheckCircle size={15} aria-hidden="true" />
+                <span>{item}</span>
+              </div>
+            ))}
+          </div>
+          <div className="source-pill">Source-backed, human-reviewed</div>
+        </div>
+      </div>
+    </div>
+  );
+}
