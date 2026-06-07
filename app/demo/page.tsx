@@ -17,13 +17,13 @@ export default function DemoPage() {
         <div className="container">
           <h1>See how Saberra would remember for your team.</h1>
           <p>
-            Request a 30-minute walkthrough of the capture, extraction, human review, Notion memory, and Sera answer
+            Request a 30-minute walkthrough of the capture, AI extraction, human review, Notion memory, and Sera answer
             workflow.
           </p>
         </div>
       </section>
       <section className="section tight">
-        <div className="container split">
+        <div className="container split demo-layout">
           <div>
             <SectionHeader title="A demo should make the mechanism obvious.">
               We will look at the kinds of meetings, email threads, decisions, risks, tasks, and roles your team already

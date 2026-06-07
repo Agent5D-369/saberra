@@ -30,11 +30,11 @@ export default function NotionTemplatePage() {
               automated extraction, human review workflow, or Sera retrieval layer.
             </SectionHeader>
             <article className="card challenge-card">
-              <h3>Take the 7-day Memory OS challenge.</h3>
+              <h3>Run the 7-day Memory Stress Test.</h3>
               <p>
                 Duplicate the template, then manually add every decision, risk, role change, policy update, source
                 email, and meeting outcome your team creates this week. If the structure helps but the upkeep feels
-                unrealistic, you have found the exact gap Saberra is built to close.
+                unrealistic, you have found the exact gap Saberra automates.
               </p>
             </article>
             <NotionTemplateVisual />

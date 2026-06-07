@@ -9,6 +9,7 @@
   --ink: #f6f4f0;
   --muted: #aebbc1;
   --line: rgba(246, 244, 240, 0.14);
+  --border: rgba(246, 244, 240, 0.14);
   --panel: rgba(246, 244, 240, 0.055);
   --panel-strong: rgba(246, 244, 240, 0.1);
   --shadow: 0 24px 80px rgba(0, 0, 0, 0.32);
@@ -16,6 +17,12 @@
 
 * {
   box-sizing: border-box;
+}
+
+*,
+*::before,
+*::after {
+  min-width: 0;
 }
 
 html {
@@ -31,6 +38,7 @@ body {
   color: var(--ink);
   font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
   line-height: 1.5;
+  overflow-x: hidden;
 }
 
 a {
@@ -550,6 +558,7 @@ button {
   border-radius: 8px;
   background: var(--panel);
   padding: 22px;
+  overflow-wrap: anywhere;
 }
 
 .card.light {
@@ -607,7 +616,7 @@ button {
 
 .pipeline {
   display: grid;
-  grid-template-columns: repeat(6, 1fr);
+  grid-template-columns: repeat(6, minmax(0, 1fr));
   gap: 10px;
   margin-top: 28px;
 }
@@ -869,6 +878,7 @@ button {
   border-radius: 8px;
   background: rgba(246, 244, 240, 0.06);
   padding: 14px;
+  overflow-wrap: anywhere;
 }
 
 .notion-card strong {
@@ -948,7 +958,7 @@ button {
 
 .anatomy-grid {
   display: grid;
-  grid-template-columns: repeat(5, minmax(0, 1fr));
+  grid-template-columns: repeat(5, minmax(120px, 1fr));
   gap: 12px;
   padding: 20px;
 }
@@ -965,6 +975,7 @@ button {
     linear-gradient(180deg, rgba(246, 244, 240, 0.08), rgba(246, 244, 240, 0.035)),
     rgba(7, 21, 36, 0.5);
   padding: 16px;
+  overflow-wrap: anywhere;
 }
 
 .anatomy-stage::after {
@@ -1635,6 +1646,15 @@ button {
   line-height: 0.98;
 }
 
+.vignette-grid .case-vignette {
+  padding: clamp(22px, 3vw, 34px);
+}
+
+.vignette-grid .case-vignette h2 {
+  font-size: clamp(2.1rem, 3.2vw, 3.8rem);
+  line-height: 1;
+}
+
 .case-vignette p {
   max-width: 920px;
   color: #d5dddf;
@@ -1756,6 +1776,79 @@ button {
     var(--panel);
 }
 
+.category-seo-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 0.82fr) minmax(0, 1.18fr);
+  gap: 28px;
+  align-items: start;
+}
+
+.category-article {
+  display: grid;
+  gap: 22px;
+}
+
+.category-article h2 {
+  margin: 0;
+  color: var(--paper);
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: clamp(2rem, 4vw, 3.5rem);
+  font-weight: 500;
+  line-height: 1;
+}
+
+.category-article p {
+  margin: 0;
+  color: #cbd7da;
+  font-size: 1.05rem;
+}
+
+.category-index {
+  position: sticky;
+  top: 96px;
+}
+
+.category-index a {
+  display: block;
+  border-bottom: 1px solid var(--line);
+  padding: 12px 0;
+  color: #d5dddf;
+  font-weight: 800;
+}
+
+.demo-layout {
+  grid-template-columns: minmax(280px, 0.72fr) minmax(420px, 1fr);
+  gap: clamp(24px, 4vw, 44px);
+}
+
+.demo-layout .section-header h2 {
+  font-size: clamp(2.25rem, 4.4vw, 4.25rem);
+  line-height: 0.98;
+}
+
+.demo-layout .anatomy-visual {
+  max-width: 100%;
+}
+
+.demo-layout .anatomy-grid {
+  grid-template-columns: repeat(5, minmax(82px, 1fr));
+  gap: 8px;
+  padding: 14px;
+}
+
+.demo-layout .anatomy-stage {
+  min-height: 190px;
+  padding: 12px;
+}
+
+.demo-layout .anatomy-stage h3 {
+  font-size: clamp(0.86rem, 1.1vw, 1rem);
+}
+
+.demo-layout .anatomy-stage small {
+  font-size: 0.78rem;
+}
+
 .fit-grid {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -1828,7 +1921,7 @@ button {
 
 .footer-grid {
   display: grid;
-  grid-template-columns: 1.2fr repeat(3, 1fr);
+  grid-template-columns: 1.15fr repeat(4, minmax(0, 1fr));
   gap: 24px;
 }
 
@@ -1848,7 +1941,7 @@ button {
 
 .split {
   display: grid;
-  grid-template-columns: 0.9fr 1.1fr;
+  grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
   gap: 28px;
   align-items: start;
 }
@@ -2058,6 +2151,7 @@ button {
   .memory-loop-grid,
   .notion-window,
   .anatomy-grid,
+  .demo-layout .anatomy-grid,
   .evidence-grid,
   .audit-report-body,
   .security-boundary-grid,
@@ -2066,8 +2160,13 @@ button {
   .product-proof-grid,
   .database-map-body,
   .workspace-preview-grid,
-  .fit-grid {
+  .fit-grid,
+  .category-seo-grid {
     grid-template-columns: 1fr;
+  }
+
+  .category-index {
+    position: static;
   }
 
   .limits-panel {
@@ -2128,7 +2227,7 @@ button {
 
   .hero h1,
   .page-hero h1 {
-    font-size: clamp(3rem, 16vw, 4.4rem);
+    font-size: clamp(2.85rem, 15vw, 4.15rem);
   }
 
   .hero p,
@@ -2200,6 +2299,11 @@ button {
     padding: 12px;
   }
 
+  .case-vignette h2,
+  .vignette-grid .case-vignette h2 {
+    font-size: clamp(2rem, 11vw, 3.2rem);
+  }
+
   .notion-table {
     grid-template-columns: 1fr;
     padding: 12px;
@@ -2212,7 +2316,17 @@ button {
   }
 
   .extraction-proof {
-    bottom: 176px;
+    position: static;
+    margin-top: 18px;
+  }
+
+  .flow-lines {
+    position: static;
+    margin: 28px 0 18px;
+  }
+
+  .process-list {
+    position: static;
   }
 
   .header-inner {
