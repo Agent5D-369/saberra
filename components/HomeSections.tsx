@@ -36,8 +36,8 @@ export function Hero() {
           <h1>Ask your organization what it already knows.</h1>
           <p>
             Saberra captures decisions, tasks, risks, roles, policies, and source records from Google Meet, email,
-            and emailed meeting transcripts, then turns them into reviewed institutional memory your team can ask
-            Sera about.
+            and emailed meeting transcripts, then turns them into reviewed institutional memory. Ask Sera, your AI
+            memory colleague, what your organization already knows.
           </p>
           <div className="trust-line">
             No new workflows. No new habits. Human-reviewed memory. Sourced answers from your own organizational record.
