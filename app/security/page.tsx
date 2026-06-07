@@ -35,8 +35,9 @@ export default function SecurityPage() {
             <li>Client data lives in the client&apos;s Notion workspace and infrastructure.</li>
             <li>AI extraction creates draft or candidate records for human review.</li>
             <li>Sera answers from reviewed organizational records with source context.</li>
-            <li>The current version requires Google Workspace, Google Meet, Notion, an AI provider account, Railway, and a dedicated inbox.</li>
-            <li>The current version does not process Zoom or Teams.</li>
+            <li>The standard deployment uses Google Workspace, native Google Meet capture, Notion, an AI provider account, Railway, and a dedicated inbox.</li>
+            <li>Zoom, Teams, and other meeting platforms can be captured when transcripts or summaries are emailed into the dedicated capture inbox.</li>
+            <li>Notion is the default memory backend. Postgres or additional systems of record can be scoped for larger or more technical deployments.</li>
           </ul>
         </div>
       </section>

@@ -1,0 +1,45 @@
+# Saberra
+
+Saberra is institutional memory infrastructure for teams that cannot afford to forget.
+
+Primary domain: https://saberra.com
+
+## What Saberra Does
+
+Saberra captures the natural output of organizational life, including Google Meet meetings, emailed meeting transcripts, emails, decisions, tasks, risks, roles, policies, governance records, and source records. It turns that output into reviewed, structured, searchable institutional memory.
+
+Sera is the AI memory assistant inside Saberra. Sera answers from reviewed organizational records and cites sources. Sera does not answer from the open internet or treat unreviewed extractions as trusted memory.
+
+## Product Boundaries
+
+Google Meet is native. Transcripts or summaries from Zoom, Teams, or other meeting platforms can be captured when they are emailed into Saberra's dedicated capture inbox. Direct Zoom or Teams integrations are scoped separately.
+
+Notion is the default memory backend because it keeps organizational records inspectable by nontechnical teams. Larger or more technical deployments can scope custom data architecture, including Postgres or additional systems of record.
+
+Saberra is currently delivered as a done-for-you deployment, not self-serve signup or a free trial.
+
+## Core Pages
+
+- Homepage: https://saberra.com/
+- How it works: https://saberra.com/how-it-works/
+- Sera: https://saberra.com/sera/
+- Pricing: https://saberra.com/pricing/
+- Organizational Memory Audit: https://saberra.com/audit/
+- Manual Memory OS for Notion: https://saberra.com/notion-template/
+- Security and data ownership: https://saberra.com/security/
+
+## Audience Pages
+
+- Self-managing, Teal, Holacracy, Sociocracy, regenerative, cooperative, and distributed governance teams: https://saberra.com/teal/
+- Nonprofits and social enterprises: https://saberra.com/nonprofit/
+- Consultancies and agencies: https://saberra.com/consultancy/
+
+## SEO Resources
+
+- Institutional memory system: https://saberra.com/resources/institutional-memory-system/
+- Meeting notes are not memory: https://saberra.com/resources/meeting-notes-are-not-memory/
+- Notion institutional memory template: https://saberra.com/resources/notion-institutional-memory-template/
+
+## Primary Keywords
+
+institutional memory system, institutional memory software, organizational memory, AI institutional memory, meeting notes are not memory, Google Meet institutional memory, meeting transcript institutional memory, Notion institutional memory template, knowledge management for self-managing organizations, institutional memory for nonprofits, institutional memory for consultancies.

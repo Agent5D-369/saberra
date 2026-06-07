@@ -31,10 +31,11 @@ export default function PricingPage() {
             organizational record stays in your workspace.
           </SectionHeader>
           <ul className="list">
-            <li>Your memory lives in your Notion workspace.</li>
+            <li>Your memory lives in your Notion workspace by default.</li>
             <li>Your infrastructure accounts stay yours.</li>
             <li>Saberra does not put your organizational history in a black-box database.</li>
             <li>Sera answers from records your team can inspect, edit, and govern.</li>
+            <li>Custom data architecture, including Postgres or additional systems of record, can be scoped for larger deployments.</li>
           </ul>
         </div>
         <div className="container" style={{ marginTop: 26 }}>

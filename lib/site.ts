@@ -84,11 +84,15 @@ export const faqs = [
   ],
   [
     "What tools are required?",
-    "The current version requires Google Workspace, Google Meet, Notion, an AI provider account, Railway, and a dedicated inbox."
+    "The standard deployment uses Google Workspace, Google Meet, Notion, an AI provider account, Railway, and a dedicated inbox. Google Meet is native, and transcripts or summaries from other meeting platforms can be captured when they are emailed into the dedicated inbox."
   ],
   [
     "Does Saberra work with Zoom or Teams?",
-    "Not in the current version. Saberra currently processes Google Meet outputs and email."
+    "Google Meet is native. For Zoom, Teams, or other meeting platforms, Saberra can process transcripts or summaries when they are emailed into the dedicated capture inbox. Direct platform integrations are scoped separately."
+  ],
+  [
+    "Can Saberra use Postgres or another data backend instead of Notion?",
+    "Notion is the default memory backend because it keeps records inspectable for nontechnical teams. Custom data architecture, including Postgres or additional systems of record, can be scoped for larger or more technical deployments."
   ],
   [
     "How long does setup take?",

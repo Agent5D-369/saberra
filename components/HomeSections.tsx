@@ -34,8 +34,9 @@ export function Hero() {
         <div>
           <h1>Ask your organization what it already knows.</h1>
           <p>
-            Saberra turns your Google Meet meetings, emails, decisions, tasks, risks, and roles into searchable
-            institutional memory, without asking your team to change how they work.
+            Saberra captures decisions, tasks, risks, roles, policies, and source records from Google Meet, email,
+            and emailed meeting transcripts, then turns them into reviewed institutional memory your team can ask
+            Sera about.
           </p>
           <div className="trust-line">
             No new workflows. No new habits. Human-reviewed memory. Sourced answers from your own organizational record.
@@ -176,7 +177,7 @@ export function CategoryBreak() {
 
 export function ProcessFlow() {
   const steps = [
-    ["Your team meets.", "You keep using Google Meet and email."],
+    ["Your team meets.", "Google Meet is native. Other meeting transcripts can be sent by email to the capture inbox."],
     ["Saberra captures.", "Meeting outputs, emails, tasks, risks, decisions, roles, and policies are extracted automatically."],
     ["Sera remembers.", "Human-reviewed records become searchable memory with source citations."]
   ];
@@ -403,14 +404,14 @@ export function SocialProof() {
 
 export function FitQualifier() {
   const bestFor = [
-    "Teams using Google Workspace and Google Meet",
+    "Teams using Google Workspace, Google Meet, or meeting tools that can email transcripts",
     "Notion-based workflows or willingness to use Notion",
     "5 to 50 people for the first deployment, with a path up to 200",
     "One Memory Admin who can review records about 1-2 hours per week"
   ];
   const notYet = [
-    "Microsoft Teams or Zoom-first organizations",
-    "Teams that do not want a Notion workspace",
+    "Teams that require native Zoom or Teams integrations on day one",
+    "Teams that do not want Notion and are not ready for a custom backend deployment",
     "Self-serve buyers looking for instant signup",
     "Teams that cannot assign anyone to review memory"
   ];
@@ -496,7 +497,7 @@ export function FoundingOffer() {
   const criteria = [
     "15 to 200 people",
     "Google Workspace",
-    "Notion or willingness to use Notion",
+    "Notion by default, or a scoped custom data backend for larger deployments",
     "Meeting-heavy operations",
     "Real knowledge loss pain",
     "One person owns memory review (~1-2 hours/week)"
@@ -561,7 +562,7 @@ export function SeraLimitations() {
     "Treat unreviewed extractions as trusted memory.",
     "Invent a decision if no reviewed record exists.",
     "Replace human judgment.",
-    "Process Zoom or Teams in the current version."
+    "Claim a native Zoom or Teams integration unless transcript intake is configured by email."
   ];
 
   return (
