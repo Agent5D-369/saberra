@@ -53,7 +53,7 @@ export default function NotionAiVsSaberraPage() {
       <section className="section">
         <div className="container">
           <CTABand
-            title="Your Notion workspace can become memory infrastructure."
+            title="Your Notion workspace can become the record your team actually trusts."
             copy="Get the manual 20-database Memory OS, then see what Saberra automates."
           />
         </div>

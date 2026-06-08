@@ -5,7 +5,7 @@ import { SecurityBoundaryVisual } from "@/components/VisualPanels";
 export const metadata: Metadata = {
   title: "Security and Data Ownership",
   description:
-    "How Saberra handles data ownership, human review, sourced answers, and current infrastructure boundaries.",
+    "How Saberra keeps organizational memory inspectable, human-reviewed, source-backed, and owned by the client.",
   alternates: { canonical: "/security" }
 };
 
@@ -16,7 +16,8 @@ export default function SecurityPage() {
         <div className="container">
           <h1>Your memory should live where your team can inspect it.</h1>
           <p>
-            Saberra is built around data ownership, human review, clear sources, and client-controlled infrastructure.
+            Saberra is built so your team can see the records, review what becomes trusted, and trace answers back to
+            sources.
           </p>
         </div>
       </section>
@@ -27,12 +28,12 @@ export default function SecurityPage() {
       </section>
       <section className="section">
         <div className="container split">
-          <SectionHeader title="The trust model is practical, not performative.">
+          <SectionHeader title="Trust starts with records your team can inspect.">
             Saberra does not ask you to trust unsourced AI output. The system creates candidates, humans review them,
             and Sera answers from the documented record.
           </SectionHeader>
           <ul className="list">
-            <li>Client data lives in the client&apos;s Notion workspace and infrastructure.</li>
+            <li>Client data lives in the client&apos;s Notion workspace and tool accounts.</li>
             <li>AI extraction creates draft or candidate records for human review.</li>
             <li>Sera answers from reviewed organizational records with source context.</li>
             <li>The standard deployment uses Google Workspace, native Google Meet capture, Notion, an AI provider account, Railway, and a dedicated inbox.</li>
@@ -44,7 +45,7 @@ export default function SecurityPage() {
       <section className="section">
         <div className="container">
           <CTABand
-            title="Memory infrastructure should make trust easier to inspect."
+            title="A memory system should make trust easier to inspect."
             copy="Start with the manual Memory OS, then book a focused call when you want to evaluate fit, tools, and review ownership."
           />
         </div>

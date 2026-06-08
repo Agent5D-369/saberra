@@ -203,8 +203,8 @@ export function TemplateDeliveryCard() {
         risks, roles, tasks, meetings, policies, review queues, source records, and organizational context.
       </p>
       <p>
-        Saberra adds the missing infrastructure: automatic capture, review routing, source traceability, weekly pulse,
-        and Sera answering from the reviewed record.
+        Saberra adds the missing automation: meeting and email capture, review routing, source traceability, weekly
+        pulse, and Sera answering from the reviewed record.
       </p>
       <p>
         If your team manually maintains this for even one week, you will feel exactly why the full system exists.

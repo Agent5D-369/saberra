@@ -6,7 +6,7 @@ import { CTABand, SectionHeader } from "@/components/UI";
 export const metadata: Metadata = {
   title: "Resources",
   description:
-    "Saberra resources for institutional memory, organizational memory, Notion memory systems, and zero behavior change knowledge capture.",
+    "Practical guides for teams losing decisions, context, tasks, roles, and program history across meetings, email, and Notion.",
   alternates: { canonical: "/resources" }
 };
 
@@ -14,37 +14,37 @@ export default function ResourcesPage() {
   const resources = [
     [
       "What is an institutional memory system?",
-      "A plain-English guide to capture, review, retrieval, and organizational continuity.",
+      "What teams need when decisions, roles, risks, and source records have to survive staff changes.",
       "/resources/institutional-memory-system"
     ],
     [
       "Meeting summaries are not memory",
-      "Why per-call notes fail to become durable organizational intelligence.",
+      "Why meeting notes still leave teams asking, didn't we already decide this?",
       "/resources/meeting-notes-are-not-memory"
     ],
     [
       "Institutional Memory OS for Notion",
-      "A manual template for decisions, tasks, risks, roles, meetings, policies, and review queues.",
+      "A 20-database manual system for teams that want to see what good memory structure looks like.",
       "/resources/notion-institutional-memory-template"
     ],
     [
       "Saberra vs meeting notetakers",
-      "Why summaries are useful, but reviewed organizational memory is a different category.",
+      "The difference between summarizing calls and preserving what the organization decided.",
       "/resources/saberra-vs-meeting-notetakers"
     ],
     [
       "Notion AI vs Saberra",
-      "The difference between answering from written pages and capturing what teams forget to write down.",
+      "Why answering from Notion is not enough when the important context never made it into Notion.",
       "/resources/notion-ai-vs-saberra"
     ],
     [
       "Google Meet institutional memory",
-      "How native Google Meet capture and emailed transcripts become reviewed memory.",
+      "How Google Meet output and emailed transcripts become reviewed records your team can ask about.",
       "/resources/google-meet-institutional-memory"
     ],
     [
       "The cost of key-person memory loss",
-      "How founder bottlenecks, departures, and slow onboarding create invisible operations debt.",
+      "Why departures, founder bottlenecks, and slow onboarding are usually memory problems first.",
       "/notion-template"
     ]
   ];
@@ -54,23 +54,24 @@ export default function ResourcesPage() {
       <section className="page-hero">
         <div className="container split">
           <div>
-            <h1>The institutional memory resource hub.</h1>
+            <h1>Guides for teams tired of losing decisions.</h1>
             <p>
-              A future home for guides, templates, and category-defining content on organizational memory infrastructure.
+              Start here if your team keeps re-deciding the same issues, searching for old context, rebuilding what
+              someone used to know, or wondering why Notion never stays current after meetings.
             </p>
           </div>
           <EditorialVisual
             src="/editorial-category-map.svg"
             alt="A category map contrasting meeting notes, knowledge bases, enterprise search, and institutional memory infrastructure."
             eyebrow="Category"
-            title="Help buyers name the missing system."
-            copy="The best resource content should make institutional memory feel like a necessary operating layer."
+            title="Name the missing system."
+            copy="Most teams do not need more notes. They need a reliable way to preserve decisions, owners, risks, and sources."
           />
         </div>
       </section>
       <section className="section">
         <div className="container">
-          <SectionHeader title="Start with the questions buyers are already asking." />
+          <SectionHeader title="Start with the questions your team is already asking." />
           <div className="grid-4">
             {resources.map(([title, copy, href]) => (
               <article className="card" key={title}>
@@ -88,7 +89,7 @@ export default function ResourcesPage() {
         <div className="container">
           <CTABand
             title="Get the manual Memory OS, then automate it."
-            copy="Get the manual Memory OS: 20 databases, pre-wired for Saberra, ready in under five minutes. Use it manually first, then use Saberra to capture and review memory automatically from meetings and email."
+            copy="Get the manual Memory OS: 20 databases for decisions, tasks, risks, roles, meetings, policies, review queues, and source records. Use it manually first, then see what Saberra keeps updated automatically."
             primary="Get the manual Memory OS"
             primaryHref="/notion-template"
             secondary="Book a 30-minute call"

@@ -283,8 +283,8 @@ export function DeploymentPath() {
     <section className="section tight">
       <div className="container">
         <SectionHeader eyebrow="Deployment" title="What happens in the first 30 days.">
-          Saberra is founder-led infrastructure work, not a black-box signup. The first month is designed to make the
-          memory loop real, inspectable, and owned by your team.
+          Saberra is a guided setup, not instant self-serve software. The first month is designed to make the memory
+          loop real, inspectable, and owned by your team.
         </SectionHeader>
         <div className="deployment-path">
           {weeks.map(([week, title, copy]) => (
@@ -325,9 +325,9 @@ export function ProductProof() {
   return (
     <section className="section">
       <div className="container">
-        <SectionHeader eyebrow="Product reality" title="This is what institutional memory looks like when it is operating.">
-          Saberra is not a summary screen. It is a working memory console with intake health, review queues, governance
-          signals, role ownership, source records, and workspace-level controls.
+        <SectionHeader eyebrow="Product reality" title="This is what it looks like when the organization starts remembering.">
+          Saberra is not a summary screen. It shows intake health, review queues, governance signals, role ownership,
+          source records, and workspace controls your team can inspect.
         </SectionHeader>
         <div className="sera-proof-callout">
           <SeraPortrait variant="environment" size="md" />
@@ -486,7 +486,7 @@ export function SocialProof() {
   return (
     <section className="section">
       <div className="container">
-        <SectionHeader eyebrow="Use-case vignettes" title="Proof does not have to be loud to be useful." />
+        <SectionHeader eyebrow="Use-case vignettes" title="What changes when the record survives the handoff." />
         <div className="vignette-grid">
           {vignettes.map(([eyebrow, title, copy, stats]) => (
             <article className="case-vignette" key={title as string}>
@@ -611,7 +611,7 @@ export function FoundingOffer() {
       <div className="container">
         <CTABand
           title="Founder-led memory deployment"
-          copy="We are onboarding high-fit teams using Google Workspace and Notion. Deployments include done-for-you setup, founder-led onboarding, review workflow design, and a memory audit before and after implementation."
+          copy="We are onboarding teams using Google Workspace and Notion that already feel the pain of lost decisions, unclear ownership, stale records, or key-person knowledge. Deployments include done-for-you setup, founder-led onboarding, review workflow design, and a memory audit before and after setup."
           primary="Get the manual Memory OS"
           primaryHref="/notion-template"
           secondary="Book a 30-minute call"

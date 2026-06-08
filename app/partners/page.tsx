@@ -75,8 +75,8 @@ export default function PartnersPage() {
       <section className="section tight">
         <div className="container">
           <SectionHeader eyebrow="Who it is for" title="A private referral path for high-trust advisors.">
-            This is not a public coupon program. It is a curated partner path for people who already advise teams where
-            memory loss creates real operational risk.
+            This is for people who already advise teams where memory loss creates real operational risk: repeated
+            decisions, founder bottlenecks, stale Notion records, and painful handoffs.
           </SectionHeader>
           <div className="grid-4">
             {partners.map((partner) => {
@@ -99,7 +99,7 @@ export default function PartnersPage() {
             <div className="eyebrow">Referral fit</div>
             <h2 className="serif">The right referral is already feeling memory pain.</h2>
             <p>
-              Good-fit referrals use Google Workspace, Notion or a Notion-ready workflow, and have recurring decisions,
+              Strong referrals use Google Workspace, Notion or a Notion-ready workflow, and have recurring decisions,
               risks, roles, policies, meetings, or client context that should survive beyond the people currently
               holding it.
             </p>

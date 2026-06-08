@@ -6,7 +6,7 @@ import { siteUrl } from "@/lib/site";
 export const metadata: Metadata = {
   title: "Institutional Memory System",
   description:
-    "A practical guide to institutional memory systems: how teams preserve decisions, risks, roles, policies, tasks, source records, and organizational context.",
+    "A practical guide to institutional memory systems for teams losing decisions, risks, roles, tasks, policies, source records, and context.",
   alternates: { canonical: "/institutional-memory-system" },
   keywords: [
     "institutional memory system",
@@ -18,7 +18,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: "What Is an Institutional Memory System?",
     description:
-      "Learn how institutional memory systems preserve decisions, risks, roles, policies, tasks, source records, and organizational context.",
+      "Learn how institutional memory systems keep decisions, risks, roles, tasks, policies, source records, and context findable.",
     url: `${siteUrl}/institutional-memory-system`,
     images: ["/og.svg"]
   }
@@ -39,7 +39,7 @@ const faq = [
   ],
   [
     "Where does Saberra fit?",
-    "Saberra is institutional memory infrastructure. It captures Google Meet output, emailed transcripts, email context, decisions, risks, tasks, roles, and policies, then routes them into human-reviewed memory that Sera can answer from."
+    "Saberra captures Google Meet output, emailed transcripts, email context, decisions, risks, tasks, roles, and policies, then routes them into human-reviewed memory that Sera can answer from."
   ]
 ];
 
@@ -63,7 +63,7 @@ export default function InstitutionalMemorySystemPage() {
           <h1>What is an institutional memory system?</h1>
           <p>
             It is the durable record of what your organization knows, decides, assigns, risks, changes, and approves.
-            The goal is simple: when someone asks what happened, the answer should not depend on who remembers.
+            The goal is simple: when someone asks what happened, the answer should not depend on who happens to remember.
           </p>
         </div>
       </section>
@@ -80,7 +80,7 @@ export default function InstitutionalMemorySystemPage() {
               <h2>Institutional memory is not documentation. It is continuity.</h2>
               <p>
                 Documentation is useful when someone writes it, updates it, and remembers where it lives. Institutional
-                memory is broader. It includes the decisions made in meetings, the commitments buried in email, the
+                memory is broader. It includes decisions made in meetings, commitments buried in email, the
                 risks people named before they became urgent, the role changes that explain ownership, and the policies
                 your team agreed to follow.
               </p>
@@ -127,7 +127,7 @@ export default function InstitutionalMemorySystemPage() {
         <div className="container">
           <CTABand
             title="Start with the manual Memory OS."
-            copy="Use the free 20-database Notion structure to stress-test your current memory habits. Then see how Saberra automates capture, review, and retrieval."
+            copy="Use the free 20-database Notion structure to see what your team can actually keep updated. Then see how Saberra automates capture, review, and Sera answers."
             primary="Get the manual Memory OS"
             primaryHref="/notion-template"
             secondary="Book a 30-minute call"

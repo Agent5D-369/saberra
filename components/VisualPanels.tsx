@@ -119,7 +119,7 @@ export function SovereigntyVisual() {
   ];
 
   return (
-    <div className="visual-panel sovereignty-visual" aria-label="Client controlled infrastructure visual">
+    <div className="visual-panel sovereignty-visual" aria-label="Client controlled tools visual">
       <div className="visual-header">
         <span className="eyebrow">Trust architecture</span>
         <strong>Your memory stays inspectable.</strong>
@@ -294,7 +294,7 @@ export function SecurityBoundaryVisual() {
       <div className="security-boundary-grid">
         <div className="boundary-zone owned-zone">
           <LockKeyhole size={24} aria-hidden="true" />
-          <h3>Your infrastructure</h3>
+          <h3>Your tools</h3>
           {owned.map((item) => (
             <div className="visual-chip" key={item}>
               <ShieldCheck size={14} aria-hidden="true" /> {item}

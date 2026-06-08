@@ -30,7 +30,7 @@ export function PricingCards() {
     <section className="section">
       <div className="container">
         <SectionHeader title="Founder-led deployment pricing.">
-          Saberra is currently delivered as done-for-you memory infrastructure, not self-serve signup.
+          Saberra is currently delivered as a guided setup, not instant self-serve signup.
         </SectionHeader>
         <div className="pricing-grid">
           {tiers.map((tier) => (

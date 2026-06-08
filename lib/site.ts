@@ -72,7 +72,7 @@ export const faqs = [
   ],
   [
     "Where does our data live?",
-    "Client records live in the client's own Notion workspace and infrastructure. Saberra is delivered as a done-for-you implementation, not a black-box database."
+    "Client records live in the client's own Notion workspace and tool accounts. Saberra is delivered as a guided setup, not a database your team cannot inspect."
   ],
   [
     "Does Sera answer from the internet?",
@@ -96,10 +96,10 @@ export const faqs = [
   ],
   [
     "How long does setup take?",
-    "A focused deployment is typically planned as a done-for-you implementation cycle, with the first working instance configured after technical access is ready."
+    "A focused deployment is planned as a guided setup. The first working instance is configured after tool access, inbox routing, and review ownership are ready."
   ],
   [
     "Who is Saberra best for?",
-    "Saberra is best for Notion-native, Google Workspace-based teams with 20 to 200 people and real knowledge loss pain."
+    "Saberra is best for Google Workspace and Notion-based teams with 20 to 200 people that are losing decisions, context, ownership, or key-person knowledge."
   ]
 ];

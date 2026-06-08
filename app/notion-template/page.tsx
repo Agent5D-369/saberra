@@ -25,9 +25,10 @@ export default function NotionTemplatePage() {
       <section className="section tight">
         <div className="container split">
           <div>
-            <SectionHeader eyebrow="Manual Memory OS" title="The structure is useful by itself. The manual upkeep is the point.">
-              The template includes the memory architecture Saberra is built around, but no AI ingestion, email routing,
-              automated extraction, human review workflow, or Sera retrieval layer.
+            <SectionHeader eyebrow="Manual Memory OS" title="The structure helps. The manual upkeep reveals the problem.">
+              The template gives you the decision, risk, role, task, meeting, policy, source, and review structure
+              Saberra uses. It does not capture emails, route meeting transcripts, draft records, manage review, or let
+              your team ask Sera for sourced answers.
             </SectionHeader>
             <article className="card challenge-card">
               <h3>Run the 7-day Memory Stress Test.</h3>
@@ -48,7 +49,7 @@ export default function NotionTemplatePage() {
             {[
               ["20 structured databases", "Decisions, tasks, risks, roles, policies, meetings, people, sources, review queues, and institutional context."],
               ["Views and example records", "Start with a working manual system instead of a blank Notion page."],
-              ["Clear infrastructure gap", "When manual updates become the bottleneck, Saberra automates capture, review routing, source traceability, and Sera retrieval."]
+              ["Clear automation gap", "When manual updates become the bottleneck, Saberra captures meeting and email output, routes records for review, keeps sources attached, and lets your team ask Sera."]
             ].map(([title, copy]) => (
               <article className="card" key={title}>
                 <h3>{title}</h3>
