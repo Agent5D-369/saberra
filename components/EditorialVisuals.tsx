@@ -25,24 +25,24 @@ export function EditorialStoryStrip() {
   const visuals = [
     {
       src: "/editorial-category-map.svg",
-      alt: "A category map showing why notes are not the same as institutional memory infrastructure.",
-      eyebrow: "Category clarity",
-      title: "Position the problem before the product.",
-      copy: "Cold visitors need to see why summaries, search, and knowledge bases do not close the memory loop."
+      alt: "Visual comparison of meeting notes, search, wikis, and institutional memory systems.",
+      eyebrow: "Memory gap",
+      title: "Notes capture moments. Memory preserves continuity.",
+      copy: "Meeting summaries, chat search, and wikis can still leave teams asking what was decided, who owns it, and where the source lives."
     },
     {
       src: "/editorial-memory-architecture.svg",
-      alt: "A Saberra architecture visual showing scattered output becoming reviewed institutional memory.",
-      eyebrow: "Mechanism",
-      title: "Show the path from output to trusted memory.",
-      copy: "The strongest proof is not a promise. It is a clear route from meeting output to reviewed records."
+      alt: "Saberra workflow from meeting output and email to reviewed organizational memory.",
+      eyebrow: "Trusted path",
+      title: "Every useful answer starts with a reviewed record.",
+      copy: "Saberra turns meeting output, emails, tasks, risks, roles, and policies into structured records before Sera answers from them."
     },
     {
       src: "/editorial-audit-diagnosis.svg",
-      alt: "An Organizational Memory Audit diagnosis visual showing leakage scores and risk bands.",
-      eyebrow: "Action",
-      title: "Give the buyer a useful first step.",
-      copy: "The audit makes the invisible cost of memory loss visible before the sales conversation starts."
+      alt: "Organizational Memory Audit report showing decision, context, task, and role memory risks.",
+      eyebrow: "First step",
+      title: "Find the leaks before you buy another tool.",
+      copy: "The Organizational Memory Audit shows where decisions, context, tasks, and role history are already falling out of reach."
     }
   ];
 

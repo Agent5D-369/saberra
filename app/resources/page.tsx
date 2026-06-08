@@ -62,7 +62,7 @@ export default function ResourcesPage() {
           </div>
           <EditorialVisual
             src="/editorial-category-map.svg"
-            alt="A category map contrasting meeting notes, knowledge bases, enterprise search, and institutional memory infrastructure."
+            alt="Comparison of meeting notes, knowledge bases, search, and institutional memory systems."
             eyebrow="Category"
             title="Name the missing system."
             copy="Most teams do not need more notes. They need a reliable way to preserve decisions, owners, risks, and sources."

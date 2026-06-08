@@ -26,7 +26,7 @@ export default function AuditPage() {
         <div className="container split">
           <EditorialVisual
             src="/editorial-audit-diagnosis.svg"
-            alt="An Organizational Memory Audit diagnosis visual showing memory leakage scores and risk bands."
+            alt="Organizational Memory Audit report showing decision, context, task, and key-person memory risks."
             eyebrow="Diagnosis"
             title="Make memory risk visible."
             copy="The audit turns repeated decisions, key-person dependency, missing follow-through, and onboarding drag into a concrete score."
