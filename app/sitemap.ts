@@ -29,12 +29,14 @@ export default function sitemap(): MetadataRoute.Sitemap {
     "/resources/saberra-vs-meeting-notetakers",
     "/resources/notion-ai-vs-saberra",
     "/resources/google-meet-institutional-memory",
-    "/security"
+    "/security",
+    "/privacy",
+    "/terms"
   ];
 
   return routes.map((route) => ({
     url: `${siteUrl}${route}`,
-    lastModified: new Date("2026-06-06"),
+    lastModified: new Date("2026-06-08"),
     changeFrequency: route === "" ? "weekly" : "monthly",
     priority: route === "" ? 1 : 0.7
   }));
