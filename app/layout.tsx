@@ -7,12 +7,14 @@ export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
   applicationName: "Saberra",
   title: {
-    default: "Saberra | Institutional Memory for Teams That Can't Afford to Forget",
+    default: "Saberra | AI Organizational Intelligence Infrastructure",
     template: "%s | Saberra"
   },
   description:
-    "Saberra turns meetings, emails, decisions, tasks, risks, and roles into reviewed institutional memory. Ask Sera, your AI memory colleague, what your organization already knows.",
+    "Saberra gives your organization Sera, the AI Secretary that turns meetings and emails into human-reviewed operating intelligence.",
   keywords: [
+    "AI organizational intelligence infrastructure",
+    "AI organizational operator",
     "institutional memory system",
     "institutional memory software",
     "organizational memory",
@@ -45,19 +47,27 @@ export const metadata: Metadata = {
     }
   },
   openGraph: {
-    title: "Saberra | Institutional Memory Infrastructure",
+    title: "Saberra | AI Organizational Intelligence Infrastructure",
     description:
-      "Saberra turns meetings, email, decisions, tasks, risks, and roles into reviewed institutional memory. Ask Sera, your AI memory colleague, for sourced answers.",
+      "Copy Sera on meetings and important emails. She turns organizational chaos into structured, human-reviewed operating intelligence.",
     url: siteUrl,
     siteName: "Saberra",
     type: "website",
-    images: ["/og.svg"]
+    images: [
+      {
+        url: "/og.png",
+        width: 1200,
+        height: 630,
+        alt: "Ask Sera what your organization already knows."
+      }
+    ]
   },
   twitter: {
     card: "summary_large_image",
-    title: "Saberra | Institutional Memory Infrastructure",
+    title: "Saberra | AI Organizational Intelligence Infrastructure",
     description:
-      "Ask Sera, your AI memory colleague, what your organization already knows."
+      "Ask Sera what your organization already knows.",
+    images: ["/og.png"]
   },
   icons: {
     icon: [
