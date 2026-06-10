@@ -44,7 +44,7 @@ export class ImapIngestionService {
 
     const results: ParsedEmail[] = [];
     let uids: number[] = [];
-    const lock = await client.getMailboxLock('INBOX');
+    const lock = await client.getMailboxLock(getConfig().IMAP_FOLDER);
 
     try {
       const searchResult = await client.search({ seen: false }, { uid: true });
@@ -72,7 +72,7 @@ export class ImapIngestionService {
     if (!uids.length) return;
     const client = await this.createClient();
     await client.connect();
-    const lock = await client.getMailboxLock('INBOX');
+    const lock = await client.getMailboxLock(getConfig().IMAP_FOLDER);
     try {
       await client.messageFlagsAdd(uids, ['\\Seen'], { uid: true });
       logger.debug({ count: uids.length }, 'IMAP messages marked as seen');

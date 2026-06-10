@@ -18,6 +18,9 @@ const configSchema = z.object({
   // Optional: when absent, ImapIngestionService falls back to OAuth via GOOGLE_REFRESH_TOKEN.
   // Required only for non-Google IMAP providers (Fastmail, Outlook, etc.).
   IMAP_PASS: z.string().min(1).optional(),
+  // Optional: IMAP folder/label to poll. Defaults to INBOX. Use a Gmail label path
+  // (e.g. "Sera/Capture") to filter to only mail routed to a specific alias.
+  IMAP_FOLDER: z.string().min(1).default('INBOX'),
 
   SMTP_HOST: z.string().min(1).optional(),
   SMTP_PORT: z.coerce.number().int().positive().default(465).optional(),
