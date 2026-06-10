@@ -14,6 +14,7 @@ const DASHBOARD_JS = fs.readFileSync(path.join(__dirname, 'static', 'dashboard.j
 const PORT = Number(process.env.PORT ?? process.env.DASHBOARD_PORT ?? 3001);
 const DASHBOARD_USER = process.env.DASHBOARD_USER ?? 'admin';
 const DASHBOARD_PASS = process.env.DASHBOARD_PASS;
+const ORG_NAME = process.env.ORG_NAME ?? process.env.TENANT_ID ?? 'Living Memory';
 const SERA_API_URL = (process.env.SERA_API_URL ?? 'https://sera-api-production-28d0.up.railway.app').replace(/\/$/, '');
 const SERA_API_SECRET = process.env.SERA_API_SECRET ?? '';
 
@@ -48,7 +49,7 @@ function parseCookies(req: http.IncomingMessage): Record<string, string> {
 
 function deny(res: http.ServerResponse): void {
   res.writeHead(401, {
-    'WWW-Authenticate': 'Basic realm="Amora Admin"',
+    'WWW-Authenticate': `Basic realm="${ORG_NAME}"`,
     'Content-Type': 'text/plain',
   });
   res.end('Unauthorized');
@@ -75,7 +76,7 @@ const server = http.createServer(async (req, res) => {
   // Logout — always returns 401 so the browser discards its cached Basic Auth credentials
   if (url === '/logout') {
     res.writeHead(401, {
-      'WWW-Authenticate': 'Basic realm="Amora Admin"',
+      'WWW-Authenticate': `Basic realm="${ORG_NAME}"`,
       'Content-Type': 'text/plain',
     });
     res.end('Signed out');
@@ -90,7 +91,7 @@ const server = http.createServer(async (req, res) => {
       const cookies = parseCookies(req);
       const tzOverride = cookies['tz'] || undefined;
       const data = await getDashboardData(tzOverride);
-      const html = renderDashboard(data);
+      const html = renderDashboard(data, ORG_NAME);
       res.writeHead(200, { 'Content-Type': 'text/html; charset=utf-8', 'Cache-Control': 'no-store' });
       res.end(html);
     } catch (err) {

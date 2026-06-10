@@ -1,5 +1,9 @@
-﻿import type { DashboardData, CollapsePatternName } from './queries';
+﻿import * as fs from 'fs';
+import * as path from 'path';
+import type { DashboardData, CollapsePatternName } from './queries';
 import { COLLAPSE_PATTERNS } from './queries';
+
+const SABERRA_ICON_B64 = fs.readFileSync(path.join(__dirname, 'saberra-icon.b64'), 'utf8').trim();
 
 function esc(s: string): string {
   return s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
@@ -78,8 +82,9 @@ header{
 }
 [data-theme="light"] header{background:linear-gradient(135deg,#4f46e5 0%,#3730a3 100%);border-bottom:none}
 .header-left{display:flex;align-items:center;gap:12px}
-.header-logo{font-size:16px;font-weight:700;color:#fff;letter-spacing:-.3px}
+.header-logo{font-size:16px;font-weight:700;color:#fff;letter-spacing:-.3px;display:flex;align-items:center;gap:8px}
 .header-logo span{color:#a5b4fc}
+.header-saberra-icon{width:24px;height:24px;border-radius:4px;flex-shrink:0}
 .status-dot{width:8px;height:8px;border-radius:50%;display:inline-block}
 .status-dot.ok{background:var(--green);box-shadow:0 0 6px var(--green)}
 .status-dot.warn{background:var(--amber)}
@@ -592,7 +597,7 @@ const SERA_TIPS: Array<{ badge: string; text: string }> = [
   { badge: 'Pro Tip', text: 'The <strong>Policy Ref</strong> field on each policy auto-formats as a short code like GOV-001, OPS-002, or FIN-003 based on the governing area and a sequential ID. Reference these codes in meeting notes to help me link decisions to the right policy.' },
   { badge: 'Did You Know?', text: 'I check for <strong>duplicate records</strong> before writing. If the same task or decision shows up in a retry cycle, I skip it rather than creating a second copy. Your Notion databases stay clean automatically.' },
   { badge: 'Pro Tip', text: 'Sensitive flags (legal issues, interpersonal concerns, financial risks) go to a <strong>separate admin-only Sensitive Review database</strong> that is not visible in the main team workspace. Those records never appear in the shared queues.' },
-  { badge: 'Did You Know?', text: 'I extract participants from meeting transcripts and automatically create or update their <strong>Profiles</strong> in the Profiles database. Over time, every person who participates in Amora meetings builds up a contact record automatically.' },
+  { badge: 'Did You Know?', text: 'I extract participants from meeting transcripts and automatically create or update their <strong>Profiles</strong> in the Profiles database. Over time, every person who participates in community meetings builds up a contact record automatically.' },
   { badge: 'Pro Tip', text: 'The <strong>CCOS Ledger</strong> is where tensions, proposals, and governance actions live. When I detect that a tension has been raised in a meeting, I log it automatically. You can track resolution by updating the Resolved Date and Resolution Notes fields.' },
   { badge: 'Did You Know?', text: 'I use a <strong>Capture Key</strong> to deduplicate meetings. If multiple emails about the same Google Meet arrive (recording + transcript + notes), I link them all to one meeting record rather than creating three.' },
   { badge: 'Pro Tip', text: 'The <strong>Memory Review Queue</strong> contains facts I think are worth preserving as long-term institutional knowledge. Review these regularly - approved memories become part of the context I use when processing future content.' },
@@ -611,7 +616,7 @@ const SERA_TIPS_ES: Array<{ badge: string; text: string }> = [
   { badge: 'Consejo Pro', text: 'El campo <strong>Ref. de Política</strong> en cada política se formatea automáticamente como un código corto tipo GOV-001, OPS-002 o FIN-003. Usa estos códigos en notas de reunión para ayudarme a vincular decisiones a la política correcta.' },
   { badge: '¿Sabías que...?', text: 'Verifico si hay <strong>registros duplicados</strong> antes de escribir. Si la misma tarea o decisión aparece en un ciclo de reintento, la omito en lugar de crear una segunda copia. Tus bases de datos de Notion se mantienen limpias automáticamente.' },
   { badge: 'Consejo Pro', text: 'Las marcas sensibles (problemas legales, conflictos interpersonales, riesgos financieros) van a una <strong>base de datos de Revisión Sensible solo para administradores</strong>, no visible en el espacio de trabajo del equipo. Esos registros nunca aparecen en las colas compartidas.' },
-  { badge: '¿Sabías que...?', text: 'Extraigo participantes de las transcripciones de reuniones y creo o actualizo automáticamente sus <strong>Perfiles</strong> en la base de datos de Perfiles. Con el tiempo, toda persona que participa en reuniones de Amora acumula un registro de contacto automáticamente.' },
+  { badge: '¿Sabías que...?', text: 'Extraigo participantes de las transcripciones de reuniones y creo o actualizo automáticamente sus <strong>Perfiles</strong> en la base de datos de Perfiles. Con el tiempo, toda persona que participa en reuniones de la comunidad acumula un registro de contacto automáticamente.' },
   { badge: 'Consejo Pro', text: 'El <strong>Libro Mayor de CCOS</strong> es donde viven las tensiones, propuestas y acciones de gobernanza. Cuando detecto que se ha planteado una tensión en una reunión, la registro automáticamente. Puedes hacer seguimiento actualizando los campos de Resolución.' },
   { badge: '¿Sabías que...?', text: 'Uso una <strong>Clave de Captura</strong> para deduplicar reuniones. Si llegan varios correos sobre el mismo Google Meet (grabación + transcripción + notas), los vinculo todos a un único registro de reunión en lugar de crear tres.' },
   { badge: 'Consejo Pro', text: 'La <strong>Cola de Revisión de Memoria</strong> contiene hechos que considero valiosos como conocimiento institucional a largo plazo. Revísala regularmente: las memorias aprobadas forman parte del contexto que uso al procesar contenido futuro.' },
@@ -844,7 +849,7 @@ interface UiStrings {
 
 const UI_EN: UiStrings = {
   chatPlaceholder: 'Ask Sera anything... (Enter to send, Shift+Enter for newline)',
-  chatEmpty: "Ask Sera anything about Amora's history, decisions, people, governance, or meetings.",
+  chatEmpty: "Ask Sera anything about your organization's history, decisions, people, governance, or meetings.",
   btnNewChat: '+ New Chat',
   btnSend: 'Send',
   btnCancel: 'Cancel',
@@ -963,7 +968,7 @@ const UI_EN: UiStrings = {
   rolesDirectoryDesc: 'Active role holders (from Role Assignments). Role Assignments are the source of truth - each records who holds the role, since when, and any term limits. Historical assignments are counted in the History column.',
   sectionRoleHealth: 'Role Health',
   sectionHowMuchSeraKnows: 'How Much Does Sera Know?',
-  howMuchSeraKnowsDesc: 'Total records Sera has captured across Amora\'s key memory categories. Higher numbers mean more institutional knowledge is structured and searchable. Low counts in any category suggest that area isn\'t being captured yet - not that nothing is happening.',
+  howMuchSeraKnowsDesc: 'Total records Sera has captured across your organization\'s key memory categories. Higher numbers mean more institutional knowledge is structured and searchable. Low counts in any category suggest that area isn\'t being captured yet - not that nothing is happening.',
   subRecordsCapturedByType: 'Records captured by type',
   subPolicyMaturity: 'Policy maturity - how much governance is ratified vs. still draft',
   sectionCollapseHealth: 'Collapse Health Monitor',
@@ -984,12 +989,12 @@ const UI_EN: UiStrings = {
   subEngagementActive: 'engagement status: Active',
   subUniqueSkillsTags: 'unique skills & tags across community',
   subHighestSeraScore: (n) => `highest Sera Score: ${n}`,
-  sectionInfluenceMap: "Influence Map - Who's Driving Amora Forward",
+  sectionInfluenceMap: "Influence Map - Who's Driving Things Forward",
   influenceMapDesc: 'Each bubble = one person. Position = meetings organized (X) × tasks completed (Y). Bubble size = Sera Score. Hover to explore.',
   influenceMapEmpty: 'No activity data yet - profiles will populate as Sera processes meetings.',
   sectionCommunitySkills: 'Community Skills & Expertise',
   communitySkillsEmpty: 'No tags on profiles yet',
-  sectionRelationshipToAmora: 'Relationship to Amora',
+  sectionRelationshipToAmora: 'Community Relationships',
   relationshipEmpty: 'No relationship data yet',
   sectionSeraLeaderboard: 'Sera Score Leaderboard',
   seraScoreDesc: 'Score = (active roles × 10) + (meetings organized × 5) + (tasks done × 3) + (tasks assigned × 1)',
@@ -1054,7 +1059,7 @@ const UI_EN: UiStrings = {
 
 const UI_ES: UiStrings = {
   chatPlaceholder: 'Pregúntale a Sera lo que quieras... (Enter para enviar, Shift+Enter para nueva línea)',
-  chatEmpty: 'Pregúntale a Sera sobre la historia, decisiones, personas, gobernanza o reuniones de Amora.',
+  chatEmpty: 'Pregúntale a Sera sobre la historia, decisiones, personas, gobernanza o reuniones de la organización.',
   btnNewChat: '+ Nuevo Chat',
   btnSend: 'Enviar',
   btnCancel: 'Cancelar',
@@ -1173,7 +1178,7 @@ const UI_ES: UiStrings = {
   rolesDirectoryDesc: 'Titulares de roles activos (desde Asignaciones de Roles). Las Asignaciones de Roles son la fuente de verdad - cada una registra quién ocupa el rol, desde cuándo y los límites de término. Las asignaciones históricas se cuentan en la columna Historial.',
   sectionRoleHealth: 'Salud de Roles',
   sectionHowMuchSeraKnows: '¿Cuánto Sabe Sera?',
-  howMuchSeraKnowsDesc: 'Total de registros que Sera ha capturado en las categorías clave de memoria de Amora. Números más altos significan más conocimiento institucional estructurado y buscable. Conteos bajos en una categoría sugieren que esa área aún no se está capturando.',
+  howMuchSeraKnowsDesc: 'Total de registros que Sera ha capturado en las categorías clave de memoria de la organización. Números más altos significan más conocimiento institucional estructurado y buscable. Conteos bajos en una categoría sugieren que esa área aún no se está capturando.',
   subRecordsCapturedByType: 'Registros capturados por tipo',
   subPolicyMaturity: 'Madurez de políticas - cuánta gobernanza está ratificada vs. en borrador',
   sectionCollapseHealth: 'Monitor de Salud Organizacional',
@@ -1194,12 +1199,12 @@ const UI_ES: UiStrings = {
   subEngagementActive: 'estado de participación: Activo',
   subUniqueSkillsTags: 'habilidades y etiquetas únicas en la comunidad',
   subHighestSeraScore: (n) => `Sera Score más alto: ${n}`,
-  sectionInfluenceMap: 'Mapa de Influencia - Quiénes Impulsan a Amora',
+  sectionInfluenceMap: 'Mapa de Influencia - Quiénes Impulsan las Cosas',
   influenceMapDesc: 'Cada burbuja = una persona. Posición = reuniones organizadas (X) × tareas completadas (Y). Tamaño = Sera Score. Pasa el cursor para explorar.',
   influenceMapEmpty: 'Sin datos de actividad aún - los perfiles se llenarán a medida que Sera procese reuniones.',
   sectionCommunitySkills: 'Habilidades y Experiencia de la Comunidad',
   communitySkillsEmpty: 'Sin etiquetas en perfiles aún',
-  sectionRelationshipToAmora: 'Relación con Amora',
+  sectionRelationshipToAmora: 'Relaciones con la Comunidad',
   relationshipEmpty: 'Sin datos de relación aún',
   sectionSeraLeaderboard: 'Tabla de Líderes Sera Score',
   seraScoreDesc: 'Puntaje = (roles activos × 10) + (reuniones organizadas × 5) + (tareas completadas × 3) + (tareas asignadas × 1)',
@@ -1347,7 +1352,7 @@ function buildCollapseHealthSection(d: DashboardData, ui: UiStrings): string {
   </section>`;
 }
 
-export function renderDashboard(d: DashboardData): string {
+export function renderDashboard(d: DashboardData, orgName = 'Living Memory'): string {
   const locale = getDashboardLocale(d.systemConfig?.outputLanguage ?? 'English');
 
   // ── Status indicator ────────────────────────────────────────────────────────
@@ -1807,7 +1812,7 @@ export function renderDashboard(d: DashboardData): string {
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Sera - Amora Living Memory</title>
+<title>Sera | ${orgName}</title>
 <script async src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js" onload="if(window._chartReady)window._chartReady()"></script>
 <style>${CSS}</style>
 </head>
@@ -1815,7 +1820,7 @@ export function renderDashboard(d: DashboardData): string {
 
 <header>
   <div class="header-left">
-    <span class="header-logo">Sera <span>· Amora Living Memory</span></span>
+    <span class="header-logo"><img class="header-saberra-icon" src="data:image/png;base64,${SABERRA_ICON_B64}" alt="Saberra">Sera <span>· ${orgName}</span></span>
     <span class="status-dot ${statusClass}"></span>
     <span class="status-label">${statusText}</span>
   </div>
@@ -2505,7 +2510,7 @@ ${dataErrorBannerHtml}${alertBannerHtml}
 </div>
 
 <footer>
-  <span>Sera &nbsp;·&nbsp; Amora Living Memory Hub &nbsp;·&nbsp; Running ${runningSinceStr} &nbsp;·&nbsp; Next poll <span id="next-poll-footer" data-at="${nextPollIso ?? ''}">…</span></span>
+  <span>Sera &nbsp;·&nbsp; ${orgName} &nbsp;·&nbsp; Running ${runningSinceStr} &nbsp;·&nbsp; Next poll <span id="next-poll-footer" data-at="${nextPollIso ?? ''}">…</span></span>
   <span style="display:block;margin-top:5px">All data from Notion &nbsp;·&nbsp; Powered by <a href="http://quicklaunchconsulting.com/" target="_blank" rel="noopener" style="color:inherit;opacity:.8">QuickLaunch Consulting</a></span>
 </footer>
 

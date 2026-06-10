@@ -258,7 +258,7 @@ const SERA_TIPS: Array<{ badge: TipType; text: string }> = [
   { badge: 'Pro Tip', text: 'The <strong>Policy Ref</strong> field on each policy auto-formats as a short code like GOV-001, OPS-002, or FIN-003 based on the governing area and a sequential ID. Reference these codes in meeting notes to help me link decisions to the right policy.' },
   { badge: 'Did You Know?', text: 'I check for <strong>duplicate records</strong> before writing. If the same task or decision shows up in a retry cycle, I skip it rather than creating a second copy. Your Notion databases stay clean automatically.' },
   { badge: 'Pro Tip', text: 'Sensitive flags (legal issues, interpersonal concerns, financial risks) go to a <strong>separate admin-only Sensitive Review database</strong> that is not visible in the main team workspace. Those records never appear in the shared queues.' },
-  { badge: 'Did You Know?', text: 'I extract participants from meeting transcripts and automatically create or update their <strong>Profiles</strong> in the Profiles database. Over time, every person who participates in Amora meetings builds up a contact record automatically.' },
+  { badge: 'Did You Know?', text: 'I extract participants from meeting transcripts and automatically create or update their <strong>Profiles</strong> in the Profiles database. Over time, every person who participates in community meetings builds up a contact record automatically.' },
   { badge: 'Pro Tip', text: 'The <strong>CCOS Ledger</strong> is where tensions, proposals, and governance actions live. When I detect that a tension has been raised in a meeting, I log it automatically. You can track resolution by updating the Resolved Date and Resolution Notes fields.' },
   { badge: 'Did You Know?', text: 'I use a <strong>Capture Key</strong> to deduplicate meetings. If multiple emails about the same Google Meet arrive (recording + transcript + notes), I link them all to one meeting record rather than creating three.' },
   { badge: 'Pro Tip', text: 'The <strong>Memory Review Queue</strong> contains facts I think are worth preserving as long-term institutional knowledge. Review these regularly - approved memories become part of the context I use when processing future content.' },
@@ -268,7 +268,7 @@ const SERA_TIPS: Array<{ badge: TipType; text: string }> = [
   { badge: 'Did You Know?', text: 'The platform you are using is called <strong>Saberra</strong> - the productized name for this living memory system. The name quietly carries <em>saber</em>, Spanish for "to know." Saberra is built for teams that can\'t afford to forget. I am Sera, your AI memory keeper inside it.' },
 ];
 
-export function renderDashboard(d: DashboardData): string {
+export function renderDashboard(d: DashboardData, orgName = 'Living Memory'): string {
   // ── Status indicator ────────────────────────────────────────────────────────
   const lastPollAgeMin = d.lastPollAt
     ? (Date.now() - new Date(d.lastPollAt).getTime()) / 60000
@@ -400,7 +400,7 @@ export function renderDashboard(d: DashboardData): string {
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Sera - Amora Living Memory</title>
+<title>Sera | ${orgName}</title>
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
 <style>${CSS}</style>
 </head>
@@ -408,7 +408,7 @@ export function renderDashboard(d: DashboardData): string {
 
 <header>
   <div class="header-left">
-    <span class="header-logo">Sera <span>· Amora Living Memory</span></span>
+    <span class="header-logo">Sera <span>· ${orgName}</span></span>
     <span class="status-dot ${statusClass}"></span>
     <span class="status-label">${statusText}</span>
   </div>
@@ -612,7 +612,7 @@ export function renderDashboard(d: DashboardData): string {
 </div>
 
 <footer>
-  <span>Sera &nbsp;·&nbsp; Amora Living Memory Hub &nbsp;·&nbsp; Running ${runningSinceStr} &nbsp;·&nbsp; 3-min poll cycle &nbsp;·&nbsp; All data from Notion</span>
+  <span>Sera &nbsp;·&nbsp; ${orgName} &nbsp;·&nbsp; Running ${runningSinceStr} &nbsp;·&nbsp; 3-min poll cycle &nbsp;·&nbsp; All data from Notion</span>
 </footer>
 
 <!-- Embedded chart data (server-rendered, no XHR needed) -->
