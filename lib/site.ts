@@ -8,7 +8,8 @@ export const demoCalendarUrl = "https://calendar.app.google/tVK5xuwheLsiCL4WA";
 export const formspreeForms = {
   notionTemplate: "https://formspree.io/f/mbdedveq",
   demoRequest: "https://formspree.io/f/xdavarvv",
-  foundingAccess: "https://formspree.io/f/mqeoevor"
+  foundingAccess: "https://formspree.io/f/mqeoevor",
+  partnerReferral: "https://formspree.io/f/PARTNER_FORM_ID"
 };
 
 export const navItems = [

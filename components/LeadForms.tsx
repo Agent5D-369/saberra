@@ -224,6 +224,51 @@ export function FoundingAccessForm() {
   );
 }
 
+export function PartnerReferralForm() {
+  return (
+    <FormShell
+      action={formspreeForms.partnerReferral}
+      name="Partner Referral"
+      redirectPath="/demo-thank-you"
+      submitLabel="Submit referral"
+      formNote="We follow up directly with you, not with the referred team, unless you indicate otherwise."
+    >
+      <div className="field-row">
+        <label className="field">
+          <span>Your name</span>
+          <input name="name" required placeholder="Your full name" />
+        </label>
+        <label className="field">
+          <span>Your email</span>
+          <input name="email" type="email" required placeholder="you@yourfirm.com" />
+        </label>
+      </div>
+      <label className="field">
+        <span>Your role or firm</span>
+        <input name="advisor_role" required placeholder="Fractional COO, governance consultant, Notion partner..." />
+      </label>
+      <div className="field-row">
+        <label className="field">
+          <span>Referred organization name</span>
+          <input name="org_name" placeholder="Optional if connecting directly" />
+        </label>
+        <label className="field">
+          <span>Referred contact name</span>
+          <input name="contact_name" placeholder="Name if known" />
+        </label>
+      </div>
+      <label className="field">
+        <span>What is the memory or knowledge problem you are seeing?</span>
+        <textarea
+          name="problem_context"
+          required
+          placeholder="What is leaking? Decisions, transitions, key-person dependency, onboarding drag? The more specific, the better we can assess fit."
+        />
+      </label>
+    </FormShell>
+  );
+}
+
 export function TemplateDeliveryCard() {
   const hasTemplate = notionTemplateUrl.startsWith("https://");
 

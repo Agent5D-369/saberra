@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Handshake, Landmark, Network, UsersRound } from "lucide-react";
 import { EditorialVisual } from "@/components/EditorialVisuals";
+import { PartnerReferralForm } from "@/components/LeadForms";
 import { CTABand, SectionHeader } from "@/components/UI";
 
 export const metadata: Metadata = {
@@ -54,7 +55,7 @@ export default function PartnersPage() {
               to manage.
             </p>
             <div className="cta-row">
-              <a className="btn btn-primary" href="/demo">
+              <a className="btn btn-primary" href="#partner-form">
                 Refer a team
               </a>
               <a className="btn btn-secondary" href="/audit">
@@ -116,16 +117,21 @@ export default function PartnersPage() {
         </div>
       </section>
 
-      <section className="section tight">
-        <div className="container">
-          <CTABand
-            title="Refer a team, or send them the Memory Audit."
-            copy="Use the 30-minute call form for a warm referral, or send the audit when the team needs to diagnose the problem first."
-            primary="Refer a team"
-            primaryHref="/demo"
-            secondary="Send the Memory Audit"
-            secondaryHref="/audit"
-          />
+      <section id="partner-form" className="section tight">
+        <div className="container split">
+          <div>
+            <div className="eyebrow">Referral form</div>
+            <h2 className="serif">Tell us about the team and your relationship.</h2>
+            <p>
+              A warm referral or a direct introduction both work. Fill in what you know. We will follow up directly
+              with you, not with the referred team, unless you indicate otherwise.
+            </p>
+            <p style={{ marginTop: 12 }}>
+              No Formspree account yet? Share this page with the team and ask them to take the Memory Audit at
+              saberra.com/audit instead.
+            </p>
+          </div>
+          <PartnerReferralForm />
         </div>
       </section>
     </main>

@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
-import { NotionTemplateGateForm } from "@/components/LeadForms";
+import { NotionTemplateGateForm, TemplateDeliveryCard } from "@/components/LeadForms";
 import { SectionHeader } from "@/components/UI";
-import { DatabaseMapVisual, NotionTemplateVisual } from "@/components/VisualPanels";
+import { DatabaseMapVisual, NotionTemplateVisual, NotionWorkspaceVisual } from "@/components/VisualPanels";
 
 export const metadata: Metadata = {
   title: "Saberra Living Memory Hub Demo",
@@ -61,6 +61,17 @@ export default function NotionTemplatePage() {
       <section className="section tight">
         <div className="container">
           <DatabaseMapVisual />
+      
+        </div>
+      </section>
+      <section className="section tight">
+        <div className="container">
+          <NotionWorkspaceVisual />
+        </div>
+      </section>
+      <section className="section tight">
+        <div className="container" style={{ maxWidth: 640 }}>
+          <TemplateDeliveryCard />
         </div>
       </section>
     </main>

@@ -61,6 +61,71 @@ function band(score: number): { label: string; color: string } {
   return { label: "Critical knowledge bleed", color: "#C0392B" };
 }
 
+type ScoreBand = "stable" | "early" | "serious" | "critical";
+
+function getScoreBand(score: number): ScoreBand {
+  if (score <= 18) return "stable";
+  if (score <= 30) return "early";
+  if (score <= 40) return "serious";
+  return "critical";
+}
+
+const seraQuickQuestions: Record<ScoreBand, string[]> = {
+  stable: [
+    "What are the most likely gaps in an otherwise solid memory system?",
+    "How do I make sure this holds through a leadership transition?",
+    "What does Saberra add when the foundations are already decent?"
+  ],
+  early: [
+    "Where is the memory most likely leaking for my type of organization?",
+    "What is the highest-leverage fix I can make right now?",
+    "How quickly do early leaks become serious problems?"
+  ],
+  serious: [
+    "What is the most expensive consequence of this gap?",
+    "Where do I start if I can only fix one thing?",
+    "How long does it typically take to close a gap this size?"
+  ],
+  critical: [
+    "What is the biggest risk if I do nothing for another six months?",
+    "How fast can the damage be reversed once capture starts?",
+    "What does an organization at this level usually lose first?"
+  ]
+};
+
+const seraAnswers: Record<ScoreBand, string[]> = {
+  stable: [
+    "The most common gap at your level is source traceability. Decisions may be recorded but the reasoning, the context, and the source behind them are often missing. Six months from now, your team has the decision but not why it was made. That is where stable systems quietly develop blind spots.",
+    "At a stable memory level, transition risk usually appears in relationship and role context, not in documented processes. Documented structure transfers reasonably well. The informal network intelligence, the context behind decisions, and background risk awareness do not. Capturing that context continuously is what makes a system transition-proof.",
+    "When the foundations are already solid, Saberra primarily adds source traceability, continuous capture without asking anyone to document, and Sera as a query layer so your team can retrieve what you have. Most organizations with good practices still lose hours per week answering questions from memory that should be answerable from a record."
+  ],
+  early: [
+    "For most organization types, the most common early leak point is decisions that were made in meetings but never became durable records. They exist in someone's memory of the meeting. In the first few months that is workable. After a year, or after the people who were in the room move on, the decision might as well not have been made.",
+    "The highest-value immediate fix is usually a simple capture habit: every meeting that ends with a decision or a task assignment should route a transcript or summary somewhere structured. It does not need to be perfect. The goal is to create a record that exists outside someone's memory. Once the record exists, it can be improved. Without the record, nothing else is possible.",
+    "Early leakage compounds quietly. What starts as occasional repeated decisions becomes systematic context loss when someone leaves. The typical window between early leakage and a serious operating intelligence gap is twelve to eighteen months, faster in organizations that are growing or experiencing regular role changes."
+  ],
+  serious: [
+    "At a serious gap level, the most expensive consequence is usually the re-ramp cost on key person transitions. You are likely paying three to six months of reduced productivity every time a senior person moves on. Depending on their salary and the length of the gap, that is tens of thousands of dollars per transition, plus the relationship and context cost on top of the direct hours.",
+    "The highest-leverage starting point is almost always decisions. Capturing what was decided, by whom, and with what reasoning gives you the foundation everything else rests on. Tasks and risks matter too, but decisions compound. Every day a decision record does not exist is a day someone might re-debate it, make the opposite call, or block on context they should be able to retrieve.",
+    "The gap closes faster than it opened, assuming capture is consistent. Most organizations see material improvement in query reliability within the first three months of consistent capture and review. The knowledge that already exists but was never structured takes the longest to recover. New captures from this point forward can be solid from the start."
+  ],
+  critical: [
+    "The most immediate risk is a key person departure. At critical knowledge bleed, a single unplanned exit can produce a coordination failure within weeks: open commitments the person was tracking, risks being quietly managed, relationship context that disappears entirely. The longer the gap continues, the more operating intelligence lives only in individual memory with no backup.",
+    "The damage is reversible, but not all of it. What can be recovered: decisions from records that exist, tasks that were tracked, role assignments that were documented. What cannot be fully recovered: the reasoning behind decisions made years ago, the relationship intelligence of people who have already left, the risk awareness of processes that have already failed. The sooner capture begins, the more of the recoverable material gets preserved.",
+    "Organizations at critical levels typically lose operating context in this order: first, risk awareness leaves when the person managing it does; second, relationship intelligence degrades as funder and client relationships are managed without context; third, repeated decisions start consuming senior time at a visible level; fourth, onboarding becomes so costly that growing the team starts feeling risky."
+  ]
+};
+
+function getFallbackAnswer(scoreBand: ScoreBand): string {
+  const fallbacks: Record<ScoreBand, string> = {
+    stable: "Your foundations are solid. The risk areas worth watching are source traceability and transition readiness. If you have a more specific question about your memory system, the more concrete you can be, the more useful my answer.",
+    early: "Your score shows early memory leakage. The pattern at this level is usually decisions that exist in someone's memory but not in a durable record. If you can be specific about which part of the system you are most uncertain about, I can give you a more targeted answer.",
+    serious: "At your score level, the operating intelligence gap is real and worth addressing. The most actionable starting point depends on your specific situation. If you can tell me more about what you are trying to understand, I can give you a more useful answer.",
+    critical: "Your score indicates critical knowledge bleed. This level of gap is affecting decisions, onboarding, and key-person risk right now. The most important thing: the sooner capture begins, the more recoverable the situation is. Is there a specific risk area you are most concerned about?"
+  };
+  return fallbacks[scoreBand];
+}
+
 function diagnosis(score: number, segment: string): { headline: string; body: string } {
   const bandLabel = band(score).label;
 
@@ -103,6 +168,8 @@ function diagnosis(score: number, segment: string): { headline: string; body: st
   };
 }
 
+void band;
+
 function getShareText(score: number, segment: string, bandLabel: string): string {
   return `I scored ${score}/50 on the Saberra Organizational Memory Audit.\n\nResult: ${bandLabel}\nSegment: ${segment}\n\n${diagnosis(score, segment).headline}\n\nTake the free audit at saberra.com/audit`;
 }
@@ -112,10 +179,15 @@ export function Audit() {
   const [step, setStep] = useState(0);
   const [answers, setAnswers] = useState<number[]>(Array(questions.length).fill(3));
   const [copied, setCopied] = useState(false);
+  const [seraInput, setSeraInput] = useState("");
+  const [seraAnswer, setSeraAnswer] = useState("");
+  const [seraAsked, setSeraAsked] = useState(false);
+
   const score = useMemo(() => answers.reduce((sum, value) => sum + value, 0), [answers]);
   const complete = step >= questions.length;
   const progress = complete ? 100 : Math.round((step / questions.length) * 100);
   const { label: bandLabel } = band(score);
+  const scoreBand = getScoreBand(score);
   const { headline: diagHeadline, body: diagBody } = useMemo(
     () => diagnosis(score, segment),
     [score, segment]
@@ -131,6 +203,20 @@ export function Audit() {
       setCopied(true);
       setTimeout(() => setCopied(false), 2500);
     });
+  }
+
+  function handleSeraAsk(question?: string) {
+    const q = question ?? seraInput;
+    if (!q.trim()) return;
+    setSeraInput(q);
+    const quickQs = seraQuickQuestions[scoreBand];
+    const idx = quickQs.findIndex((item) => item === q);
+    if (idx !== -1) {
+      setSeraAnswer(seraAnswers[scoreBand][idx]);
+    } else {
+      setSeraAnswer(getFallbackAnswer(scoreBand));
+    }
+    setSeraAsked(true);
   }
 
   if (complete) {
@@ -169,19 +255,66 @@ export function Audit() {
           </div>
           <h3 style={{ marginTop: 16, marginBottom: 8 }}>{diagHeadline}</h3>
           <p style={{ color: "#d5dddf", fontSize: "1.05rem" }}>{diagBody}</p>
-  
+
           <div className="risk-grid">
             <div className="eyebrow">What this likely means for your team</div>
             {likelyRisks.map((risk, i) => (
               <div key={i} className="risk-item">{risk}</div>
             ))}
           </div>
+
           <div className="cta-row" style={{ marginTop: 24 }}>
             <CTAButton href="/founding-access">Apply for a founding spot</CTAButton>
             <button className="btn btn-secondary" onClick={handleShare}>
               {copied ? "Copied to clipboard" : "Share my result"}
             </button>
           </div>
+        </article>
+
+        <article className="card sera-ask-card">
+          <div className="eyebrow">Ask Sera about your result</div>
+          <p className="sera-ask-hint">
+            Select a question or type your own. Sera will answer from what your score suggests about your situation.
+          </p>
+          <div className="sera-quick-questions">
+            {seraQuickQuestions[scoreBand].map((q) => (
+              <button
+                key={q}
+                className={`question-tab${seraInput === q ? " active" : ""}`}
+                onClick={() => handleSeraAsk(q)}
+              >
+                {q}
+              </button>
+            ))}
+          </div>
+          {!seraAsked && (
+            <div className="sera-input-row">
+              <input
+                type="text"
+                className="sera-input"
+                placeholder="Or type your own question..."
+                value={seraInput}
+                onChange={(e) => setSeraInput(e.target.value)}
+                onKeyDown={(e) => { if (e.key === "Enter") handleSeraAsk(); }}
+              />
+              <button className="btn btn-primary" onClick={() => handleSeraAsk()} disabled={!seraInput.trim()}>
+                Ask
+              </button>
+            </div>
+          )}
+          {seraAsked && seraAnswer && (
+            <div className="sera-response">
+              <div className="eyebrow">Sera</div>
+              <p>{seraAnswer}</p>
+              <button
+                className="btn btn-secondary"
+                style={{ marginTop: 16 }}
+                onClick={() => { setSeraAsked(false); setSeraInput(""); setSeraAnswer(""); }}
+              >
+                Ask another question
+              </button>
+            </div>
+          )}
         </article>
       </div>
     );

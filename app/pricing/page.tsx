@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { PricingCards } from "@/components/PricingCards";
 import { CTABand, SectionHeader } from "@/components/UI";
-import { SovereigntyVisual } from "@/components/VisualPanels";
+import { PipelineAnatomyVisual, SovereigntyVisual } from "@/components/VisualPanels";
 
 export const metadata: Metadata = {
   title: "Pricing",
@@ -42,6 +42,23 @@ export default function PricingPage() {
         </div>
         <div className="container" style={{ marginTop: 26 }}>
           <SovereigntyVisual />
+        </div>
+      </section>
+
+      {/* ── PIPELINE ANATOMY: what they are paying for ───────── */}
+      <section className="section tight">
+        <div className="container">
+          <SectionHeader
+            eyebrow="What you are paying for"
+            title="Every step is visible. Every record is traceable."
+          >
+            Saberra is a complete pipeline: capture to Sera-drafted candidate to human-reviewed record to
+            source-backed answer. You see every step. Nothing becomes trusted organizational memory without a
+            human decision.
+          </SectionHeader>
+          <div style={{ marginTop: 32 }}>
+            <PipelineAnatomyVisual />
+          </div>
         </div>
       </section>
 

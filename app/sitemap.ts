@@ -30,6 +30,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
     "/resources/saberra-vs-meeting-notetakers",
     "/resources/notion-ai-vs-saberra",
     "/resources/google-meet-institutional-memory",
+    "/resources/key-person-knowledge-loss",
+    "/weekly-pulse",
+    "/product",
+    "/cases/governance-coordinator-transition",
+    "/cases/nonprofit-leadership-handoff",
+    "/cases/consultancy-delivery-lead",
     "/security",
     "/privacy",
     "/terms"
@@ -37,7 +43,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
 
   return routes.map((route) => ({
     url: `${siteUrl}${route}`,
-    lastModified: new Date("2026-06-08"),
+    lastModified: new Date("2026-06-09"),
     changeFrequency: route === "" ? "weekly" : "monthly",
     priority: route === "" ? 1 : 0.7
   }));

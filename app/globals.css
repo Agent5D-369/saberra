@@ -222,7 +222,7 @@ button {
 .hero p,
 .page-hero p {
   margin: 22px 0 0;
-  max-width: 690px;
+  max-width: 65ch;
   color: #d5dddf;
   font-size: clamp(1.05rem, 2vw, 1.28rem);
 }
@@ -783,6 +783,7 @@ button {
   color: var(--paper);
   padding: 14px;
   text-align: left;
+  font-size: 0.92rem;
 }
 
 .question-tab.active {
@@ -2803,6 +2804,11 @@ button {
     padding: 56px 0 36px;
   }
 
+  .question-tab {
+    font-size: 0.85rem;
+    padding: 11px 12px;
+  }
+
   .hero {
     padding-top: 48px;
   }
@@ -2925,12 +2931,29 @@ button {
 
   .case-vignette h2,
   .vignette-grid .case-vignette h2 {
-    font-size: clamp(2rem, 11vw, 3.2rem);
-  }
-
-  .notion-table {
-    grid-template-columns: 1fr;
-    padding: 12px;
-  }
-
-  .hero-vis
+    font-size: clamp(2rem, 11vw, 3.2rem)
+/* ── Sera Ask (Audit result screen) ─────────────────────── */
+.sera-ask-card { margin-top: 16px; }
+.sera-ask-hint { color: #9caab0; font-size: 0.95rem; margin-bottom: 16px; }
+.sera-quick-questions { display: flex; flex-direction: column; gap: 8px; margin-bottom: 16px; }
+.sera-input-row { display: flex; gap: 10px; align-items: stretch; }
+.sera-input {
+  flex: 1;
+  background: #0f191e;
+  border: 1.5px solid #1e2e35;
+  border-radius: 8px;
+  color: #e8edf0;
+  font-size: 0.95rem;
+  padding: 12px 14px;
+  transition: border-color 0.15s;
+}
+.sera-input:focus { border-color: #D6A24A; outline: none; }
+.sera-input::placeholder { color: #4a5d65; }
+.sera-response {
+  background: #0c1a1f;
+  border: 1.5px solid #1e2e35;
+  border-radius: 10px;
+  padding: 20px 24px;
+  margin-top: 8px;
+}
+.sera-response p { color: #d5dddf; font-size: 1rem; line-height: 1.65; }

@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { CTABand, SectionHeader } from "@/components/UI";
-import { SecurityBoundaryVisual } from "@/components/VisualPanels";
+import { SecurityBoundaryVisual, SovereigntyVisual } from "@/components/VisualPanels";
 
 export const metadata: Metadata = {
   title: "Security and Data Ownership",
@@ -40,6 +40,21 @@ export default function SecurityPage() {
             <li>Zoom, Teams, and other meeting platforms can be captured when transcripts or summaries are emailed into the dedicated capture inbox.</li>
             <li>Notion is the default memory backend. Postgres or additional systems of record can be scoped for larger or more technical deployments.</li>
           </ul>
+        </div>
+      </section>
+      <section className="section tight">
+        <div className="container">
+          <SectionHeader
+            eyebrow="Data sovereignty"
+            title="Your data lives in your workspace. Not ours."
+          >
+            Saberra is configured inside accounts your organization controls: Google Workspace, Notion, your AI
+            provider account, Railway, and a dedicated capture inbox. When the engagement ends, every record stays
+            in your workspace. Nothing moves to a vendor database.
+          </SectionHeader>
+          <div style={{ marginTop: 32 }}>
+            <SovereigntyVisual />
+          </div>
         </div>
       </section>
       <section className="section">

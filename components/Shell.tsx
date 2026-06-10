@@ -50,6 +50,8 @@ export function Footer() {
         <div>
           <strong>Product</strong>
           <Link href="/how-it-works">How it works</Link>
+          <Link href="/product">Inside the product</Link>
+          <Link href="/weekly-pulse">Weekly Pulse</Link>
           <Link href="/sera">Ask Sera</Link>
           <Link href="/pricing">Pricing</Link>
         </div>
@@ -69,6 +71,13 @@ export function Footer() {
           <Link href="/security">Security</Link>
           <Link href="/privacy">Privacy</Link>
           <Link href="/terms">Terms</Link>
+        </div>
+        <div>
+          <strong>Cases</strong>
+          <Link href="/cases/governance-coordinator-transition">Governance Transition</Link>
+          <Link href="/cases/nonprofit-leadership-handoff">Nonprofit Handoff</Link>
+          <Link href="/cases/consultancy-delivery-lead">Delivery Lead Transition</Link>
+          <Link href="/resources/key-person-knowledge-loss">Key Person Knowledge Loss</Link>
         </div>
         <div>
           <strong>Category</strong>
