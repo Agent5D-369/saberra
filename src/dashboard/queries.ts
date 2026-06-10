@@ -482,10 +482,10 @@ async function fetchFreshData(activeTz = DASHBOARD_TZ): Promise<DashboardData> {
       { property: 'Status',   select: { equals: 'Open' } },
     ]}),
     dbs.knowledgeBase ? countQuery(dbs.knowledgeBase, { property: 'Status', select: { equals: 'Draft' } }) : Promise.resolve(0),
-    countAll(dbs.policies),
-    countQuery(dbs.policies,  { property: 'Status', select: { equals: 'Draft' } }),
-    countQuery(dbs.policies,  { property: 'Status', select: { equals: 'Active' } }),
-    countQuery(dbs.policies,  { property: 'Responsible Circle', relation: { is_empty: true } }),
+    dbs.policies ? countAll(dbs.policies)                                                                   : Promise.resolve(0),
+    dbs.policies ? countQuery(dbs.policies, { property: 'Status', select: { equals: 'Draft' } })           : Promise.resolve(0),
+    dbs.policies ? countQuery(dbs.policies, { property: 'Status', select: { equals: 'Active' } })          : Promise.resolve(0),
+    dbs.policies ? countQuery(dbs.policies, { property: 'Responsible Circle', relation: { is_empty: true } }) : Promise.resolve(0),
     countAll(dbs.profiles),
     countAll(dbs.meetings),
     countQuery(dbs.circles,   { property: 'Status', select: { equals: 'Active' } }),
@@ -1254,14 +1254,16 @@ export async function getUpcomingReviews(): Promise<UpcomingReviewItem[]> {
       filter: { property: 'Status', select: { equals: 'Active' } } as never,
       page_size: 100,
     }),
-    notion.databases.query({
-      database_id: dbs.policies,
-      filter: { or: [
-        { property: 'Status', select: { equals: 'Active' } },
-        { property: 'Status', select: { equals: 'Under Review' } },
-      ] } as never,
-      page_size: 100,
-    }),
+    dbs.policies
+      ? notion.databases.query({
+          database_id: dbs.policies,
+          filter: { or: [
+            { property: 'Status', select: { equals: 'Active' } },
+            { property: 'Status', select: { equals: 'Under Review' } },
+          ] } as never,
+          page_size: 100,
+        })
+      : Promise.resolve({ results: [] }),
   ]);
 
   for (const p of assignRes.results) {
