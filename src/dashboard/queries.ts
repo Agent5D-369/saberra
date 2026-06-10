@@ -3,7 +3,11 @@ import { getConfig, getNotionDatabaseIds } from '../config/ConfigService';
 import { HubSettingsService } from '../services/HubSettingsService';
 
 function notionDbUrl(id: string | undefined | null): string {
-  return id ? `https://www.notion.so/${id.replace(/-/g, '')}` : '';
+  if (!id) return '';
+  const c = id.replace(/-/g, '');
+  // UUID-with-dashes format routes to workspace page; compact form routes to public-share handler
+  const uuid = `${c.slice(0,8)}-${c.slice(8,12)}-${c.slice(12,16)}-${c.slice(16,20)}-${c.slice(20)}`;
+  return `https://www.notion.so/${uuid}`;
 }
 
 const DASHBOARD_TZ = process.env.DASHBOARD_TIMEZONE ?? 'America/Costa_Rica';
@@ -847,6 +851,7 @@ async function fetchFreshData(activeTz = DASHBOARD_TZ): Promise<DashboardData> {
     fromCache: false,
     cacheAgeSeconds: 0,
     notionUrls: {
+      hub:                 notionDbUrl(config.NOTION_PARENT_PAGE_ID),
       canonChangeRequests: notionDbUrl(dbs.canonChangeRequests),
       memoryReviewQueue:   notionDbUrl(dbs.memoryReviewQueue),
       decisionCandidates:  notionDbUrl(dbs.decisionCandidates),

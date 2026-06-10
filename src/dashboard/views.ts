@@ -1811,6 +1811,7 @@ export function renderDashboard(d: DashboardData, orgName = 'Living Memory'): st
   </div>
   <div class="header-right">
     <a href="/" class="header-meta" title="Click to refresh" style="text-decoration:none;color:inherit;cursor:pointer">${d.fromCache ? `Cached ${cacheAgeStr}` : `Live`}${nextPollIso ? ` &nbsp;·&nbsp; Next poll <span id="next-poll-hdr" data-at="${nextPollIso}">…</span>` : ''}</a>
+    ${d.notionUrls.hub ? `<a href="${d.notionUrls.hub}" target="_blank" rel="noopener" class="btn-ghost" style="text-decoration:none">Notion &#8599;</a>` : ''}
     <button class="btn-ghost" onclick="toggleTheme()" id="theme-btn">Light</button>
     <a href="/" class="btn-ghost btn-reload" style="text-decoration:none">Reload</a>
     <button class="btn-ghost" onclick="signOut()">Sign Out</button>
