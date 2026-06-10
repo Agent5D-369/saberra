@@ -31,16 +31,23 @@ async function countQuery(dbId: string, filter: object): Promise<number> {
   const { notion } = clients();
   let count = 0;
   let cursor: string | undefined;
-  do {
-    const res = await notion.databases.query({
-      database_id: dbId,
-      filter: filter as never,
-      page_size: 100,
-      ...(cursor ? { start_cursor: cursor } : {}),
-    });
-    count += res.results.length;
-    cursor = res.has_more && res.next_cursor ? res.next_cursor : undefined;
-  } while (cursor);
+  try {
+    do {
+      const res = await notion.databases.query({
+        database_id: dbId,
+        filter: filter as never,
+        page_size: 100,
+        ...(cursor ? { start_cursor: cursor } : {}),
+      });
+      count += res.results.length;
+      cursor = res.has_more && res.next_cursor ? res.next_cursor : undefined;
+    } while (cursor);
+  } catch (err: unknown) {
+    // Schema mismatch (e.g. filter expects relation but DB has text) - degrade to 0 rather
+    // than crashing the whole dashboard. Happens on tenants with incomplete schema setup.
+    if ((err as { code?: string })?.code === 'validation_error') return 0;
+    throw err;
+  }
   return count;
 }
 
