@@ -63,6 +63,10 @@ const configSchema = z.object({
   GMAIL_POLL_INTERVAL_SECONDS: z.coerce.number().int().positive().default(180),
   MAX_RETRY_COUNT: z.coerce.number().int().positive().default(4),
 
+  // Human-readable client name used in email subjects and notifications (e.g. "Verdana Commons").
+  // Defaults to TENANT_ID when absent.
+  SABERRA_CLIENT_NAME: z.string().min(1).optional(),
+
   // Governing Purpose Statement — stored as env var, injected into every extraction
   // Format: full multi-sentence purpose statement following the Teal GPS formula
   // Optional — when set, Sera evaluates every decision and canon change for purpose alignment

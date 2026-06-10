@@ -17,6 +17,7 @@ export class ScheduledTaskService {
   private readonly smtp: SmtpService;
   private readonly adminEmail: string;
   private readonly tenantId: string;
+  private readonly clientName: string;
   private readonly claude: Anthropic;
   private readonly claudeModel: string;
   private readonly tasks: TaskDef[];
@@ -27,6 +28,7 @@ export class ScheduledTaskService {
     this.adminEmail = adminEmail;
     const cfg = getConfig();
     this.tenantId = cfg.TENANT_ID;
+    this.clientName = cfg.SABERRA_CLIENT_NAME || cfg.TENANT_ID;
     this.claude = new Anthropic({ apiKey: cfg.ANTHROPIC_API_KEY, maxRetries: 2, timeout: 60_000 });
     this.claudeModel = cfg.CLAUDE_MODEL;
 
@@ -224,7 +226,7 @@ export class ScheduledTaskService {
     // Per-owner gentle nudge emails (trauma-informed: no shame framing, empowering options)
     for (const [email, { ownerName, tasks }] of byOwnerEmail) {
       const lines = tasks.map(t => `  * "${t.name}" - was due ${t.due}`);
-      const subject = `[Amora] A few things in your Notion queue`;
+      const subject = `[${this.clientName}] A few things in your Notion queue`;
       const body = [
         `Hi ${ownerName},`,
         '',
@@ -241,7 +243,7 @@ export class ScheduledTaskService {
         'You know your work better than I do - this is just what I can see.',
         '',
         'With care,',
-        'Sera, Amora Living Memory',
+        `Sera, ${this.clientName}`,
       ].join('\n');
       try {
         await this.smtp.sendEmail(email, subject, body);
@@ -264,7 +266,7 @@ export class ScheduledTaskService {
       adminLines.push('');
     }
 
-    const subject = `[Amora] Task queue nudge sent to ${byOwnerEmail.size} member${byOwnerEmail.size !== 1 ? 's' : ''}`;
+    const subject = `[${this.clientName}] Task queue nudge sent to ${byOwnerEmail.size} member${byOwnerEmail.size !== 1 ? 's' : ''}`;
     const body = [
       `Sera sent a gentle task queue nudge to ${byOwnerEmail.size} member${byOwnerEmail.size !== 1 ? 's' : ''} covering ${total} item${total !== 1 ? 's' : ''} with dates that have passed (${unowned.length} with no owner assigned).`,
       '',
@@ -306,7 +308,7 @@ export class ScheduledTaskService {
       return p['Meeting Title']?.title?.[0]?.plain_text ?? r.id;
     });
 
-    const subject = `[Amora] ${results.length} stuck meeting${results.length !== 1 ? 's' : ''} escalated to Manual Review`;
+    const subject = `[${this.clientName}] ${results.length} stuck meeting${results.length !== 1 ? 's' : ''} escalated to Manual Review`;
     const body = [
       `${results.length} meeting${results.length !== 1 ? 's have' : ' has'} been in Partial status for >7 days and escalated to Manual Review:`,
       '',
@@ -372,7 +374,7 @@ export class ScheduledTaskService {
       lines.push('');
     }
 
-    const subject = `[Amora] ${total} review item${total !== 1 ? 's' : ''} overdue in Notion`;
+    const subject = `[${this.clientName}] ${total} review item${total !== 1 ? 's' : ''} overdue in Notion`;
     const body = [
       `${total} item${total !== 1 ? 's have' : ' has'} been awaiting review for more than 14 days:`,
       '',
@@ -419,7 +421,7 @@ export class ScheduledTaskService {
     });
 
     const lines: string[] = [
-      `Weekly Amora Living Memory Hub digest (${weekAgo} to ${today}):`,
+      `Weekly ${this.clientName} digest (${weekAgo} to ${today}):`,
       '',
       `  Emails ingested:        ${emails.length}`,
       `  Meetings processed:     ${meetings.length}`,
@@ -480,8 +482,8 @@ export class ScheduledTaskService {
     lines.push('Review new items in Notion to keep institutional memory current.');
 
     const subject = urgentQueue.length
-      ? `[Amora] Weekly digest - ${weekAgo} to ${today} (${urgentQueue.length} URGENT)`
-      : `[Amora] Weekly digest - ${weekAgo} to ${today}`;
+      ? `[${this.clientName}] Weekly digest - ${weekAgo} to ${today} (${urgentQueue.length} URGENT)`
+      : `[${this.clientName}] Weekly digest - ${weekAgo} to ${today}`;
     await this.smtp.sendEmail(this.adminEmail, subject, lines.join('\n'));
     logger.info({ emails: emails.length, tasks: tasks.length, decisions: decisions.length, risks: risks.length, meetings: meetings.length, collapseSignals: collapseSignalsWeek.length, urgentQueue: urgentQueue.length }, 'Weekly digest sent');
   }
@@ -758,7 +760,7 @@ export class ScheduledTaskService {
       toStaleRisks.length    ? `  Risks (>90 days open, no activity):       ${toStaleRisks.length} - marked Stale` : '',
     ].filter(Boolean);
 
-    const subject = `[Amora] Lifecycle sweep - ${actualTotal} item${actualTotal !== 1 ? 's' : ''} updated`;
+    const subject = `[${this.clientName}] Lifecycle sweep - ${actualTotal} item${actualTotal !== 1 ? 's' : ''} updated`;
     const body = [
       `Sera updated ${actualTotal} item${actualTotal !== 1 ? 's' : ''} that exceeded their review window:`,
       '',
@@ -926,7 +928,7 @@ export class ScheduledTaskService {
     let synthesis = '';
     try {
       const systemPrompt = [
-        'You are the organisational intelligence layer for Amora, a teal self-managing organisation.',
+        `You are the organisational intelligence layer for ${this.clientName}, a teal self-managing organisation.`,
         'Your role is to synthesise a week of organisational data into a concise, actionable pulse report.',
         'Focus on: (1) patterns and clustering - are risks/tasks concentrating in one area?',
         '(2) tensions worth holding together - where do decisions conflict with risks or tasks?',
@@ -952,8 +954,8 @@ export class ScheduledTaskService {
     }
 
     const subject = urgentQueue.length
-      ? `[Amora] Weekly pulse - ${weekAgo} to ${today} (${urgentQueue.length} URGENT)`
-      : `[Amora] Weekly pulse - ${weekAgo} to ${today}`;
+      ? `[${this.clientName}] Weekly pulse - ${weekAgo} to ${today} (${urgentQueue.length} URGENT)`
+      : `[${this.clientName}] Weekly pulse - ${weekAgo} to ${today}`;
     const body = synthesis
       ? [
           `AMORA WEEKLY PULSE - ${weekAgo} to ${today}`,
