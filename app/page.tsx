@@ -71,8 +71,8 @@ export default function HomePage() {
       <SocialProof />
       <CompetitiveComparison />
       <TrustSection />
-      <SeraDemoSection />
       <AudienceCards />
+      <SeraDemoSection />
       <FitQualifier />
       <FoundingOffer />
       <FAQ />

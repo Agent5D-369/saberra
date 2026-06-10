@@ -6,7 +6,7 @@ import { FoundingAccessForm } from "@/components/LeadForms";
 export const metadata: Metadata = {
   title: "Founding Memory Partner Program",
   description:
-    "Apply for a founding deployment of Saberra — done-for-you institutional memory infrastructure for organizations that already know they are leaking.",
+    "Apply for a founding deployment of Saberra: done-for-you institutional memory infrastructure for organizations that already know they are leaking.",
   alternates: { canonical: "/founding-access" }
 };
 
@@ -24,13 +24,13 @@ const whatYouGet: WhatYouGetItem[] = [
   },
   {
     Icon: FileSearch,
-    title: "Organizational Memory Audit — before and after",
+    title: "Organizational Memory Audit: Before and After",
     body: "We run a pre-deployment memory audit and a post-deployment readout, so you have a clear before-and-after on where context was leaking and what has been closed."
   },
   {
     Icon: Shield,
     title: "Human review workflow designed for your team",
-    body: "We design the approval queue, roll it into your ops rhythm, and train your human reviewer — so the system builds memory you can actually trust, not just capture that accumulates without review."
+    body: "We design the approval queue, roll it into your ops rhythm, and train your human reviewer, so the system builds memory you can actually trust. Not just capture that accumulates without review."
   },
   {
     Icon: Users,
@@ -48,16 +48,16 @@ const lossItems = [
   "Another coordinator transitions and takes six months of governance context with them.",
   "The same strategic decision gets re-debated for the fourth time this quarter.",
   "A new hire spends three months in tribal knowledge archaeology instead of producing.",
-  "The founder is still the operating system at 40 people — and it is getting worse.",
+  "The founder is still the operating system at 40 people, and it is getting worse.",
   "The board asks for the history behind a decision and nobody can find the source."
 ];
 
 const fitItems = [
   "You are between 15 and 200 people on Google Workspace and Google Meet.",
-  "You already use — or are open to using — Notion as a memory backend.",
+  "You already use Notion as a memory backend, or are open to using it.",
   "At least one person can serve as a memory reviewer for 1 to 2 hours per week.",
   "Memory loss is already costing something visible: transitions, re-decisions, slow onboarding, key-person dependency.",
-  "You want done-for-you infrastructure — not a self-serve tool you have to configure yourself."
+  "You want done-for-you infrastructure, not a self-serve tool you have to configure yourself."
 ];
 
 export default function FoundingAccessPage() {
@@ -68,7 +68,7 @@ export default function FoundingAccessPage() {
           <div className="eyebrow">Founding Memory Partner Program</div>
           <h1>This is for leaders who already know their organization is leaking.</h1>
           <p>
-            Three to five organizations will get done-for-you Saberra deployment at founding pricing — with direct
+            Three to five organizations will get done-for-you Saberra deployment at founding pricing, with direct
             access to the founder for 90 days. This is not self-serve. Every piece is configured for your team.
           </p>
         </div>

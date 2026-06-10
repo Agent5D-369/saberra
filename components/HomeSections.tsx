@@ -36,7 +36,7 @@ export function Hero() {
           <h1>Ask Sera what your organization already knows.</h1>
           <p>
             Your team is having the same conversation for the fourth time this quarter. Decisions disappear into
-            transcripts. Context walks out when people leave. Sera stops that — automatically, from the meetings and
+            transcripts. Context walks out when people leave. Sera stops that, automatically, from the meetings and
             emails you already send. No new tools for your team. No new workflows. Just memory that finally sticks.
           </p>
           <div className="trust-line">
@@ -48,7 +48,7 @@ export function Hero() {
               See Sera organize chaos
             </CTAButton>
           </div>
-          <p className="cta-note">Find out exactly where your organization is leaking — in 10 questions.</p>
+          <p className="cta-note">Find out exactly where your organization is leaking, in 10 questions.</p>
         </div>
         <HeroVisual />
       </div>
@@ -115,7 +115,7 @@ export function PainCards() {
   const cards = [
     [
       "If she leaves, we're screwed.",
-      "Too much of what your organization knows lives in people's heads. Every week without a memory layer, that dependency gets worse — not better."
+      "Too much of what your organization knows lives in people's heads. Every week without a memory layer, that dependency gets worse. Not better."
     ],
     [
       "Didn't we already decide this?",
@@ -394,7 +394,7 @@ export function AudienceCards() {
     ],
     [
       "Consultancies and agencies",
-      "Your senior people should not be the archive. Saberra captures the judgment behind the work — not just the deliverables.",
+      "Your senior people should not be the archive. Saberra captures the judgment behind the work, not just the deliverables.",
       "See it for consultancies",
       "/consultancy"
     ]
@@ -450,19 +450,19 @@ export function SocialProof() {
     [
       "Governance transition",
       "A coordinator left. The memory did not.",
-      "A 6-person governance circle used Saberra to surface 38 decisions, 22 role records, and 14 open risks before a coordinator transition. The incoming coordinator asked Sera what changed, who owned what, and which commitments were still open — on day one, without needing to reconstruct six months of meeting history.",
+      "A 6-person governance circle used Saberra to surface 38 decisions, 22 role records, and 14 open risks before a coordinator transition. The incoming coordinator asked Sera what changed, who owned what, and which commitments were still open. On day one, without needing to reconstruct six months of meeting history.",
       ["38 decisions surfaced", "22 role records preserved", "14 open risks made findable on day one"]
     ],
     [
       "Program continuity",
       "The program lead changed. The context stayed.",
-      "A nonprofit program team used Saberra to preserve board decisions, partner commitments, grant follow-ups, and open program risks before a leadership handoff. The new lead inherited the reasoning behind the work — not just folders full of documents with no context for why anything was the way it was.",
+      "A nonprofit program team used Saberra to preserve board decisions, partner commitments, grant follow-ups, and open program risks before a leadership handoff. The new lead inherited the reasoning behind the work, not just folders full of documents with no context for why anything was the way it was.",
       ["Board context preserved", "Grant commitments surfaced", "No 3-month re-ramp period"]
     ],
     [
       "Delivery memory",
       "The senior consultant was no longer the archive.",
-      "A consultancy used Saberra to capture client decisions, delivery risks, and open commitments across calls and email threads. When the delivery lead changed mid-engagement, the full account history was searchable — without pulling the founder back into every client question.",
+      "A consultancy used Saberra to capture client decisions, delivery risks, and open commitments across calls and email threads. When the delivery lead changed mid-engagement, the full account history was searchable, without pulling the founder back into every client question.",
       ["Client decisions source-backed", "Open commitments assigned", "Founder pulled from 4 fewer calls per week"]
     ]
   ];
@@ -545,7 +545,7 @@ export function LeadMagnets() {
             <h2 className="serif">Find out exactly where your organization is leaking.</h2>
             <p>
               Ten questions. Specific results by segment. Tells you whether your memory risk is stable, early-stage,
-              serious, or critical — and which records to fix first.
+              serious, or critical, and which records to fix first.
             </p>
             <div className="cta-row">
               <CTAButton href="/audit">Take the free Memory Audit</CTAButton>
@@ -594,7 +594,7 @@ export function FoundingOffer() {
     <section className="section tight">
       <div className="container">
         <CTABand
-          title="Founding Memory Partner Program — limited spots."
+          title="Founding Memory Partner Program: limited spots."
           copy="We onboard a limited number of teams each month with full founder-led deployment: done-for-you setup, a memory audit before and after, human approval workflow design, and direct founder access for the first 90 days. If you've been nodding through this page, that's the signal."
           primary="Apply for a founding spot"
           primaryHref="/founding-access"
@@ -637,7 +637,7 @@ export function FinalCTA() {
       <div className="container">
         <CTABand
           title="Every week without a memory layer, your organization gets a little harder to run."
-          copy="Decisions keep disappearing. The same conversations keep repeating. The people who remember everything become the bottleneck. Sera stops that — from the work your team is already doing."
+          copy="Decisions keep disappearing. The same conversations keep repeating. The people who remember everything become the bottleneck. Sera stops that, from the work your team is already doing."
           primary="Take the free Memory Audit"
           primaryHref="/audit"
           secondary="Apply for a founding spot"

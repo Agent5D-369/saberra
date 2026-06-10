@@ -17,24 +17,24 @@ export default function PricingPage() {
         <div className="container">
           <h1>Pricing for teams ready to stop operating from chaos.</h1>
           <p>
-            Saberra is a done-for-you deployment — not instant self-serve software. We set up the full system inside
+            Saberra is a done-for-you deployment, not instant self-serve software. We set up the full system inside
             your own tool accounts, configure Sera for your operating patterns, and design the human review workflow
             around your team. You own the record. We handle the setup.
           </p>
         </div>
       </section>
 
-      {/* ── DATA SOVEREIGNTY — elevated above pricing tiers ─────── */}
+      {/* ── DATA SOVEREIGNTY: elevated above pricing tiers ─────── */}
       <section className="section tight">
         <div className="container split">
           <SectionHeader title="Your data never leaves your workspace. No black box. No vendor lock-in.">
-            Saberra is set up inside accounts your organization controls — Google Workspace, Notion, your AI provider
+            Saberra is set up inside accounts your organization controls: Google Workspace, Notion, your AI provider
             account, Railway, and a dedicated capture inbox. Every record Sera has ever touched is inspectable,
             editable, and yours to govern.
           </SectionHeader>
           <ul className="list">
             <li>Your Living Memory Hub lives in your own Notion workspace.</li>
-            <li>Your tool accounts stay yours — Saberra is a configuration, not a custody arrangement.</li>
+            <li>Your tool accounts stay yours. Saberra is a configuration, not a custody arrangement.</li>
             <li>Every record is traceable to its source meeting or email.</li>
             <li>Sera answers from records your team can inspect, edit, and govern.</li>
             <li>Custom data architecture, including Postgres or additional systems of record, available for larger deployments.</li>
@@ -50,7 +50,7 @@ export default function PricingPage() {
       <section className="section">
         <div className="container">
           <CTABand
-            title="If you've been nodding through this page — that's the signal."
+            title="If you have been nodding through this page, that is the signal."
             copy="Book 30 minutes. We'll show you exactly what leaks from your current system and what Saberra would look like for your team."
             primary="Apply for a founding spot"
             primaryHref="/founding-access"

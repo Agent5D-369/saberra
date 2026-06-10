@@ -18,7 +18,7 @@ export default function AuditPage() {
           <h1>Find out exactly where your organization is leaking.</h1>
           <p>
             Ten questions. Segment-specific results. See whether your memory risk is stable, early-stage, serious, or
-            critical — and which records to fix first. Takes about three minutes. Share the result with your team.
+            critical, and which records to fix first. Takes about three minutes. Share the result with your team.
           </p>
         </div>
       </section>

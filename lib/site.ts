@@ -64,27 +64,27 @@ export const captureItems = [
 export const faqs = [
   [
     "How is Saberra different from Fireflies, Otter, or Fathom?",
-    "Meeting tools summarize one conversation and produce a transcript. That transcript still has to become a decision, task, risk, or role record — and in most teams, it never does. Saberra closes that gap: Sera extracts structured records from meetings and emails, a human reviews them, and the approved records become the source Sera answers from."
+    "Meeting tools summarize one conversation and produce a transcript. That transcript still has to become a decision, task, risk, or role record, and in most teams, it never does. Saberra closes that gap: Sera extracts structured records from meetings and emails, a human reviews them, and the approved records become the source Sera answers from."
   ],
   [
     "How is Saberra different from Notion AI?",
-    "Notion AI is useful for what your team already wrote into Notion. It does not solve the behavior problem — the meetings that never get documented, the emails that never get filed, the decisions that lived only in someone's head. Saberra captures what your team forgets to write down, routes it through human review, and then puts the approved records into Notion."
+    "Notion AI is useful for what your team already wrote into Notion. It does not solve the behavior problem: the meetings that never get documented, the emails that never get filed, the decisions that lived only in someone's head. Saberra captures what your team forgets to write down, routes it through human review, and then puts the approved records into Notion."
   ],
   [
     "Does my team have to change how they work?",
-    "No. Your team keeps using Google Meet and email exactly as they do today. Copy Sera on the meetings and email threads that matter. That is the only change your team makes. A human reviewer — usually an ops lead or chief of staff — spends about 1–2 hours per week reviewing Sera's candidate records. Everyone else keeps working normally."
+    "No. Your team keeps using Google Meet and email exactly as they do today. Copy Sera on the meetings and email threads that matter. That is the only change your team makes. A human reviewer, usually an ops lead or chief of staff, spends about 1–2 hours per week reviewing Sera's candidate records. Everyone else keeps working normally."
   ],
   [
     "Where does our data live?",
-    "In your accounts. Saberra is a configured system — not a database your team cannot see. Your Living Memory Hub lives in your own Notion workspace. Your tool accounts stay yours. Every record Sera has ever touched is inspectable, editable, and governable by your team."
+    "In your accounts. Saberra is a configured system, not a database your team cannot see. Your Living Memory Hub lives in your own Notion workspace. Your tool accounts stay yours. Every record Sera has ever touched is inspectable, editable, and governable by your team."
   ],
   [
     "Does Sera make things up?",
-    "No. Sera answers from reviewed, source-backed organizational records — not the open internet, not unreviewed extractions. If the record does not exist, Sera says so. That restraint is deliberate: an AI that confidently invents answers is worse than no system at all."
+    "No. Sera answers from reviewed, source-backed organizational records. Not the open internet, not unreviewed extractions. If the record does not exist, Sera says so. That restraint is deliberate: an AI that confidently invents answers is worse than no system at all."
   ],
   [
     "Does Saberra replace human judgment?",
-    "No — and that is the point. Sera recommends. Your reviewer decides. AI extraction proposes structured records, humans review and approve them, and Sera answers only from the approved record. Nothing becomes trusted organizational truth without a human in the loop."
+    "No, and that is the point. Sera recommends. Your reviewer decides. AI extraction proposes structured records, humans review and approve them, and Sera answers only from the approved record. Nothing becomes trusted organizational truth without a human in the loop."
   ],
   [
     "What tools are required?",
@@ -96,7 +96,7 @@ export const faqs = [
   ],
   [
     "Can Saberra use Postgres or a custom backend instead of Notion?",
-    "Notion is the default because it keeps records inspectable for nontechnical teams without engineering work. Custom data architecture — including Postgres or additional systems of record — is scoped separately for larger or more technical deployments."
+    "Notion is the default because it keeps records inspectable for nontechnical teams without engineering work. Custom data architecture, including Postgres or additional systems of record, is scoped separately for larger or more technical deployments."
   ],
   [
     "Who is Saberra for?",

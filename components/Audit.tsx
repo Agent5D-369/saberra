@@ -82,13 +82,13 @@ function diagnosis(score: number, segment: string): { headline: string; body: st
   if (score <= 18) {
     return {
       headline: "Your memory practices are relatively solid.",
-      body: `${context} Some specific leaks are worth closing — particularly around source traceability and review ownership — but the foundation is there.`
+      body: `${context} Some specific leaks are worth closing, particularly around source traceability and review ownership, but the foundation is there.`
     };
   }
   if (score <= 30) {
     return {
       headline: "Memory is leaking in specific, fixable places.",
-      body: `${context} The gaps are real but addressable. The risk is that early leakage compounds quietly — decisions that disappear today become full context loss in twelve months.`
+      body: `${context} The gaps are real but addressable. The risk is that early leakage compounds quietly: decisions that disappear today become full context loss in twelve months.`
     };
   }
   if (score <= 40) {
@@ -98,8 +98,8 @@ function diagnosis(score: number, segment: string): { headline: string; body: st
     };
   }
   return {
-    headline: "Your organization is bleeding knowledge — and it's accelerating.",
-    body: `${context} At this level, memory loss is no longer a background cost — it is actively slowing decisions, extending onboarding, and creating key-person dependency that will not resolve on its own.`
+    headline: "Your organization is bleeding knowledge, and it is accelerating.",
+    body: `${context} At this level, memory loss is no longer a background cost. It is actively slowing decisions, extending onboarding, and creating key-person dependency that will not resolve on its own.`
   };
 }
 
@@ -137,19 +137,19 @@ export function Audit() {
     const likelyRisks =
       score > 40
         ? [
-            "A key-person departure right now would erase significant operational context — and your team would spend months reconstructing it.",
+            "A key-person departure right now would erase significant operational context. Your team would spend months reconstructing it.",
             "Repeated decisions are costing senior people hours per week they should not be spending.",
             "Tasks and risks are almost certainly escaping from meetings without any durable record."
           ]
         : score > 30
         ? [
-            "Decisions may be findable only by asking the people who were in the room — which is not a system.",
+            "Decisions may be findable only by asking the people who were in the room. That is not a system.",
             "Onboarding is likely too dependent on informal context transfer from whoever has time to help.",
-            "Meeting outcomes are probably not becoming durable records — which means the gaps are accumulating."
+            "Meeting outcomes are probably not becoming durable records, which means the gaps are accumulating."
           ]
         : [
             "Memory practices exist, but they may not compound over time or survive transitions well.",
-            "Some records may be hard to query across time — especially decisions from more than six months ago.",
+            "Some records may be hard to query across time, especially decisions from more than six months ago.",
             "Human review may need clearer ownership before memory becomes consistently trustworthy."
           ];
 

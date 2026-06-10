@@ -97,7 +97,7 @@ export function SegmentPage({
         <div className="container">
           <CTABand
             title="Every month without a memory layer, the gap gets harder to close."
-            copy="Find out exactly where your organization is leaking — in 10 questions. Or apply directly for a founding deployment if the pain is already urgent."
+            copy="Find out exactly where your organization is leaking, in 10 questions. Or apply directly for a founding deployment if the pain is already urgent."
             primary="Take the free Memory Audit"
             primaryHref="/audit"
             secondary="Apply for a founding spot"

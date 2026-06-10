@@ -128,7 +128,7 @@ function FormShell({
         </p>
       ) : null}
       <p className="form-note">
-        {formNote ?? "No automatic signup. No instant access claim. Your details go directly to the Saberra founder — privately — and we respond within two business days."}
+        {formNote ?? "No automatic signup. No instant access claim. Your details go directly to the Saberra founder, privately, and we respond within two business days."}
       </p>
     </form>
   );
@@ -189,7 +189,7 @@ export function DemoRequestForm() {
         <span>What chaos should we map first?</span>
         <textarea name="demo_context" placeholder="Tell us about a specific decision that disappeared, a role transition that went badly, or a handoff that cost your team real time. We will use your real scenario in the call." />
       </label>
-      <p className="form-note">Most calls are 30 minutes and focused on your specific workflow — not a generic product tour.</p>
+      <p className="form-note">Most calls are 30 minutes and focused on your specific workflow, not a generic product tour.</p>
     </FormShell>
   );
 }
@@ -218,7 +218,7 @@ export function FoundingAccessForm() {
       </div>
       <label className="field">
         <span>What is the most expensive memory problem you have right now?</span>
-        <textarea name="why_now" required placeholder="Describe what is leaking — decisions, roles, context, key-person dependency, onboarding drag. The more specific, the better we can assess fit." />
+        <textarea name="why_now" required placeholder="Describe what is leaking: decisions, roles, context, key-person dependency, onboarding drag. The more specific, the better we can assess fit." />
       </label>
     </FormShell>
   );

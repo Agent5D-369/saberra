@@ -68,11 +68,11 @@ export function PricingCards() {
       <div className="container">
         <SectionHeader title="Done-for-you deployment pricing.">
           Saberra is not instant self-serve software. Every deployment includes a guided setup inside your own tool
-          accounts — so your organizational record stays inspectable, editable, and yours.
+          accounts, so your organizational record stays inspectable, editable, and yours.
         </SectionHeader>
         <div className="pricing-grid">
           {tiers.map((tier) => (
-            <article className="card" key={tier.name} style={{ border: tier.name === "Founding Partner" ? "2px solid #D6A24A" : undefined, position: "relative" }}>
+            <article className="card" key={tier.name} style={{ border: tier.name === "Founding Partner" ? "3px solid #D6A24A" : undefined, position: "relative" }}>
               {tier.badge ? (
                 <div style={{ position: "absolute", top: -12, right: 16, background: "#D6A24A", color: "#0A1520", fontSize: "0.78rem", fontWeight: 800, padding: "3px 12px", borderRadius: 20, letterSpacing: "0.04em" }}>
                   {tier.badge}

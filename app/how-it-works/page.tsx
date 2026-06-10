@@ -18,7 +18,7 @@ export default function HowItWorksPage() {
         <div className="container">
           <h1>Your team keeps working. The operating record builds itself.</h1>
           <p>
-            Every meeting, every decision, every role change — Sera organizes it from the emails and transcripts you
+            Every meeting, every decision, every role change: Sera organizes it from the emails and transcripts you
             already produce. Your reviewer approves what becomes trusted. Your organization stops starting over.
           </p>
         </div>
@@ -89,7 +89,7 @@ export default function HowItWorksPage() {
         <div className="container">
           <CTABand
             title="See what your current operating system is missing."
-            copy="Ten questions. Specific results by segment. Find out exactly where decisions, roles, and context are leaking — before the next transition makes it more expensive."
+            copy="Ten questions. Specific results by segment. Find out exactly where decisions, roles, and context are leaking, before the next transition makes it more expensive."
             primary="Take the free Memory Audit"
             primaryHref="/audit"
             secondary="Apply for a founding spot"
