@@ -170,15 +170,13 @@ export function Audit() {
           <h3 style={{ marginTop: 16, marginBottom: 8 }}>{diagHeadline}</h3>
           <p style={{ color: "#d5dddf", fontSize: "1.05rem" }}>{diagBody}</p>
   
-          <div style={{ marginTop: 24 }}>
-            <div className="eyebrow" style={{ marginBottom: 12 }}>What this likely means for your team</div>
+          <div className="risk-grid">
+            <div className="eyebrow">What this likely means for your team</div>
             {likelyRisks.map((risk, i) => (
-              <div key={i} style={{ padding: "12px 16px", background: "rgba(192, 57, 43, 0.08)", borderLeft: "3px solid #C0392B", marginBottom: 10, borderRadius: 6, fontSize: "0.97rem" }}>
-                {risk}
-              </div>
+              <div key={i} className="risk-item">{risk}</div>
             ))}
           </div>
-          <div className="cta-row" style={{ marginTop: 28 }}>
+          <div className="cta-row" style={{ marginTop: 24 }}>
             <CTAButton href="/founding-access">Apply for a founding spot</CTAButton>
             <button className="btn btn-secondary" onClick={handleShare}>
               {copied ? "Copied to clipboard" : "Share my result"}

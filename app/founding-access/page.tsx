@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { ElementType } from "react";
 import { Zap, FileSearch, Shield, Users, Clock } from "lucide-react";
 import { FoundingAccessForm } from "@/components/LeadForms";
 
@@ -10,7 +11,7 @@ export const metadata: Metadata = {
 };
 
 type WhatYouGetItem = {
-  Icon: React.ElementType;
+  Icon: ElementType;
   title: string;
   body: string;
 };
@@ -77,13 +78,17 @@ export default function FoundingAccessPage() {
       <section className="section tight">
         <div className="container">
           <div className="eyebrow">What is included</div>
-          <h2 className="serif" style={{ marginBottom: 40 }}>
+          <h2 className="serif" style={{ marginBottom: 32 }}>
             A fully operational memory layer. Not a tool you have to figure out yourself.
           </h2>
           <div className="grid-2">
-            {whatYouGet.map(({ Icon, title, body }) => (
-              <article className="card" key={title}>
-                <Icon size={28} style={{ color: "#1A7A4A", marginBottom: 12 }} />
+            {whatYouGet.map(({ Icon, title, body }, index) => (
+              <article
+                className="card"
+                key={title}
+                style={index === whatYouGet.length - 1 && whatYouGet.length % 2 !== 0 ? { gridColumn: "1 / -1", maxWidth: 560 } : undefined}
+              >
+                <Icon size={26} style={{ color: "#1A7A4A", marginBottom: 10 }} />
                 <h3>{title}</h3>
                 <p>{body}</p>
               </article>
@@ -102,8 +107,7 @@ export default function FoundingAccessPage() {
               A 40-person self-managing organization onboarded Saberra ahead of a planned governance director
               transition. Over six months, Sera captured 38 decisions, 22 role records, and 14 open risks from
               meeting outputs and email threads. The incoming director had full context on day one. No three-month
-              re-ramp. No calls to the outgoing director to reconstruct what had been decided. The record had
-              already been reviewed and approved — it was just there.
+              re-ramp. No calls to the outgoing director to reconstruct what had been decided.
             </p>
           </article>
         </div>
@@ -114,14 +118,14 @@ export default function FoundingAccessPage() {
         <div className="container split">
           <div>
             <div className="eyebrow">Apply now</div>
-            <h2 className="serif" style={{ marginBottom: 24 }}>
+            <h2 className="serif" style={{ marginBottom: 20 }}>
               If the leak is real, this is worth five minutes.
             </h2>
             <FoundingAccessForm />
           </div>
           <div>
             <div className="eyebrow">Who this is for</div>
-            <h3 style={{ marginBottom: 20 }}>Founding deployments work best when all of these are true:</h3>
+            <h3 style={{ marginBottom: 16 }}>Founding deployments work best when all of these are true:</h3>
             <ul className="list">
               {fitItems.map((item) => (
                 <li key={item}>{item}</li>
@@ -135,14 +139,12 @@ export default function FoundingAccessPage() {
       <section className="section tight">
         <div className="container">
           <div className="eyebrow">The cost of waiting</div>
-          <h2 className="serif" style={{ marginBottom: 32 }}>
+          <h2 className="serif" style={{ marginBottom: 24 }}>
             Every week without a memory layer, this keeps happening.
           </h2>
           <ul className="list">
             {lossItems.map((item) => (
-              <li key={item} style={{ fontSize: "1.1rem", marginBottom: 16 }}>
-                {item}
-              </li>
+              <li key={item} style={{ fontSize: "1.05rem" }}>{item}</li>
             ))}
           </ul>
         </div>

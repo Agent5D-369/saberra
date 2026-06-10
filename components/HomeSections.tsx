@@ -128,7 +128,7 @@ export function PainCards() {
   ];
 
   return (
-    <section className="section">
+    <section className="section tight">
       <div className="container">
         <SectionHeader title="Your team is not careless. Your organization is missing a memory layer." />
         <div className="grid-3">
@@ -433,15 +433,13 @@ export function TrustSection() {
           Saberra does not make your organization&apos;s history a black box. Sera surfaces what happened. Your people
           decide what becomes trusted organizational truth. Every record is inspectable, editable, and source-backed.
         </SectionHeader>
-        <div className="grid-2">
-          <ul className="list">
-            {pillars.map((pillar) => (
-              <li key={pillar}>
-                <ShieldCheck size={18} color="#D6A24A" aria-hidden="true" /> {pillar}
-              </li>
-            ))}
-          </ul>
-        </div>
+        <ul className="list">
+          {pillars.map((pillar) => (
+            <li key={pillar}>
+              <ShieldCheck size={18} color="#D6A24A" aria-hidden="true" /> {pillar}
+            </li>
+          ))}
+        </ul>
       </div>
     </section>
   );
@@ -470,7 +468,7 @@ export function SocialProof() {
   ];
 
   return (
-    <section className="section">
+    <section className="section tight">
       <div className="container">
         <SectionHeader eyebrow="What actually changes" title="The record survives. The organization stops starting over." />
         <div className="vignette-grid">
@@ -593,7 +591,7 @@ export function FoundingOffer() {
     "One person can own memory review (~1–2 hrs/week)"
   ];
   return (
-    <section className="section">
+    <section className="section tight">
       <div className="container">
         <CTABand
           title="Founding Memory Partner Program — limited spots."
@@ -617,7 +615,7 @@ export function FoundingOffer() {
 
 export function FAQ() {
   return (
-    <section className="section">
+    <section className="section tight">
       <div className="container">
         <SectionHeader eyebrow="FAQ" title="The questions you're already asking." />
         <div className="grid-2 split">
@@ -686,7 +684,7 @@ export function SeraLimitations() {
 
 export function SeraDemoSection() {
   return (
-    <section className="section">
+    <section className="section tight">
       <div className="container">
         <SectionHeader eyebrow="Sera" title="Ask Sera what your team already knows." />
         <p style={{ color: "#d5dddf", marginBottom: 32, maxWidth: 640 }}>

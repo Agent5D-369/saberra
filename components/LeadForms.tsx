@@ -77,13 +77,15 @@ function FormShell({
   name,
   redirectPath,
   children,
-  submitLabel
+  submitLabel,
+  formNote
 }: {
   action: string;
   name: string;
   redirectPath: string;
   children: ReactNode;
   submitLabel: string;
+  formNote?: string;
 }) {
   const router = useRouter();
   const [status, setStatus] = useState<"idle" | "submitting" | "error">("idle");
@@ -126,8 +128,7 @@ function FormShell({
         </p>
       ) : null}
       <p className="form-note">
-        No automatic signup. No instant access claim. Your details go directly to the Saberra founder — privately —
-        and we respond within two business days.
+        {formNote ?? "No automatic signup. No instant access claim. Your details go directly to the Saberra founder — privately — and we respond within two business days."}
       </p>
     </form>
   );
@@ -140,6 +141,7 @@ export function NotionTemplateGateForm() {
       name="Living Memory Hub Demo"
       redirectPath="/template-thank-you"
       submitLabel="Show me the demo database instructions"
+      formNote="You will receive access instructions on the next page immediately."
     >
       <div className="form-grid">
         <TextField field={{ label: "Work email", name: "email", type: "email", required: true, placeholder: "you@organization.org" }} />
