@@ -44,11 +44,11 @@ if (!clientId || !clientSecret) {
 // ─── OAuth scopes ─────────────────────────────────────────────────────────────
 
 const SCOPES = [
-  // Current: read Drive files and Docs content, send and read Gmail
+  // Full IMAP/Gmail access - required for IMAP OAUTHBEARER authentication
+  'https://mail.google.com/',
+  // Drive and Docs - read meeting recordings and transcripts
   'https://www.googleapis.com/auth/drive.readonly',
   'https://www.googleapis.com/auth/documents.readonly',
-  'https://www.googleapis.com/auth/gmail.send',
-  'https://www.googleapis.com/auth/gmail.readonly',
   // Sera output capabilities: create/edit Sheets and Slides for teams
   'https://www.googleapis.com/auth/spreadsheets',
   'https://www.googleapis.com/auth/presentations',
