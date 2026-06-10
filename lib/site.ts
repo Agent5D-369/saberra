@@ -1,6 +1,9 @@
 export const siteUrl = "https://saberra.com";
 
-export const notionTemplateUrl = "REPLACE_WITH_NOTION_DUPLICATE_URL";
+export const notionTemplateUrl =
+  "https://newearthcocreators.notion.site/Verdana-Commons-Saberra-Living-Memory-Hub-Demo-076130aaffa3826aa390010a6c8f3910";
+
+export const demoCalendarUrl = "https://calendar.app.google/tVK5xuwheLsiCL4WA";
 
 export const formspreeForms = {
   notionTemplate: "https://formspree.io/f/mbdedveq",
@@ -53,6 +56,7 @@ export const captureItems = [
   ["Governance proposals", "Draft changes, objections, and reviewable canon updates."],
   ["Meeting summaries", "Useful summaries connected to structured records."],
   ["Projects", "Initiatives, commitments, risks, and decision history."],
+  ["Leads and relationships", "Relationship context, follow-ups, and stakeholder history that should not live only in one person's inbox."],
   ["Institutional knowledge", "Lessons, context, practices, and reasoning worth preserving."],
   ["Source emails", "Audit trail for every captured item and every review path."]
 ];
@@ -60,46 +64,42 @@ export const captureItems = [
 export const faqs = [
   [
     "How is Saberra different from Fireflies, Otter, or Fathom?",
-    "Meeting tools summarize individual meetings. Saberra builds cumulative institutional memory across meetings, emails, decisions, tasks, roles, policies, and risks."
+    "Meeting tools summarize one conversation and produce a transcript. That transcript still has to become a decision, task, risk, or role record — and in most teams, it never does. Saberra closes that gap: Sera extracts structured records from meetings and emails, a human reviews them, and the approved records become the source Sera answers from."
   ],
   [
     "How is Saberra different from Notion AI?",
-    "Notion AI helps with what is already written in Notion. Saberra captures what your team forgets to write down, then places reviewed records into Notion."
+    "Notion AI is useful for what your team already wrote into Notion. It does not solve the behavior problem — the meetings that never get documented, the emails that never get filed, the decisions that lived only in someone's head. Saberra captures what your team forgets to write down, routes it through human review, and then puts the approved records into Notion."
   ],
   [
-    "Does Saberra require behavior change?",
-    "No. Your team keeps using Google Meet and email. A Memory Admin reviews extracted records before they become trusted memory, typically about 1-2 hours per week."
+    "Does my team have to change how they work?",
+    "No. Your team keeps using Google Meet and email exactly as they do today. Copy Sera on the meetings and email threads that matter. That is the only change your team makes. A human reviewer — usually an ops lead or chief of staff — spends about 1–2 hours per week reviewing Sera's candidate records. Everyone else keeps working normally."
   ],
   [
     "Where does our data live?",
-    "Client records live in the client's own Notion workspace and tool accounts. Saberra is delivered as a guided setup, not a database your team cannot inspect."
+    "In your accounts. Saberra is a configured system — not a database your team cannot see. Your Living Memory Hub lives in your own Notion workspace. Your tool accounts stay yours. Every record Sera has ever touched is inspectable, editable, and governable by your team."
   ],
   [
-    "Does Sera answer from the internet?",
-    "No. Sera answers from reviewed, sourced organizational records in your memory system."
+    "Does Sera make things up?",
+    "No. Sera answers from reviewed, source-backed organizational records — not the open internet, not unreviewed extractions. If the record does not exist, Sera says so. That restraint is deliberate: an AI that confidently invents answers is worse than no system at all."
   ],
   [
     "Does Saberra replace human judgment?",
-    "No. AI extraction proposes structured records, humans review them, and Sera answers from the approved record."
+    "No — and that is the point. Sera recommends. Your reviewer decides. AI extraction proposes structured records, humans review and approve them, and Sera answers only from the approved record. Nothing becomes trusted organizational truth without a human in the loop."
   ],
   [
     "What tools are required?",
-    "The standard deployment uses Google Workspace, Google Meet, Notion, an AI provider account, Railway, and a dedicated inbox. Google Meet is native, and transcripts or summaries from other meeting platforms can be captured when they are emailed into the dedicated inbox."
-  ],
-  [
-    "Does Saberra work with Zoom or Teams?",
-    "Google Meet is native. For Zoom, Teams, or other meeting platforms, Saberra can process transcripts or summaries when they are emailed into the dedicated capture inbox. Direct platform integrations are scoped separately."
-  ],
-  [
-    "Can Saberra use Postgres or another data backend instead of Notion?",
-    "Notion is the default memory backend because it keeps records inspectable for nontechnical teams. Custom data architecture, including Postgres or additional systems of record, can be scoped for larger or more technical deployments."
+    "Google Workspace and Google Meet are native. Notion is the default memory backend. The full setup also uses an AI provider account, Railway for the pipeline, and a dedicated capture inbox. Transcripts or summaries from Zoom, Teams, or other platforms can be processed when emailed into the capture inbox."
   ],
   [
     "How long does setup take?",
-    "A focused deployment is planned as a guided setup. The first working instance is configured after tool access, inbox routing, and review ownership are ready."
+    "A guided four-week deployment. Week 1: chaos map and source routing. Week 2: capture inbox and Living Memory Hub configuration. Week 3: human approval workflow design. Week 4: Sera operating baseline and first memory intelligence readout."
   ],
   [
-    "Who is Saberra best for?",
-    "Saberra is best for Google Workspace and Notion-based teams with 20 to 200 people that are losing decisions, context, ownership, or key-person knowledge."
+    "Can Saberra use Postgres or a custom backend instead of Notion?",
+    "Notion is the default because it keeps records inspectable for nontechnical teams without engineering work. Custom data architecture — including Postgres or additional systems of record — is scoped separately for larger or more technical deployments."
+  ],
+  [
+    "Who is Saberra for?",
+    "Teams of 15 to 200 people on Google Workspace and Notion that are already feeling the cost of lost decisions, unclear ownership, slow onboarding, or key-person knowledge dependency. If the pain is real, the fit is usually strong."
   ]
 ];

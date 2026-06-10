@@ -1,6 +1,10 @@
+"use client";
+
 import Link from "next/link";
 import Image from "next/image";
+import { useState, type FormEvent } from "react";
 import type { ReactNode } from "react";
+import { useRouter } from "next/navigation";
 import { formspreeForms, notionTemplateUrl, siteUrl } from "@/lib/site";
 import { CTAButton } from "@/components/UI";
 
@@ -81,16 +85,49 @@ function FormShell({
   children: ReactNode;
   submitLabel: string;
 }) {
+  const router = useRouter();
+  const [status, setStatus] = useState<"idle" | "submitting" | "error">("idle");
+
+  async function handleSubmit(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    const form = event.currentTarget;
+    const formData = new FormData(form);
+
+    setStatus("submitting");
+
+    try {
+      const response = await fetch(action, {
+        method: "POST",
+        body: formData,
+        headers: { Accept: "application/json" }
+      });
+
+      if (!response.ok) {
+        throw new Error("Form submission failed.");
+      }
+
+      router.push(redirectPath);
+    } catch {
+      setStatus("error");
+    }
+  }
+
   return (
-    <form className="lead-form card" action={action} method="POST">
+    <form className="lead-form card" action={action} method="POST" onSubmit={handleSubmit}>
       <HiddenFields name={name} redirectPath={redirectPath} />
       {children}
-      <button className="btn btn-primary" type="submit">
-        {submitLabel}
+      <button className="btn btn-primary" type="submit" disabled={status === "submitting"}>
+        {status === "submitting" ? "Sending..." : submitLabel}
       </button>
+      {status === "error" ? (
+        <p className="form-error" role="alert">
+          The form did not submit. You can still continue to the next page, or reach Saberra directly at the contact
+          below.
+        </p>
+      ) : null}
       <p className="form-note">
-        No self-serve signup. No automatic access claim. We use this information to send the requested resource or
-        respond to your request.
+        No automatic signup. No instant access claim. Your details go directly to the Saberra founder — privately —
+        and we respond within two business days.
       </p>
     </form>
   );
@@ -100,9 +137,9 @@ export function NotionTemplateGateForm() {
   return (
     <FormShell
       action={formspreeForms.notionTemplate}
-      name="Institutional Memory OS for Notion"
+      name="Living Memory Hub Demo"
       redirectPath="/template-thank-you"
-      submitLabel="Send me the Memory OS"
+      submitLabel="Show me the demo database instructions"
     >
       <div className="form-grid">
         <TextField field={{ label: "Work email", name: "email", type: "email", required: true, placeholder: "you@organization.org" }} />
@@ -130,7 +167,7 @@ export function DemoRequestForm() {
       action={formspreeForms.demoRequest}
       name="30-Minute Call Request"
       redirectPath="/demo-thank-you"
-      submitLabel="Request a 30-minute call"
+      submitLabel="Continue to scheduling"
     >
       <div className="form-grid">
         {commonFields.map((field) => (
@@ -147,10 +184,10 @@ export function DemoRequestForm() {
         </label>
       </div>
       <label className="field">
-        <span>What should Saberra help you remember?</span>
-        <textarea name="demo_context" placeholder="Tell us about the decisions, risks, roles, or context your team cannot reliably find." />
+        <span>What chaos should we map first?</span>
+        <textarea name="demo_context" placeholder="Tell us about a specific decision that disappeared, a role transition that went badly, or a handoff that cost your team real time. We will use your real scenario in the call." />
       </label>
-      <p className="form-note">Most calls are 30 minutes and focused on fit, current tools, and memory review capacity.</p>
+      <p className="form-note">Most calls are 30 minutes and focused on your specific workflow — not a generic product tour.</p>
     </FormShell>
   );
 }
@@ -159,9 +196,9 @@ export function FoundingAccessForm() {
   return (
     <FormShell
       action={formspreeForms.foundingAccess}
-      name="Founder-Led Memory Deployment"
+      name="Founding Memory Partner Application"
       redirectPath="/founding-thank-you"
-      submitLabel="Submit fit details"
+      submitLabel="Submit my application"
     >
       <div className="form-grid">
         {commonFields.map((field) => (
@@ -173,13 +210,13 @@ export function FoundingAccessForm() {
           <input name="team_size" required placeholder="Example: 75" />
         </label>
         <label className="field">
-          <span>Memory Admin candidate</span>
+          <span>Human reviewer candidate</span>
           <input name="memory_admin" placeholder="Who could own review?" />
         </label>
       </div>
       <label className="field">
-        <span>Why now?</span>
-        <textarea name="why_now" required placeholder="What memory loss pain is urgent enough to solve now?" />
+        <span>What is the most expensive memory problem you have right now?</span>
+        <textarea name="why_now" required placeholder="Describe what is leaking — decisions, roles, context, key-person dependency, onboarding drag. The more specific, the better we can assess fit." />
       </label>
     </FormShell>
   );
@@ -197,28 +234,29 @@ export function TemplateDeliveryCard() {
         width={520}
         height={130}
       />
-      <h2 className="serif">Your manual memory OS is ready.</h2>
+      <h2 className="serif">Your demo hub is ready.</h2>
       <p>
-        The template gives you the structure: 20 Notion databases, suggested views, and example records for decisions,
-        risks, roles, tasks, meetings, policies, review queues, source records, and organizational context.
+        Open the demo database first. It includes sample records so you can see how the Living Memory Hub is meant to
+        work before you make your own copy.
       </p>
       <p>
-        Saberra adds the missing automation: meeting and email capture, review routing, source traceability, weekly
-        pulse, and Sera answering from the reviewed record.
+        In Notion, use the duplicate control in the top-right of the shared page. Choose your own workspace. Notion will
+        copy the hub and its linked databases into your account.
       </p>
       <p>
-        If your team manually maintains this for even one week, you will feel exactly why the full system exists.
+        Want a clean version with no demo data? Duplicate the copied hub inside your own workspace, then delete the
+        example records from the second copy. Keep the original demo copy as a reference while you set up your clean hub.
       </p>
       <div className="cta-row">
         {hasTemplate ? (
           <Link className="btn btn-primary" href={notionTemplateUrl}>
-            Duplicate the Memory OS
+            Open the demo database
           </Link>
         ) : (
           <span className="btn btn-secondary">Notion duplicate link pending</span>
         )}
         <CTAButton href="/demo" variant="secondary">
-          Book a 30-minute call
+          Schedule a walkthrough
         </CTAButton>
       </div>
     </article>

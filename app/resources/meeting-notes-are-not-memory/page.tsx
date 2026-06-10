@@ -66,8 +66,8 @@ export default function MeetingNotesAreNotMemoryPage() {
       <section className="section">
         <div className="container">
           <CTABand
-            title="Build memory, not another pile of notes."
-            copy="Start with the manual Memory OS, then see how Saberra keeps it updated from the meetings and emails your team already creates."
+            title="Build operating intelligence, not another pile of notes."
+            copy="Open the Living Memory Hub demo, then see how Sera keeps it updated from the meetings and emails your team already creates."
           />
         </div>
       </section>

@@ -6,7 +6,7 @@ import { SovereigntyVisual } from "@/components/VisualPanels";
 export const metadata: Metadata = {
   title: "Pricing",
   description:
-    "Saberra pricing for teams that need done-for-you setup, reviewed memory records, Sera answers, and a Notion memory backend.",
+    "Saberra pricing for teams that need a done-for-you AI operations layer with Sera, human approval, and a private Living Memory Hub.",
   alternates: { canonical: "/pricing" }
 };
 
@@ -15,42 +15,46 @@ export default function PricingPage() {
     <main>
       <section className="page-hero">
         <div className="container">
-          <h1>Pricing for teams that are done losing decisions.</h1>
+          <h1>Pricing for teams ready to stop operating from chaos.</h1>
           <p>
-            Saberra is currently delivered as a done-for-you setup for teams using Google Workspace and Notion. We map
-            where memory leaks, configure the capture and review workflow, and help your team start asking Sera from
-            reviewed records.
+            Saberra is a done-for-you deployment — not instant self-serve software. We set up the full system inside
+            your own tool accounts, configure Sera for your operating patterns, and design the human review workflow
+            around your team. You own the record. We handle the setup.
           </p>
         </div>
       </section>
-      <PricingCards />
+
+      {/* ── DATA SOVEREIGNTY — elevated above pricing tiers ─────── */}
       <section className="section tight">
         <div className="container split">
-          <SectionHeader title="Your data. Your tools. Your memory.">
-            Saberra is set up inside accounts your organization controls: Google Workspace, Notion, your AI provider
-            account, Railway, and a dedicated capture inbox. We handle the technical setup and review workflow, but your
-            organizational record stays inspectable in your workspace.
+          <SectionHeader title="Your data never leaves your workspace. No black box. No vendor lock-in.">
+            Saberra is set up inside accounts your organization controls — Google Workspace, Notion, your AI provider
+            account, Railway, and a dedicated capture inbox. Every record Sera has ever touched is inspectable,
+            editable, and yours to govern.
           </SectionHeader>
           <ul className="list">
-            <li>Your memory lives in your Notion workspace by default.</li>
-            <li>Your tool accounts stay yours.</li>
-            <li>Saberra does not hide your organizational history in a database your team cannot inspect.</li>
+            <li>Your Living Memory Hub lives in your own Notion workspace.</li>
+            <li>Your tool accounts stay yours — Saberra is a configuration, not a custody arrangement.</li>
+            <li>Every record is traceable to its source meeting or email.</li>
             <li>Sera answers from records your team can inspect, edit, and govern.</li>
-            <li>Custom data architecture, including Postgres or additional systems of record, can be scoped for larger deployments.</li>
+            <li>Custom data architecture, including Postgres or additional systems of record, available for larger deployments.</li>
           </ul>
         </div>
         <div className="container" style={{ marginTop: 26 }}>
           <SovereigntyVisual />
         </div>
       </section>
+
+      <PricingCards />
+
       <section className="section">
         <div className="container">
           <CTABand
-            title="Talk through fit before deployment."
-            copy="Best-fit teams have 15 to 200 people, run on Google Workspace, use or are willing to use Notion, and feel real pain from lost decisions, unclear ownership, or key-person knowledge."
-            primary="Get the manual Memory OS"
-            primaryHref="/notion-template"
-            secondary="Book a 30-minute call"
+            title="If you've been nodding through this page — that's the signal."
+            copy="Book 30 minutes. We'll show you exactly what leaks from your current system and what Saberra would look like for your team."
+            primary="Apply for a founding spot"
+            primaryHref="/founding-access"
+            secondary="See Sera organize chaos"
             secondaryHref="/demo"
           />
         </div>

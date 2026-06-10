@@ -20,13 +20,13 @@ import {
 
 export function MemoryLoopVisual() {
   const inputs = ["Transcript", "Email thread", "Decision", "Task", "Risk", "Role change"];
-  const records = ["Decision Candidates", "Tasks", "Risks", "Roles", "Policies", "Review Queue"];
+  const records = ["Decision Candidates", "Tasks", "Risks", "Roles", "Projects", "Review Queue"];
 
   return (
-    <div className="visual-panel memory-loop-visual" aria-label="Saberra memory loop visual">
+    <div className="visual-panel memory-loop-visual" aria-label="Saberra operating intelligence loop visual">
       <div className="visual-header">
-        <span className="eyebrow">From scattered to remembered</span>
-        <strong>Work output becomes reviewed memory.</strong>
+        <span className="eyebrow">From scattered to trusted</span>
+        <strong>Work output becomes operating intelligence.</strong>
       </div>
       <div className="memory-loop-grid">
         <div className="visual-stack">
@@ -46,8 +46,8 @@ export function MemoryLoopVisual() {
           </div>
           <div className="converter-card">
             <Sparkles size={22} aria-hidden="true" />
-            <strong>AI extraction</strong>
-            <small>Structured candidates, never trusted memory yet</small>
+            <strong>Sera structures</strong>
+            <small>Candidate records, not trusted yet</small>
           </div>
           <div className="converter-card approved">
             <CheckCircle size={22} aria-hidden="true" />
@@ -79,15 +79,15 @@ export function NotionTemplateVisual() {
   ];
 
   return (
-    <div className="visual-panel notion-template-visual" aria-label="Institutional Memory OS for Notion preview">
+    <div className="visual-panel notion-template-visual" aria-label="Saberra Living Memory Hub preview">
       <div className="visual-header">
-        <span className="eyebrow">Manual Memory OS</span>
-        <strong>Institutional Memory OS for Notion</strong>
+        <span className="eyebrow">Living Memory Hub</span>
+        <strong>Private backend for trusted records</strong>
       </div>
       <div className="notion-window">
         <div className="notion-sidebar">
           <span className="mark">S</span>
-          <p>Memory OS</p>
+          <p>Living Hub</p>
           {columns.map(([name]) => (
             <div className="sidebar-row" key={name}>
               <Archive size={13} aria-hidden="true" /> {name}

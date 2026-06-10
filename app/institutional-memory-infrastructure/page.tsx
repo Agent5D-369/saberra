@@ -4,9 +4,9 @@ import { MemoryLoopVisual, ProductDashboardVisual, SecurityBoundaryVisual } from
 import { siteUrl } from "@/lib/site";
 
 export const metadata: Metadata = {
-  title: "Institutional Memory Infrastructure",
+  title: "AI Organizational Intelligence Infrastructure",
   description:
-    "A practical guide for teams that need decisions, roles, risks, tasks, policies, and source records to stay findable after meetings and handoffs.",
+    "A practical guide for teams that need meetings, emails, decisions, roles, risks, tasks, policies, people, and projects organized into trusted operating intelligence.",
   alternates: { canonical: "/institutional-memory-infrastructure" },
   keywords: [
     "institutional memory infrastructure",
@@ -16,9 +16,9 @@ export const metadata: Metadata = {
     "source-backed organizational memory"
   ],
   openGraph: {
-    title: "Institutional Memory Infrastructure",
+    title: "AI Organizational Intelligence Infrastructure",
     description:
-      "A practical guide for preserving decisions, roles, risks, tasks, policies, and sources after meetings and handoffs.",
+      "A practical guide for turning organizational chaos into human-reviewed operating intelligence.",
     url: `${siteUrl}/institutional-memory-infrastructure`,
     images: ["/og.svg"]
   }
@@ -28,10 +28,10 @@ export default function InstitutionalMemoryInfrastructurePage() {
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": "TechArticle",
-    headline: "Institutional Memory Infrastructure",
+    headline: "AI Organizational Intelligence Infrastructure",
     description:
-      "A practical guide to preserving decisions, roles, risks, tasks, policies, and source records after meetings and handoffs.",
-    about: ["institutional memory", "organizational memory", "knowledge management", "AI retrieval"],
+      "A practical guide to turning meetings and emails into trusted operating intelligence.",
+    about: ["AI organizational intelligence", "institutional memory", "organizational memory", "AI operations"],
     mainEntityOfPage: `${siteUrl}/institutional-memory-infrastructure`
   };
 
@@ -40,11 +40,11 @@ export default function InstitutionalMemoryInfrastructurePage() {
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
       <section className="page-hero">
         <div className="container">
-          <div className="eyebrow">Memory system guide</div>
-          <h1>A serious memory system keeps decisions findable after the meeting ends.</h1>
+          <div className="eyebrow">Infrastructure guide</div>
+          <h1>A serious AI operations layer turns scattered work into a trusted record.</h1>
           <p>
-            Search only helps when the record already exists. Teams need a way to capture what happened, review what
-            matters, keep sources attached, and ask clear questions later.
+            Search only helps when the record already exists. Teams need a way to capture what happened, organize what
+            matters, route it through human approval, keep sources attached, and ask clear questions later.
           </p>
         </div>
       </section>
@@ -58,22 +58,22 @@ export default function InstitutionalMemoryInfrastructurePage() {
           </aside>
           <article className="category-article">
             <section id="loop">
-              <h2>The job is to close the memory loop.</h2>
+              <h2>The job is to close the operating loop.</h2>
               <p>
                 Teams already create memory signals every day: meeting outputs, email threads, decisions, risks,
                 assignments, roles, policies, and governance records. The problem is that those signals rarely become
-                trusted, structured, searchable records. Saberra closes that loop.
+                trusted, structured, searchable records. Sera closes that loop by preparing the operating record for review.
               </p>
               <MemoryLoopVisual />
             </section>
             <section id="architecture">
-              <h2>What a working memory system includes.</h2>
+              <h2>What a working AI operations layer includes.</h2>
               <div className="grid-3">
                 {[
                   ["Capture", "Google Meet is native. Transcripts or summaries from other platforms can be emailed into the capture inbox."],
-                  ["Extraction", "AI extraction turns source material into candidate decisions, tasks, risks, roles, policies, and context."],
-                  ["Review", "A Memory Admin approves, corrects, or rejects candidates before they become trusted memory."],
-                  ["Storage", "Notion is the default memory backend, with custom data architecture scoped when needed."],
+                  ["Extraction", "Sera turns source material into candidate decisions, tasks, risks, roles, policies, people, projects, and context."],
+                  ["Review", "A human reviewer approves, corrects, or rejects candidates before they become trusted memory."],
+                  ["Storage", "The Living Memory Hub is the default private backend, with custom data architecture scoped when needed."],
                   ["Retrieval", "Sera answers in plain English from reviewed records and cites sources."],
                   ["Operations", "Memory health, intake status, and review workload remain visible."]
                 ].map(([title, copy]) => (
@@ -107,11 +107,11 @@ export default function InstitutionalMemoryInfrastructurePage() {
       <section className="section tight">
         <div className="container">
           <CTABand
-            title="See what your memory system would need."
-            copy="Start with the manual Memory OS, then book a focused call when you want to map capture, review, storage, and Sera answers for your actual tools."
-            primary="Get the manual Memory OS"
+            title="See what your AI operations layer would need."
+            copy="Start with the Living Memory Hub demo, then book a focused walkthrough when you want to map meetings, emails, decisions, tasks, roles, policies, people, and projects from your actual tools."
+            primary="Open the demo hub"
             primaryHref="/notion-template"
-            secondary="Book a 30-minute call"
+            secondary="See Sera organize chaos"
             secondaryHref="/demo"
           />
         </div>

@@ -34,18 +34,18 @@ export function SegmentPage({
           <h1>{headline}</h1>
           <p>{subheadline}</p>
           <div className="cta-row">
-            <a className="btn btn-primary" href="/notion-template">
-              Get the manual Memory OS
+            <a className="btn btn-primary" href="/founding-access">
+              Apply for a founding spot
             </a>
-            <a className="btn btn-secondary" href="/demo">
-              Book a 30-minute call
+            <a className="btn btn-secondary" href="/audit">
+              Take the free Memory Audit
             </a>
           </div>
         </div>
       </section>
       <section className="section">
         <div className="container split">
-          <SectionHeader title="The pain is not lack of intelligence. It is lack of durable memory.">
+          <SectionHeader title="The pain is not lack of intelligence. It is scattered operating context.">
             {painIntro}
           </SectionHeader>
           <ul className="list">
@@ -80,7 +80,7 @@ export function SegmentPage({
       <ProcessFlow />
       <section className="section tight">
         <div className="container">
-          <SectionHeader title="What Saberra preserves for this team." />
+          <SectionHeader title="What Sera organizes for this team." />
           <div className="grid-3">
             {captures.map((item) => (
               <article className="card" key={item[0]}>
@@ -96,8 +96,12 @@ export function SegmentPage({
       <section className="section">
         <div className="container">
           <CTABand
-            title="Find the leaks in your organizational memory."
-            copy="Start with the manual Memory OS, then book a focused call when you want to talk through the automated capture and review loop."
+            title="Every month without a memory layer, the gap gets harder to close."
+            copy="Find out exactly where your organization is leaking — in 10 questions. Or apply directly for a founding deployment if the pain is already urgent."
+            primary="Take the free Memory Audit"
+            primaryHref="/audit"
+            secondary="Apply for a founding spot"
+            secondaryHref="/founding-access"
           />
         </div>
       </section>

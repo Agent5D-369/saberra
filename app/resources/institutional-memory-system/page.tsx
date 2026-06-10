@@ -69,8 +69,8 @@ export default function InstitutionalMemorySystemPage() {
       <section className="section">
         <div className="container">
           <CTABand
-            title="Start with the manual version."
-            copy="Use the manual Memory OS to see what a complete institutional memory structure looks like before automating capture and review with Saberra."
+            title="See what Sera would organize."
+            copy="Open the Living Memory Hub demo to see the backend structure, then see how Sera keeps it current from meetings and emails."
           />
         </div>
       </section>

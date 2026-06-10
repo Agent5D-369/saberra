@@ -5,7 +5,7 @@ import { SecurityBoundaryVisual } from "@/components/VisualPanels";
 export const metadata: Metadata = {
   title: "Security and Data Ownership",
   description:
-    "How Saberra keeps organizational memory inspectable, human-reviewed, source-backed, and owned by the client.",
+    "How Saberra keeps operating intelligence inspectable, human-reviewed, source-backed, and owned by the client.",
   alternates: { canonical: "/security" }
 };
 
@@ -14,7 +14,7 @@ export default function SecurityPage() {
     <main>
       <section className="page-hero">
         <div className="container">
-          <h1>Your memory should live where your team can inspect it.</h1>
+          <h1>Your operating intelligence should live where your team can inspect it.</h1>
           <p>
             Saberra is built so your team can see the records, review what becomes trusted, and trace answers back to
             sources.
@@ -45,8 +45,8 @@ export default function SecurityPage() {
       <section className="section">
         <div className="container">
           <CTABand
-            title="A memory system should make trust easier to inspect."
-            copy="Start with the manual Memory OS, then book a focused call when you want to evaluate fit, tools, and review ownership."
+            title="An AI operations layer should make trust easier to inspect."
+            copy="Start with the Living Memory Hub demo, then book a focused walkthrough when you want to evaluate fit, tools, source boundaries, and human approval ownership."
           />
         </div>
       </section>

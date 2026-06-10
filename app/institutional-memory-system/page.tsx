@@ -195,7 +195,7 @@ export default function InstitutionalMemorySystemPage() {
             copy="Take the 10-question audit to see where decisions, context, tasks, and role history are leaking from your current system."
             primary="Take the Memory Audit"
             primaryHref="/audit"
-            secondary="Get the manual Memory OS"
+            secondary="Open the demo hub"
             secondaryHref="/notion-template"
           />
         </div>

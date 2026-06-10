@@ -4,9 +4,9 @@ import { SectionHeader } from "@/components/UI";
 import { DatabaseMapVisual, NotionTemplateVisual } from "@/components/VisualPanels";
 
 export const metadata: Metadata = {
-  title: "Manual Memory OS for Notion",
+  title: "Saberra Living Memory Hub Demo",
   description:
-    "Get the manual Memory OS for Notion: 20 structured databases for decisions, risks, roles, tasks, meetings, policies, review queues, and source records.",
+    "Access the Saberra Living Memory Hub demo in Notion and learn how to duplicate it into your own workspace.",
   alternates: { canonical: "/notion-template" }
 };
 
@@ -15,27 +15,26 @@ export default function NotionTemplatePage() {
     <main>
       <section className="page-hero">
         <div className="container">
-          <h1>Get the manual Institutional Memory OS for Notion.</h1>
+          <h1>Open the Saberra Living Memory Hub demo.</h1>
           <p>
-            A practical 20-database Notion structure for teams that want decisions, risks, roles, tasks, meetings,
-            policies, source records, and review queues to stop disappearing.
+            See the private Notion backend where decisions, risks, roles, tasks, meetings, policies, source records,
+            review queues, and operating memory can live.
           </p>
         </div>
       </section>
       <section className="section tight">
         <div className="container split">
           <div>
-            <SectionHeader eyebrow="Manual Memory OS" title="The structure helps. The manual upkeep reveals the problem.">
-              The template gives you the decision, risk, role, task, meeting, policy, source, and review structure
-              Saberra uses. It does not capture emails, route meeting transcripts, draft records, manage review, or let
-              your team ask Sera for sourced answers.
+            <SectionHeader eyebrow="Living Memory Hub" title="Explore the backend before Sera starts organizing it.">
+              The demo shows the decision, risk, role, task, meeting, policy, source, profile, project, and review
+              structure Saberra uses. It does not capture emails, route meeting transcripts, draft records, manage
+              review, or let your team ask Sera for sourced answers until Saberra is configured.
             </SectionHeader>
             <article className="card challenge-card">
-              <h3>Run the 7-day Memory Stress Test.</h3>
+              <h3>Duplicate it in the easiest possible way.</h3>
               <p>
-                Duplicate the template, then manually add every decision, risk, role change, policy update, source
-                email, and meeting outcome your team creates this week. If the structure helps but the upkeep feels
-                unrealistic, you have found the exact gap Saberra automates.
+                Submit the short form, open the demo database, use Notion&apos;s duplicate control to copy it into your
+                workspace, then duplicate that local copy again if you want a clean version with no sample records.
               </p>
             </article>
             <NotionTemplateVisual />
@@ -47,9 +46,9 @@ export default function NotionTemplatePage() {
         <div className="container">
           <div className="grid-3">
             {[
-              ["20 structured databases", "Decisions, tasks, risks, roles, policies, meetings, people, sources, review queues, and institutional context."],
-              ["Views and example records", "Start with a working manual system instead of a blank Notion page."],
-              ["Clear automation gap", "When manual updates become the bottleneck, Saberra captures meeting and email output, routes records for review, keeps sources attached, and lets your team ask Sera."]
+              ["Demo database access", "Open the working Living Memory Hub with sample decisions, tasks, risks, roles, policies, meetings, people, sources, and review queues."],
+              ["Local duplication", "Copy the hub into your own Notion workspace so you can inspect, edit, and test the structure."],
+              ["Clean database option", "Duplicate your local copy again, remove the sample records, and keep the original demo copy as a reference."]
             ].map(([title, copy]) => (
               <article className="card" key={title}>
                 <h3>{title}</h3>

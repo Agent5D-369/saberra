@@ -30,7 +30,7 @@ export function Header() {
           ))}
         </nav>
         <Link className="btn btn-primary" href="/notion-template">
-          Get the manual Memory OS <ArrowRight size={16} aria-hidden="true" />
+          Open the demo hub <ArrowRight size={16} aria-hidden="true" />
         </Link>
       </div>
     </header>
@@ -45,7 +45,7 @@ export function Footer() {
           <Link className="brand" href="/">
             <BrandLogo />
           </Link>
-          <p>Institutional memory for teams that cannot afford to forget.</p>
+          <p>Sera turns organizational chaos into human-reviewed operating intelligence.</p>
         </div>
         <div>
           <strong>Product</strong>
@@ -62,7 +62,7 @@ export function Footer() {
         <div>
           <strong>Trust</strong>
           <Link href="/audit">Memory Audit</Link>
-          <Link href="/notion-template">Notion Template</Link>
+          <Link href="/notion-template">Demo Hub</Link>
           <Link href="/founding-access">Founding Access</Link>
           <Link href="/partners">Partner Referrals</Link>
           <Link href="/resources">Resources</Link>

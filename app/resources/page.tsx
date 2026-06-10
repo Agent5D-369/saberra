@@ -23,8 +23,8 @@ export default function ResourcesPage() {
       "/resources/meeting-notes-are-not-memory"
     ],
     [
-      "Institutional Memory OS for Notion",
-      "A 20-database manual system for teams that want to see what good memory structure looks like.",
+      "Living Memory Hub for Notion",
+      "A private backend structure for teams that want decisions, tasks, roles, policies, people, and projects to become inspectable.",
       "/resources/notion-institutional-memory-template"
     ],
     [
@@ -54,18 +54,18 @@ export default function ResourcesPage() {
       <section className="page-hero">
         <div className="container split">
           <div>
-            <h1>Guides for teams tired of losing decisions.</h1>
+            <h1>Guides for teams tired of operating from scattered context.</h1>
             <p>
-              Start here if your team keeps re-deciding the same issues, searching for old context, rebuilding what
-              someone used to know, or wondering why Notion never stays current after meetings.
+              Start here if your team keeps re-deciding the same issues, losing tasks after meetings, searching for old
+              context, rebuilding what someone used to know, or wondering why Notion never stays current.
             </p>
           </div>
           <EditorialVisual
             src="/editorial-category-map.svg"
             alt="Comparison of meeting notes, knowledge bases, search, and institutional memory systems."
             eyebrow="Category"
-            title="Name the missing system."
-            copy="Most teams do not need more notes. They need a reliable way to preserve decisions, owners, risks, and sources."
+            title="Name the missing layer."
+            copy="Most teams do not need more notes. They need an AI operations layer that turns work output into records humans can approve."
           />
         </div>
       </section>
@@ -88,11 +88,11 @@ export default function ResourcesPage() {
       <section className="section">
         <div className="container">
           <CTABand
-            title="Get the manual Memory OS, then automate it."
-            copy="Get the manual Memory OS: 20 databases for decisions, tasks, risks, roles, meetings, policies, review queues, and source records. Use it manually first, then see what Saberra keeps updated automatically."
-            primary="Get the manual Memory OS"
+            title="Open the Living Memory Hub, then see what Sera automates."
+            copy="Inspect the backend for decisions, tasks, risks, roles, meetings, policies, people, projects, review queues, and source records. Then see how Sera keeps it current from meetings and emails."
+            primary="Open the demo hub"
             primaryHref="/notion-template"
-            secondary="Book a 30-minute call"
+            secondary="See Sera organize chaos"
             secondaryHref="/demo"
           />
         </div>

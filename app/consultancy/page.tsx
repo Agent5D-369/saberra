@@ -11,32 +11,31 @@ export const metadata: Metadata = {
 export default function ConsultancyPage() {
   return (
     <SegmentPage
-      headline="Client context should not live only in your best people."
-      subheadline="Saberra captures client decisions, delivery context, risks, commitments, and institutional knowledge before they disappear into calls and inboxes."
+      headline="Your senior people should not be the archive. But right now, they are."
+      subheadline="Saberra captures client decisions, delivery risks, open commitments, and the judgment behind the work — before it disappears into calls, inboxes, and the heads of the people who can't be in every meeting anymore."
       visualType="consultancy"
-      painIntro="Consultancies and agencies lose margin when delivery memory lives inside senior people. The work may be documented, but the judgment behind the work is often trapped in calls, inboxes, and hallway context."
+      painIntro="Consultancies and agencies lose real margin when delivery memory lives inside senior people. The documents exist. The judgment behind them is trapped in calls, inboxes, and hallway context that never makes it into any system."
       pains={[
-        "Client history lives in senior people who cannot be in every delivery conversation.",
-        "Delivery commitments get made in calls but do not always become operational records.",
-        "Risks and decisions are remembered differently across the team.",
-        "New delivery leads inherit documents without the judgment behind them."
+        "Client history lives in senior people who cannot be pulled into every delivery conversation — but keep getting pulled in anyway.",
+        "Delivery commitments get made in calls and vanish. The client remembers. Your team does not.",
+        "Account transitions become expensive context reconstruction exercises instead of clean handoffs.",
+        "New delivery leads inherit documentation without the reasoning that explains why anything was done the way it was."
       ]}
-      proofTitle="Your senior people should not be the archive."
-      proofCopy="When a delivery lead changes, a client escalates, or a founder steps out of day-to-day work, the team should be able to find the actual decision, source, commitment, risk, and reasoning without asking the busiest person in the company."
+      proofTitle="The delivery lead changed. The client never noticed."
+      proofCopy="A consultancy used Saberra to capture client decisions, delivery risks, and open commitments across calls and email threads. When the delivery lead changed mid-engagement, the full account history was searchable — without pulling the founder back into every question the new lead should have been able to answer independently."
       languageTitle="Built for delivery memory"
       language={[
-        "Client decisions become records, not folklore.",
-        "Commitments made in calls become inspectable follow-through.",
-        "Delivery risks stay visible across account transitions.",
-        "Senior judgment becomes organizational memory over time."
+        "Client decisions become records, not folklore that shifts with every retelling.",
+        "Commitments made in calls become inspectable follow-through items — with source context.",
+        "Delivery risks stay visible across account transitions, not buried in someone's inbox.",
+        "Senior judgment compounds over time instead of leaving with the person who holds it."
       ]}
       captures={[
         ["Client decisions", "Approved choices, tradeoffs, and client commitments with source citations."],
         ["Delivery risks", "Risks surfaced in calls before they turn into scope, margin, or relationship issues."],
-        ["Open commitments", "Follow-through items from meetings and email, tied to owners and source context."],
+              ["Open commitments", "Follow-through items from meetings and email, tied to owners and source context."],
         ["Project context", "The why behind delivery decisions, not just the latest project document."],
-        ["Senior judgment", "Patterns and reasoning from experienced people made available to the team."],
-        ["Source-backed history", "Answers grounded in records the team can inspect instead of memory debates."]
+        ["Senior judgment", "Patterns and reasoning from experienced people made available to the team."]
       ]}
     />
   );

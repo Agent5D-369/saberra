@@ -2,8 +2,8 @@ import type { Metadata } from "next";
 import { TemplateDeliveryCard } from "@/components/LeadForms";
 
 export const metadata: Metadata = {
-  title: "Your Manual Memory OS",
-  description: "Duplicate the manual Institutional Memory OS for Notion and see what the full Saberra system automates.",
+  title: "Access the Saberra Demo Database",
+  description: "Open, duplicate, and clean the Saberra Living Memory Hub demo database in Notion.",
   alternates: { canonical: "/template-thank-you" },
   robots: { index: false, follow: false }
 };
@@ -13,10 +13,10 @@ export default function TemplateThankYouPage() {
     <main>
       <section className="page-hero">
         <div className="container">
-          <h1>Structure first. Automation second.</h1>
+          <h1>Access the Saberra Living Memory Hub demo.</h1>
           <p>
-            Use the manual template to see what durable institutional memory requires. Then notice the work your team
-            should not have to do by hand.
+            Open the demo database, duplicate it into your Notion workspace, then make a clean copy when you are ready
+            to test it with your own records.
           </p>
         </div>
       </section>

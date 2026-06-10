@@ -59,8 +59,8 @@ export default function SaberraVsMeetingNotetakersPage() {
       <section className="section">
         <div className="container">
           <CTABand
-            title="Summaries are useful. Memory is durable."
-            copy="Start with the manual Memory OS, then see how Saberra keeps it current from meetings, transcripts, and email."
+            title="Summaries are useful. Operating intelligence is durable."
+            copy="Open the Living Memory Hub demo, then see how Sera keeps it current from meetings, transcripts, and email."
           />
         </div>
       </section>

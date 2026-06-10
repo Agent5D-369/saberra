@@ -54,7 +54,7 @@ export default function NotionAiVsSaberraPage() {
         <div className="container">
           <CTABand
             title="Your Notion workspace can become the record your team actually trusts."
-            copy="Get the manual 20-database Memory OS, then see what Saberra automates."
+            copy="Open the Living Memory Hub demo, then see how Sera keeps it current from meetings, emails, decisions, tasks, roles, policies, people, and projects."
           />
         </div>
       </section>

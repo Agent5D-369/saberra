@@ -4,9 +4,9 @@ import { SectionHeader } from "@/components/UI";
 import { PipelineAnatomyVisual } from "@/components/VisualPanels";
 
 export const metadata: Metadata = {
-  title: "Book a 30-Minute Call",
+  title: "See Sera Organize Your Chaos",
   description:
-    "Book a 30-minute Saberra call and see how Google Meet outputs and email become reviewed, sourced institutional memory.",
+    "Show us how your team actually works. We'll show you what it would look like if Sera had been in the room — in 30 minutes.",
   alternates: { canonical: "/demo" }
 };
 
@@ -15,19 +15,39 @@ export default function DemoPage() {
     <main>
       <section className="page-hero">
         <div className="container">
-          <h1>See how Saberra would remember for your team.</h1>
+          <h1>Show us your real workflow. We&apos;ll show you what Sera would have captured.</h1>
           <p>
-            Request a 30-minute walkthrough of the capture, AI extraction, human review, Notion memory, and Sera answer
-            workflow.
+            Bring a real meeting scenario, a real decision that disappeared, or a real handoff that went wrong. We will
+            map your actual operating patterns through the system — and show you exactly what the record would look like
+            if it had existed.
           </p>
         </div>
       </section>
+
+      {/* ── VIGNETTE ABOVE FORM ──────────────────────────────────── */}
+      <section className="section tight">
+        <div className="container">
+          <article className="case-vignette" style={{ maxWidth: 860, margin: "0 auto 40px" }}>
+            <div className="eyebrow">What typically changes in 30 minutes</div>
+            <h2 className="serif">The senior consultant was no longer the archive.</h2>
+            <p>
+              A growing consultancy used Saberra to capture client decisions, delivery risks, and open commitments
+              across calls and email threads. When the delivery lead changed mid-engagement, the full account history
+              was searchable. The new lead had context on day one — without pulling the founder back in for every
+              question that should already have been answerable.
+            </p>
+          </article>
+        </div>
+      </section>
+
+      {/* ── FORM + VISUAL ─────────────────────────────────────────── */}
       <section className="section tight">
         <div className="container split demo-layout">
           <div>
-            <SectionHeader title="A demo should make the mechanism obvious.">
-              We will look at the kinds of meetings, email threads, decisions, risks, tasks, and roles your team already
-              produces, then show where Saberra would capture and structure them.
+            <SectionHeader title="Bring the chaos. Leave with a memory map.">
+              Show us a real meeting scenario, a decision that disappeared, or a handoff that went badly. We will map
+              your actual operating patterns through Saberra and show you exactly what the record would look like if
+              it had existed.
             </SectionHeader>
             <PipelineAnatomyVisual />
           </div>

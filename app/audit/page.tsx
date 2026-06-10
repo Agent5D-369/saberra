@@ -15,10 +15,10 @@ export default function AuditPage() {
     <main>
       <section className="page-hero">
         <div className="container">
-          <h1>Is your organization hemorrhaging knowledge?</h1>
+          <h1>Find out exactly where your organization is leaking.</h1>
           <p>
-            Take the 10-question Organizational Memory Audit and see where decisions, context, tasks, and institutional
-            knowledge are leaking from your system.
+            Ten questions. Segment-specific results. See whether your memory risk is stable, early-stage, serious, or
+            critical — and which records to fix first. Takes about three minutes. Share the result with your team.
           </p>
         </div>
       </section>
@@ -28,8 +28,8 @@ export default function AuditPage() {
             src="/editorial-audit-diagnosis.svg"
             alt="Organizational Memory Audit report showing decision, context, task, and key-person memory risks."
             eyebrow="Diagnosis"
-            title="Make memory risk visible."
-            copy="The audit turns repeated decisions, key-person dependency, missing follow-through, and onboarding drag into a concrete score."
+            title="Make the leak visible before it gets more expensive."
+            copy="The audit turns repeated decisions, key-person dependency, missing follow-through, and onboarding drag into a concrete, shareable score. Most teams use it to start a real conversation about what the cost of the current system actually is."
           />
           <AuditReportVisual />
         </div>

@@ -71,7 +71,7 @@ export function SeraPortrait({
     <Image
       className={`sera-portrait sera-portrait-${size}`}
       src={src}
-      alt="Sera, Saberra's AI memory colleague"
+      alt="Sera, Saberra's AI organizational operator"
       width={dimensions}
       height={dimensions}
       priority={size === "lg"}
@@ -82,9 +82,9 @@ export function SeraPortrait({
 export function CTABand({
   title,
   copy,
-  primary = "Get the manual Memory OS",
+  primary = "Open the demo hub",
   primaryHref = "/notion-template",
-  secondary = "Book a 30-minute call",
+  secondary = "Schedule a walkthrough",
   secondaryHref = "/demo"
 }: {
   title: string;

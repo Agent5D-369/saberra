@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { CTAButton } from "@/components/UI";
+import { demoCalendarUrl } from "@/lib/site";
 
 export const metadata: Metadata = {
   title: "Demo Request Received",
@@ -13,13 +14,14 @@ export default function DemoThankYouPage() {
     <main>
       <section className="page-hero">
         <div className="container">
-          <h1>Demo request received.</h1>
+          <h1>Next step: schedule your 30-minute demo.</h1>
           <p>
-            We will review your context and respond with the next step. In the meantime, the Memory Audit is the fastest
-            way to sharpen the conversation.
+            Pick a slot on the calendar, then bring one or two examples of decisions, tasks, risks, roles, or context
+            your team cannot reliably find. The walkthrough will focus on how Sera would organize that chaos into
+            human-reviewed operating intelligence.
           </p>
           <div className="cta-row">
-            <CTAButton href="/notion-template">Get the manual Memory OS</CTAButton>
+            <CTAButton href={demoCalendarUrl}>Schedule your demo slot</CTAButton>
             <CTAButton href="/how-it-works" variant="secondary">
               See how Saberra works
             </CTAButton>

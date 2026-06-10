@@ -54,84 +54,134 @@ const questions = [
   }
 ];
 
-function band(score: number) {
-  if (score <= 18) return "Stable memory base";
-  if (score <= 30) return "Early memory leakage";
-  if (score <= 40) return "Serious institutional memory risk";
-  return "Critical knowledge bleed";
+function band(score: number): { label: string; color: string } {
+  if (score <= 18) return { label: "Stable memory base", color: "#1A7A4A" };
+  if (score <= 30) return { label: "Early memory leakage", color: "#D6A24A" };
+  if (score <= 40) return { label: "Serious operating intelligence gap", color: "#C07800" };
+  return { label: "Critical knowledge bleed", color: "#C0392B" };
 }
 
-function diagnosis(score: number, segment: string) {
-  const prefix =
-    segment === "Self-managing or governance-driven team"
-      ? "Your governance model needs memory that is as distributed as your authority."
-      : segment === "Nonprofit or social enterprise"
-        ? "Your mission depends on continuity through role changes, board cycles, and program transitions."
-        : segment === "Consultancy or agency"
-          ? "Your delivery quality depends on preserving client context before it concentrates in senior people."
-          : segment === "Founder-led growing company"
-            ? "Your team is likely outgrowing founder memory as the operating system."
-            : "Your organization may be carrying hidden memory risk across meetings, email, and documentation.";
+function diagnosis(score: number, segment: string): { headline: string; body: string } {
+  const bandLabel = band(score).label;
 
-  return `${prefix} ${band(score)} means your records are ${score > 30 ? "not yet durable enough for the decisions your team is making." : "showing useful structure, with specific leaks worth closing."}`;
+  const segmentContext: Record<string, string> = {
+    "Self-managing or governance-driven team":
+      "Your governance model depends on distributed memory. Right now, authority is more distributed than the record that should support it.",
+    "Nonprofit or social enterprise":
+      "Your mission depends on continuity through role changes, board cycles, and program transitions. The gaps in your record are creating real continuity risk.",
+    "Consultancy or agency":
+      "Your delivery margin depends on client context not walking out the door with your senior people. The gaps here represent direct financial exposure.",
+    "Founder-led growing company":
+      "Your team has likely outgrown founder memory as the operating system. The gaps here are creating a bottleneck that compounds with every new hire.",
+    "Not sure":
+      "Your organization is carrying hidden memory risk across meetings, email, and documentation gaps."
+  };
+
+  const context = segmentContext[segment] ?? segmentContext["Not sure"];
+
+  if (score <= 18) {
+    return {
+      headline: "Your memory practices are relatively solid.",
+      body: `${context} Some specific leaks are worth closing — particularly around source traceability and review ownership — but the foundation is there.`
+    };
+  }
+  if (score <= 30) {
+    return {
+      headline: "Memory is leaking in specific, fixable places.",
+      body: `${context} The gaps are real but addressable. The risk is that early leakage compounds quietly — decisions that disappear today become full context loss in twelve months.`
+    };
+  }
+  if (score <= 40) {
+    return {
+      headline: "Your organization has a serious operating intelligence gap.",
+      body: `${context} This is the stage where the same decisions keep being made, onboarding takes too long, and a key departure becomes a genuine crisis. The longer this continues, the more it costs.`
+    };
+  }
+  return {
+    headline: "Your organization is bleeding knowledge — and it's accelerating.",
+    body: `${context} At this level, memory loss is no longer a background cost — it is actively slowing decisions, extending onboarding, and creating key-person dependency that will not resolve on its own.`
+  };
+}
+
+function getShareText(score: number, segment: string, bandLabel: string): string {
+  return `I scored ${score}/50 on the Saberra Organizational Memory Audit.\n\nResult: ${bandLabel}\nSegment: ${segment}\n\n${diagnosis(score, segment).headline}\n\nTake the free audit at saberra.com/audit`;
 }
 
 export function Audit() {
   const [segment, setSegment] = useState(segments[0]);
   const [step, setStep] = useState(0);
   const [answers, setAnswers] = useState<number[]>(Array(questions.length).fill(3));
+  const [copied, setCopied] = useState(false);
   const score = useMemo(() => answers.reduce((sum, value) => sum + value, 0), [answers]);
   const complete = step >= questions.length;
   const progress = complete ? 100 : Math.round((step / questions.length) * 100);
+  const { label: bandLabel } = band(score);
+  const { headline: diagHeadline, body: diagBody } = useMemo(
+    () => diagnosis(score, segment),
+    [score, segment]
+  );
 
   function updateAnswer(value: number) {
     setAnswers((current) => current.map((answer, index) => (index === step ? value : answer)));
   }
 
+  function handleShare() {
+    const text = getShareText(score, segment, bandLabel);
+    navigator.clipboard.writeText(text).then(() => {
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2500);
+    });
+  }
+
   if (complete) {
     const likelyRisks =
       score > 40
-        ? ["Key-person departure could erase critical context.", "Repeated decisions are likely costing senior time.", "Tasks and risks may be escaping review."]
+        ? [
+            "A key-person departure right now would erase significant operational context — and your team would spend months reconstructing it.",
+            "Repeated decisions are costing senior people hours per week they should not be spending.",
+            "Tasks and risks are almost certainly escaping from meetings without any durable record."
+          ]
         : score > 30
-          ? ["Decisions may be findable only through people.", "Onboarding likely depends on informal context transfer.", "Meeting outcomes may not become durable records."]
-          : ["Memory practices exist but may not compound.", "Some records may be hard to query across time.", "Human review may need clearer ownership."];
+        ? [
+            "Decisions may be findable only by asking the people who were in the room — which is not a system.",
+            "Onboarding is likely too dependent on informal context transfer from whoever has time to help.",
+            "Meeting outcomes are probably not becoming durable records — which means the gaps are accumulating."
+          ]
+        : [
+            "Memory practices exist, but they may not compound over time or survive transitions well.",
+            "Some records may be hard to query across time — especially decisions from more than six months ago.",
+            "Human review may need clearer ownership before memory becomes consistently trustworthy."
+          ];
 
     return (
       <div className="audit-shell">
         <article className="card">
-          <div className="eyebrow">Audit result</div>
-          <h2 className="serif" style={{ fontSize: "clamp(2.4rem, 7vw, 5rem)", margin: "8px 0", lineHeight: 1 }}>
+          <div className="eyebrow">Your organizational memory audit result</div>
+          <h2
+            className="serif"
+            style={{ fontSize: "clamp(2.4rem, 7vw, 5rem)", margin: "8px 0", lineHeight: 1 }}
+          >
             {score} out of 50
           </h2>
           <div className="badges">
-            <SourceBadge label={band(score)} />
+            <SourceBadge label={bandLabel} />
             <SourceBadge label={segment} />
           </div>
-          <p style={{ color: "#d5dddf", fontSize: "1.1rem" }}>{diagnosis(score, segment)}</p>
-        </article>
-        <div className="grid-3">
-          {likelyRisks.map((risk) => (
-            <article className="card" key={risk}>
-              <h3>{risk}</h3>
-              <p>Recommended next step: map the records that should exist, then compare them with what your team can actually find.</p>
-            </article>
-          ))}
-        </div>
-        <article className="card">
-          <h3>Turn this diagnosis into a memory map</h3>
-          <p>
-            The next step is a working session that maps where decisions, roles, risks, tasks, and context currently
-            live, then identifies what Saberra would capture automatically.
-          </p>
-          <div className="cta-row">
-            <CTAButton href="/demo">
-              Book a 30-minute call
-            </CTAButton>
-            <CTAButton href="/notion-template" variant="secondary">
-              Get the manual Memory OS
-            </CTAButton>
-            <button className="btn btn-secondary audit-retake" onClick={() => setStep(0)}>
-              Retake audit
+          <h3 style={{ marginTop: 16, marginBottom: 8 }}>{diagHeadline}</h3>
+          <p style={{ color: "#d5dddf", fontSize: "1.05rem" }}>{diagBody}</p>
+  
+          <div style={{ marginTop: 24 }}>
+            <div className="eyebrow" style={{ marginBottom: 12 }}>What this likely means for your team</div>
+            {likelyRisks.map((risk, i) => (
+              <div key={i} style={{ padding: "12px 16px", background: "rgba(192, 57, 43, 0.08)", borderLeft: "3px solid #C0392B", marginBottom: 10, borderRadius: 6, fontSize: "0.97rem" }}>
+                {risk}
+              </div>
+            ))}
+          </div>
+          <div className="cta-row" style={{ marginTop: 28 }}>
+            <CTAButton href="/founding-access">Apply for a founding spot</CTAButton>
+            <button className="btn btn-secondary" onClick={handleShare}>
+              {copied ? "Copied to clipboard" : "Share my result"}
             </button>
           </div>
         </article>
@@ -167,10 +217,10 @@ export function Audit() {
           {questions[step].options.map((label, index) => {
             const value = index + 1;
             return (
-            <button className={`score-button ${answers[step] === value ? "active" : ""}`} key={value} onClick={() => updateAnswer(value)}>
-              <span className="score-number">{value}</span>
-              <span>{label}</span>
-            </button>
+              <button className={`score-button ${answers[step] === value ? "active" : ""}`} key={value} onClick={() => updateAnswer(value)}>
+                <span className="score-number">{value}</span>
+                <span>{label}</span>
+              </button>
             );
           })}
         </div>
