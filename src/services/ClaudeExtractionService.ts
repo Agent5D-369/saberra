@@ -202,7 +202,7 @@ export class ClaudeExtractionService {
     this.client = new Anthropic({
       apiKey: config.ANTHROPIC_API_KEY,
       maxRetries: 3,
-      timeout: 60_000,
+      timeout: 120_000,
     });
     this.model = config.CLAUDE_MODEL;
     // Seed from env vars; HubSettingsService will override with live Notion values
