@@ -109,8 +109,9 @@ export class ScheduledTaskService {
         this.notion.dbIds.processingEvents,
         {
           and: [
-            { property: 'Source Type', select: { equals: 'Setup' } },
-            { property: 'Source ID',   rich_text: { equals: `sched:${taskName}` } },
+            { property: 'Event Type', select: { equals: 'Scheduled Task' } },
+            { property: 'Tenant ID',  rich_text: { equals: this.tenantId } },
+            { property: 'Details',    rich_text: { contains: `sched:${taskName}` } },
             { timestamp: 'created_time', created_time: { after: cutoff } } as any,
           ],
         } as any,
@@ -118,7 +119,6 @@ export class ScheduledTaskService {
       );
       return results.length === 0;
     } catch {
-      // If we can't check, assume due — better to run twice than skip
       return true;
     }
   }
@@ -127,15 +127,13 @@ export class ScheduledTaskService {
     const now = new Date().toISOString();
     try {
       await this.notion.createPage(this.notion.dbIds.processingEvents, {
-        'Event ID':     N.title(`sched:${taskName}:${now}`),
-        'Tenant ID':    N.richText(this.tenantId),
-        'Source Type':  N.select('Setup'),
-        'Source ID':    N.richText(`sched:${taskName}`),
-        'Event Type':   N.select('scheduled_task'),
-        Status:         N.select('completed'),
-        'Started At':   N.date(now),
-        'Completed At': N.date(now),
-        'Retry Count':  N.number(0),
+        Event:         N.title(`Scheduled Task — ${taskName}`),
+        'Tenant ID':   N.richText(this.tenantId),
+        'Event Type':  N.select('Scheduled Task'),
+        Service:       N.select('Worker'),
+        Status:        N.select('Success'),
+        Timestamp:     N.date(now),
+        Details:       N.richText(`sched:${taskName}`),
       });
     } catch (err) {
       logger.warn({ err, taskName }, 'Failed to record scheduled task run — will re-run next cycle');
@@ -147,15 +145,12 @@ export class ScheduledTaskService {
   private async writeHeartbeat(): Promise<void> {
     const now = new Date().toISOString();
     await this.notion.createPage(this.notion.dbIds.processingEvents, {
-      'Event ID':     N.title(`heartbeat:${now}`),
-      'Tenant ID':    N.richText(this.tenantId),
-      'Source Type':  N.select('Setup'),
-      'Source ID':    N.richText('sched:heartbeat'),
-      'Event Type':   N.select('heartbeat'),
-      Status:         N.select('completed'),
-      'Started At':   N.date(now),
-      'Completed At': N.date(now),
-      'Retry Count':  N.number(0),
+      Event:        N.title('Heartbeat'),
+      'Tenant ID':  N.richText(this.tenantId),
+      'Event Type': N.select('Heartbeat'),
+      Service:      N.select('Worker'),
+      Status:       N.select('Info'),
+      Timestamp:    N.date(now),
     });
   }
 
@@ -636,7 +631,7 @@ export class ScheduledTaskService {
         this.notion.dbIds.processingEvents,
         {
           and: [
-            { property: 'Event Type', select: { equals: 'heartbeat' } },
+            { property: 'Event Type', select: { equals: 'Heartbeat' } },
             { timestamp: 'created_time', created_time: { before: heartbeatCutoff } } as any,
           ],
         } as any,
@@ -646,7 +641,7 @@ export class ScheduledTaskService {
         this.notion.dbIds.processingEvents,
         {
           and: [
-            { property: 'Event Type', select: { does_not_equal: 'heartbeat' } },
+            { property: 'Event Type', select: { does_not_equal: 'Heartbeat' } },
             { timestamp: 'created_time', created_time: { before: otherCutoff } } as any,
           ],
         } as any,

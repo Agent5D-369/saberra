@@ -163,9 +163,7 @@ export class PipelineService {
 
       await this.processRetries(ctx);
 
-      await this.events.logComplete(this.tenantId, 'IMAP', 'poll', 'poll_start', startedAt, {
-        createdRecords: [`processed:${messages.length}`],
-      });
+      await this.events.logComplete(this.tenantId, 'IMAP', 'poll', 'poll_start', startedAt);
     } catch (err) {
       const msg = err instanceof Error ? err.message : String(err);
       await this.events.logError(this.tenantId, 'IMAP', 'poll', 'poll_start', startedAt, msg);
@@ -392,8 +390,6 @@ export class PipelineService {
     });
 
     await this.events.logComplete(this.tenantId, parsed.emailType, parsed.messageId, 'extraction', parsed.receivedDate, {
-      createdRecords,
-      claudeModelUsed: getConfig().CLAUDE_MODEL,
       tokenEstimate: extraction.tokens,
     });
 
@@ -797,8 +793,6 @@ export class PipelineService {
     }
 
     await this.events.logComplete(this.tenantId, this.toEventSourceType(parsed.emailType), parsed.messageId, 'extraction', parsed.receivedDate, {
-      createdRecords,
-      claudeModelUsed: getConfig().CLAUDE_MODEL,
       tokenEstimate: extraction.tokens,
     });
   }
@@ -1022,8 +1016,6 @@ export class PipelineService {
       });
     }
     await this.events.logComplete(this.tenantId, this.toEventSourceType(assetType), asset.id, 'extraction', retryStartedAt, {
-      createdRecords,
-      claudeModelUsed: getConfig().CLAUDE_MODEL,
       tokenEstimate: extraction.tokens,
     });
     logger.info({ assetId: asset.id, assetType }, 'Retry succeeded');

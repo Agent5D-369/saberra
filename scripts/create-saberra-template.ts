@@ -1088,7 +1088,7 @@ async function run() {
   // 23. Processing Events
   const processingEventsId = await createDb(PARENT!, 'Processing Events', {
     Event:             title('Short description of this event, e.g. "Extraction complete — [Meeting Name]".'),
-    'Event Type':      sel(['Poll Start', 'Email Ingested', 'Access Check', 'Extraction Start', 'Extraction Complete', 'Extraction Failed', 'Retry Queued', 'Access Requested', 'Manual Review Flagged', 'Poll Complete'],
+    'Event Type':      sel(['Poll Start', 'Poll Complete', 'Email Ingested', 'Access Check', 'Extraction Start', 'Extraction Complete', 'Extraction Failed', 'Retry Queued', 'Access Requested', 'Manual Review Flagged', 'Admin Action', 'Heartbeat', 'Scheduled Task'],
                          'Which step in the pipeline this event records.'),
     Service:           sel(['Worker', 'API', 'Dashboard'],
                          'Which Sera service generated this event.'),

@@ -240,8 +240,6 @@ export interface AccessFailure {
 
 export interface RecentError {
   id: string;
-  sourceType: string;
-  sourceId: string;
   error: string;
   startedAt: string;
 }
@@ -249,13 +247,9 @@ export interface RecentError {
 export interface ActivityItem {
   id: string;
   eventType: string;
-  sourceType: string;
-  sourceId: string;
-  status: 'completed' | 'failed' | 'started';
+  status: 'Success' | 'Error' | 'Info' | 'Warning';
   startedAt: string;
-  claudeModel: string;
   tokenEstimate: number;
-  createdRecords: string;
   error: string;
 }
 
@@ -502,22 +496,22 @@ async function fetchFreshData(activeTz = DASHBOARD_TZ): Promise<DashboardData> {
     }),
     notion.databases.query({
       database_id: dbs.processingEvents,
-      filter: { property: 'Status', select: { equals: 'failed' } } as never,
+      filter: { property: 'Status', select: { equals: 'Error' } } as never,
       page_size: 10,
       sorts: [{ timestamp: 'created_time', direction: 'descending' }],
     }),
     notion.databases.query({
       database_id: dbs.processingEvents,
       filter: { and: [
-        { property: 'Event Type', select: { equals: 'poll_start' } },
-        { property: 'Status',     select: { equals: 'completed' } },
+        { property: 'Event Type', select: { equals: 'Poll Start' } },
+        { property: 'Status',     select: { equals: 'Success' } },
       ] } as never,
       page_size: 1,
       sorts: [{ timestamp: 'created_time', direction: 'descending' }],
     }),
     notion.databases.query({
       database_id: dbs.processingEvents,
-      filter: { property: 'Source ID', rich_text: { equals: 'sched:heartbeat' } } as never,
+      filter: { property: 'Event Type', select: { equals: 'Heartbeat' } } as never,
       page_size: 1,
       sorts: [{ timestamp: 'created_time', direction: 'descending' }],
     }),
@@ -526,7 +520,7 @@ async function fetchFreshData(activeTz = DASHBOARD_TZ): Promise<DashboardData> {
       database_id: dbs.sourceEmails,
       filter: { or: [
         { property: 'Processing Status', select: { equals: 'Failed' } },
-        { property: 'Processing Status', select: { equals: 'Processing' } },
+        { property: 'Processing Status', select: { equals: 'Pending' } },
       ] } as never,
       page_size: 50,
       sorts: [{ timestamp: 'created_time', direction: 'descending' }],
@@ -665,14 +659,14 @@ async function fetchFreshData(activeTz = DASHBOARD_TZ): Promise<DashboardData> {
     const page = p as unknown as Record<string, unknown>;
     return {
       id: String(page.id ?? ''),
-      sourceType: extractProp(page, 'Source Type'),
-      sourceId: extractProp(page, 'Source ID'),
-      error: extractProp(page, 'Error'),
-      startedAt: extractProp(page, 'Started At') || String((page as Record<string, string>).created_time ?? ''),
+      error: extractProp(page, 'Details'),
+      startedAt: extractProp(page, 'Timestamp') || String((page as Record<string, string>).created_time ?? ''),
     };
   });
 
-  const ACTIVITY_NOISE = new Set(['heartbeat', 'poll_start', 'email_classified', 'asset_parsed', 'access_check', 'text_export', 'notion_write']);
+  const ACTIVITY_NOISE = new Set([
+    'Heartbeat', 'Scheduled Task', 'Poll Start', 'Poll Complete', 'Email Ingested', 'Access Check', 'Extraction Start',
+  ]);
   const recentActivity: ActivityItem[] = recentActivityRes.results
     .filter(p => {
       const et = extractProp(p as unknown as Record<string, unknown>, 'Event Type');
@@ -681,18 +675,14 @@ async function fetchFreshData(activeTz = DASHBOARD_TZ): Promise<DashboardData> {
     .slice(0, 20)
     .map(p => {
       const page = p as unknown as Record<string, unknown>;
-      const status = extractProp(page, 'Status') as ActivityItem['status'];
+      const status = (extractProp(page, 'Status') || 'Info') as ActivityItem['status'];
       return {
-        id:             String(page.id ?? ''),
-        eventType:      extractProp(page, 'Event Type'),
-        sourceType:     extractProp(page, 'Source Type'),
-        sourceId:       extractProp(page, 'Source ID'),
-        status:         status || 'started',
-        startedAt:      extractProp(page, 'Started At') || String((page as Record<string, string>).created_time ?? ''),
-        claudeModel:    extractProp(page, 'Claude Model Used'),
-        tokenEstimate:  Number(extractProp(page, 'Token Estimate')) || 0,
-        createdRecords: extractProp(page, 'Created Records'),
-        error:          extractProp(page, 'Error'),
+        id:            String(page.id ?? ''),
+        eventType:     extractProp(page, 'Event Type'),
+        status,
+        startedAt:     extractProp(page, 'Timestamp') || String((page as Record<string, string>).created_time ?? ''),
+        tokenEstimate: Number(extractProp(page, 'Token Count')) || 0,
+        error:         extractProp(page, 'Details'),
       };
     });
 
@@ -1306,20 +1296,19 @@ export async function getUpcomingReviews(): Promise<UpcomingReviewItem[]> {
 
 async function logAdminAction(action: string, targetId: string): Promise<void> {
   const { notion, dbs } = clients();
+  const tenantId = process.env.TENANT_ID ?? 'unknown';
   const now = new Date().toISOString();
   try {
     await notion.pages.create({
       parent: { database_id: dbs.processingEvents },
       properties: {
-        'Event ID':    { title: [{ text: { content: `admin_action:${targetId}` } }] },
-        'Tenant ID':   { rich_text: [{ text: { content: 'amora' } }] },
-        'Source Type': { select: { name: 'dashboard' } },
-        'Source ID':   { rich_text: [{ text: { content: targetId } }] },
-        'Event Type':  { select: { name: 'admin_action' } },
-        Status:        { select: { name: 'completed' } },
-        'Started At':  { date: { start: now } },
-        'Completed At':{ date: { start: now } },
-        'Created Records': { rich_text: [{ text: { content: action } }] },
+        Event:         { title: [{ text: { content: `Admin Action — ${action}` } }] },
+        'Tenant ID':   { rich_text: [{ text: { content: tenantId } }] },
+        'Event Type':  { select: { name: 'Admin Action' } },
+        Service:       { select: { name: 'Dashboard' } },
+        Status:        { select: { name: 'Success' } },
+        Timestamp:     { date: { start: now } },
+        Details:       { rich_text: [{ text: { content: `${action}: ${targetId}` } }] },
       } as never,
     });
   } catch { /* never let audit logging crash a user action */ }

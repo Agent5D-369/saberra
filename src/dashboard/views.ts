@@ -1603,41 +1603,27 @@ export function renderDashboard(d: DashboardData, orgName = 'Living Memory'): st
 
   const errorsHtml = d.recentErrors.length === 0
     ? '<p class="dim">No recent errors.</p>'
-    : `<table><thead><tr><th>Source Type</th><th>Source ID</th><th>Error</th><th>When</th></tr></thead><tbody>
+    : `<table><thead><tr><th>Error</th><th>When</th></tr></thead><tbody>
         ${d.recentErrors.map(e => `
           <tr>
-            <td>${esc(e.sourceType)}</td>
-            <td class="mono">${esc(e.sourceId)}</td>
             <td class="errtxt">${esc(e.error)}</td>
             <td class="dim">${fmt(e.startedAt)}</td>
           </tr>`).join('')}
       </tbody></table>`;
 
   // ── Activity log ──────────────────────────────────────────────────────────────
-  const EVENT_LABELS: Record<string, string> = {
-    extraction:           'Extraction',
-    error:                'Error',
-    access_request_sent:  'Access Request',
-    retry_scheduled:      'Retry Queued',
-    scheduled_task:       'Scheduled Task',
-  };
   const activityLogHtml = d.recentActivity.length === 0
     ? '<p class="dim">No recent activity to show.</p>'
     : `<div class="activity-feed">${d.recentActivity.map(a => {
-        const statusCls = a.status === 'completed' ? 'ok' : a.status === 'failed' ? 'err' : 'warn';
-        const label = EVENT_LABELS[a.eventType] ?? a.eventType;
+        const statusCls = a.status === 'Success' ? 'ok' : a.status === 'Error' ? 'err' : 'warn';
         const tokens = a.tokenEstimate > 0 ? `<span class="act-meta">${a.tokenEstimate.toLocaleString()} tokens</span>` : '';
-        const records = a.createdRecords ? `<span class="act-meta dim">${esc(a.createdRecords.slice(0, 60))}</span>` : '';
         const errMsg  = a.error ? `<div class="act-error">${esc(a.error.slice(0, 120))}</div>` : '';
-        const src     = a.sourceId ? `<span class="act-src dim">${esc(a.sourceId.slice(0, 50))}</span>` : '';
         return `<div class="act-row">
           <div class="act-dot ${statusCls}"></div>
           <div class="act-body">
             <div class="act-top">
-              <span class="act-type">${esc(label)}</span>
-              ${src}
+              <span class="act-type">${esc(a.eventType)}</span>
               ${tokens}
-              ${records}
             </div>
             ${errMsg}
           </div>

@@ -61,12 +61,8 @@ export interface ProcessingEvent {
   sourceType: string;
   sourceId: string;
   eventType: string;
-  status: 'started' | 'completed' | 'failed';
+  status: 'Info' | 'Success' | 'Error' | 'Warning';
   startedAt: string;
-  completedAt?: string;
   error?: string;
-  retryCount: number;
-  createdRecords?: string[];
-  claudeModelUsed?: string;
   tokenEstimate?: number;
 }
