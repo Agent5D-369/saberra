@@ -1,11 +1,12 @@
 ﻿import * as dotenv from 'dotenv';
 dotenv.config();
 
+import * as crypto from 'crypto';
 import * as fs from 'fs';
 import * as http from 'http';
 import * as path from 'path';
 import { getDashboardData, resetAssetForRetry, resetEmailForRetry, clearDashboardCache } from './queries';
-import { renderDashboard } from './views';
+import { renderDashboard, SABERRA_ICON_B64 } from './views';
 import { HubSettingsService } from '../services/HubSettingsService';
 import { logger } from '../config/logger';
 
@@ -23,15 +24,24 @@ if (!DASHBOARD_PASS) {
   process.exit(1);
 }
 
-function checkAuth(req: http.IncomingMessage): boolean {
-  const header = req.headers['authorization'] ?? '';
-  if (!header.startsWith('Basic ')) return false;
-  const decoded = Buffer.from(header.slice(6), 'base64').toString('utf-8');
-  const colonIdx = decoded.indexOf(':');
-  if (colonIdx === -1) return false;
-  const user = decoded.slice(0, colonIdx);
-  const pass = decoded.slice(colonIdx + 1);
-  return user === DASHBOARD_USER && pass === DASHBOARD_PASS;
+// ── Session store (in-memory, 24h TTL) ──────────────────────────────────────
+const SESSION_TTL = 24 * 60 * 60 * 1000;
+const sessions = new Map<string, number>(); // token -> expiry
+
+function createSession(): string {
+  const token = crypto.randomBytes(32).toString('hex');
+  sessions.set(token, Date.now() + SESSION_TTL);
+  return token;
+}
+
+function checkSession(req: http.IncomingMessage): boolean {
+  const cookies = parseCookies(req);
+  const token = cookies['sera_session'];
+  if (!token) return false;
+  const expiry = sessions.get(token);
+  if (!expiry) return false;
+  if (Date.now() > expiry) { sessions.delete(token); return false; }
+  return true;
 }
 
 function parseCookies(req: http.IncomingMessage): Record<string, string> {
@@ -47,12 +57,60 @@ function parseCookies(req: http.IncomingMessage): Record<string, string> {
   return result;
 }
 
-function deny(res: http.ServerResponse): void {
-  res.writeHead(401, {
-    'WWW-Authenticate': `Basic realm="${ORG_NAME}"`,
-    'Content-Type': 'text/plain',
-  });
-  res.end('Unauthorized');
+function redirectToLogin(res: http.ServerResponse, returnTo = '/'): void {
+  res.writeHead(302, { Location: `/login?return=${encodeURIComponent(returnTo)}` });
+  res.end();
+}
+
+function renderLoginPage(orgName: string, error?: string): string {
+  return `<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Sign In | ${orgName}</title>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:#0b0f1a;color:#e8edf5;min-height:100vh;display:flex;align-items:center;justify-content:center;padding:20px}
+.card{background:#111827;border:1px solid #1f2d42;border-radius:16px;padding:40px 36px;width:100%;max-width:380px;box-shadow:0 8px 40px rgba(0,0,0,.5)}
+.brand{display:flex;align-items:center;gap:12px;margin-bottom:8px}
+.brand img{width:40px;height:40px;border-radius:8px}
+.brand-name{font-size:22px;font-weight:700;color:#fff;letter-spacing:-.5px}
+.org-name{font-size:13px;color:#6b7a96;margin-bottom:32px}
+label{display:block;font-size:12px;font-weight:600;color:#6b7a96;text-transform:uppercase;letter-spacing:.5px;margin-bottom:6px}
+input{width:100%;background:#0b0f1a;border:1px solid #1f2d42;border-radius:8px;padding:10px 14px;font-size:14px;color:#e8edf5;outline:none;margin-bottom:16px;transition:border-color .15s}
+input:focus{border-color:#6366f1}
+.error{background:rgba(239,68,68,.12);border:1px solid rgba(239,68,68,.3);border-radius:8px;padding:10px 14px;font-size:13px;color:#f87171;margin-bottom:16px}
+button{width:100%;background:#6366f1;color:#fff;font-size:15px;font-weight:600;border:none;border-radius:8px;padding:12px;cursor:pointer;transition:background .15s;margin-top:4px}
+button:hover{background:#4f46e5}
+.footer{font-size:11px;color:#374151;text-align:center;margin-top:24px}
+</style>
+</head>
+<body>
+<div class="card">
+  <div class="brand">
+    <img src="data:image/png;base64,${SABERRA_ICON_B64}" alt="Saberra">
+    <span class="brand-name">Sera</span>
+  </div>
+  <div class="org-name">${orgName}</div>
+  ${error ? `<div class="error">${error}</div>` : ''}
+  <form method="POST" action="/login">
+    <input type="hidden" name="return" value="">
+    <label for="u">Username</label>
+    <input id="u" name="username" type="text" autocomplete="username" autofocus required>
+    <label for="p">Password</label>
+    <input id="p" name="password" type="password" autocomplete="current-password" required>
+    <button type="submit">Sign In</button>
+  </form>
+  <div class="footer">Powered by Saberra</div>
+</div>
+<script>
+  const q = new URLSearchParams(location.search);
+  const ret = q.get('return') || '/';
+  document.querySelector('input[name=return]').value = ret;
+</script>
+</body>
+</html>`;
 }
 
 const server = http.createServer(async (req, res) => {
@@ -73,17 +131,50 @@ const server = http.createServer(async (req, res) => {
     return;
   }
 
-  // Logout — always returns 401 so the browser discards its cached Basic Auth credentials
-  if (url === '/logout') {
-    res.writeHead(401, {
-      'WWW-Authenticate': `Basic realm="${ORG_NAME}"`,
-      'Content-Type': 'text/plain',
-    });
-    res.end('Signed out');
+  // Login page (GET)
+  if (method === 'GET' && (url === '/login' || url.startsWith('/login?'))) {
+    res.writeHead(200, { 'Content-Type': 'text/html; charset=utf-8', 'Cache-Control': 'no-store' });
+    res.end(renderLoginPage(ORG_NAME));
     return;
   }
 
-  if (!checkAuth(req)) { deny(res); return; }
+  // Login form submit (POST)
+  if (method === 'POST' && url === '/login') {
+    let body = '';
+    req.on('data', (c: Buffer) => { body += c; });
+    await new Promise<void>(resolve => req.on('end', resolve).on('close', resolve));
+    const params = new URLSearchParams(body);
+    const user = params.get('username') ?? '';
+    const pass = params.get('password') ?? '';
+    const returnTo = params.get('return') ?? '/';
+    const safe = returnTo.startsWith('/') ? returnTo : '/';
+    if (user === DASHBOARD_USER && pass === DASHBOARD_PASS) {
+      const token = createSession();
+      res.writeHead(302, {
+        Location: safe,
+        'Set-Cookie': `sera_session=${token}; HttpOnly; Path=/; Max-Age=${SESSION_TTL / 1000}; SameSite=Strict`,
+      });
+      res.end();
+    } else {
+      res.writeHead(200, { 'Content-Type': 'text/html; charset=utf-8', 'Cache-Control': 'no-store' });
+      res.end(renderLoginPage(ORG_NAME, 'Incorrect username or password.'));
+    }
+    return;
+  }
+
+  // Logout — clear session cookie and redirect to login
+  if (url === '/logout') {
+    const token = parseCookies(req)['sera_session'];
+    if (token) sessions.delete(token);
+    res.writeHead(302, {
+      Location: '/login',
+      'Set-Cookie': 'sera_session=; HttpOnly; Path=/; Max-Age=0; SameSite=Strict',
+    });
+    res.end();
+    return;
+  }
+
+  if (!checkSession(req)) { redirectToLogin(res, url); return; }
 
   // Main dashboard page
   if (method === 'GET' && url === '/') {
