@@ -1,0 +1,19 @@
+{
+  "meetings": {
+    "title": "Meeting Title",
+    "capture_key": "Capture Key",
+    "meeting_date": "Meeting Date",
+    "organizer": "Organizer",
+    "summary": "Summary",
+    "processing_status": "Processing Status"
+  },
+  "source_emails": {
+    "title": "Title",
+    "gmail_message_id": "Gmail Message ID",
+    "gmail_thread_id": "Gmail Thread ID",
+    "from": "From",
+    "subject": "Subject",
+    "email_type": "Email Type",
+    "processing_status": "Processing Status"
+  }
+}

@@ -1,0 +1,42 @@
+{
+  "tenant_id": "amora",
+  "organization_name": "Amora",
+  "instance_name": "Amora Living Memory Hub",
+  "capture_email": "roots@amora.cr",
+  "google_workspace_domain": "amora.cr",
+  "review_rules": {
+    "canon_requires_admin_approval": true,
+    "sensitive_requires_review": true,
+    "auto_create_tasks": true,
+    "auto_update_people_profiles": false,
+    "auto_publish_canon": false,
+    "auto_transcribe_recordings": false
+  },
+  "notion_database_ids": {
+    "source_emails": "REPLACE_WITH_NOTION_DATABASE_ID",
+    "meetings": "REPLACE_WITH_NOTION_DATABASE_ID",
+    "meeting_assets": "REPLACE_WITH_NOTION_DATABASE_ID",
+    "messages": "REPLACE_WITH_NOTION_DATABASE_ID",
+    "people": "REPLACE_WITH_NOTION_DATABASE_ID",
+    "organizations": "REPLACE_WITH_NOTION_DATABASE_ID",
+    "tasks": "REPLACE_WITH_NOTION_DATABASE_ID",
+    "decision_candidates": "REPLACE_WITH_NOTION_DATABASE_ID",
+    "risks": "REPLACE_WITH_NOTION_DATABASE_ID",
+    "memory_review_queue": "REPLACE_WITH_NOTION_DATABASE_ID",
+    "canon_change_requests": "REPLACE_WITH_NOTION_DATABASE_ID",
+    "ccos_ledger_entries": "REPLACE_WITH_NOTION_DATABASE_ID",
+    "processing_events": "REPLACE_WITH_NOTION_DATABASE_ID"
+  },
+  "gmail_labels": [
+    "AMORA_CAPTURE",
+    "AMORA_MEET_RECORDING",
+    "AMORA_MEET_TRANSCRIPT",
+    "AMORA_MEET_NOTES",
+    "AMORA_EMAIL_IMPORT",
+    "AMORA_NEEDS_ACCESS",
+    "AMORA_PROCESSING",
+    "AMORA_PROCESSED",
+    "AMORA_FAILED",
+    "AMORA_MANUAL_REVIEW"
+  ]
+}

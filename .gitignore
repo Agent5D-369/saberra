@@ -1,0 +1,16 @@
+node_modules/
+dist/
+.env
+.env.generated
+.env.saberra
+client_secret.json
+*.local
+.claude/
+google_refresh_token.txt
+tenant.amora.json
+C*Users*.html
+*.zip
+clients/*.progress.json
+clients/*.manifest.json
+clients/*.deployment.log
+clients/*.input.json

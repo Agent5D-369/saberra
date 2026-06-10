@@ -1,0 +1,135 @@
+import { Client as NotionClient } from '@notionhq/client';
+import type { BlockObjectResponse } from '@notionhq/client/build/src/api-endpoints';
+import { getConfig } from '../config/ConfigService';
+import { logger } from '../config/logger';
+
+const REFRESH_MS = 2 * 60 * 1000; // 2 minutes
+
+export interface HubSettings {
+  governingPurpose: string | null;
+  purposeTest: string | null;
+  outputLanguage: string;
+  lastRefreshed: Date | null;
+  source: 'notion' | 'env';
+}
+
+export class HubSettingsService {
+  private static instance: HubSettingsService;
+  private notion: NotionClient;
+  private pageId: string | null;
+  private settings: HubSettings;
+  private timer: ReturnType<typeof setInterval> | null = null;
+
+  private constructor() {
+    const config = getConfig();
+    this.notion = new NotionClient({ auth: config.NOTION_API_KEY });
+    this.pageId = process.env.NOTION_HUB_SETTINGS_PAGE_ID ?? null;
+    this.settings = {
+      governingPurpose: process.env.AMORA_GOVERNING_PURPOSE ?? null,
+      purposeTest: process.env.AMORA_PURPOSE_TEST ?? null,
+      outputLanguage: process.env.OUTPUT_LANGUAGE ?? 'English',
+      lastRefreshed: null,
+      source: 'env',
+    };
+  }
+
+  static getInstance(): HubSettingsService {
+    if (!HubSettingsService.instance) {
+      HubSettingsService.instance = new HubSettingsService();
+    }
+    return HubSettingsService.instance;
+  }
+
+  /** Call once at service startup. Loads from Notion and starts background refresh. */
+  async init(): Promise<void> {
+    if (!this.pageId) return;
+    await this.refresh();
+    this.timer = setInterval(() => { this.refresh().catch(() => {}); }, REFRESH_MS);
+  }
+
+  get governingPurpose(): string | null { return this.settings.governingPurpose; }
+  get purposeTest(): string | null { return this.settings.purposeTest; }
+  get outputLanguage(): string { return this.settings.outputLanguage; }
+
+  getSettings(): HubSettings { return { ...this.settings }; }
+
+  async updateGoverningPurpose(text: string): Promise<void> {
+    if (!this.pageId) throw new Error('NOTION_HUB_SETTINGS_PAGE_ID not set');
+    await this.writeBlock('governing_purpose', text.trim());
+    this.settings.governingPurpose = text.trim();
+    logger.info('Hub Settings: governing_purpose updated');
+  }
+
+  async updatePurposeTest(text: string): Promise<void> {
+    if (!this.pageId) throw new Error('NOTION_HUB_SETTINGS_PAGE_ID not set');
+    await this.writeBlock('purpose_test', text.trim());
+    this.settings.purposeTest = text.trim();
+    logger.info('Hub Settings: purpose_test updated');
+  }
+
+  async updateOutputLanguage(language: string): Promise<void> {
+    if (!this.pageId) throw new Error('NOTION_HUB_SETTINGS_PAGE_ID not set');
+    await this.writeBlock('output_language', language.trim());
+    this.settings.outputLanguage = language.trim();
+    logger.info({ language }, 'Hub Settings: output_language updated');
+  }
+
+  private async refresh(): Promise<void> {
+    if (!this.pageId) return;
+    try {
+      const resp = await this.notion.blocks.children.list({ block_id: this.pageId, page_size: 50 });
+      const blocks = resp.results as BlockObjectResponse[];
+      const gps = this.extractValue(blocks, 'governing_purpose');
+      const pt = this.extractValue(blocks, 'purpose_test');
+      const lang = this.extractValue(blocks, 'output_language');
+      if (gps !== null) this.settings.governingPurpose = gps;
+      if (pt !== null) this.settings.purposeTest = pt;
+      if (lang) this.settings.outputLanguage = lang;
+      this.settings.lastRefreshed = new Date();
+      this.settings.source = 'notion';
+    } catch (err) {
+      logger.warn({ err }, 'HubSettingsService: failed to refresh from Notion, using cached values');
+    }
+  }
+
+  private extractValue(blocks: BlockObjectResponse[], key: string): string | null {
+    for (let i = 0; i < blocks.length - 1; i++) {
+      const b = blocks[i] as any;
+      if (b.type === 'heading_2') {
+        const heading = (b.heading_2?.rich_text ?? []).map((t: any) => t.plain_text).join('');
+        if (heading === key) {
+          const next = blocks[i + 1] as any;
+          if (next?.type === 'paragraph') {
+            return (next.paragraph?.rich_text ?? []).map((t: any) => t.plain_text).join('');
+          }
+        }
+      }
+    }
+    return null;
+  }
+
+  private async writeBlock(key: string, value: string): Promise<void> {
+    const resp = await this.notion.blocks.children.list({ block_id: this.pageId!, page_size: 50 });
+    const blocks = resp.results as BlockObjectResponse[];
+    for (let i = 0; i < blocks.length - 1; i++) {
+      const b = blocks[i] as any;
+      if (b.type === 'heading_2') {
+        const heading = (b.heading_2?.rich_text ?? []).map((t: any) => t.plain_text).join('');
+        if (heading === key) {
+          const next = blocks[i + 1] as any;
+          if (next?.type === 'paragraph') {
+            // Notion max rich_text content per block is 2000 chars; split if needed
+            const chunks: string[] = [];
+            for (let s = 0; s < value.length; s += 2000) chunks.push(value.slice(s, s + 2000));
+            await (this.notion.blocks.update as any)({
+              block_id: next.id,
+              paragraph: { rich_text: chunks.map(c => ({ type: 'text', text: { content: c } })) },
+            });
+            return;
+          }
+        }
+      }
+    }
+    throw new Error(`Hub Settings: block for key "${key}" not found in page`);
+  }
+}

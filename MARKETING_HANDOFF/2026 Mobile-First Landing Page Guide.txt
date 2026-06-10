@@ -1,0 +1,273 @@
+from pathlib import Path
+
+content = """# 2026 Mobile-First Landing Page Guide
+*A practical reference for building high-converting mobile landing pages (especially for premium, trust-based services).*  
+Last updated: 2025-12-14 (use as a living checklist)
+
+---
+
+## 1) 2026 trend snapshot (what’s winning now)
+
+### Clarity beats clever
+Modern guidance consistently emphasizes **one job per page**, a **clear outcome headline**, and a **single primary CTA** that repeats down the page.  
+Sources highlight “clarity, message match, one CTA” as non-negotiables.  
+
+### Mobile-first is mandatory
+Most traffic arrives on phones. Best-practice writeups for 2025–2026 repeatedly push:  
+- short, scannable sections  
+- vertical flow (no “desktop brochure” layouts)  
+- large tap targets  
+- minimal form fields  
+- fast load times  
+
+### Speed is a conversion feature
+Core Web Vitals (real-user performance) continue to matter for UX and SEO. Google positions Core Web Vitals as key measures of loading, interactivity, and visual stability.
+
+### Personalization & message matching
+2026 trend guides emphasize **dynamic landing pages**: adapt copy/sections to traffic source (ad, email, referral), and match the promise from the click source immediately above the fold.
+
+### Trust signals near the CTA
+2026 conversion advice repeatedly recommends placing **risk reducers** (privacy note, credentials, “what happens next,” logos, security indicators) near forms/CTAs—visible but not distracting.
+
+---
+
+## 2) The ideal mobile page length and layout
+
+### Recommended length (mobile)
+For high-trust services, a strong baseline target is:
+- **2–4 “screenfuls”** on mobile (roughly **1,200–1,800 words** max)
+- A page should be **skimmable in 30–60 seconds** with clear headings.
+
+### Recommended structure (single-offer page)
+Use this order unless you have a strong reason not to:
+
+1. **Hero** (outcome headline + supporting line + CTA + trust microcopy)
+2. **Quiet validation** (2–6 lines, no rant, no labels)
+3. **Desired transformation** (what life looks like after; felt outcomes)
+4. **What it is / is not** (boundaries and fit; reduces uncertainty)
+5. **Who it’s for** (identity-based; 3–6 bullets per segment)
+6. **Why this works** (principles; your differentiator; not a credential dump)
+7. **How it works** (simple steps; what happens after booking)
+8. **About** (2–5 lines; calm authority; no autobiography)
+9. **CTA** (repeat; identical wording)
+10. **FAQ** (optional; only the top 5 friction questions)
+11. **Final CTA** (repeat)
+
+**Rule of thumb:** repeat the **same CTA** 3–4 times, unchanged.
+
+---
+
+## 3) Above-the-fold (the 3-second test)
+
+### Above-the-fold must answer:
+- What is this?
+- Who is it for?
+- What outcome do I get?
+- What’s the next step?
+
+### Best-practice hero components
+- **Outcome headline** (plain English, no jargon)
+- **Supporting subheadline** (how it’s different, 1 sentence)
+- **Primary CTA** (one action)
+- **Micro-trust line** under CTA (e.g., “Discreet • Confidential • No obligation”)
+
+### Avoid above-the-fold:
+- long paragraphs
+- multiple CTAs
+- menus with 10 options
+- heavy animations / carousels
+- vague spiritual or “brand poem” headlines
+
+---
+
+## 4) Copywriting patterns that convert (2026)
+
+### Use “felt outcomes,” not features
+High-performing landing pages emphasize:
+- what changes
+- what becomes easier
+- what stabilizes
+- how decisions feel
+
+### Don’t lead with diagnosis or labels (trust-based offers)
+For sensitive services, avoid stigmatizing language. Use socially-neutral phrases clients are comfortable saying out loud.
+
+### Reduce cognitive load
+- 1 idea per paragraph
+- 3–7 lines per section
+- bullets for scanability
+- short, concrete nouns/verbs
+
+### Use “risk-reversal without hype”
+Instead of “guarantees,” use:
+- clear boundaries
+- what you won’t do
+- what happens next
+- “no obligation” language
+- transparent process steps
+
+---
+
+## 5) CTA & form optimization (mobile)
+
+### CTA rules
+- **One primary CTA** (e.g., “Request a Private Intake Conversation”)
+- Repeat it in identical words every time.
+- Use action verbs: Request / Book / Schedule / Start.
+
+### Form rules
+- Ask only what you truly need to route the lead.
+- Best practice is to minimize fields; use:
+  - name
+  - email
+  - 1 routing question
+  - 1 short prompt (1–2 sentences max)
+
+### Friction reducers near the CTA
+Place near booking/form:
+- confidentiality note
+- what to expect (length, format)
+- “not therapy / not legal advice” (if relevant)
+- time estimate (e.g., 30 minutes)
+
+---
+
+## 6) Trust signals for premium / discreet offers
+
+Use **quiet trust**:
+- “What this is / is not”
+- privacy language
+- credentials (minimal)
+- process clarity (“what happens after you book”)
+- professional contact/terms link in footer
+
+Avoid:
+- aggressive social proof
+- sensational testimonials
+- public case studies if discretion matters
+
+---
+
+## 7) Mobile UX and accessibility checklist
+
+### Mobile usability
+- CTA button at least **44px** tall (tap target guidance)
+- Plenty of whitespace
+- No tiny fonts
+- No “click to expand” walls of text
+
+### Accessibility basics
+- High contrast
+- Alt text on images
+- Logical heading structure (H1 → H2 → H3)
+- Buttons labeled clearly (not “Click here”)
+
+---
+
+## 8) Performance: Core Web Vitals and “conversion speed”
+
+Google defines Core Web Vitals as metrics for:
+- **Loading performance**
+- **Interactivity**
+- **Visual stability**
+
+### Practical targets (commonly used)
+- **LCP** (Largest Contentful Paint): aim for “good”
+- **INP** (Interaction to Next Paint): aim for “good”
+- **CLS** (Cumulative Layout Shift): aim for “good”
+
+### High-impact fixes
+- compress and properly size hero images
+- lazy-load below-the-fold media
+- avoid heavy scripts, chat widgets, carousels
+- preload key fonts carefully
+- reduce third-party tags
+- keep layout stable (reserve image space)
+
+---
+
+## 9) Personalization & “message match” (2026 standard)
+
+If you run ads, don’t send all traffic to one generic page.
+
+Recommended:
+- duplicate the page per campaign/segment
+- match headline to ad promise
+- keep CTA consistent with click source
+- use conditional sections for different audiences
+
+---
+
+## 10) Testing & iteration workflow (simple, effective)
+
+### What to test (highest leverage first)
+1. Headline (outcome phrasing)
+2. Subheadline (differentiator)
+3. CTA wording (“Request” vs “Book”)
+4. First scroll section (validation vs transformation order)
+5. Form length / friction reducers
+
+### Testing discipline
+- change one variable at a time
+- run tests long enough to matter
+- keep a changelog of results
+
+---
+
+## 11) Two high-converting templates (copy skeletons)
+
+### Template A: Trust-based premium service (ideal for your use case)
+**H1:** Outcome + audience  
+**Subhead:** 1 sentence differentiator (discreet, structured, forward-facing)  
+**CTA:** Request a private intake  
+**Micro-trust:** Discreet • Confidential • No obligation
+
+**Section 1:** Quiet validation (2–6 lines)  
+**Section 2:** What becomes possible (bullets)  
+**Section 3:** What this is / is not  
+**Section 4:** Who it’s for  
+**Section 5:** Why this works (principles)  
+**Section 6:** How it works (3 steps)  
+**Section 7:** About (2–5 lines)  
+**CTA repeat**  
+**FAQ (5 max)**  
+**Final CTA**
+
+### Template B: Paid traffic “message match” version
+Same as Template A, but:
+- headline mirrors ad language exactly
+- first section references the ad promise
+- remove optional sections to keep it shorter
+
+---
+
+## 12) “Do not do this” list (common conversion killers)
+
+- multiple competing CTAs
+- long founder story on page 1
+- jargon-heavy positioning
+- too many fonts/colors
+- slow-loading hero images
+- popups on first view (mobile annoyance)
+- hidden pricing surprises for low-ticket offers (for premium offers, keep pricing off-page but set expectations in intake)
+- asking for long narratives in forms
+
+---
+
+## Sources used (selected)
+- Google Search Central: Core Web Vitals overview  
+- Involve.me: landing page trends (2026) + best practices  
+- HubSpot: landing page best practices (2025)  
+- OptiMonk: 2026-oriented landing page best practices  
+- OptinMonster: mobile landing page best practices (2025)  
+- B12: 2026 conversion elements & trust signals  
+- Altitude Design: best practices emphasizing above-the-fold + single CTA  
+- Additional CRO checklists and mobile performance guidance from marketing/UX publishers
+
+(Keep this guide updated quarterly—design and performance norms evolve fast.)
+"""
+
+path = Path("/mnt/data/2026_mobile_landing_page_guidelines.md")
+path.write_text(content, encoding="utf-8")
+str(path)
+

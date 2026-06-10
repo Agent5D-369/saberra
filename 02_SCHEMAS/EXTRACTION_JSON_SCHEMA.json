@@ -1,0 +1,25 @@
+{
+  "type": "object",
+  "properties": {
+    "email_summary": { "type": ["object", "null"] },
+    "meeting_summary": { "type": ["object", "null"] },
+    "decisions": { "type": "array" },
+    "tasks": { "type": "array" },
+    "risks": { "type": "array" },
+    "memory_candidates": { "type": "array" },
+    "canon_change_candidates": { "type": "array" },
+    "sensitive_flags": { "type": "array" },
+    "profile_updates": { "type": "array" },
+    "project_updates": { "type": "array" },
+    "ccos_ledger_entries": { "type": "array" },
+    "circle_updates": { "type": "array" },
+    "role_updates": { "type": "array" },
+    "role_assignment_updates": { "type": "array" },
+    "kb_articles": { "type": "array" },
+    "tensions": { "type": "array" },
+    "agreements": { "type": "array" },
+    "gratitudes": { "type": "array" },
+    "events": { "type": "array" },
+    "retrospectives": { "type": "array" }
+  }
+}

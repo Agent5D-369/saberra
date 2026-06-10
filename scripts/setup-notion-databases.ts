@@ -1,0 +1,155 @@
+/**
+ * One-time setup script: creates all 13 Notion databases under the parent page.
+ *
+ * Usage:
+ *   npm run setup-notion
+ *
+ * Prerequisites:
+ *   - NOTION_API_KEY in .env
+ *   - NOTION_PARENT_PAGE_ID in .env (32-char page ID)
+ *
+ * Output:
+ *   - Prints all 13 database IDs
+ *   - Writes .env.generated with NOTION_DB_* variables to copy into .env
+ *
+ * Idempotent: if a database with the same title already exists as a child of the
+ * parent page it will be reused and its ID printed rather than creating a duplicate.
+ */
+
+import * as dotenv from 'dotenv';
+import * as fs from 'fs';
+import * as path from 'path';
+import { Client } from '@notionhq/client';
+import { DATABASE_SCHEMAS, DATABASE_KEYS } from '../src/config/notionSchemas';
+
+dotenv.config();
+
+const NOTION_API_KEY = process.env.NOTION_API_KEY;
+const NOTION_PARENT_PAGE_ID = process.env.NOTION_PARENT_PAGE_ID;
+
+if (!NOTION_API_KEY || !NOTION_PARENT_PAGE_ID) {
+  console.error('Error: NOTION_API_KEY and NOTION_PARENT_PAGE_ID must be set in .env');
+  process.exit(1);
+}
+
+const notion = new Client({ auth: NOTION_API_KEY });
+
+// Normalize a Notion page ID: remove hyphens, ensure 32 chars
+function normalizePageId(id: string): string {
+  const clean = id.replace(/-/g, '');
+  if (clean.length !== 32) {
+    throw new Error(`NOTION_PARENT_PAGE_ID must be 32 hex characters (got "${id}" → "${clean}" = ${clean.length} chars)`);
+  }
+  return clean;
+}
+
+// ENV key name for each database key
+function envKey(dbKey: string): string {
+  const map: Record<string, string> = {
+    sourceEmails: 'NOTION_DB_SOURCE_EMAILS',
+    meetings: 'NOTION_DB_MEETINGS',
+    meetingAssets: 'NOTION_DB_MEETING_ASSETS',
+    messages: 'NOTION_DB_MESSAGES',
+    profiles: 'NOTION_DB_PROFILES',
+    projects: 'NOTION_DB_PROJECTS',
+    circles: 'NOTION_DB_CIRCLES',
+    roles: 'NOTION_DB_ROLES',
+    roleAssignments: 'NOTION_DB_ROLE_ASSIGNMENTS',
+    tasks: 'NOTION_DB_TASKS',
+    decisionCandidates: 'NOTION_DB_DECISION_CANDIDATES',
+    risks: 'NOTION_DB_RISKS',
+    memoryReviewQueue: 'NOTION_DB_MEMORY_REVIEW_QUEUE',
+    canonChangeRequests: 'NOTION_DB_CANON_CHANGE_REQUESTS',
+    ccosLedgerEntries: 'NOTION_DB_CCOS_LEDGER_ENTRIES',
+    processingEvents: 'NOTION_DB_PROCESSING_EVENTS',
+  };
+  if (!map[dbKey]) throw new Error(`No env key mapping for database key: ${dbKey}`);
+  return map[dbKey];
+}
+
+async function getExistingDatabases(parentPageId: string): Promise<Map<string, string>> {
+  const existing = new Map<string, string>();
+  let cursor: string | undefined;
+
+  do {
+    const response = await notion.blocks.children.list({
+      block_id: parentPageId,
+      start_cursor: cursor,
+      page_size: 100,
+    });
+
+    for (const block of response.results) {
+      if ('type' in block && block.type === 'child_database') {
+        const title = (block as { type: 'child_database'; child_database: { title: string }; id: string }).child_database.title;
+        existing.set(title, block.id);
+      }
+    }
+
+    cursor = response.has_more ? response.next_cursor ?? undefined : undefined;
+  } while (cursor);
+
+  return existing;
+}
+
+async function main() {
+  const parentPageId = normalizePageId(NOTION_PARENT_PAGE_ID!);
+  console.log(`\nAmora Living Memory Hub — Notion Database Setup`);
+  console.log(`Parent page ID: ${parentPageId}\n`);
+
+  let existing: Map<string, string>;
+  try {
+    existing = await getExistingDatabases(parentPageId);
+    console.log(`Found ${existing.size} existing child database(s) under parent page.\n`);
+  } catch (err) {
+    const msg = err instanceof Error ? err.message : String(err);
+    if (msg.includes('Could not find block') || msg.includes('object_not_found')) {
+      console.error(`Error: Parent page not found or integration lacks access.\n`);
+      console.error(`Fix: Open the Notion page, click Share → Add connections → select "Amora Living Memory Hub"\n`);
+    } else {
+      console.error('Error reading parent page:', msg);
+    }
+    process.exit(1);
+  }
+
+  const results: Record<string, string> = {};
+
+  for (const key of DATABASE_KEYS) {
+    const schema = DATABASE_SCHEMAS[key];
+
+    if (existing.has(schema.title)) {
+      const id = existing.get(schema.title)!;
+      console.log(`  [EXISTS] ${schema.title} → ${id}`);
+      results[key] = id;
+      continue;
+    }
+
+    try {
+      const db = await notion.databases.create({
+        parent: { type: 'page_id', page_id: parentPageId },
+        title: [{ type: 'text', text: { content: schema.title } }],
+        properties: schema.properties,
+      });
+      console.log(`  [CREATED] ${schema.title} → ${db.id}`);
+      results[key] = db.id;
+    } catch (err) {
+      const msg = err instanceof Error ? err.message : String(err);
+      console.error(`  [FAILED] ${schema.title}: ${msg}`);
+      process.exit(1);
+    }
+  }
+
+  // Write .env.generated
+  const lines = Object.entries(results).map(([key, id]) => `${envKey(key)}=${id}`);
+  const envContent = `# Generated by setup-notion-databases.ts — copy these into your .env\n${lines.join('\n')}\n`;
+  const outputPath = path.join(process.cwd(), '.env.generated');
+  fs.writeFileSync(outputPath, envContent, 'utf-8');
+
+  console.log(`\n✓ All databases ready.`);
+  console.log(`✓ IDs written to: ${outputPath}`);
+  console.log(`\nCopy the contents of .env.generated into your .env file.\n`);
+}
+
+main().catch((err) => {
+  console.error('Fatal:', err instanceof Error ? err.message : err);
+  process.exit(1);
+});
