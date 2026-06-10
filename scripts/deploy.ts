@@ -19,7 +19,7 @@
  *   3.  Capture inbox (IMAP) setup - 4-path decision tree
  *   4.  Google OAuth setup
  *   5.  Admin & governance config
- *   6.  Create Notion databases
+ *   6.  Discover Notion databases (scan existing workspace)
  *   7.  Set Railway env vars
  *   8.  Connect GitHub
  *   9.  Post-deploy health check
@@ -833,55 +833,154 @@ async function step5_config(rl: readline.Interface, state: Partial<DeployState>)
   dlog('step5', 'done', `tenantId=${state.tenantId}, communityLayer=${state.communityLayer}, model=${state.claudeModel}`);
 }
 
-async function step6_databases(state: Partial<DeployState>): Promise<void> {
-  header(6, 10, 'Create Notion Databases');
+// Maps expected DB key names (used by step7 env var builder) to Notion database title variants.
+// Multiple names handle: renaming (CCOS Ledger vs CCOS Ledger Entries), aliases (Agreements vs Commitments),
+// and capitalization differences. Matching is case-insensitive; trailing " (N)" suffixes are stripped.
+const DB_DISCOVERY_MAP: Array<{ key: string; names: string[]; required: boolean; community: boolean }> = [
+  { key: 'sourceEmailsId',    names: ['Source Emails'],                           required: true,  community: false },
+  { key: 'meetingsId',        names: ['Meetings'],                                required: true,  community: false },
+  { key: 'meetingAssetsId',   names: ['Meeting Assets'],                          required: true,  community: false },
+  { key: 'messagesId',        names: ['Messages'],                                required: true,  community: false },
+  { key: 'profilesId',        names: ['Profiles'],                               required: true,  community: false },
+  { key: 'projectsId',        names: ['Projects'],                               required: true,  community: false },
+  { key: 'circlesId',         names: ['Circles'],                                required: true,  community: false },
+  { key: 'rolesId',           names: ['Roles'],                                  required: true,  community: false },
+  { key: 'assignmentsId',     names: ['Role Assignments'],                        required: true,  community: false },
+  { key: 'tasksId',           names: ['Tasks'],                                  required: true,  community: false },
+  { key: 'decisionsId',       names: ['Decision Candidates'],                     required: true,  community: false },
+  { key: 'risksId',           names: ['Risks'],                                  required: true,  community: false },
+  { key: 'mrqId',             names: ['Memory Review Queue'],                     required: true,  community: false },
+  { key: 'canonId',           names: ['Canon Change Requests'],                   required: true,  community: false },
+  { key: 'ledgerId',          names: ['CCOS Ledger Entries', 'CCOS Ledger'],      required: true,  community: false },
+  { key: 'processingEventsId',names: ['Processing Events'],                       required: true,  community: false },
+  { key: 'sensitiveReviewId', names: ['Sensitive Review'],                        required: true,  community: false },
+  { key: 'tensionsId',        names: ['Tensions'],                               required: false, community: true  },
+  { key: 'agreementsId',      names: ['Agreements', 'Commitments'],               required: false, community: true  },
+  { key: 'gratitudesId',      names: ['Gratitudes'],                             required: false, community: true  },
+  { key: 'eventsId',          names: ['Events'],                                 required: false, community: true  },
+  { key: 'retrosId',          names: ['Retrospectives'],                         required: false, community: true  },
+  { key: 'resourcesId',       names: ['Resources'],                              required: false, community: true  },
+];
 
-  const dbCount = state.communityLayer ? 24 : 18;
+async function discoverNotionDatabases(
+  notionApiKey: string,
+  parentPageId: string,
+  communityLayer: boolean,
+): Promise<{ found: Record<string, string>; missing: string[] }> {
+  const notion = new NotionClient({ auth: notionApiKey });
+
+  // Collect all child_database titles + IDs from the parent page (paginate through all results)
+  const dbMap: Record<string, string> = {}; // lowercase-normalized-title -> id
+  let cursor: string | undefined;
+  do {
+    const resp = await notion.blocks.children.list({
+      block_id: parentPageId,
+      page_size: 100,
+      ...(cursor ? { start_cursor: cursor } : {}),
+    });
+    for (const block of resp.results) {
+      if (block.type !== 'child_database') continue;
+      const raw = (block as { type: 'child_database'; child_database: { title: string } }).child_database.title;
+      // Normalize: strip trailing " (N)" Notion adds when duplicate names exist
+      const normalized = raw.replace(/\s+\(\d+\)$/, '').trim().toLowerCase();
+      const rawLower = raw.trim().toLowerCase();
+      dbMap[normalized] = block.id;
+      if (rawLower !== normalized) dbMap[rawLower] = block.id;
+    }
+    cursor = resp.has_more && resp.next_cursor ? resp.next_cursor : undefined;
+  } while (cursor);
+
+  const found: Record<string, string> = {};
+  const missing: string[] = [];
+
+  for (const entry of DB_DISCOVERY_MAP) {
+    if (entry.community && !communityLayer) continue;
+    let matched: string | undefined;
+    for (const name of entry.names) {
+      const id = dbMap[name.toLowerCase()];
+      if (id) { matched = id; break; }
+    }
+    if (matched) {
+      found[entry.key] = matched;
+    } else if (entry.required) {
+      missing.push(entry.names[0]);
+    }
+    // community DB not found = silently skip (worker handles missing community DBs gracefully)
+  }
+
+  return { found, missing };
+}
+
+async function step6_databases(rl: readline.Interface, state: Partial<DeployState>): Promise<void> {
+  header(6, 10, 'Notion Database Discovery');
+
+  const expectedCount = state.communityLayer ? 23 : 17;
+  console.log(`\n  Sera needs ${expectedCount} Notion databases on your hub page.`);
+  console.log(`  Hub page: ${state.notionParentPageId}`);
+  console.log(`\n  How should we get the databases?\n`);
+  console.log(`  [a] Scan existing  — databases are already on the hub page`);
+  console.log(`      (existing Saberra workspace, or already duplicated the demo template)`);
+  console.log(`\n  [b] Copy template  — walk me through duplicating the Saberra demo template`);
+  console.log(`      (brand-new Notion workspace with no Saberra databases yet)\n`);
+
+  const choice = (await ask(rl, 'Choice', 'a')).toLowerCase().trim();
+
+  if (choice === 'b') {
+    console.log('\n  ─── Duplicate the Saberra Demo Template ─────────────────────────');
+    console.log('\n  1. Ask your Saberra implementor for the Demo Template share link.');
+    console.log('     (or search "Saberra Living Memory Hub" in Notion)');
+    console.log('\n  2. On the template page: click ••• → Duplicate.');
+    console.log(`\n  3. Choose "${state.clientName ?? 'your workspace'}" as the destination workspace.`);
+    console.log('\n  4. Move the duplicated page so it is a direct child of your hub page:');
+    console.log(`     Hub page ID: ${state.notionParentPageId}`);
+    console.log('\n  5. Share the hub page with the Saberra integration');
+    console.log('     (Notion: Share → Invite → select the integration).\n');
+    await ask(rl, '  Press Enter when all databases are on the hub page', '');
+  }
+
   if (isDryRun) {
-    console.log(`\n  [DRY RUN] Would create ${dbCount} Notion databases in page ${state.notionParentPageId}`);
+    console.log(`\n  [DRY RUN] Would scan page ${state.notionParentPageId} for ${expectedCount} databases`);
     state.dbIds = {};
     return;
   }
 
-  console.log(`\n  Creating ${dbCount} Notion databases... (this takes 1-3 minutes)`);
-  dlog('step6', 'start', `${dbCount} databases, communityLayer=${state.communityLayer}`);
+  console.log(`\n  Scanning hub page for Notion databases...`);
+  dlog('step6', 'start', `scanning parentPage=${state.notionParentPageId}`);
 
-  const env: NodeJS.ProcessEnv = {
-    ...process.env,
-    NOTION_API_KEY:           state.notionApiKey!,
-    TEMPLATE_PARENT_PAGE_ID:  state.notionParentPageId!,
-    COMMUNITY_LAYER:          state.communityLayer ? 'true' : 'false',
-    ...(state.sensitiveReviewParentPageId
-      ? { SENSITIVE_REVIEW_PARENT_PAGE_ID: state.sensitiveReviewParentPageId }
-      : {}),
-  };
-
-  let stdout: string;
+  let found: Record<string, string>;
+  let missing: string[];
   try {
-    stdout = execSync(
-      'npx ts-node scripts/create-saberra-template.ts',
-      { env, encoding: 'utf-8', stdio: ['pipe', 'pipe', 'pipe'], timeout: 300000 }
-    );
+    ({ found, missing } = await discoverNotionDatabases(
+      state.notionApiKey!,
+      state.notionParentPageId!,
+      state.communityLayer ?? false,
+    ));
   } catch (err: unknown) {
-    const execErr = err as { stdout?: string; stderr?: string; message?: string };
-    console.error('\n  Database creation failed:');
-    if (execErr.stderr) console.error(execErr.stderr);
-    dlog('step6', 'error', execErr.message ?? 'unknown');
-    throw new Error(`Database creation failed: ${execErr.message ?? 'unknown'}`);
+    const msg = err instanceof Error ? err.message : String(err);
+    throw new Error(`Notion database scan failed: ${msg}`);
   }
 
-  stdout.split('\n')
-    .filter(l => l.trim() && !l.startsWith('SABERRA_DB_IDS:'))
-    .forEach(l => console.log(`  ${l}`));
-
-  const idLine = stdout.split('\n').find(l => l.startsWith('SABERRA_DB_IDS:'));
-  if (!idLine) {
-    throw new Error('create-saberra-template.ts did not output SABERRA_DB_IDS. Check the template script.');
+  const foundCount = Object.keys(found).length;
+  console.log(`  Found ${foundCount} of ${expectedCount} expected databases.\n`);
+  for (const entry of DB_DISCOVERY_MAP) {
+    if (entry.community && !state.communityLayer) continue;
+    const id = found[entry.key];
+    const label = entry.names[0].padEnd(26);
+    console.log(id ? `    [OK] ${label}  ${id}` : `    [--] ${label}  (not found)`);
   }
 
-  state.dbIds = JSON.parse(idLine.slice('SABERRA_DB_IDS:'.length)) as Record<string, string>;
-  console.log(`  All ${dbCount} databases created.`);
-  dlog('step6', 'done', `${Object.keys(state.dbIds).length} DB IDs`);
+  if (missing.length > 0) {
+    console.log(`\n  WARNING: ${missing.length} required database(s) not found on the hub page:`);
+    missing.forEach(name => console.log(`    - ${name}`));
+    console.log(`\n  These databases are needed for the worker to function correctly.`);
+    console.log(`  To fix: ensure the databases exist directly under the hub page`);
+    console.log(`  and that the Notion integration has been shared with the hub page.`);
+    console.log(`\n  You can continue and fix this before the worker starts, or abort now (Ctrl+C).`);
+    await ask(rl, '  Continue anyway?', 'yes');
+  }
+
+  state.dbIds = found;
+  dlog('step6', 'done', `found=${foundCount}, missing=${missing.join(',') || 'none'}`);
 }
 
 async function step7_envVars(state: Partial<DeployState>): Promise<void> {
@@ -1090,7 +1189,7 @@ async function step10_finalize(state: Partial<DeployState>): Promise<void> {
     || state.emailSetupType === 'new-workspace';
 
   const manualSteps: string[] = [
-    `Add Notion cross-database relations: Open the "Getting Started" page created in Step 6. It lists all 23 relations that need to be added manually (Notion API limitation).`,
+    `Add Notion cross-database relations: Cross-DB relations (e.g. Tasks → Circles, Profiles → Role Assignments) must be added manually in Notion — the API cannot create them. Open each database and add the relation properties per the Saberra schema.`,
     isGooglePath
       ? `Email forwarding: The capture inbox (${state.rootsEmail}) is OAuth-managed. Confirm the inbox is receiving emails by sending a test message to ${state.rootsEmail} and verifying it appears in the account.`
       : `Email forwarding: Configure the client's preferred email address to forward to ${state.rootsEmail}. Send a test message and verify it arrives in the IMAP inbox.`,
@@ -1105,12 +1204,12 @@ async function step10_finalize(state: Partial<DeployState>): Promise<void> {
   // Determine verified items
   const verified: string[] = [];
   if (!isFillIn(state.railwayProjectId))   verified.push(`Railway project: https://railway.app/project/${state.railwayProjectId}`);
-  if (!isFillIn(state.notionApiKey))        verified.push(`Notion workspace connected (${state.dbIds ? Object.keys(state.dbIds).length + ' databases created' : 'key validated'})`);
+  if (!isFillIn(state.notionApiKey))        verified.push(`Notion workspace connected (${state.dbIds ? Object.keys(state.dbIds).length + ' databases discovered' : 'key validated'})`);
   if (!isFillIn(state.googleRefreshToken) && state.googleRefreshToken !== 'DRY_RUN_TOKEN') {
     verified.push(`Google OAuth: refresh token obtained`);
   }
   if (state.dbIds && Object.keys(state.dbIds).length > 0) {
-    verified.push(`Notion databases: ${Object.keys(state.dbIds).length} created`);
+    verified.push(`Notion databases: ${Object.keys(state.dbIds).length} discovered`);
   }
   if (!isFillIn(state.seraApiSecret))      verified.push(`Railway env vars: set on all 3 services`);
 
@@ -1190,7 +1289,7 @@ async function main(): Promise<void> {
     { num: 3,  fn: () => step3_email(rl, state) },
     { num: 4,  fn: () => step4_google(rl, state) },
     { num: 5,  fn: () => step5_config(rl, state) },
-    { num: 6,  fn: () => step6_databases(state) },
+    { num: 6,  fn: () => step6_databases(rl, state) },
     { num: 7,  fn: () => step7_envVars(state) },
     { num: 8,  fn: () => step8_github(rl, state) },
     { num: 9,  fn: () => step9_healthCheck(state) },
