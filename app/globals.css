@@ -262,18 +262,48 @@ button {
   padding: 18px;
 }
 
+.hero-vsl-col {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  align-self: center;
+}
+
 .hero-vsl-wrap {
   width: 100%;
   border-radius: 10px;
   overflow: hidden;
   box-shadow: 0 4px 40px rgba(0, 0, 0, 0.5);
-  align-self: center;
 }
 
 .hero-vsl-video {
   display: block;
   width: 100%;
   height: auto;
+}
+
+.hero-vsl-meta {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+  padding: 0 2px;
+}
+
+.hero-vsl-label {
+  color: var(--gold);
+  font-size: 0.82rem;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.hero-vsl-proof {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  color: #9bb5ba;
+  font-size: 0.82rem;
 }
 
 .hero-visual-simple {

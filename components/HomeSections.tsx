@@ -50,15 +50,22 @@ export function Hero() {
           </div>
           <p className="cta-note">Find out exactly where your organization is leaking, in 10 questions.</p>
         </div>
-        <div className="hero-vsl-wrap">
-          <video
-            src="/Saberra Explainer Video - Phase 3 - compressed.mp4"
-            poster="/saberra-video-poster.jpg"
-            controls
-            preload="metadata"
-            className="hero-vsl-video"
-            playsInline
-          />
+        <div className="hero-vsl-col">
+          <div className="hero-vsl-wrap">
+            <video
+              src="/Saberra Explainer Video - Phase 3 - compressed.mp4"
+              poster="/saberra-video-poster.jpg"
+              controls
+              preload="metadata"
+              className="hero-vsl-video"
+              playsInline
+            />
+          </div>
+          <div className="hero-vsl-meta">
+            <span className="hero-vsl-label">10-min overview</span>
+            <span className="hero-vsl-proof"><CheckCircle size={13} aria-hidden="true" /> Human-reviewed memory</span>
+            <span className="hero-vsl-proof"><ShieldCheck size={13} aria-hidden="true" /> Your data, your workspace</span>
+          </div>
         </div>
       </div>
     </section>
