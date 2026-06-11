@@ -36,6 +36,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     "/cases/governance-coordinator-transition",
     "/cases/nonprofit-leadership-handoff",
     "/cases/consultancy-delivery-lead",
+    "/careers",
     "/security",
     "/privacy",
     "/terms"

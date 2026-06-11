@@ -67,6 +67,7 @@ export function Footer() {
           <Link href="/notion-template">Demo Hub</Link>
           <Link href="/founding-access">Founding Access</Link>
           <Link href="/partners">Partner Referrals</Link>
+          <Link href="/careers">Work With Us</Link>
           <Link href="/resources">Resources</Link>
           <Link href="/security">Security</Link>
           <Link href="/privacy">Privacy</Link>

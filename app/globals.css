@@ -3097,3 +3097,101 @@ button {
   .vsl-chrome-url { display: none; }
   .vsl-chrome-spacer { display: none; }
 }
+
+/* ── Careers Page ──────────────────────────────────────────── */
+.role-header { margin-bottom: 24px; }
+.role-conventional { color: #8da3a8; font-size: 0.95rem; margin: 6px 0 4px; }
+.role-comp-line { color: var(--teal-soft); font-size: 0.97rem; margin: 0 0 20px; }
+.role-summary {
+  max-width: 74ch;
+  color: #d5dddf;
+  font-size: 1.08rem;
+  line-height: 1.7;
+  margin-bottom: 36px;
+}
+.role-detail-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 40px;
+  margin-bottom: 32px;
+}
+.role-section-label {
+  font-size: 0.82rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: #6fada4;
+  margin: 0 0 14px;
+  font-weight: 600;
+}
+.list.muted li { color: #7a9099; }
+.role-apply-link {
+  display: inline-block;
+  margin-top: 8px;
+}
+
+/* ── Job Application Form ──────────────────────────────────── */
+.job-form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  max-width: 780px;
+}
+.job-form .field { display: flex; flex-direction: column; gap: 7px; }
+.job-form .field span { font-size: 0.9rem; color: #a8bcc0; font-weight: 500; }
+.job-form .field input,
+.job-form .field select,
+.job-form .field textarea {
+  background: #0f191e;
+  border: 1.5px solid #1e2e35;
+  border-radius: 8px;
+  color: #e8edf0;
+  font-size: 0.96rem;
+  padding: 12px 14px;
+  transition: border-color 0.15s;
+  font-family: inherit;
+  width: 100%;
+  box-sizing: border-box;
+}
+.job-form .field input:focus,
+.job-form .field select:focus,
+.job-form .field textarea:focus { border-color: var(--teal-soft); outline: none; }
+.job-form .field textarea { resize: vertical; min-height: 100px; }
+.job-form .field select { cursor: pointer; }
+.job-form .field-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+.job-form .file-field input[type="file"] {
+  padding: 10px 12px;
+  cursor: pointer;
+  color: #8da3a8;
+}
+.job-form .file-field small { color: #5a7880; font-size: 0.8rem; }
+.job-form .form-actions { display: flex; flex-direction: column; gap: 10px; margin-top: 8px; }
+.job-form .form-note { color: #6a8890; font-size: 0.88rem; line-height: 1.6; max-width: 64ch; }
+.form-error { color: #e07a5f; font-size: 0.92rem; }
+
+.job-form-success {
+  max-width: 560px;
+  padding: 40px;
+  background: rgba(111, 183, 183, 0.06);
+  border: 1px solid rgba(111, 183, 183, 0.2);
+  border-radius: 10px;
+  text-align: center;
+}
+.job-form-success-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 48px;
+  background: rgba(111, 183, 183, 0.15);
+  border-radius: 50%;
+  font-size: 1.4rem;
+  color: var(--teal-soft);
+  margin-bottom: 16px;
+}
+.job-form-success h3 { color: var(--paper); margin: 0 0 12px; }
+.job-form-success p { color: #8da3a8; line-height: 1.65; }
+
+@media (max-width: 768px) {
+  .role-detail-grid { grid-template-columns: 1fr; gap: 24px; }
+  .job-form .field-row { grid-template-columns: 1fr; }
+}

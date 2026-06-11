@@ -9,7 +9,8 @@ export const formspreeForms = {
   notionTemplate: "https://formspree.io/f/mbdedveq",
   demoRequest: "https://formspree.io/f/xdavarvv",
   foundingAccess: "https://formspree.io/f/mqeoevor",
-  partnerReferral: "https://formspree.io/f/mvznqrkv"
+  partnerReferral: "https://formspree.io/f/mvznqrkv",
+  jobApplication: "https://formspree.io/f/xwvjnnpv"
 };
 
 export const navItems = [
