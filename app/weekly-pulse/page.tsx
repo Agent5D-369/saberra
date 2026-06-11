@@ -92,7 +92,7 @@ export default function WeeklyPulsePage() {
             <li>Sera drafts candidate records from meetings and emails throughout the week.</li>
             <li>Your reviewer approves, edits, or rejects each candidate in the review queue.</li>
             <li>Every Friday, Sera compiles newly approved records into the Weekly Pulse digest.</li>
-            <li>The digest arrives in your team's inbox with links to source records in Notion.</li>
+            <li>The digest arrives in your team&apos;s inbox with links to source records in Notion.</li>
             <li>Clicking any item opens the full record with its source meeting or email trail.</li>
           </ul>
         </div>

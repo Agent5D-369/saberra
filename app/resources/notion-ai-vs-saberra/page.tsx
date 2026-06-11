@@ -109,7 +109,7 @@ export default function NotionAiVsSaberraPage() {
           </div>
           <div>
             <div className="eyebrow">When Saberra is the right choice</div>
-            <h3 className="serif" style={{ marginBottom: 16 }}>Your team's context lives in meetings and email.</h3>
+            <h3 className="serif" style={{ marginBottom: 16 }}>Your team&apos;s context lives in meetings and email.</h3>
             <ul className="list">
               {whenToChooseSaberra.map((item) => (
                 <li key={item}>{item}</li>
