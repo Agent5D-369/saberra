@@ -2931,7 +2931,10 @@ button {
 
   .case-vignette h2,
   .vignette-grid .case-vignette h2 {
-    font-size: clamp(2rem, 11vw, 3.2rem)
+    font-size: clamp(2rem, 11vw, 3.2rem);
+  }
+}
+
 /* ── Sera Ask (Audit result screen) ─────────────────────── */
 .sera-ask-card { margin-top: 16px; }
 .sera-ask-hint { color: #9caab0; font-size: 0.95rem; margin-bottom: 16px; }
