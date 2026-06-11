@@ -69,8 +69,12 @@ export default function InstitutionalMemorySystemPage() {
       <section className="section">
         <div className="container">
           <CTABand
-            title="See what Sera would organize."
-            copy="Open the Living Memory Hub demo to see the backend structure, then see how Sera keeps it current from meetings and emails."
+            title="See what Sera would organize from your meetings and emails."
+            copy="Open the Living Memory Hub demo to see the backend structure, then take the audit to see where your current system is leaking."
+            primary="Open the demo hub"
+            primaryHref="/notion-template"
+            secondary="Take the Memory Audit"
+            secondaryHref="/audit"
           />
         </div>
       </section>

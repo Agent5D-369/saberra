@@ -57,7 +57,11 @@ export default function SeraPage() {
         <div className="container">
           <CTABand
             title="Ask Sera what your organization already knows."
-            copy="Start with the Living Memory Hub demo, then see whether Saberra is a fit for your current workflow."
+            copy="Start with the Living Memory Hub demo to see reviewed memory in action, then apply if you want Sera operating inside your own organization."
+            primary="Open the demo hub"
+            primaryHref="/notion-template"
+            secondary="Apply for a founding spot"
+            secondaryHref="/founding-access"
           />
         </div>
       </section>

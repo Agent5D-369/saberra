@@ -126,10 +126,10 @@ export default function NonprofitHandoffCasePage() {
           <CTABand
             title="Your next leadership transition does not have to cost you the relationships you built."
             copy="See how Saberra captures funder context, program history, and board decisions before the person who holds them moves on."
-            primary="Take the Memory Audit"
-            primaryHref="/audit"
-            secondary="Apply for a founding spot"
-            secondaryHref="/founding-access"
+            primary="Apply for a founding spot"
+            primaryHref="/founding-access"
+            secondary="Take the Memory Audit"
+            secondaryHref="/audit"
           />
         </div>
       </section>

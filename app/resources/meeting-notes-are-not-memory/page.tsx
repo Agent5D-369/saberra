@@ -67,7 +67,11 @@ export default function MeetingNotesAreNotMemoryPage() {
         <div className="container">
           <CTABand
             title="Build operating intelligence, not another pile of notes."
-            copy="Open the Living Memory Hub demo, then see how Sera keeps it updated from the meetings and emails your team already creates."
+            copy="See where your current system is leaking, then open the Living Memory Hub to see what reviewed memory actually looks like."
+            primary="Take the Memory Audit"
+            primaryHref="/audit"
+            secondary="Open the demo hub"
+            secondaryHref="/notion-template"
           />
         </div>
       </section>

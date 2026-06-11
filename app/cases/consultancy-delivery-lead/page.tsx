@@ -125,10 +125,10 @@ export default function ConsultancyTransitionCasePage() {
           <CTABand
             title="Client relationships should belong to the firm, not to the person who managed them."
             copy="See how Saberra captures delivery context, client relationship history, and engagement decisions before the person who held them moves on."
-            primary="Take the Memory Audit"
-            primaryHref="/audit"
-            secondary="Apply for a founding spot"
-            secondaryHref="/founding-access"
+            primary="Apply for a founding spot"
+            primaryHref="/founding-access"
+            secondary="Take the Memory Audit"
+            secondaryHref="/audit"
           />
         </div>
       </section>

@@ -60,6 +60,10 @@ export default function NotionInstitutionalMemoryTemplatePage() {
           <CTABand
             title="Open the Living Memory Hub."
             copy="Duplicate the structure, inspect the backend, then see how Sera keeps it current from meetings and emails."
+            primary="Open the demo hub"
+            primaryHref="/notion-template"
+            secondary="Take the Memory Audit"
+            secondaryHref="/audit"
           />
         </div>
       </section>

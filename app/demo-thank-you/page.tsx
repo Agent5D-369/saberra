@@ -22,8 +22,8 @@ export default function DemoThankYouPage() {
           </p>
           <div className="cta-row">
             <CTAButton href={demoCalendarUrl}>Schedule your demo slot</CTAButton>
-            <CTAButton href="/how-it-works" variant="secondary">
-              See how Saberra works
+            <CTAButton href="/notion-template" variant="secondary">
+              Open the demo hub while you wait
             </CTAButton>
           </div>
         </div>

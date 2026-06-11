@@ -125,10 +125,10 @@ export default function GovernanceTransitionCasePage() {
           <CTABand
             title="Your next transition does not have to cost three months."
             copy="See how Saberra captures governance decisions, role history, and open risks before the people who hold them are no longer available to ask."
-            primary="Take the Memory Audit"
-            primaryHref="/audit"
-            secondary="Apply for a founding spot"
-            secondaryHref="/founding-access"
+            primary="Apply for a founding spot"
+            primaryHref="/founding-access"
+            secondary="Take the Memory Audit"
+            secondaryHref="/audit"
           />
         </div>
       </section>

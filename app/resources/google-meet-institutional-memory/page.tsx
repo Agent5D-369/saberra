@@ -53,8 +53,12 @@ export default function GoogleMeetInstitutionalMemoryPage() {
       <section className="section">
         <div className="container">
           <CTABand
-            title="Your meetings already contain the memory."
-            copy="Saberra makes the record durable enough to ask later."
+            title="Your meetings already contain the memory. Saberra makes the record durable."
+            copy="Open the Living Memory Hub demo to see how meeting output becomes reviewed decisions, tasks, risks, roles, and Sera answers."
+            primary="Open the demo hub"
+            primaryHref="/notion-template"
+            secondary="Take the Memory Audit"
+            secondaryHref="/audit"
           />
         </div>
       </section>

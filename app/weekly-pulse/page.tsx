@@ -105,8 +105,8 @@ export default function WeeklyPulsePage() {
             copy="Start with the Living Memory Hub demo, then see how Sera keeps it current from the meetings and emails your team already creates."
             primary="Open the demo hub"
             primaryHref="/notion-template"
-            secondary="See how it works"
-            secondaryHref="/how-it-works"
+            secondary="Apply for a founding spot"
+            secondaryHref="/founding-access"
           />
         </div>
       </section>

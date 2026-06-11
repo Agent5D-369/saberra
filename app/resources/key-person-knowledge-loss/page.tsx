@@ -172,11 +172,11 @@ export default function KeyPersonKnowledgeLossPage() {
             copy="Saberra captures decisions, relationship context, and operational risk awareness continuously from the meetings and emails your team already creates. Take the audit to see where your organization is most exposed."
             primary="Take the Memory Audit"
             primaryHref="/audit"
-            secondary="See how it works"
-            secondaryHref="/how-it-works"
+            secondary="Apply for a founding spot"
+            secondaryHref="/founding-access"
           />
         </div>
       </section>
-    </main>
+     </main>
   );
 }
