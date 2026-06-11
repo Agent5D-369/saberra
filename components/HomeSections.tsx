@@ -128,7 +128,7 @@ export function VideoSection() {
               <span className="vsl-chrome-spacer" />
             </div>
             <video
-              src="/saberra-explainer.mp4"
+              src="/Saberra Explainer Video - Phase 3 - compressed.mp4"
               controls
               preload="metadata"
               className="vsl-video"
