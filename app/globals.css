@@ -3198,6 +3198,107 @@ button {
 }
 
 /* ── Job Application Form ──────────────────────────────────── */
+/* ── DEMO HUB ─────────────────────────────────────────────── */
+
+.demo-hub-paths {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+  align-items: start;
+}
+
+.demo-hub-card {
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  background: rgba(246, 244, 240, 0.03);
+  padding: 28px;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.demo-hub-card-featured {
+  border-color: rgba(111, 183, 183, 0.35);
+  background: rgba(111, 183, 183, 0.05);
+}
+
+.demo-hub-card-header {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+}
+
+.demo-hub-icon {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 8px;
+  background: rgba(111, 183, 183, 0.12);
+  color: var(--teal-soft);
+  margin-top: 2px;
+}
+
+.demo-hub-label {
+  color: var(--gold);
+  font-size: 0.75rem;
+  font-weight: 900;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  margin-bottom: 4px;
+}
+
+.demo-hub-card h2 {
+  margin: 0;
+  color: var(--paper);
+  font-size: clamp(1.15rem, 1.8vw, 1.45rem);
+  line-height: 1.15;
+}
+
+.demo-hub-card > p {
+  color: #c5d5d9;
+  font-size: 0.95rem;
+  line-height: 1.65;
+  margin: 0;
+}
+
+.demo-hub-checklist {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+}
+
+.demo-hub-checklist li {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #9bb5ba;
+  font-size: 0.88rem;
+}
+
+.demo-hub-checklist li::before {
+  content: "";
+  flex-shrink: 0;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--teal-soft);
+}
+
+@media (max-width: 960px) {
+  .demo-hub-paths {
+    grid-template-columns: 1fr;
+    max-width: 600px;
+    margin: 0 auto;
+  }
+}
+
+
 .job-form {
   display: flex;
   flex-direction: column;

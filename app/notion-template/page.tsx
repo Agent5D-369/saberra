@@ -1,77 +1,110 @@
 import type { Metadata } from "next";
-import { NotionTemplateGateForm, TemplateDeliveryCard } from "@/components/LeadForms";
-import { SectionHeader } from "@/components/UI";
-import { DatabaseMapVisual, NotionTemplateVisual, NotionWorkspaceVisual } from "@/components/VisualPanels";
+import Link from "next/link";
+import { ArrowRight, CalendarCheck, Download, Users } from "lucide-react";
+import { DemoRequestForm, NotionTemplateGateForm, WebinarWaitlistForm } from "@/components/LeadForms";
 
 export const metadata: Metadata = {
-  title: "Saberra Living Memory Hub Demo",
+  title: "Open the Demo Hub | Saberra",
   description:
-    "Access the Saberra Living Memory Hub demo in Notion and learn how to duplicate it into your own workspace.",
+    "Three ways to see Saberra in action: explore the Notion template yourself, join a live webinar, or book a focused team demo.",
   alternates: { canonical: "/notion-template" }
 };
 
-export default function NotionTemplatePage() {
+export default function DemoHubPage() {
   return (
     <main>
       <section className="page-hero">
         <div className="container">
-          <h1>Open the Saberra Living Memory Hub demo.</h1>
+          <div className="eyebrow">Demo hub</div>
+          <h1>See Saberra in action.</h1>
           <p>
-            See the private Notion backend where decisions, risks, roles, tasks, meetings, policies, source records,
-            review queues, and operating memory can live.
+            Three ways in. Pick the one that fits where you are right now.
           </p>
         </div>
       </section>
+
+      {/* ── THREE-PATH CHOOSER ─────────────────────────────────── */}
       <section className="section tight">
-        <div className="container split">
-          <div>
-            <SectionHeader eyebrow="Living Memory Hub" title="Explore the backend before Sera starts organizing it.">
-              The demo shows the decision, risk, role, task, meeting, policy, source, profile, project, and review
-              structure Saberra uses. It does not capture emails, route meeting transcripts, draft records, manage
-              review, or let your team ask Sera for sourced answers until Saberra is configured.
-            </SectionHeader>
-            <article className="card challenge-card">
-              <h3>Duplicate it in the easiest possible way.</h3>
-              <p>
-                Submit the short form, open the demo database, use Notion&apos;s duplicate control to copy it into your
-                workspace, then duplicate that local copy again if you want a clean version with no sample records.
-              </p>
-            </article>
-            <NotionTemplateVisual />
+        <div className="container demo-hub-paths">
+
+          {/* Path 1 — Notion template */}
+          <div className="demo-hub-card" id="notion-template">
+            <div className="demo-hub-card-header">
+              <span className="demo-hub-icon"><Download size={22} aria-hidden="true" /></span>
+              <div>
+                <div className="demo-hub-label">Fastest</div>
+                <h2 className="serif">Explore the template yourself.</h2>
+              </div>
+            </div>
+            <p>
+              Duplicate the Saberra Living Memory Hub into your own Notion workspace and see the full
+              decision, task, risk, role, policy, meeting, and source structure before anything is configured.
+            </p>
+            <ul className="demo-hub-checklist">
+              <li>Instant access on the next page</li>
+              <li>Full database with sample records</li>
+              <li>Duplicate into your workspace in one click</li>
+            </ul>
+            <NotionTemplateGateForm />
           </div>
-          <NotionTemplateGateForm />
-        </div>
-      </section>
-      <section className="section tight">
-        <div className="container">
-          <div className="grid-3">
-            {[
-              ["Demo database access", "Open the working Living Memory Hub with sample decisions, tasks, risks, roles, policies, meetings, people, sources, and review queues."],
-              ["Local duplication", "Copy the hub into your own Notion workspace so you can inspect, edit, and test the structure."],
-              ["Clean database option", "Duplicate your local copy again, remove the sample records, and keep the original demo copy as a reference."]
-            ].map(([title, copy]) => (
-              <article className="card" key={title}>
-                <h3>{title}</h3>
-                <p>{copy}</p>
-              </article>
-            ))}
+
+          {/* Path 2 — Webinar */}
+          <div className="demo-hub-card" id="webinar">
+            <div className="demo-hub-card-header">
+              <span className="demo-hub-icon"><CalendarCheck size={22} aria-hidden="true" /></span>
+              <div>
+                <div className="demo-hub-label">Next session</div>
+                <h2 className="serif">Join a live webinar demo.</h2>
+              </div>
+            </div>
+            <p>
+              Watch Sera process a real organization&apos;s context in a small-group session. See how meetings and
+              email become reviewed decisions, owned tasks, and answers your team can query. Q&amp;A included.
+            </p>
+            <ul className="demo-hub-checklist">
+              <li>Small group, real workflow walkthrough</li>
+              <li>Live Q&amp;A with the Saberra team</li>
+              <li>Email confirmation when next date is set</li>
+            </ul>
+            <WebinarWaitlistForm />
           </div>
+
+          {/* Path 3 — Team demo */}
+          <div className="demo-hub-card demo-hub-card-featured" id="team-demo">
+            <div className="demo-hub-card-header">
+              <span className="demo-hub-icon"><Users size={22} aria-hidden="true" /></span>
+              <div>
+                <div className="demo-hub-label">Teams only</div>
+                <h2 className="serif">Book a focused team demo.</h2>
+              </div>
+            </div>
+            <p>
+              Bring a real scenario: a decision that disappeared, a handoff that went wrong, a role transition
+              that cost your team weeks. We map your actual operating patterns through Saberra and show you
+              exactly what the record would have looked like.
+            </p>
+            <ul className="demo-hub-checklist">
+              <li>30 minutes, your real workflow</li>
+              <li>Not a generic tour</li>
+              <li>For teams of 3 or more</li>
+            </ul>
+            <DemoRequestForm />
+          </div>
+
         </div>
       </section>
+
+      {/* ── BOTTOM NUDGE ──────────────────────────────────────── */}
       <section className="section tight">
-        <div className="container">
-          <DatabaseMapVisual />
-      
-        </div>
-      </section>
-      <section className="section tight">
-        <div className="container">
-          <NotionWorkspaceVisual />
-        </div>
-      </section>
-      <section className="section tight">
-        <div className="container" style={{ maxWidth: 640 }}>
-          <TemplateDeliveryCard />
+        <div className="container" style={{ textAlign: "center", maxWidth: 560 }}>
+          <p style={{ color: "#9bb5ba", fontSize: "0.95rem" }}>
+            Not sure which fits? Start with the Notion template. It takes 2 minutes and you can book a team demo after.
+          </p>
+          <div className="cta-row" style={{ justifyContent: "center", marginTop: 18 }}>
+            <Link className="btn btn-secondary" href="#notion-template">
+              Explore the template <ArrowRight size={15} aria-hidden="true" />
+            </Link>
+          </div>
         </div>
       </section>
     </main>

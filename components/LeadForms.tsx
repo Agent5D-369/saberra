@@ -194,6 +194,24 @@ export function DemoRequestForm() {
   );
 }
 
+export function WebinarWaitlistForm() {
+  return (
+    <FormShell
+      action={formspreeForms.webinarDemo}
+      name="Webinar Demo Waitlist"
+      redirectPath="/demo-thank-you"
+      submitLabel="Save my spot"
+      formNote="We run small-group sessions so we can answer real questions. You will get an email when the next date is confirmed."
+    >
+      <div className="form-grid">
+        <TextField field={{ label: "Work email", name: "email", type: "email", required: true, placeholder: "you@organization.org" }} />
+        <TextField field={{ label: "Name", name: "name", type: "text", required: true, placeholder: "Your name" }} />
+        <SegmentField />
+      </div>
+    </FormShell>
+  );
+}
+
 export function FoundingAccessForm() {
   return (
     <FormShell

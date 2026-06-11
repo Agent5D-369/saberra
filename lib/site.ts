@@ -10,7 +10,8 @@ export const formspreeForms = {
   demoRequest: "https://formspree.io/f/xdavarvv",
   foundingAccess: "https://formspree.io/f/mqeoevor",
   partnerReferral: "https://formspree.io/f/mvznqrkv",
-  jobApplication: "https://formspree.io/f/xwvjnnpv"
+  jobApplication: "https://formspree.io/f/xwvjnnpv",
+  webinarDemo: "https://formspree.io/f/mqeodvvz"
 };
 
 export const navItems = [
