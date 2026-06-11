@@ -135,20 +135,6 @@ export function VideoSection() {
               playsInline
             />
           </div>
-          <div className="vsl-phone-chrome" aria-hidden="true">
-            <div className="vsl-phone-body">
-              <div className="vsl-phone-notch" />
-              <video
-                src="/saberra-explainer.mp4"
-                controls
-                preload="metadata"
-                className="vsl-video"
-                playsInline
-                tabIndex={-1}
-              />
-              <div className="vsl-phone-bar" />
-            </div>
-          </div>
         </div>
         <p className="vsl-caption">
           See how Sera turns a week of meetings and emails into reviewed decisions, owned tasks, and answers your team can ask for.
