@@ -111,25 +111,28 @@ export default function SummitPage() {
   return (
     <main className="summit-page">
       <section className="summit-hero">
-        <div className="container summit-hero-grid">
-          <div className="summit-hero-copy">
-            <div className="summit-event-line">AI Epidemic / Building for Life · June 11</div>
-            <h1>Turn event conversations into living organizational memory.</h1>
-            <p>
-              Saberra gives your organization Sera: an AI secretary that listens to meetings and email, drafts the
-              operating record, and routes it through human review before anyone treats it as trusted memory.
-            </p>
-            <div className="summit-proof-line">
-              <span>
-                <ClipboardCheck size={16} aria-hidden="true" /> Human-reviewed
-              </span>
-              <span>
-                <FileSearch size={16} aria-hidden="true" /> Source-backed
-              </span>
-            </div>
-            <SummitCTA />
+        <div className="container summit-vsl-hero">
+          <div className="summit-event-line">AI Epidemic / Building for Life · June 11</div>
+          <h1>Turn your team&apos;s conversations into reviewed organizational memory.</h1>
+          <div className="summit-video-wrap">
+            <video
+              src="/Saberra Explainer Video - Phase 3 - compressed.mp4"
+              poster="/saberra-video-poster.jpg"
+              controls
+              preload="metadata"
+              className="summit-video"
+              playsInline
+            />
           </div>
-          <ConversationToMemoryVisual />
+          <div className="summit-proof-line summit-proof-center">
+            <span>
+              <ClipboardCheck size={16} aria-hidden="true" /> Human-reviewed
+            </span>
+            <span>
+              <FileSearch size={16} aria-hidden="true" /> Source-backed
+            </span>
+          </div>
+          <SummitCTA />
         </div>
       </section>
 

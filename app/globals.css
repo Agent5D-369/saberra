@@ -2137,6 +2137,42 @@ button {
   padding: clamp(34px, 4.8vw, 56px) 0 40px;
 }
 
+.summit-vsl-hero {
+  display: grid;
+  gap: 24px;
+  justify-items: center;
+  text-align: center;
+  max-width: 860px;
+  margin: 0 auto;
+}
+
+.summit-vsl-hero h1 {
+  max-width: 680px;
+  margin: 0;
+  color: var(--paper);
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: clamp(2rem, 4vw, 3.6rem);
+  font-weight: 500;
+  line-height: 0.96;
+}
+
+.summit-video-wrap {
+  width: 100%;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 4px 40px rgba(0,0,0,0.45);
+}
+
+.summit-video {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.summit-proof-center {
+  justify-content: center;
+}
+
 .summit-hero-grid,
 .summit-minute-grid,
 .summit-fit-grid {
