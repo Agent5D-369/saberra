@@ -192,11 +192,7 @@ button {
 .hero {
   position: relative;
   overflow: hidden;
-  padding: 56px 0 52px;
-  min-height: calc(100vh - 72px);
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
+  padding: 64px 0 60px;
 }
 
 .hero-grid {
@@ -256,7 +252,7 @@ button {
 }
 
 .hero-visual {
-  min-height: 620px;
+  min-height: 540px;
   border: 1px solid rgba(111, 183, 183, 0.22);
   border-radius: 8px;
   background:
