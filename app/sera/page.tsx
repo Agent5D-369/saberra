@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { SeraDemoSection, SeraLimitations, TrustSection } from "@/components/HomeSections";
+import { SeraDemoSection, TrustSection } from "@/components/HomeSections";
 import { CTABand, SectionHeader, SeraPortrait } from "@/components/UI";
 import { SeraEvidenceVisual } from "@/components/VisualPanels";
 
@@ -51,7 +51,27 @@ export default function SeraPage() {
           </ul>
         </div>
       </section>
-      <SeraLimitations />
+      <section className="section tight alt">
+        <div className="container">
+          <SectionHeader eyebrow="What Sera does not do" title="Sera does not invent answers.">
+            Sera answers from reviewed, source-backed organizational records. Not from the open internet. Not from
+            unreviewed extractions. If the record does not exist, Sera says so. That restraint is deliberate: an AI
+            that confidently invents answers is worse than no system at all.
+          </SectionHeader>
+          <div className="grid-3" style={{ marginTop: 32 }}>
+            {[
+              ["No hallucinated answers", "Every answer Sera gives is designed to point back to a source your team has already reviewed and approved."],
+              ["No autonomous writes", "Sera proposes. Humans approve. Nothing becomes trusted organizational memory without a human in the loop."],
+              ["No black-box extraction", "Every record Sera proposes is inspectable, editable, and correctable by your team before it enters the system."]
+            ].map(([title, copy]) => (
+              <article className="card" key={title}>
+                <h3>{title}</h3>
+                <p>{copy}</p>
+              </article>
+            ))}
+          </div>
+        </div>
+      </section>
       <TrustSection />
       <section className="section">
         <div className="container">

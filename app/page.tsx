@@ -11,7 +11,8 @@ import {
   ProcessFlow,
   SeraDemoSection,
   SocialProof,
-  TrustSection
+  TrustSection,
+  VideoSection
 } from "@/components/HomeSections";
 import { siteUrl } from "@/lib/site";
 
@@ -66,6 +67,7 @@ export default function HomePage() {
     <main>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }} />
       <Hero />
+      <VideoSection />
       <PainCards />
       <ProcessFlow />
       <SocialProof />

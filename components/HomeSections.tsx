@@ -111,6 +111,53 @@ function HeroVisual() {
   );
 }
 
+export function VideoSection() {
+  return (
+    <section className="section tight video-section">
+      <div className="container">
+        <div className="vsl-eyebrow">
+          <span>2-minute overview</span>
+        </div>
+        <div className="vsl-frame-wrap">
+          <div className="vsl-browser-chrome">
+            <div className="vsl-chrome-bar">
+              <span className="vsl-dot red" />
+              <span className="vsl-dot yellow" />
+              <span className="vsl-dot green" />
+              <span className="vsl-chrome-url">saberra.com &mdash; Sera in action</span>
+              <span className="vsl-chrome-spacer" />
+            </div>
+            <video
+              src="/saberra-explainer.mp4"
+              controls
+              preload="metadata"
+              className="vsl-video"
+              playsInline
+            />
+          </div>
+          <div className="vsl-phone-chrome" aria-hidden="true">
+            <div className="vsl-phone-body">
+              <div className="vsl-phone-notch" />
+              <video
+                src="/saberra-explainer.mp4"
+                controls
+                preload="metadata"
+                className="vsl-video"
+                playsInline
+                tabIndex={-1}
+              />
+              <div className="vsl-phone-bar" />
+            </div>
+          </div>
+        </div>
+        <p className="vsl-caption">
+          See how Sera turns a week of meetings and emails into reviewed decisions, owned tasks, and answers your team can ask for.
+        </p>
+      </div>
+    </section>
+  );
+}
+
 export function PainCards() {
   const cards = [
     [
@@ -643,40 +690,6 @@ export function FinalCTA() {
           secondary="Apply for a founding spot"
           secondaryHref="/founding-access"
         />
-      </div>
-    </section>
-  );
-}
-
-export function SeraLimitations() {
-  const limits = [
-    "Answer from the open internet.",
-    "Treat unreviewed extractions as trusted memory.",
-    "Invent a decision if no reviewed record exists.",
-    "Replace human judgment.",
-    "Claim a native Zoom or Teams integration unless transcript intake is configured by email."
-  ];
-
-  return (
-    <section className="section tight">
-      <div className="container">
-        <div className="limits-panel">
-          <div>
-            <div className="eyebrow">Trust by restraint</div>
-            <h2>Sera is useful because she has boundaries.</h2>
-            <p>
-              Saberra should make your organization easier to inspect, not harder to question. Sera answers from reviewed
-              memory and is expected to say when the record does not contain an answer.
-            </p>
-          </div>
-          <ul className="list">
-            {limits.map((item) => (
-              <li key={item}>
-                <CircleAlert size={18} color="#D6A24A" aria-hidden="true" /> Sera will not {item}
-              </li>
-            ))}
-          </ul>
-        </div>
       </div>
     </section>
   );
