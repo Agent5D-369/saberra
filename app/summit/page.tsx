@@ -2,12 +2,9 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import {
   ArrowRight,
-  CheckCircle,
   ClipboardCheck,
-  Database,
   FileSearch,
   Mail,
-  MessageSquareText,
   Sparkles,
   UsersRound
 } from "lucide-react";
@@ -55,8 +52,6 @@ export const metadata: Metadata = {
 const ctaHref = "/notion-template";
 const ctaLabel = "Open the demo hub";
 
-const memoryTypes = ["Decisions", "Tasks", "Roles", "Risks", "Policies", "People", "Projects", "Sources"];
-
 const audienceRows = [
   ["Founders", "stop being the only archive"],
   ["Nonprofits", "preserve program and partner context"],
@@ -72,40 +67,6 @@ function SummitCTA({ className = "" }: { className?: string }) {
   );
 }
 
-function ConversationToMemoryVisual() {
-  return (
-    <div className="summit-visual" aria-label="Saberra turns event conversations into reviewed memory">
-      <div className="summit-visual-panel">
-        <div className="summit-mini-title">
-          <MessageSquareText size={16} aria-hidden="true" /> Conversations
-        </div>
-        <div className="summit-fragments">
-          <span>meeting notes</span>
-          <span>email thread</span>
-          <span>verbal decision</span>
-          <span>follow-up</span>
-        </div>
-      </div>
-      <div className="summit-sera-core">
-        <Sparkles size={26} aria-hidden="true" />
-        <strong>Meet Sera</strong>
-        <span>AI drafts. Humans approve.</span>
-      </div>
-      <div className="summit-visual-panel summit-visual-panel-light">
-        <div className="summit-mini-title">
-          <Database size={16} aria-hidden="true" /> Living Memory Hub
-        </div>
-        <div className="summit-memory-grid">
-          {memoryTypes.map((item) => (
-            <span key={item}>
-              <CheckCircle size={13} aria-hidden="true" /> {item}
-            </span>
-          ))}
-        </div>
-      </div>
-    </div>
-  );
-}
 
 export default function SummitPage() {
   return (

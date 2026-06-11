@@ -50,96 +50,64 @@ export function Hero() {
           </div>
           <p className="cta-note">Find out exactly where your organization is leaking, in 10 questions.</p>
         </div>
-        <HeroVisual />
+        <div className="hero-vsl-wrap">
+          <video
+            src="/Saberra Explainer Video - Phase 3 - compressed.mp4"
+            poster="/saberra-video-poster.jpg"
+            controls
+            preload="metadata"
+            className="hero-vsl-video"
+            playsInline
+          />
+        </div>
       </div>
     </section>
   );
 }
 
-function HeroVisual() {
-  const before = [
-    "Meetings",
-    "Emails",
-    "Stale Notion",
-    "People's heads"
-  ];
-  const after = [
-    "Approved decisions",
-    "Owned tasks",
-    "Clear roles",
-    "Project memory",
-    "Ask Sera"
-  ];
-
-  return (
-    <div className="hero-visual hero-visual-simple" aria-label="Before and after Sera organizes operating chaos">
-      <div className="simple-hero-map">
-        <div className="before-after-panel before-panel">
-          <div className="mock-title">Before Sera</div>
-          <h2>Scattered context</h2>
-          <div className="simple-chip-list">
-            {before.map((item) => (
-              <div className="simple-chip weak" key={item}>
-                {item}
-              </div>
-            ))}
-          </div>
-        </div>
-        <div className="sera-bridge" aria-hidden="true">
-          <SeraPortrait size="sm" />
-          <strong>Copy Sera</strong>
-          <span>Sera proposes. Humans approve.</span>
-        </div>
-        <div className="before-after-panel after-panel">
-          <div className="mock-title">After Sera</div>
-          <h2>Trusted operating memory</h2>
-          <div className="simple-chip-list">
-            {after.map((item) => (
-              <div className="simple-chip strong" key={item}>
-                <CheckCircle size={15} aria-hidden="true" /> {item}
-              </div>
-            ))}
-          </div>
-          <div className="simple-answer">
-            <span>Ask Sera</span>
-            <strong>What did we already decide?</strong>
-            <small>Answer from approved records with sources.</small>
-          </div>
-        </div>
-      </div>
-    </div>
-  );
-}
-
 export function VideoSection() {
+  const before = ["Meetings", "Emails", "Stale Notion", "People's heads"];
+  const after = ["Approved decisions", "Owned tasks", "Clear roles", "Project memory", "Ask Sera"];
   return (
     <section className="section tight video-section">
       <div className="container">
         <div className="vsl-eyebrow">
-          <span>10-minute overview</span>
+          <span>Before and after Sera</span>
         </div>
-        <div className="vsl-frame-wrap">
-          <div className="vsl-browser-chrome">
-            <div className="vsl-chrome-bar">
-              <span className="vsl-dot red" />
-              <span className="vsl-dot yellow" />
-              <span className="vsl-dot green" />
-              <span className="vsl-chrome-url">saberra.com &mdash; Sera in action</span>
-              <span className="vsl-chrome-spacer" />
+        <div className="hero-visual hero-visual-simple" aria-label="Before and after Sera organizes operating chaos">
+          <div className="simple-hero-map">
+            <div className="before-after-panel before-panel">
+              <div className="mock-title">Before Sera</div>
+              <h2>Scattered context</h2>
+              <div className="simple-chip-list">
+                {before.map((item) => (
+                  <div className="simple-chip weak" key={item}>{item}</div>
+                ))}
+              </div>
             </div>
-            <video
-              src="/Saberra Explainer Video - Phase 3 - compressed.mp4"
-              poster="/saberra-video-poster.jpg"
-              controls
-              preload="metadata"
-              className="vsl-video"
-              playsInline
-            />
+            <div className="sera-bridge" aria-hidden="true">
+              <SeraPortrait size="sm" />
+              <strong>Copy Sera</strong>
+              <span>Sera proposes. Humans approve.</span>
+            </div>
+            <div className="before-after-panel after-panel">
+              <div className="mock-title">After Sera</div>
+              <h2>Trusted operating memory</h2>
+              <div className="simple-chip-list">
+                {after.map((item) => (
+                  <div className="simple-chip strong" key={item}>
+                    <CheckCircle size={15} aria-hidden="true" /> {item}
+                  </div>
+                ))}
+              </div>
+              <div className="simple-answer">
+                <span>Ask Sera</span>
+                <strong>What did we already decide?</strong>
+                <small>Answer from approved records with sources.</small>
+              </div>
+            </div>
           </div>
         </div>
-        <p className="vsl-caption">
-          See how Sera turns a week of meetings and emails into reviewed decisions, owned tasks, and answers your team can ask for.
-        </p>
       </div>
     </section>
   );

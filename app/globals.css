@@ -262,6 +262,20 @@ button {
   padding: 18px;
 }
 
+.hero-vsl-wrap {
+  width: 100%;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 4px 40px rgba(0, 0, 0, 0.5);
+  align-self: center;
+}
+
+.hero-vsl-video {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
 .hero-visual-simple {
   display: grid;
   min-height: 448px;
