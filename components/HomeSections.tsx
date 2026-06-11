@@ -116,7 +116,7 @@ export function VideoSection() {
     <section className="section tight video-section">
       <div className="container">
         <div className="vsl-eyebrow">
-          <span>2-minute overview</span>
+          <span>10-minute overview</span>
         </div>
         <div className="vsl-frame-wrap">
           <div className="vsl-browser-chrome">
@@ -129,6 +129,7 @@ export function VideoSection() {
             </div>
             <video
               src="/Saberra Explainer Video - Phase 3 - compressed.mp4"
+              poster="/saberra-video-poster.jpg"
               controls
               preload="metadata"
               className="vsl-video"
