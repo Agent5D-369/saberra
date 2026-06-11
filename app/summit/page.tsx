@@ -13,7 +13,7 @@ import { siteUrl } from "@/lib/site";
 const summitTitle = "June 11 AI Epidemic / Building for Life Summit";
 const summitDescription =
   "A fast Saberra overview for the June 11 AI Epidemic / Building for Life event: how Sera turns conversations into human-reviewed organizational memory.";
-const summitUrl = `${siteUrl}/summit/`;
+const summitUrl = `${siteUrl}/summit`;
 const ogImageUrl = `${siteUrl}/og.png`;
 
 export const metadata: Metadata = {

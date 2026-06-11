@@ -14,7 +14,7 @@ const schema = {
   "@context": "https://schema.org",
   "@type": "ItemList",
   name: "Saberra Open Steward Roles",
-  url: `${siteUrl}/careers/`,
+  url: `${siteUrl}/careers`,
   itemListElement: [
     { "@type": "JobPosting", title: "Memory Architecture Steward", hiringOrganization: { "@type": "Organization", name: "Saberra" }, employmentType: "CONTRACTOR", jobLocation: { "@type": "Place", address: { "@type": "PostalAddress", addressCountry: "US" } }, description: "Lead 30-day Saberra deployments for mission-driven organizations. Configure capture infrastructure, build the Notion Memory OS, train Memory Admins, and deliver the Week 4 Memory Health Readout." },
     { "@type": "JobPosting", title: "Client Memory Steward", hiringOrganization: { "@type": "Organization", name: "Saberra" }, employmentType: "CONTRACTOR", jobLocation: { "@type": "Place", address: { "@type": "PostalAddress", addressCountry: "US" } }, description: "Support active Saberra clients through the review queue process, train Memory Admins, and deliver monthly memory health check-ins." },
