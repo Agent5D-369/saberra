@@ -21,6 +21,7 @@ const routeConfigs: RouteConfig[] = [
   { path: "/audit", priority: HIGH, changeFrequency: "monthly" },
   { path: "/founding-access", priority: HIGH, changeFrequency: "monthly" },
   { path: "/pricing", priority: HIGH, changeFrequency: "monthly" },
+  { path: "/calculator", priority: HIGH, changeFrequency: "monthly" },
   { path: "/how-it-works", priority: HIGH, changeFrequency: "monthly" },
   { path: "/sera", priority: HIGH, changeFrequency: "monthly" },
   { path: "/product", priority: MED, changeFrequency: "monthly" },
