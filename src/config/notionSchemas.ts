@@ -144,7 +144,7 @@ export const DATABASE_SCHEMAS: Record<string, { title: string; properties: Prope
       Name: title(),
       'Profile Type': select(['Person', 'Organization', 'Both']),
       'Engagement Status': select(['Active', 'Inactive', 'Prospect', 'Unknown']),
-      'Relationship to Amora': select(['Member', 'Partner', 'Vendor', 'Advisor', 'Funder', 'Contact', 'Community', 'Alumni', 'Government', 'Unknown']),
+      'Community Relationship': select(['Member', 'Partner', 'Vendor', 'Advisor', 'Funder', 'Contact', 'Community', 'Alumni', 'Government', 'Unknown']),
       'Primary Sector': select([
         'Sector 1 — Health & Holistic Wellness',
         'Sector 2 — Governance & Justice',

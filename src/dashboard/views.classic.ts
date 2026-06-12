@@ -269,6 +269,9 @@ const SERA_TIPS: Array<{ badge: TipType; text: string }> = [
 ];
 
 export function renderDashboard(d: DashboardData, orgName = 'Living Memory'): string {
+  const rootsEmail = process.env.ROOTS_EMAIL ?? 'your-capture-inbox@example.com';
+  const seraTipsData = SERA_TIPS.map(t => ({ ...t, text: t.text.replace(/roots@amora\.cr/g, rootsEmail) }));
+
   // ── Status indicator ────────────────────────────────────────────────────────
   const lastPollAgeMin = d.lastPollAt
     ? (Date.now() - new Date(d.lastPollAt).getTime()) / 60000
@@ -453,7 +456,7 @@ export function renderDashboard(d: DashboardData, orgName = 'Living Memory'): st
       <span class="sera-badge" id="sera-badge"></span>
       <div class="sera-tip-text" id="sera-tip"></div>
       <div class="sera-dots" id="sera-dots">
-        ${SERA_TIPS.map((_, i) => `<div class="sera-dot${i === 0 ? ' active' : ''}" onclick="showTip(${i})"></div>`).join('')}
+        ${seraTipsData.map((_, i) => `<div class="sera-dot${i === 0 ? ' active' : ''}" onclick="showTip(${i})"></div>`).join('')}
       </div>
     </div>
   </div>
@@ -728,7 +731,7 @@ export function renderDashboard(d: DashboardData, orgName = 'Living Memory'): st
   animateCounters();
 
   // ── Sera tips rotation ────────────────────────────────────────────────────
-  var seraTips = ${JSON.stringify(SERA_TIPS)};
+  var seraTips = ${JSON.stringify(seraTipsData)};
   var seraCurrent = 0;
   var seraTimer;
 

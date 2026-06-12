@@ -12,7 +12,7 @@ import { logger } from '../config/logger';
 const SERA_TOOLS = [
   {
     name: 'ask_sera',
-    description: 'Ask Sera a question about Amora\'s institutional memory. Sera searches meetings, decisions, profiles, circles, tasks, risks, projects, and more, then synthesizes an answer grounded in the actual records. Use this for any question about Amora history, governance, people, or decisions.',
+    description: 'Ask Sera a question about your organization\'s institutional memory. Sera searches meetings, decisions, profiles, circles, tasks, risks, projects, and more, then synthesizes an answer grounded in the actual records. Use this for any question about organizational history, governance, people, or decisions.',
     inputSchema: {
       type: 'object',
       properties: {
@@ -23,7 +23,7 @@ const SERA_TOOLS = [
   },
   {
     name: 'search_memory',
-    description: 'Raw keyword/semantic search over Amora\'s Notion databases. Returns matching records with titles and URLs. Use this when you need to find specific records rather than synthesized answers.',
+    description: 'Raw keyword/semantic search over your organization\'s Notion databases. Returns matching records with titles and URLs. Use this when you need to find specific records rather than synthesized answers.',
     inputSchema: {
       type: 'object',
       properties: {

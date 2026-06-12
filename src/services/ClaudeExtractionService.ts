@@ -94,7 +94,7 @@ function buildAliasHints(): string {
 
 // ─── Prompt builders ──────────────────────────────────────────────────────────
 
-const SYSTEM_PROMPT = `You are processing institutional records for the Amora Living Memory Hub.
+const SYSTEM_PROMPT = `You are processing institutional records for an organization's Living Memory Hub.
 
 Your job is to extract structured operational intelligence from meeting notes, transcripts, recordings, emails, or forwarded threads.
 
@@ -120,7 +120,7 @@ Use neutral, precise, non-inflammatory language.
 
 Never use em dashes (the — character) anywhere in your output. Use a hyphen (-) or rewrite the sentence instead.
 
-When Amora policies are listed in the prompt, flag any decisions or proposed actions that appear to conflict with those policies in sensitive_flags.
+When organizational policies are listed in the prompt, flag any decisions or proposed actions that appear to conflict with those policies in sensitive_flags.
 
 When the prompt includes a GOVERNING PURPOSE STATEMENT, treat it as the organization's highest governing authority (S.H.E. - Systemic Holistic Evolution). Evaluate each decision and each canon_change_candidate against it. For decisions, include "purpose_alignment" ("Aligned"|"Neutral"|"Misaligned"|"Unclear") and "purpose_alignment_notes" (one sentence max explaining the score). Omit these fields entirely when no Governing Purpose Statement is provided.
 
@@ -156,8 +156,8 @@ function buildUserPrompt(input: ExtractionInput): string {
     ? `Existing active projects (use exact names when matching): ${input.existingProjects.join(', ')}`
     : 'Existing active projects: none yet';
   const policiesLine = input.existingPolicies?.length
-    ? `Existing Amora policies (use exact names in policy_name when matching): ${input.existingPolicies.join(', ')}`
-    : 'Existing Amora policies: none yet';
+    ? `Existing policies (use exact names in policy_name when matching): ${input.existingPolicies.join(', ')}`
+    : 'Existing policies: none yet';
   const profilesLine = input.existingProfiles?.length
     ? `Existing profiles (CRITICAL NAME NORMALIZATION RULES — follow strictly to prevent duplicates):\n${input.existingProfiles.join(', ')}\n\nKnown aliases and nicknames (always resolve these to the canonical name above):\n${buildAliasHints()}\n\nRules: (1) If you see a person by first name only, nickname, or partial name, use their full canonical name from this list. (2) If a last name matches someone in this list but the first name is uncertain, unclear, or could be a transcription variant, use the canonical name from this list — do NOT invent a new first name. (3) Never create a profile for someone who already appears in this list under a different name variant. (4) If a name matches any alias in the Known aliases list above, always use the canonical name instead. When in doubt, prefer the existing canonical name.`
     : 'Existing profiles: none yet';
@@ -326,7 +326,9 @@ export class ClaudeExtractionService {
   // ─── Role card generation ─────────────────────────────────────────────────
 
   /** Generated role card sections returned by Claude. */
-  private static readonly ROLE_CARD_SYSTEM = `You generate comprehensive Teal-aligned role card sections for Amora, a regenerative community in Diamante Valley, Costa Rica. Amora uses Saberra (AI institutional memory system, powered by Notion) for all governance records. Governance follows CCOS (Consent-based Circle Operating System). Never use em dashes (—); use hyphens (-) instead. Return only valid JSON.`;
+  private static buildRoleCardSystem(clientName: string): string {
+    return `You generate comprehensive Teal-aligned role card sections for ${clientName}. Governance follows CCOS (Consent-based Circle Operating System), powered by Saberra for institutional memory. Never use em dashes (—); use hyphens (-) instead. Return only valid JSON.`;
+  }
 
   async generateRoleCardBody(role: {
     role_name: string;
@@ -338,7 +340,8 @@ export class ClaudeExtractionService {
     term_length?: string | null;
     assignment_method?: string | null;
   }): Promise<Record<string, unknown> | null> {
-    const userPrompt = `Generate a complete CCOS role card for this Amora role:
+    const cn = getConfig().SABERRA_CLIENT_NAME ?? getConfig().TENANT_ID;
+    const userPrompt = `Generate a complete CCOS role card for this role in ${cn}:
 
 Role Name: ${role.role_name}
 Circle: ${role.circle ?? 'TBD'}
@@ -351,7 +354,7 @@ Assignment Method: ${role.assignment_method ?? 'Consent Election'}
 
 Return JSON with exactly these keys:
 {
-  "regenerative_stewardship": "(string) 2-3 sentences on how this role expresses Amora's regenerative mission and Teal values",
+  "regenerative_stewardship": "(string) 2-3 sentences on how this role expresses the organization's mission and Teal values",
   "responsibilities": ["(5-7 specific key responsibilities, more detailed than accountabilities, each a complete sentence)"],
   "authorities_decide": ["(2-3 things this role can decide autonomously without circle consent)"],
   "authorities_propose": ["(2-3 things this role must bring to the circle for consent before acting)"],
@@ -376,7 +379,7 @@ Return JSON with exactly these keys:
       ? ` Generate all JSON string values in ${language}. JSON keys must remain exactly as specified in English. Proper nouns (names of people, places, and organizations) may remain in their original form.`
       : '';
     const result = await this.callClaudeRaw(
-      ClaudeExtractionService.ROLE_CARD_SYSTEM + langInstruction,
+      ClaudeExtractionService.buildRoleCardSystem(cn) + langInstruction,
       userPrompt,
       this.model,
     );
@@ -393,7 +396,9 @@ Return JSON with exactly these keys:
     }
   }
 
-  private static readonly CIRCLE_CHARTER_SYSTEM = `You generate comprehensive Teal-aligned circle charter sections for Amora, a regenerative community in Diamante Valley, Costa Rica using CCOS governance. Never use em dashes (—); use hyphens (-) instead. Return only valid JSON.`;
+  private static buildCircleCharterSystem(clientName: string): string {
+    return `You generate comprehensive Teal-aligned circle charter sections for ${clientName}, using CCOS governance. Never use em dashes (—); use hyphens (-) instead. Return only valid JSON.`;
+  }
 
   async generateCircleCharterBody(circle: {
     circle_name: string;
@@ -403,7 +408,8 @@ Return JSON with exactly these keys:
     kpis?: string | null;
     meeting_cadence?: string | null;
   }): Promise<Record<string, unknown> | null> {
-    const userPrompt = `Generate comprehensive circle charter sections for this Amora CCOS circle:
+    const cn2 = getConfig().SABERRA_CLIENT_NAME ?? getConfig().TENANT_ID;
+    const userPrompt = `Generate comprehensive circle charter sections for this CCOS circle in ${cn2}:
 
 Circle Name: ${circle.circle_name}
 Purpose: ${circle.purpose ?? '(not yet defined)'}
@@ -414,7 +420,7 @@ Meeting Cadence: ${circle.meeting_cadence ?? '(not yet defined)'}
 
 Return JSON with exactly these keys:
 {
-  "regenerative_stewardship": "(string) 2-3 sentences on how this circle expresses Amora's regenerative mission and Teal values",
+  "regenerative_stewardship": "(string) 2-3 sentences on how this circle expresses the organization's mission and Teal values",
   "responsibilities": ["(5-7 specific ongoing responsibilities, each a complete sentence starting with a verb)"],
   "authorities": ["(3-5 things this circle can decide or do autonomously without governance consent)"],
   "time_commitment": "(string) 1-2 sentences on typical weekly time for lead and supporting roles",
@@ -426,10 +432,10 @@ Return JSON with exactly these keys:
   "core_values": "(string) 5-7 Teal core values each expressed as 'ValueName: one sentence on how this circle embodies it', separated by periods",
   "wholeness_practices": "(string) 2-3 specific practices this circle uses to support member wellbeing",
   "living_agreement": "(string) 5-7 short principles this circle commits to, each starting with 'We'",
-  "meta_core_operating_principles": "(string) Express each of Amora's 3 meta principles for this circle: Resilience (how this circle builds redundancy and avoids single-point failure), Planetary Nesting (how decisions consider ecological and social ripple effects beyond Amora's land), and Future Generations (how documentation and mentorship ensure the next generation can inherit and evolve this circle's work). One sentence per principle, separated by periods.",
+  "meta_core_operating_principles": "(string) Express each of the organization's 3 meta principles for this circle: Resilience (how this circle builds redundancy and avoids single-point failure), Planetary Nesting (how decisions consider ecological and social ripple effects beyond the organization's boundaries), and Future Generations (how documentation and mentorship ensure the next generation can inherit and evolve this circle's work). One sentence per principle, separated by periods.",
   "review_cadence": "(string) One of: Monthly, Quarterly, Semi-Annual, Annual, As Needed - choose based on the circle's governance complexity and how frequently its domains need formal review",
   "review_adaptation": "(string) 2-3 sentences covering the charter review cadence, what triggers adaptation, and what happens if the circle is no longer needed",
-  "policy_legal_compliance": "(string) 1-3 sentences naming the specific Amora policies, Costa Rican legal frameworks, and any applicable standards this circle operates under",
+  "policy_legal_compliance": "(string) 1-3 sentences naming the specific organizational policies, applicable legal frameworks, and any standards this circle operates under",
   "closing_statement": "(string) 2-3 sentence italicized closing that names what this circle holds, the condition under which it exists, and what success looks like when its purpose is fully realized - written in present tense, poetic and grounded"
 }`;
 
@@ -438,7 +444,7 @@ Return JSON with exactly these keys:
       ? ` Generate all JSON string values in ${language}. JSON keys must remain exactly as specified in English. Proper nouns (names of people, places, and organizations) may remain in their original form.`
       : '';
     const result = await this.callClaudeRaw(
-      ClaudeExtractionService.CIRCLE_CHARTER_SYSTEM + langInstruction,
+      ClaudeExtractionService.buildCircleCharterSystem(cn2) + langInstruction,
       userPrompt,
       this.model,
     );
@@ -628,7 +634,7 @@ Return JSON with exactly these keys:
             ...(foundByEmail ? { Name: N.title(p.name) } : {}),
             ...(p.email ? { Email: { email: p.email } } : {}),
             ...(p.profile_type ? { 'Profile Type': N.select(sanitizeSelect(p.profile_type, ['Person', 'Organization', 'Both'], 'Person')) } : {}),
-            ...(relToAmoraUpdate ? { 'Relationship to Amora': N.select(relToAmoraUpdate) } : {}),
+            ...(relToAmoraUpdate ? { 'Community Relationship': N.select(relToAmoraUpdate) } : {}),
             ...(p.role_title ? { 'Role / Title': N.richText(p.role_title) } : {}),
             ...(p.location ? { Location: N.richText(p.location) } : {}),
             ...(p.website ? { Website: N.url(p.website) } : {}),
@@ -653,7 +659,7 @@ Return JSON with exactly these keys:
             ...(p.location ? { Location: N.richText(p.location) } : {}),
             ...(p.website ? { Website: N.url(p.website) } : {}),
             ...(p.linkedin ? { LinkedIn: N.url(p.linkedin) } : {}),
-            'Relationship to Amora': N.select(relToAmora),
+            'Community Relationship': N.select(relToAmora),
             'Engagement Status': N.select('Active'),
             ...(sectorCreate ? { 'Primary Sector': N.select(sectorCreate) } : {}),
             ...(p.membership_type ? { 'Membership Type': N.select(sanitizeSelect(p.membership_type, ['Founding Member', 'Full Member', 'Associate Member', 'Guest', 'Steward', 'Partner'], 'Full Member')) } : {}),

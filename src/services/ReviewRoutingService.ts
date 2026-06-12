@@ -32,7 +32,7 @@ export class ReviewRoutingService {
     if (canonReviewRequired)   flags.push('CANON REVIEW REQUIRED');
     if (sensitiveReviewRequired) flags.push('SENSITIVE REVIEW REQUIRED');
 
-    const subject = `[AMORA REVIEW] ${flags.join(' + ')} - ${sourceTitle}`;
+    const subject = `[${(config.SABERRA_CLIENT_NAME ?? config.TENANT_ID).toUpperCase()} REVIEW] ${flags.join(' + ')} - ${sourceTitle}`;
     const body = [
       `Sera has flagged records that require your attention.`,
       ``,

@@ -9,7 +9,7 @@ function notionDbUrl(id: string | undefined | null): string {
   return slug ? `https://app.notion.com/p/${slug}/${c}` : `https://app.notion.com/p/${c}`;
 }
 
-const DASHBOARD_TZ = process.env.DASHBOARD_TIMEZONE ?? 'America/Costa_Rica';
+const DASHBOARD_TZ = process.env.DASHBOARD_TIMEZONE ?? 'UTC';
 function isoToTzDate(iso: string, tz = DASHBOARD_TZ): string {
   return new Intl.DateTimeFormat('en-CA', {
     timeZone: tz, year: 'numeric', month: '2-digit', day: '2-digit',
@@ -956,7 +956,7 @@ async function fetchPeopleData(notion: Client, dbs: DbIds): Promise<PeopleData> 
     const name = extractTitle(p);
     const profileType = ((props['Profile Type']?.select as { name: string } | null)?.name ?? 'Person');
     const engStatus  = ((props['Engagement Status']?.select as { name: string } | null)?.name ?? 'Unknown');
-    const relationship = ((props['Relationship to Amora']?.select as { name: string } | null)?.name ?? '');
+    const relationship = ((props['Community Relationship']?.select as { name: string } | null)?.name ?? (props['Relationship to Amora']?.select as { name: string } | null)?.name ?? (props['Relationship to Org']?.select as { name: string } | null)?.name ?? '');
     const tags = ((props['Tags']?.multi_select as Array<{ name: string }> | undefined) ?? []).map(t => t.name);
     const firstSeen = ((props['First Seen']?.date as { start: string } | null)?.start ?? '');
 

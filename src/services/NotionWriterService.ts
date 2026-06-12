@@ -548,7 +548,7 @@ export class NotionWriterService {
     blocks.push(H('Regenerative Stewardship'));
     blocks.push(P(typeof g.regenerative_stewardship === 'string' && g.regenerative_stewardship
       ? g.regenerative_stewardship
-      : '[Complete during role review - describe how this role expresses Amora\'s regenerative mission.]'));
+      : '[Complete during role review - describe how this role expresses the organization\'s mission and values.]'));
 
     // ── Purpose ──
     if (role.purpose) { blocks.push(H('Purpose')); blocks.push(P(role.purpose)); }

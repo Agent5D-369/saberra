@@ -13,7 +13,7 @@ import { handleOAuthMetadata, handleOAuthAuthorizeGet, handleOAuthAuthorizePost,
 
 const PORT = Number(process.env.PORT ?? process.env.SERA_API_PORT ?? 3002);
 const SERA_API_SECRET = process.env.SERA_API_SECRET;
-const SERA_BASE_URL   = (process.env.SERA_API_BASE_URL ?? 'https://sera-api-production-28d0.up.railway.app').replace(/\/$/, '');
+const SERA_BASE_URL   = (process.env.SERA_API_BASE_URL ?? '').replace(/\/$/, '');
 
 if (!SERA_API_SECRET) {
   console.error('SERA_API_SECRET env var is required');

@@ -824,7 +824,7 @@ export class ScheduledTaskService {
 
     // Build structured context for Claude
     const lines: string[] = [
-      `AMORA ORGANISATIONAL PULSE - week of ${weekAgo} to ${today}`,
+      `${this.clientName.toUpperCase()} ORGANISATIONAL PULSE - week of ${weekAgo} to ${today}`,
       '',
       '## ACTIVITY THIS WEEK',
       `Emails ingested:         ${emails.length}`,
@@ -958,7 +958,7 @@ export class ScheduledTaskService {
       : `[${this.clientName}] Weekly pulse - ${weekAgo} to ${today}`;
     const body = synthesis
       ? [
-          `AMORA WEEKLY PULSE - ${weekAgo} to ${today}`,
+          `${this.clientName.toUpperCase()} WEEKLY PULSE - ${weekAgo} to ${today}`,
           '='.repeat(50),
           '',
           synthesis,

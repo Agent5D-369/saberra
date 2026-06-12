@@ -7,7 +7,7 @@ import { PipelineService } from './services/PipelineService';
 import { HubSettingsService } from './services/HubSettingsService';
 
 async function main(): Promise<void> {
-  logger.info('Sera (Amora Living Memory) starting');
+  logger.info({ tenant: process.env.TENANT_ID }, 'Sera starting');
 
   const config = getConfig();
   logger.info({ tenantId: config.TENANT_ID, rootsEmail: config.ROOTS_EMAIL }, 'Config loaded');

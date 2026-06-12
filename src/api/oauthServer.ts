@@ -143,7 +143,7 @@ export function handleOAuthAuthorizeGet(req: IncomingMessage, res: ServerRespons
 </head>
 <body>
 <div class="card">
-  <span class="tag">Amora Living Memory Hub</span>
+  <span class="tag">${he(process.env.SABERRA_CLIENT_NAME ?? process.env.TENANT_ID ?? 'Saberra')} Living Memory</span>
   <h1>Sera</h1>
   <p class="sub">AI Secretary &amp; Institutional Memory<br>Enter the connector passphrase to give Claude access to Sera's knowledge base.</p>
   <form method="POST" action="/oauth/authorize">
