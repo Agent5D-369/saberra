@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useMemo, useRef, useState } from "react";
 import Link from "next/link";
 import {
   ArrowRight,
@@ -101,11 +101,43 @@ function recommendPlan(state: CalculatorState): PlanKey {
   return "Core";
 }
 
+function memoryPressureFactor(state: CalculatorState) {
+  const meetingFactors: Record<string, number> = {
+    "1-5": 0.85,
+    "6-15": 1,
+    "16-30": 1.12,
+    "31-60": 1.25,
+    "60+": 1.4
+  };
+  const emailFactors: Record<string, number> = {
+    "1-10": 0.9,
+    "11-25": 1,
+    "26-50": 1.1,
+    "51-100": 1.22,
+    "100+": 1.35
+  };
+  const painFactors: Record<string, number> = {
+    Rarely: 0.7,
+    Sometimes: 1,
+    Often: 1.2,
+    Constantly: 1.45,
+    "We are not sure, but it feels expensive": 1.15
+  };
+
+  return (
+    (meetingFactors[state.meetingsPerWeek] ?? 1) *
+    (emailFactors[state.importantEmailsPerWeek] ?? 1) *
+    (painFactors[state.memoryPainFrequency] ?? 1)
+  );
+}
+
 function getCalculations(state: CalculatorState) {
   const hourlyValue = state.avgAnnualCostPerPerson / HOURS_PER_YEAR;
   const weeklyMemoryWasteHours = state.teamSize * state.hoursLostPerPersonPerWeek;
   const annualMemoryWasteHours = weeklyMemoryWasteHours * WORK_WEEKS_PER_YEAR;
-  const annualMemoryWasteCost = annualMemoryWasteHours * hourlyValue;
+  const baseAnnualMemoryWasteCost = annualMemoryWasteHours * hourlyValue;
+  const pressureFactor = memoryPressureFactor(state);
+  const annualMemoryWasteCost = baseAnnualMemoryWasteCost * pressureFactor;
   const conservativeRecovery = annualMemoryWasteCost * 0.1;
   const moderateRecovery = annualMemoryWasteCost * 0.2;
   const highRecovery = annualMemoryWasteCost * 0.3;
@@ -127,11 +159,21 @@ function getCalculations(state: CalculatorState) {
     state.hasGoogleWorkspace === "yes" ? 0 : state.teamSize * TOOL_COSTS.googleWorkspaceHigh;
   const notionMonthly =
     state.hasNotion === "business" ? 0 : state.teamSize * TOOL_COSTS.notionBusiness;
+  const estimatedMonthlyClientToolLow = googleMonthlyLow + notionMonthly;
+  const estimatedMonthlyClientToolHigh = googleMonthlyHigh + notionMonthly;
+  const firstYearTotalWithToolsLow = firstYearSaberraInvestment
+    ? firstYearSaberraInvestment + estimatedMonthlyClientToolLow * 12
+    : null;
+  const firstYearTotalWithToolsHigh = firstYearSaberraInvestment
+    ? firstYearSaberraInvestment + estimatedMonthlyClientToolHigh * 12
+    : null;
 
   return {
     hourlyValue,
     weeklyMemoryWasteHours,
     annualMemoryWasteHours,
+    baseAnnualMemoryWasteCost,
+    pressureFactor,
     annualMemoryWasteCost,
     conservativeRecovery,
     moderateRecovery,
@@ -142,7 +184,11 @@ function getCalculations(state: CalculatorState) {
     paybackMonths,
     googleMonthlyLow,
     googleMonthlyHigh,
-    notionMonthly
+    notionMonthly,
+    estimatedMonthlyClientToolLow,
+    estimatedMonthlyClientToolHigh,
+    firstYearTotalWithToolsLow,
+    firstYearTotalWithToolsHigh
   };
 }
 
@@ -198,6 +244,7 @@ function resultText(state: CalculatorState) {
     `Organization type: ${state.orgType}`,
     `Estimated hours lost weekly: ${Math.round(calc.weeklyMemoryWasteHours).toLocaleString()}`,
     `Estimated annual memory cost: ${formatMoney(calc.annualMemoryWasteCost)}`,
+    `Memory pressure factor: ${calc.pressureFactor.toFixed(2)}x`,
     `Conservative recovery estimate: ${formatMoney(calc.conservativeRecovery)} per year`,
     `Recommended plan: ${details.title}`,
     `First-year Saberra investment: ${investment}`,
@@ -515,6 +562,7 @@ function MemoryLeakStep({
         <article>
           <span>Estimated annual cost of memory leaks</span>
           <strong>{formatMoney(calc.annualMemoryWasteCost)}</strong>
+          <p>Includes a {calc.pressureFactor.toFixed(2)}x pressure factor from volume and pain frequency.</p>
         </article>
         <article>
           <span>Conservative estimate</span>
@@ -652,6 +700,15 @@ function RoiSummaryCard({ state }: { state: CalculatorState }) {
           <p>Uses midpoint setup and monthly pricing for Core or Growth.</p>
         </article>
         <article>
+          <span>Estimated client-owned tools</span>
+          <strong>
+            {calc.estimatedMonthlyClientToolHigh > 0
+              ? `${formatMoney(calc.estimatedMonthlyClientToolLow)}-${formatMoney(calc.estimatedMonthlyClientToolHigh)}/mo`
+              : "Already in place"}
+          </strong>
+          <p>Changes when Google Workspace or Notion are not already available.</p>
+        </article>
+        <article>
           <span>Conservative recovery</span>
           <strong>{formatMoney(calc.conservativeRecovery)}</strong>
           <p>Only 10% of estimated annual memory waste.</p>
@@ -700,6 +757,18 @@ function LiveEstimate({ state }: { state: CalculatorState }) {
         <div>
           <span>10% recovery</span>
           <strong>{formatMoney(calc.conservativeRecovery)}</strong>
+        </div>
+        <div>
+          <span>Pressure factor</span>
+          <strong>{calc.pressureFactor.toFixed(2)}x</strong>
+        </div>
+        <div>
+          <span>Client tools</span>
+          <strong>
+            {calc.estimatedMonthlyClientToolHigh > 0
+              ? `${formatMoney(calc.estimatedMonthlyClientToolLow)}-${formatMoney(calc.estimatedMonthlyClientToolHigh)}/mo`
+              : "In place"}
+          </strong>
         </div>
       </div>
       <div className="calculator-memory-flow" aria-hidden="true">
@@ -803,9 +872,16 @@ function CTASection({ state }: { state: CalculatorState }) {
 export function CalculatorPage() {
   const [state, setState] = useState<CalculatorState>(defaultState);
   const [activeStep, setActiveStep] = useState(0);
+  const calculatorRef = useRef<HTMLElement>(null);
   const calc = useMemo(() => getCalculations(state), [state]);
   const update = (patch: Partial<CalculatorState>) => setState((current) => ({ ...current, ...patch }));
   const atResults = activeStep === steps.length - 1;
+  const goToStep = (step: number) => {
+    setActiveStep(Math.min(steps.length - 1, Math.max(0, step)));
+    window.setTimeout(() => {
+      calculatorRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
+    }, 0);
+  };
 
   return (
     <main className="calculator-page">
@@ -818,7 +894,14 @@ export function CalculatorPage() {
               into human-reviewed organizational memory.
             </p>
             <div className="cta-row">
-              <a className="btn btn-primary" href="#calculator" onClick={() => setActiveStep(0)}>
+              <a
+                className="btn btn-primary"
+                href="#calculator"
+                onClick={(event) => {
+                  event.preventDefault();
+                  goToStep(0);
+                }}
+              >
                 Start the Calculator <ArrowRight size={16} aria-hidden="true" />
               </a>
               <Link className="btn btn-secondary" href="/demo/">
@@ -839,7 +922,7 @@ export function CalculatorPage() {
         </div>
       </section>
 
-      <section className="section tight" id="calculator">
+      <section className="section tight" id="calculator" ref={calculatorRef}>
         <div className="container calculator-shell">
           <div className="calculator-workspace">
             <div className="calculator-progress" aria-label="Calculator progress">
@@ -848,7 +931,7 @@ export function CalculatorPage() {
                   key={step}
                   type="button"
                   className={index === activeStep ? "active" : index < activeStep ? "done" : ""}
-                  onClick={() => setActiveStep(index)}
+                  onClick={() => goToStep(index)}
                 >
                   <span>{index + 1}</span>
                   {step}
@@ -878,7 +961,7 @@ export function CalculatorPage() {
                 className="btn btn-secondary"
                 type="button"
                 disabled={activeStep === 0}
-                onClick={() => setActiveStep((step) => Math.max(0, step - 1))}
+                onClick={() => goToStep(activeStep - 1)}
               >
                 Back
               </button>
@@ -888,7 +971,7 @@ export function CalculatorPage() {
               <button
                 className="btn btn-primary"
                 type="button"
-                onClick={() => setActiveStep((step) => Math.min(steps.length - 1, step + 1))}
+                onClick={() => goToStep(activeStep + 1)}
               >
                 {atResults ? "Review Results" : "Continue"} <ArrowRight size={16} aria-hidden="true" />
               </button>
@@ -904,7 +987,7 @@ export function CalculatorPage() {
           <button
             className="btn btn-primary"
             type="button"
-            onClick={() => setActiveStep((step) => Math.min(steps.length - 1, step + 1))}
+            onClick={() => goToStep(activeStep + 1)}
           >
             Continue
           </button>

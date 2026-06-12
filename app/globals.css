@@ -4330,6 +4330,7 @@ button {
   grid-template-columns: minmax(0, 1fr) minmax(310px, 390px);
   gap: 24px;
   align-items: start;
+  scroll-margin-top: 92px;
 }
 
 .calculator-workspace,
@@ -4645,6 +4646,12 @@ button {
   font-size: clamp(1.55rem, 3.8vw, 2.65rem);
   font-weight: 500;
   line-height: 1;
+}
+
+.calculator-estimate-grid p {
+  margin: 10px 0 0;
+  color: #91aab0;
+  font-size: 0.9rem;
 }
 
 .calculator-plan-card {
