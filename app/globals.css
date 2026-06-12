@@ -3237,6 +3237,75 @@ button {
 }
 
 /* ── Careers Page ──────────────────────────────────────────── */
+.careers-page .page-hero {
+  padding: 56px 0 38px;
+}
+
+.careers-page .page-hero h1 {
+  max-width: 940px;
+  font-size: clamp(2.55rem, 5.6vw, 5.15rem);
+}
+
+.careers-page .page-hero p {
+  font-size: clamp(1rem, 1.5vw, 1.16rem);
+}
+
+.page-hero .hero-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 26px;
+}
+
+.careers-role-cards {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 16px;
+  margin-top: 30px;
+}
+
+.career-role-card {
+  display: grid;
+  gap: 8px;
+  border: 1px solid rgba(111, 183, 183, 0.24);
+  border-radius: 12px;
+  background:
+    linear-gradient(135deg, rgba(111, 183, 183, 0.08), rgba(214, 162, 74, 0.06)),
+    rgba(246, 244, 240, 0.035);
+  color: inherit;
+  padding: 18px;
+  text-decoration: none;
+  transition: border-color 160ms ease, transform 160ms ease, background 160ms ease;
+}
+
+.career-role-card:hover {
+  border-color: rgba(214, 162, 74, 0.55);
+  background:
+    linear-gradient(135deg, rgba(111, 183, 183, 0.12), rgba(214, 162, 74, 0.09)),
+    rgba(246, 244, 240, 0.045);
+  transform: translateY(-2px);
+}
+
+.career-role-card span {
+  color: var(--gold);
+  font-size: 0.73rem;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.career-role-card strong {
+  color: var(--paper);
+  font-size: 1.12rem;
+  line-height: 1.2;
+}
+
+.career-role-card small {
+  color: #95adb3;
+  font-size: 0.88rem;
+  line-height: 1.45;
+}
+
 .role-header { margin-bottom: 24px; }
 .role-conventional { color: #8da3a8; font-size: 0.95rem; margin: 6px 0 4px; }
 .role-comp-line { color: var(--teal-soft); font-size: 0.97rem; margin: 0 0 20px; }
@@ -3265,6 +3334,24 @@ button {
 .role-apply-link {
   display: inline-block;
   margin-top: 8px;
+}
+
+@media (max-width: 840px) {
+  .careers-role-cards {
+    grid-template-columns: 1fr;
+  }
+
+  .role-detail-grid {
+    grid-template-columns: 1fr;
+    gap: 24px;
+  }
+}
+
+@media (max-width: 520px) {
+  .page-hero .hero-actions .btn {
+    width: 100%;
+    justify-content: center;
+  }
 }
 
 /* ── Job Application Form ──────────────────────────────────── */

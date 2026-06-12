@@ -19,7 +19,7 @@ export const navItems = [
   { href: "/sera", label: "Ask Sera" },
   { href: "/calculator", label: "Calculator" },
   { href: "/pricing", label: "Pricing" },
-  { href: "/audit", label: "Audit" }
+  { href: "/audit", label: "Free Audit" }
 ];
 
 export const seraQuestions = [

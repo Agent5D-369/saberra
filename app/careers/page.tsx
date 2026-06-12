@@ -120,7 +120,7 @@ const roles = [
 
 export default function CareersPage() {
   return (
-    <main>
+    <main className="careers-page">
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }} />
 
       <section className="page-hero">
@@ -132,6 +132,23 @@ export default function CareersPage() {
             ecosystem. These are not jobs. They are role-share engagements where compensation comes from the work you
             actually do, paid from net collected revenue.
           </p>
+          <div className="hero-actions">
+            <a className="btn btn-primary" href="#memory-architecture-steward">
+              View role details
+            </a>
+            <a className="btn btn-secondary" href="#apply">
+              Apply now
+            </a>
+          </div>
+          <div id="open-roles" className="careers-role-cards" aria-label="Open steward roles">
+            {roles.map((role) => (
+              <a className="career-role-card" href={`#${role.id}`} key={role.id}>
+                <span>{role.phase}</span>
+                <strong>{role.title}</strong>
+                <small>Comparable to: {role.conventional}</small>
+              </a>
+            ))}
+          </div>
         </div>
       </section>
 
