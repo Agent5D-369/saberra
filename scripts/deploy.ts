@@ -73,6 +73,8 @@ interface DeployState {
   dbIds?: Record<string, string>;
   // Step 7 output
   seraApiSecret?: string;
+  // Step 8
+  githubBranch?: string;
 }
 
 interface ProgressFile {
@@ -88,6 +90,7 @@ const cliArgs       = process.argv.slice(2);
 const isDryRun      = cliArgs.includes('--dry-run');
 const skipVal       = cliArgs.includes('--skip-validation');
 const autoAccept    = cliArgs.includes('--yes');
+const isStaging     = cliArgs.includes('--staging');
 const inputFlagIdx  = cliArgs.indexOf('--input');
 const inputFilePath = inputFlagIdx !== -1 ? path.resolve(cliArgs[inputFlagIdx + 1]) : null;
 
@@ -1082,14 +1085,24 @@ async function step7_envVars(state: Partial<DeployState>): Promise<void> {
 
 async function step8_github(rl: readline.Interface, state: Partial<DeployState>): Promise<void> {
   header(8, 10, 'Connect GitHub Repository');
+
+  const branch = isStaging ? 'backend' : 'stable';
+  state.githubBranch = branch;
+
+  if (isStaging) {
+    console.log('\n  STAGING DEPLOYMENT: Services will track the "backend" branch.');
+    console.log('  Pushes to "backend" will auto-deploy to this environment.');
+    console.log('  Use this environment for internal testing before promoting to stable.\n');
+  }
+
   info([
     'Connect the Saberra GitHub repo to each Railway service.',
-    'All 3 services use the same repo - SERVICE_TYPE controls which process starts.',
+    'All 3 services use the same repo — SERVICE_TYPE controls which process starts.',
     '',
     'For each service (Sera Worker, Sera Dashboard, Sera API):',
     `  Go to: https://railway.app/project/${state.railwayProjectId ?? '[your-project-id]'}`,
     '  Click the service > Settings > Source > Connect Repo',
-    '  Select the Saberra GitHub repo and branch: main',
+    `  Select the Saberra GitHub repo and branch: ${branch}`,
     '  Click Deploy to trigger the first build',
     '',
     'Expected build time: 2-4 minutes per service (first build caches dependencies).',
@@ -1105,7 +1118,7 @@ async function step8_github(rl: readline.Interface, state: Partial<DeployState>)
   } else {
     console.log('\n  --yes mode: skipping GitHub confirmation. Connect GitHub manually after deployment.');
   }
-  dlog('step8', 'done', 'GitHub connection confirmed');
+  dlog('step8', 'done', `GitHub connection confirmed (branch: ${branch})`);
 }
 
 async function step9_healthCheck(state: Partial<DeployState>): Promise<void> {
@@ -1255,7 +1268,25 @@ async function step10_finalize(state: Partial<DeployState>): Promise<void> {
       else registry.clients.push(entry);
       fs.writeFileSync(registryPath, JSON.stringify(registry, null, 2), 'utf-8');
       console.log(`\n  Registry updated: clients/registry.json (${registry.clients.length} client${registry.clients.length !== 1 ? 's' : ''})`);
-      console.log(`  Update OPERATOR_CLIENTS on your Saberra operator service to include this client.`);
+
+      // Auto-push OPERATOR_CLIENTS to the Saberra Operator Railway service
+      const operatorToken = process.env.SABERRA_OPERATOR_RAILWAY_TOKEN ?? process.env.RAILWAY_TOKEN;
+      const operatorProjectId = process.env.SABERRA_OPERATOR_PROJECT_ID ?? '34612e1f-133c-4ce7-b7d8-34f4e8c63d6d';
+      if (operatorToken) {
+        try {
+          const clientsJson = JSON.stringify(registry.clients).replace(/"/g, '\\"');
+          execSync(
+            `railway variable set --project ${operatorProjectId} --service "Sera Operator" --environment production OPERATOR_CLIENTS="${clientsJson}"`,
+            { env: { ...process.env, RAILWAY_TOKEN: operatorToken }, stdio: 'pipe', timeout: 60000 },
+          );
+          console.log(`  Operator Portal updated: OPERATOR_CLIENTS pushed to Railway (${registry.clients.length} clients)`);
+        } catch (opErr) {
+          console.warn(`  Could not auto-update Operator Portal: ${(opErr as Error).message?.slice(0, 100)}`);
+          console.warn(`  Manually update OPERATOR_CLIENTS on the Sera Operator Railway service.`);
+        }
+      } else {
+        console.log(`  Manually update OPERATOR_CLIENTS on the Sera Operator Railway service.`);
+      }
     } catch (regErr) {
       console.warn(`  Could not update registry: ${(regErr as Error).message}`);
     }
