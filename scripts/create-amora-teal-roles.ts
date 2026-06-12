@@ -448,7 +448,7 @@ async function main() {
         Tags: N.multiSelect(p.tags),
         ...(p.contextNotes ? { 'Context Summary': N.richText(p.contextNotes) } : {}),
         'Last Seen': N.date(today),
-        ...(roleId ? { 'Role at Amora': N.relation([roleId]) } : {}),
+        ...(roleId ? { 'Primary Role': N.relation([roleId]) } : {}),
         ...(circleId ? { 'Circle Memberships': N.relation([circleId]) } : {}),
       });
       profileIdMap.set(p.name.toLowerCase(), existing);
@@ -467,7 +467,7 @@ async function main() {
         'Sensitive Notes Flag': N.checkbox(false),
         'First Seen': N.date(today),
         'Last Seen': N.date(today),
-        ...(roleId ? { 'Role at Amora': N.relation([roleId]) } : {}),
+        ...(roleId ? { 'Primary Role': N.relation([roleId]) } : {}),
         ...(circleId ? { 'Circle Memberships': N.relation([circleId]) } : {}),
       });
       profileIdMap.set(p.name.toLowerCase(), id);

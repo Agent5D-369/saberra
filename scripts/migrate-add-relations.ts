@@ -190,14 +190,14 @@ const RELATIONS: RelDef[] = [
     conflictingTextProp: 'Circle',
   },
 
-  // ── Profiles → Roles (Role at Amora)
+  // ── Profiles → Roles (Primary Role)
   {
-    label:              'Profiles → Roles (Role at Amora)',
+    label:              'Profiles → Roles (Primary Role)',
     sourceDb:           DB.profiles,
-    prop:               'Role at Amora',
+    prop:               'Primary Role',
     targetDb:           DB.roles,
     backRef:            'Profile Holders',
-    conflictingTextProp: 'Role at Amora',
+    conflictingTextProp: 'Primary Role',
   },
 
   // ── Profiles → Circles (Circle Memberships — distinct from Circle Affiliation multiselect)

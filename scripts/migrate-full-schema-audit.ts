@@ -355,8 +355,8 @@ async function main() {
   await step('Profiles: add Referred By self-relation → Profiles (back-ref: Referred Others)', () =>
     addRelation(PROFILES_DB, 'Referred By', PROFILES_DB, 'Referred Others'));
 
-  await step('Profiles: add Role at Amora relation → Roles (back-ref: Role Holders)', () =>
-    addRelation(PROFILES_DB, 'Role at Amora', ROLES_DB, 'Role Holders'));
+  await step('Profiles: add Primary Role relation → Roles (back-ref: Role Holders)', () =>
+    addRelation(PROFILES_DB, 'Primary Role', ROLES_DB, 'Role Holders'));
 
   await step('Profiles: add Circle Memberships relation → Circles (back-ref: Circle Members)', () =>
     addRelation(PROFILES_DB, 'Circle Memberships', CIRCLES_DB, 'Circle Members'));

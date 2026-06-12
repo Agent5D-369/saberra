@@ -433,11 +433,11 @@ async function main() {
   await step('Profiles: add Referred By -> Profiles self-relation (back-ref: Referred Others)', () =>
     addRelation(DB.profiles, 'Referred By', DB.profiles, 'Referred Others'));
 
-  await step('Profiles: rename Role at Amora -> Role at Amora Text (if exists)', () =>
-    renameProperty(DB.profiles, 'Role at Amora', 'Role at Amora Text'));
+  await step('Profiles: rename Primary Role text -> Primary Role Text (if exists)', () =>
+    renameProperty(DB.profiles, 'Primary Role', 'Primary Role Text'));
 
-  await step('Profiles: add Role at Amora -> Roles (back-ref: Role Holders)', () =>
-    addRelation(DB.profiles, 'Role at Amora', DB.roles, 'Role Holders'));
+  await step('Profiles: add Primary Role -> Roles (back-ref: Role Holders)', () =>
+    addRelation(DB.profiles, 'Primary Role', DB.roles, 'Role Holders'));
 
   await step('Profiles: add Circle Memberships -> Circles (back-ref: Circle Members)', () =>
     addRelation(DB.profiles, 'Circle Memberships', DB.circles, 'Circle Members'));
@@ -447,8 +447,11 @@ async function main() {
       'Founding Member', 'Full Member', 'Associate Member', 'Guest', 'Steward', 'Partner',
     ]));
 
-  await step('Profiles: delete Role at Amora Text (cleanup)', () =>
-    deleteProperty(DB.profiles, 'Role at Amora Text'));
+  await step('Profiles: add Connected To self-relation (dual_property)', () =>
+    addRelation(DB.profiles, 'Connected To', DB.profiles, null));
+
+  await step('Profiles: delete Primary Role Text (cleanup)', () =>
+    deleteProperty(DB.profiles, 'Primary Role Text'));
 
   // ── Phase 14: Sensitive Review ──────────────────────────────────────────────
   phase(14, 'Sensitive Review');
