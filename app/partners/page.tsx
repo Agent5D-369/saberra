@@ -1,13 +1,13 @@
 import type { Metadata } from "next";
-import { Handshake, Landmark, Network, UsersRound } from "lucide-react";
+import { CheckCircle, DollarSign, Handshake, Landmark, Network, UsersRound } from "lucide-react";
 import { EditorialVisual } from "@/components/EditorialVisuals";
 import { PartnerReferralForm } from "@/components/LeadForms";
 import { CTABand, SectionHeader } from "@/components/UI";
 
 export const metadata: Metadata = {
-  title: "Saberra Partner Referrals",
+  title: "Saberra Partner Program &mdash; Earn 20% for Referrals",
   description:
-    "Refer teams that need institutional memory. Saberra works with trusted advisors, Notion consultants, governance consultants, and operations partners.",
+    "Refer teams that need organizational memory infrastructure. Earn 20% of setup fees and 15% of first-year recurring. Built for Notion consultants, fractional COOs, and governance advisors.",
   alternates: { canonical: "/partners" },
   keywords: [
     "Saberra partner program",
@@ -117,23 +117,13 @@ export default function PartnersPage() {
         </div>
       </section>
 
-      <section id="partner-form" className="section tight">
-        <div className="container split">
-          <div>
-            <div className="eyebrow">Referral form</div>
-            <h2 className="serif">Tell us about the team and your relationship.</h2>
-            <p>
-              A warm referral or a direct introduction both work. Fill in what you know. We will follow up directly
-              with you, not with the referred team, unless you indicate otherwise.
-            </p>
-            <p style={{ marginTop: 12 }}>
-              No Formspree account yet? Share this page with the team and ask them to take the Memory Audit at
-              saberra.com/audit instead.
-            </p>
-          </div>
-          <PartnerReferralForm />
-        </div>
-      </section>
-    </main>
-  );
-}
+      {/* ── COMMISSION STRUCTURE ───────────────────────────────── */}
+      <section className="section tight">
+        <div className="container">
+          <SectionHeader eyebrow="Commission structure" title="Earn 20% for every team you introduce." />
+          <div className="grid-2 split">
+            <article className="card" style={{ borderLeft: "3px solid #D6A24A" }}>
+              <DollarSign color="#D6A24A" size={26} aria-hidden="true" />
+              <h3>What you earn</h3>
+              <ul className="list" style={{ marginTop: 14 }}>
+                <li><CheckCircle size={15} color="#D6A24A" aria-hidden="true" /> 20% of th

@@ -140,24 +140,11 @@ export function NotionTemplateGateForm() {
       action={formspreeForms.notionTemplate}
       name="Living Memory Hub Demo"
       redirectPath="/template-thank-you"
-      submitLabel="Show me the demo database instructions"
-      formNote="You will receive access instructions on the next page immediately."
+      submitLabel="Show me the demo database"
+      formNote="Access instructions appear on the next page immediately. Takes 10 seconds."
     >
       <div className="form-grid">
         <TextField field={{ label: "Work email", name: "email", type: "email", required: true, placeholder: "you@organization.org" }} />
-        <SegmentField />
-        <label className="field">
-          <span>Current tools</span>
-          <select name="current_tools" required defaultValue="">
-            <option value="" disabled>
-              Select one
-            </option>
-            <option>Notion and Google Workspace</option>
-            <option>Notion, not Google Workspace</option>
-            <option>Google Workspace, not Notion</option>
-            <option>Neither yet</option>
-          </select>
-        </label>
       </div>
     </FormShell>
   );
@@ -327,3 +314,4 @@ export function TemplateDeliveryCard() {
     </article>
   );
 }
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       

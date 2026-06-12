@@ -8,12 +8,14 @@ import {
   Database,
   FileSearch,
   Inbox,
+  Lock,
   Mail,
   MessageSquareQuote,
   Network,
   ShieldCheck,
   Sparkles,
-  Users
+  Users,
+  Workflow
 } from "lucide-react";
 import { captureItems, faqs } from "@/lib/site";
 import { CTAButton, CTABand, HumanReviewBadge, SectionHeader, SeraPortrait, SourceBackedBadge } from "@/components/UI";
@@ -40,16 +42,24 @@ export function Hero() {
             transcripts. Context walks out when people leave. Sera stops that, automatically, from the meetings and
             emails you already send. No new tools for your team. No new workflows. Just memory that finally sticks.
           </p>
-          <div className="trust-line">
-            Your data. Your workspace. Your values. Nothing becomes trusted memory until a human says so.
-          </div>
           <div className="cta-row">
             <CTAButton href="/audit">Take the free Memory Audit</CTAButton>
             <CTAButton href="/demo" variant="secondary">
               See Sera organize chaos
             </CTAButton>
           </div>
-          <p className="cta-note">Find out exactly where your organization is leaking, in 10 questions.</p>
+          <p className="cta-note">10 questions. Find out exactly where your organization is leaking.</p>
+          <div className="trust-chips">
+            <span className="trust-chip"><Workflow size={11} aria-hidden="true" /> No workflow change for your team</span>
+            <span className="trust-chip"><Lock size={11} aria-hidden="true" /> Data stays in your accounts</span>
+            <span className="trust-chip"><CheckCircle size={11} aria-hidden="true" /> AI drafts. Humans approve.</span>
+          </div>
+          <div className="hero-quote">
+            <blockquote>
+              &ldquo;We govern land decisions and community agreements across a distributed team. Sera started capturing the right conversations from week one. Our operating memory finally lives somewhere everyone can find it.&rdquo;
+            </blockquote>
+            <cite>Amora Community &mdash; Regenerative Eco Village, Costa Rica</cite>
+          </div>
         </div>
         <div className="hero-vsl-col">
           <div className="hero-vsl-wrap">
@@ -67,6 +77,9 @@ export function Hero() {
             <span className="hero-vsl-proof"><CheckCircle size={13} aria-hidden="true" /> Human-reviewed memory</span>
             <span className="hero-vsl-proof"><ShieldCheck size={13} aria-hidden="true" /> Your data, your workspace</span>
           </div>
+          <p className="hero-vsl-caption">
+            In 10 minutes: watch Sera extract decisions from a real meeting, route them through human review, and answer from approved memory. No polished demo environment. Real operating context.
+          </p>
         </div>
       </div>
     </section>
@@ -646,28 +659,3 @@ export function FinalCTA() {
     <section className="section">
       <div className="container">
         <CTABand
-          title="Every week without a memory layer, your organization gets a little harder to run."
-          copy="Decisions keep disappearing. The same conversations keep repeating. The people who remember everything become the bottleneck. Sera stops that, from the work your team is already doing."
-          primary="Take the free Memory Audit"
-          primaryHref="/audit"
-          secondary="Apply for a founding spot"
-          secondaryHref="/founding-access"
-        />
-      </div>
-    </section>
-  );
-}
-
-export function SeraDemoSection() {
-  return (
-    <section className="section tight">
-      <div className="container">
-        <SectionHeader eyebrow="Sera" title="Ask Sera what your team already knows." />
-        <p style={{ color: "#d5dddf", marginBottom: 32, maxWidth: 640 }}>
-          This is what it looks like when your organization can actually answer.
-        </p>
-        <SeraDemo />
-      </div>
-    </section>
-  );
-}

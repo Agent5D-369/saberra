@@ -248,6 +248,66 @@ button {
   font-size: 0.98rem;
 }
 
+.trust-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 18px;
+}
+
+.trust-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  background: rgba(111, 183, 183, 0.1);
+  border: 1px solid rgba(111, 183, 183, 0.25);
+  border-radius: 20px;
+  padding: 4px 12px;
+  font-size: 0.82rem;
+  color: #a8d4d4;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+}
+
+.trust-chip svg {
+  flex-shrink: 0;
+}
+
+.hero-quote {
+  margin-top: 22px;
+  padding: 14px 16px;
+  border-left: 3px solid rgba(214, 162, 74, 0.5);
+  background: rgba(214, 162, 74, 0.05);
+  border-radius: 0 6px 6px 0;
+  max-width: 520px;
+}
+
+.hero-quote blockquote {
+  margin: 0;
+  font-size: 0.93rem;
+  color: #d5dddf;
+  font-style: italic;
+  line-height: 1.55;
+}
+
+.hero-quote cite {
+  display: block;
+  margin-top: 7px;
+  font-size: 0.8rem;
+  color: var(--gold);
+  font-style: normal;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+}
+
+.hero-vsl-caption {
+  padding: 2px 2px 0;
+  font-size: 0.82rem;
+  color: #7a9baa;
+  line-height: 1.5;
+  max-width: 100%;
+}
+
 .cta-note {
   margin-top: 12px !important;
   color: #cbd7da !important;
@@ -3371,40 +3431,4 @@ button {
 .job-form-success p { color: #8da3a8; line-height: 1.65; }
 
 @media (max-width: 768px) {
-  .role-detail-grid { grid-template-columns: 1fr; gap: 24px; }
-  .job-form .field-row { grid-template-columns: 1fr; }
-}
-
-/* ── Template Thank-You Steps ──────────────────────────────── */
-.template-steps {
-  display: flex;
-  flex-direction: column;
-  gap: 0;
-  max-width: 740px;
-}
-.template-step {
-  display: flex;
-  gap: 28px;
-  align-items: flex-start;
-  padding: 28px 0;
-  border-bottom: 1px solid rgba(111, 183, 183, 0.1);
-}
-.template-step:last-child { border-bottom: none; }
-.template-step-number {
-  flex-shrink: 0;
-  width: 44px;
-  height: 44px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 50%;
-  background: rgba(111, 183, 183, 0.1);
-  border: 1px solid rgba(111, 183, 183, 0.25);
-  color: var(--teal-soft);
-  font-size: 0.82rem;
-  font-weight: 700;
-  letter-spacing: 0.05em;
-  margin-top: 2px;
-}
-.template-step h3 { margin: 0 0 8px; font-size: 1.08rem; }
-.template-step p { color: #8da3a8; margin: 0; line-height: 1.65; }
+  .r
