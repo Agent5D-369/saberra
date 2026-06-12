@@ -74,7 +74,7 @@ function renderLoginPage(orgName: string, error?: string): string {
 body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:#0b0f1a;color:#e8edf5;min-height:100vh;display:flex;align-items:center;justify-content:center;padding:20px}
 .card{background:#111827;border:1px solid #1f2d42;border-radius:16px;padding:40px 36px;width:100%;max-width:380px;box-shadow:0 8px 40px rgba(0,0,0,.5)}
 .brand{display:flex;align-items:center;gap:12px;margin-bottom:8px}
-.brand img{width:40px;height:40px;border-radius:8px}
+.brand img{width:40px;height:40px;border-radius:8px;display:block;object-fit:contain}
 .brand-name{font-size:22px;font-weight:700;color:#fff;letter-spacing:-.5px}
 .org-name{font-size:13px;color:#6b7a96;margin-bottom:32px}
 label{display:block;font-size:12px;font-weight:600;color:#6b7a96;text-transform:uppercase;letter-spacing:.5px;margin-bottom:6px}

@@ -83,7 +83,7 @@ header{
 .header-left{display:flex;align-items:center;gap:12px}
 .header-logo{font-size:16px;font-weight:700;color:#fff;letter-spacing:-.3px;display:flex;align-items:center;gap:8px}
 .header-logo span{color:#a5b4fc}
-.header-saberra-icon{width:24px;height:24px;border-radius:4px;flex-shrink:0}
+.header-saberra-icon{width:24px;height:24px;border-radius:4px;flex-shrink:0;display:block;object-fit:contain}
 .status-dot{width:8px;height:8px;border-radius:50%;display:inline-block}
 .status-dot.ok{background:var(--green);box-shadow:0 0 6px var(--green)}
 .status-dot.warn{background:var(--amber)}
