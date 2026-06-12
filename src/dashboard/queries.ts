@@ -956,7 +956,7 @@ async function fetchPeopleData(notion: Client, dbs: DbIds): Promise<PeopleData> 
     const name = extractTitle(p);
     const profileType = ((props['Profile Type']?.select as { name: string } | null)?.name ?? 'Person');
     const engStatus  = ((props['Engagement Status']?.select as { name: string } | null)?.name ?? 'Unknown');
-    const relationship = ((props['Community Relationship']?.select as { name: string } | null)?.name ?? (props['Relationship to Amora']?.select as { name: string } | null)?.name ?? (props['Relationship to Org']?.select as { name: string } | null)?.name ?? '');
+    const relationship = ((props['Relationship to Org']?.select as { name: string } | null)?.name ?? (props['Community Relationship']?.select as { name: string } | null)?.name ?? (props['Relationship to Amora']?.select as { name: string } | null)?.name ?? '');
     const tags = ((props['Tags']?.multi_select as Array<{ name: string }> | undefined) ?? []).map(t => t.name);
     const firstSeen = ((props['First Seen']?.date as { start: string } | null)?.start ?? '');
 

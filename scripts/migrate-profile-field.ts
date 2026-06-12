@@ -1,6 +1,7 @@
 /**
- * Renames the Profiles DB property "Relationship to Amora" -> "Community Relationship"
- * Run once per client after deploying the code that uses the new field name.
+ * Renames the Profiles DB relationship field to the canonical "Relationship to Org".
+ * Handles all legacy names: "Relationship to Amora", "Community Relationship".
+ * Safe to re-run: exits cleanly if already at the target name.
  *
  * Usage:
  *   npx ts-node scripts/migrate-profile-field.ts
@@ -26,17 +27,16 @@ const notion = new Client({ auth: NOTION_API_KEY });
 async function run(): Promise<void> {
   console.log(`Profiles DB: ${PROFILES_DB_ID}`);
 
-  // Check current schema
   const db = await notion.databases.retrieve({ database_id: PROFILES_DB_ID! });
   const props = (db as unknown as { properties: Record<string, { name: string }> }).properties;
 
-  if (props['Community Relationship']) {
-    console.log('Field "Community Relationship" already exists — nothing to migrate.');
+  if (props['Relationship to Org']) {
+    console.log('Field "Relationship to Org" already exists — nothing to migrate.');
     return;
   }
 
-  const oldName = props['Relationship to Amora'] ? 'Relationship to Amora'
-    : props['Relationship to Org'] ? 'Relationship to Org'
+  const oldName = props['Community Relationship'] ? 'Community Relationship'
+    : props['Relationship to Amora'] ? 'Relationship to Amora'
     : null;
 
   if (!oldName) {
@@ -44,11 +44,11 @@ async function run(): Promise<void> {
     return;
   }
 
-  console.log(`Renaming "${oldName}" -> "Community Relationship" ...`);
+  console.log(`Renaming "${oldName}" -> "Relationship to Org" ...`);
   await notion.databases.update({
     database_id: PROFILES_DB_ID!,
     properties: {
-      [oldName]: { name: 'Community Relationship' } as never,
+      [oldName]: { name: 'Relationship to Org' } as never,
     },
   });
 
