@@ -223,7 +223,8 @@ function OptionButton({
 }) {
   return (
     <button className={`calculator-option ${active ? "active" : ""}`} type="button" onClick={onClick}>
-      {children}
+      <span>{children}</span>
+      {active ? <CheckCircle2 size={16} aria-hidden="true" /> : null}
     </button>
   );
 }
@@ -299,7 +300,10 @@ function TeamProfileStep({
           />
         </div>
       </FieldGroup>
-      <FieldGroup label="What best describes your organization?">
+      <FieldGroup
+        label="What best describes your organization?"
+        helper="This shapes the recommendation context and demo handoff. It does not change the ROI math."
+      >
         <div className="calculator-options">
           {[
             "Founder-led company",

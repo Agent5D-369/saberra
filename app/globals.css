@@ -4345,7 +4345,24 @@ button {
 }
 
 .calculator-workspace {
+  position: relative;
+  overflow: hidden;
   padding: 22px;
+}
+
+.calculator-workspace::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(circle at 14% 0%, rgba(214, 162, 74, 0.12), transparent 18rem),
+    linear-gradient(90deg, rgba(111, 183, 183, 0.08), transparent 40%);
+  pointer-events: none;
+}
+
+.calculator-workspace > * {
+  position: relative;
+  z-index: 1;
 }
 
 .calculator-progress {
@@ -4382,8 +4399,11 @@ button {
 
 .calculator-progress button.active {
   border-color: rgba(214, 162, 74, 0.72);
-  background: rgba(214, 162, 74, 0.12);
+  background:
+    linear-gradient(135deg, rgba(214, 162, 74, 0.2), rgba(111, 183, 183, 0.08)),
+    rgba(214, 162, 74, 0.08);
   color: var(--paper);
+  box-shadow: 0 0 0 1px rgba(214, 162, 74, 0.12), 0 14px 34px rgba(214, 162, 74, 0.09);
 }
 
 .calculator-progress button.done {
@@ -4429,6 +4449,11 @@ button {
   line-height: 0.98;
 }
 
+.calculator-step-title {
+  border-bottom: 1px solid rgba(111, 183, 183, 0.16);
+  padding-bottom: 18px;
+}
+
 .calculator-step-title p,
 .calculator-cta-section p {
   margin: 12px 0 0;
@@ -4439,12 +4464,19 @@ button {
 .calculator-field {
   display: grid;
   gap: 10px;
+  border: 1px solid rgba(111, 183, 183, 0.16);
+  border-radius: 12px;
+  background:
+    linear-gradient(135deg, rgba(246, 244, 240, 0.045), rgba(111, 183, 183, 0.035)),
+    rgba(7, 21, 36, 0.46);
+  padding: 16px;
 }
 
 .calculator-field > label {
   color: var(--paper);
-  font-size: 1rem;
-  font-weight: 850;
+  font-size: 1.03rem;
+  font-weight: 900;
+  letter-spacing: 0.01em;
 }
 
 .calculator-field > p,
@@ -4464,8 +4496,31 @@ button {
 }
 
 .calculator-slider-row input[type="range"] {
+  appearance: none;
   width: 100%;
-  accent-color: var(--gold);
+  height: 8px;
+  border-radius: 999px;
+  background: linear-gradient(90deg, var(--gold), var(--teal-soft));
+  outline: none;
+}
+
+.calculator-slider-row input[type="range"]::-webkit-slider-thumb {
+  appearance: none;
+  width: 22px;
+  height: 22px;
+  border: 3px solid #071421;
+  border-radius: 999px;
+  background: var(--gold);
+  box-shadow: 0 0 0 3px rgba(214, 162, 74, 0.22), 0 8px 20px rgba(0, 0, 0, 0.35);
+}
+
+.calculator-slider-row input[type="range"]::-moz-range-thumb {
+  width: 18px;
+  height: 18px;
+  border: 3px solid #071421;
+  border-radius: 999px;
+  background: var(--gold);
+  box-shadow: 0 0 0 3px rgba(214, 162, 74, 0.22), 0 8px 20px rgba(0, 0, 0, 0.35);
 }
 
 .calculator-number,
@@ -4502,21 +4557,37 @@ button {
 }
 
 .calculator-option {
+  display: inline-flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 9px;
   border: 1px solid rgba(246, 244, 240, 0.13);
-  border-radius: 999px;
-  background: rgba(246, 244, 240, 0.045);
+  border-radius: 14px;
+  background:
+    linear-gradient(135deg, rgba(246, 244, 240, 0.055), rgba(246, 244, 240, 0.025)),
+    rgba(5, 17, 29, 0.52);
   color: #d6e3e5;
-  padding: 10px 14px;
+  min-height: 46px;
+  padding: 11px 14px;
   font-size: 0.9rem;
   font-weight: 800;
-  transition: border-color 180ms ease, background 180ms ease, color 180ms ease;
+  transition: transform 180ms ease, border-color 180ms ease, background 180ms ease, color 180ms ease, box-shadow 180ms ease;
 }
 
 .calculator-option:hover,
 .calculator-option.active {
   border-color: rgba(214, 162, 74, 0.72);
-  background: rgba(214, 162, 74, 0.12);
+  background:
+    linear-gradient(135deg, rgba(214, 162, 74, 0.18), rgba(111, 183, 183, 0.09)),
+    rgba(214, 162, 74, 0.08);
   color: var(--paper);
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.2), inset 0 0 0 1px rgba(214, 162, 74, 0.08);
+  transform: translateY(-1px);
+}
+
+.calculator-option svg {
+  flex: 0 0 auto;
+  color: var(--gold);
 }
 
 .calculator-custom-input {
@@ -4677,7 +4748,23 @@ button {
 .calculator-live-card {
   position: sticky;
   top: 96px;
+  overflow: hidden;
   padding: 20px;
+}
+
+.calculator-live-card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(circle at 18% 12%, rgba(214, 162, 74, 0.18), transparent 12rem),
+    radial-gradient(circle at 90% 34%, rgba(111, 183, 183, 0.16), transparent 14rem);
+  pointer-events: none;
+}
+
+.calculator-live-card > * {
+  position: relative;
+  z-index: 1;
 }
 
 .calculator-live-header {
