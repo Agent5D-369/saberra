@@ -252,7 +252,7 @@ function resultText(state: CalculatorState) {
     `Estimated hours lost weekly: ${Math.round(calc.weeklyMemoryWasteHours).toLocaleString()}`,
     `Estimated annual memory cost: ${formatMoney(calc.annualMemoryWasteCost)}`,
     `Memory pressure factor: ${calc.pressureFactor.toFixed(2)}x`,
-    `Conservative recovery estimate: ${formatMoney(calc.conservativeRecovery)} per year`,
+    `Conservative recovery estimate: ${formatMoney(calc.conservativeRecovery)} per year (10% of estimated memory leak recovered)`,
     `Recommended plan: ${details.title}`,
     `First-year Saberra investment: ${investment}`,
     `Google Workspace estimate: ${
@@ -612,15 +612,16 @@ function MemoryLeakStep({
           <p>Includes a {calc.pressureFactor.toFixed(2)}x pressure factor from volume and pain frequency.</p>
         </article>
         <article>
-          <span>Conservative estimate</span>
+          <span>10% of leak recovered</span>
           <strong>{formatMoney(calc.conservativeRecovery)}</strong>
+          <p>A conservative scenario: recovering one-tenth of the estimated annual memory waste.</p>
         </article>
         <article>
-          <span>Moderate estimate</span>
+          <span>20% of leak recovered</span>
           <strong>{formatMoney(calc.moderateRecovery)}</strong>
         </article>
         <article>
-          <span>High estimate</span>
+          <span>30% of leak recovered</span>
           <strong>{formatMoney(calc.highRecovery)}</strong>
         </article>
       </div>
@@ -781,9 +782,9 @@ function RoiSummaryCard({ state }: { state: CalculatorState }) {
           <p>Exact seat math using annual-plan assumptions as of {PRICING_AS_OF}.</p>
         </article>
         <article>
-          <span>Conservative recovery</span>
+          <span>10% recovery scenario</span>
           <strong>{formatMoney(calc.conservativeRecovery)}</strong>
-          <p>Only 10% of estimated annual memory waste.</p>
+          <p>If Saberra helps recover one-tenth of the estimated annual memory waste.</p>
         </article>
       </div>
       <div className="calculator-payback">
@@ -827,7 +828,7 @@ function LiveEstimate({ state }: { state: CalculatorState }) {
           <strong>{Math.round(calc.weeklyMemoryWasteHours).toLocaleString()}</strong>
         </div>
         <div>
-          <span>10% recovery</span>
+          <span>10% leak recovered</span>
           <strong>{formatMoney(calc.conservativeRecovery)}</strong>
         </div>
         <div>
