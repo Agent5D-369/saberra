@@ -4,4 +4,5 @@
 const type = process.env.SERVICE_TYPE;
 if (type === 'dashboard') require('./dist/dashboard/server.js');
 else if (type === 'api') require('./dist/api/server.js');
+else if (type === 'operator') require('./dist/operator/server.js');
 else require('./dist/worker.js');

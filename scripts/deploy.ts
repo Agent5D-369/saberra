@@ -1042,6 +1042,7 @@ async function step7_envVars(state: Partial<DeployState>): Promise<void> {
     GOOGLE_REFRESH_TOKEN:         state.googleRefreshToken!,
     ADMIN_NOTIFICATION_EMAIL:     state.adminEmail!,
     TENANT_ID:                    state.tenantId!,
+    SABERRA_CLIENT_NAME:          state.clientName!,
     ANTHROPIC_API_KEY:            anthropicKey,
     CLAUDE_MODEL:                 state.claudeModel!,
     MAX_RETRY_COUNT:              '4',
@@ -1232,6 +1233,32 @@ async function step10_finalize(state: Partial<DeployState>): Promise<void> {
     fs.writeFileSync(manifestPath, JSON.stringify(manifest, null, 2), 'utf-8');
     dlog('step10', 'done', `manifest: ${manifestPath}`);
     writeDeployLog(state.slug!);
+
+    // Update clients/registry.json for the operator portal
+    try {
+      const registryPath = path.join('clients', 'registry.json');
+      let registry: { clients: Array<Record<string, unknown>> } = { clients: [] };
+      if (fs.existsSync(registryPath)) {
+        try { registry = JSON.parse(fs.readFileSync(registryPath, 'utf-8')); } catch { /* start fresh */ }
+      }
+      const entry = {
+        slug:             state.slug,
+        name:             state.clientName ?? state.slug,
+        apiUrl:           state.seraApiUrl ?? '',
+        apiSecret:        state.seraApiSecret ?? '',
+        dashboardUrl:     state.seraDashboardUrl ?? '',
+        deployedAt:       new Date().toISOString().slice(0, 10),
+        railwayProjectId: state.railwayProjectId,
+      };
+      const idx = registry.clients.findIndex(c => c.slug === state.slug);
+      if (idx >= 0) registry.clients[idx] = entry;
+      else registry.clients.push(entry);
+      fs.writeFileSync(registryPath, JSON.stringify(registry, null, 2), 'utf-8');
+      console.log(`\n  Registry updated: clients/registry.json (${registry.clients.length} client${registry.clients.length !== 1 ? 's' : ''})`);
+      console.log(`  Update OPERATOR_CLIENTS on your Saberra operator service to include this client.`);
+    } catch (regErr) {
+      console.warn(`  Could not update registry: ${(regErr as Error).message}`);
+    }
 
     // Clean up progress file now that deployment is complete
     const pf = progressFilePath(state.slug!);

@@ -15,3 +15,6 @@ clients/*.manifest.json
 clients/*.deployment.log
 clients/*.input.json
 clients/*.railway-vars.txt
+clients/registry.json
+scripts/_send-test-email.ts
+scripts/send-test-email.ts

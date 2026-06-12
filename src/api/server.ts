@@ -3,7 +3,9 @@ dotenv.config();
 
 import * as http from 'http';
 import * as crypto from 'crypto';
+import { Client } from '@notionhq/client';
 import { logger } from '../config/logger';
+import { getConfig } from '../config/ConfigService';
 import { SeraQAService, type StreamEvent, type AttachmentInput } from './SeraQAService';
 import { ClaudeExtractionService } from '../services/ClaudeExtractionService';
 import { NotionWriterService } from '../services/NotionWriterService';
@@ -91,6 +93,48 @@ const server = http.createServer(async (req, res) => {
 
   if (method === 'GET' && path === '/health') {
     json(res, 200, { status: 'ok', service: 'sera-api', ts: new Date().toISOString() });
+    return;
+  }
+
+  // ── GET /stats — 7-day aggregate for operator portal (requires auth) ──────────
+  if (method === 'GET' && path === '/stats') {
+    if (!checkAuth(req)) { json(res, 401, { error: 'Unauthorized' }); return; }
+    try {
+      const cfg = getConfig();
+      const notionClient = new Client({ auth: cfg.NOTION_API_KEY });
+      const sevenDaysAgo = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString().slice(0, 10);
+      let emailsIngested = 0, tokensConsumed = 0, errorsCount = 0, lastPollAt: string | null = null;
+      let cursor: string | undefined;
+      do {
+        const res2 = await notionClient.databases.query({
+          database_id: cfg.NOTION_DB_PROCESSING_EVENTS,
+          filter: { property: 'Timestamp', date: { on_or_after: sevenDaysAgo } },
+          page_size: 100,
+          ...(cursor ? { start_cursor: cursor } : {}),
+        });
+        for (const page of res2.results) {
+          const props = (page as { properties: Record<string, { select?: { name: string }; number?: number; date?: { start: string } }> }).properties;
+          const eventType = props['Event Type']?.select?.name;
+          const status    = props['Status']?.select?.name;
+          const tokens    = props['Token Count']?.number ?? 0;
+          const ts        = props['Timestamp']?.date?.start;
+          if (eventType === 'Email Ingested') emailsIngested++;
+          if (status === 'Error') errorsCount++;
+          tokensConsumed += tokens;
+          if (eventType === 'Poll Complete' && ts && (!lastPollAt || ts > lastPollAt)) lastPollAt = ts;
+        }
+        cursor = res2.has_more && res2.next_cursor ? res2.next_cursor : undefined;
+      } while (cursor);
+      json(res, 200, {
+        clientName: cfg.SABERRA_CLIENT_NAME ?? cfg.TENANT_ID,
+        tenantId: cfg.TENANT_ID,
+        generatedAt: new Date().toISOString(),
+        last7Days: { emailsIngested, tokensConsumed, errorsCount, lastPollAt },
+      });
+    } catch (err) {
+      logger.error(err, '/stats error');
+      json(res, 500, { error: 'Stats unavailable' });
+    }
     return;
   }
 
