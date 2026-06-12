@@ -1,7 +1,7 @@
 "use client";
 
 import { useMemo, useState } from "react";
-import { CTAButton, SourceBadge } from "@/components/UI";
+import { CTAButton, SeraPortrait, SourceBadge } from "@/components/UI";
 
 // ── Kit integration ───────────────────────────────────────────────────────────
 // Fill in your Kit API key and sequence ID to activate email nurture
@@ -454,10 +454,15 @@ export function Audit() {
         )}
 
         <article className="card sera-ask-card">
-          <div className="eyebrow">Ask Sera about your result</div>
-          <p className="sera-ask-hint">
-            Select a question or type your own. Sera will answer from what your score suggests about your situation.
-          </p>
+          <div className="sera-ask-card-header">
+            <SeraPortrait size="sm" />
+            <div>
+              <div className="eyebrow">Ask Sera about your result</div>
+              <p className="sera-ask-hint">
+                Select a question or type your own. Sera will answer from what your score suggests about your situation.
+              </p>
+            </div>
+          </div>
           <div className="sera-quick-questions">
             {seraQuickQuestions[scoreBand].map((q) => (
               <button

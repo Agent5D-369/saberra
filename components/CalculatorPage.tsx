@@ -15,6 +15,7 @@ import {
   SunMedium
 } from "lucide-react";
 import { formspreeForms } from "@/lib/site";
+import { SeraPortrait } from "@/components/UI";
 
 type CalculatorState = {
   teamSize: number;
@@ -852,6 +853,13 @@ function LiveEstimate({ state }: { state: CalculatorState }) {
       <div className="calculator-live-header">
         <span>Live estimate</span>
         <strong>{details.title}</strong>
+      </div>
+      <div className="calculator-sera-guide">
+        <SeraPortrait size="sm" />
+        <div>
+          <strong>Sera turns leakage into memory.</strong>
+          <span>Human-reviewed answers from the work your team already creates.</span>
+        </div>
       </div>
       <div className="calculator-live-number">
         <span>Annual memory leak</span>
