@@ -4,17 +4,18 @@ import { getConfig, getNotionDatabaseIds } from '../config/ConfigService';
 import { HubSettingsService } from '../services/HubSettingsService';
 import { logger } from '../config/logger';
 
-const QA_SYSTEM_PROMPT = `You are Sera, the Memory Keeper for Amora's Living Memory Hub.
+function buildQaSystemPrompt(clientName: string): string {
+  return `You are Sera, the Memory Keeper for ${clientName}'s Living Memory Hub.
 
-Amora is a Teal regenerative organization. Our three pillars guide everything:
+${clientName} is a Teal regenerative organization. Our three pillars guide everything:
 - Evolutionary Purpose: the Governing Purpose Statement is the highest authority. Decisions and tensions are weighed against it first.
 - Self-Management: we operate through CCOS circles with consent-based governance. No one holds power over another - roles hold accountabilities.
 - Wholeness: through ARC practices and community design, we bring our full selves. The community is a living system, not a hierarchy.
 
-Your role is to be a caring, grounded witness to Amora's story - surfacing what the community has learned, decided, and committed to. You hold memory so the community can move forward without losing itself.
+Your role is to be a caring, grounded witness to ${clientName}'s story - surfacing what the community has learned, decided, and committed to. You hold memory so the community can move forward without losing itself.
 
 VOICE AND PRESENCE
-You are a member of this community, not an auditor of it. Speak from the inside. Use "we" for Amora always.
+You are a member of this community, not an auditor of it. Speak from the inside. Use "we" for ${clientName} always.
 
 FORMATTING RULES (non-negotiable)
 - Never use em dashes (the -- character or the Unicode em dash). Replace with a comma, a colon, or rewrite the sentence.
@@ -73,16 +74,19 @@ Every record in the tool output includes a "Notion URL:" line. When you referenc
 Example: To resolve the tension, see [Absence of formal capture policy](https://app.notion.com/p/...).
 
 WRITING AND CREATING RECORDS
-You can create draft records directly in Notion using the create_record tool. Use this proactively.
+You can create records directly in Notion using the create_record tool. Use this proactively.
 
 Rules for creating records:
 - When someone asks you to draft, log, create, submit, or correct something - DO IT. Do not ask for information you already have from the conversation.
-- Draft with what you know. State your assumptions in the notes field. The human will refine the draft in the review queue - your job is to get a good draft in, not a perfect one.
-- After creating, tell the user exactly what you created, which database it went to, and what they should do next (e.g., "It is now in the Memory Review Queue as Pending Review - you can open Notion to approve or edit it before it becomes canon.").
+- Draft with what you know. State your assumptions in the notes field. The human can edit the record in Notion afterward.
+- For profiles: use database="profiles". The profile is created directly (no approval step needed). Pack everything known into the body field: email, role/title, membership type, location, context. Use category for Membership Type (default Guest if unknown).
+- After creating, tell the user exactly what you created and provide the Notion link so they can open and edit it immediately.
 - Never say "I cannot make changes directly." You can. Use create_record.
 - For corrections: search first (text_search or query_database), then create the corrected version as a new candidate with a note explaining what it corrects.`;
+}
 
-const REPORT_MODE_SYSTEM_PROMPT = QA_SYSTEM_PROMPT + `
+function buildReportSystemPrompt(clientName: string): string {
+  return buildQaSystemPrompt(clientName) + `
 
 REPORT MODE
 You are generating a periodic summary for the community. Follow this four-part flow - let it read like a thoughtful letter from someone who genuinely cares, not a status update or audit finding. Do not use section headers or labels in your output.
@@ -94,6 +98,7 @@ Part 2 - OBSERVATIONS: Offer 2 to 4 observations about patterns you are noticing
 Part 3 - INVITATION: After your observations, offer a genuine question back to the community. Something like "I'm curious what is behind this - does this match what you are feeling?" or "I wonder if the people closest to this have a read on what is underneath." This names that you only see what reaches you.
 
 Part 4 - HOLDING: End with what you are holding on behalf of the community - not a to-do list, not a list of failures. What feels important to carry forward? What deserves attention without urgency? Frame as care, not pressure.`;
+}
 
 const SERA_TOOLS: Anthropic.Tool[] = [
   {
@@ -139,30 +144,30 @@ const SERA_TOOLS: Anthropic.Tool[] = [
   },
   {
     name: 'create_record',
-    description: 'Create a new draft record in Notion. Use this proactively whenever the user asks you to draft, log, create, submit, or correct anything. Do NOT ask clarifying questions before creating — draft with available context, state assumptions in the notes field, and let the human refine in the review queue. Search first if you need to locate an existing record to reference.',
+    description: 'Create a new record in Notion. Use this proactively whenever the user asks you to draft, log, create, submit, or correct anything. Do NOT ask clarifying questions before creating — draft with available context, state assumptions in the notes field, and let the human refine afterward. Search first if you need to locate an existing record to reference.',
     input_schema: {
       type: 'object' as const,
       properties: {
         database: {
           type: 'string',
-          enum: ['memoryReviewQueue', 'tasks', 'ccosLedger', 'canonChangeRequests'],
-          description: 'Which database to write to. memoryReviewQueue: facts, corrections, and memories to preserve. tasks: action items. ccosLedger: tensions, proposals, governance actions. canonChangeRequests: proposed corrections to policies, roles, circles, or governing purpose.',
+          enum: ['profiles', 'memoryReviewQueue', 'tasks', 'ccosLedger', 'canonChangeRequests'],
+          description: 'Which database to write to. profiles: create a person or organization profile directly. memoryReviewQueue: facts, corrections, and memories to preserve. tasks: action items. ccosLedger: tensions, proposals, governance actions. canonChangeRequests: proposed corrections to policies, roles, circles, or governing purpose.',
         },
         title: {
           type: 'string',
-          description: 'Short, clear title. For memoryReviewQueue: the proposed memory headline. For tasks: the action item in plain language. For ccosLedger: the tension or proposal name. For canonChangeRequests: what is being proposed to change.',
+          description: 'Short, clear title. For profiles: the full name of the person or organization. For memoryReviewQueue: the proposed memory headline. For tasks: the action item in plain language. For ccosLedger: the tension or proposal name. For canonChangeRequests: what is being proposed to change.',
         },
         body: {
           type: 'string',
-          description: 'Full content. For memoryReviewQueue: complete proposed memory text with who, what, when. For ccosLedger: full description of the tension, what was decided or proposed. For canonChangeRequests: the complete proposed new text and why it matters.',
+          description: 'Full content. For profiles: bio, context, role, email, location — everything known about the person. For memoryReviewQueue: complete proposed memory text with who, what, when. For ccosLedger: full description of the tension, what was decided or proposed. For canonChangeRequests: the complete proposed new text and why it matters.',
         },
         notes: {
           type: 'string',
-          description: 'Source evidence, attribution, and any assumptions you made. Always note who surfaced this correction and from which conversation or document.',
+          description: 'Source evidence, attribution, and any assumptions you made. Always note who surfaced this and from which conversation or document.',
         },
         category: {
           type: 'string',
-          description: 'Optional type/category. memoryReviewQueue: Context | Relationship | Commitment | Decision | Learning | Process. tasks: High | Medium | Low (priority). ccosLedger: Tension | Proposal | Decision | Role | Policy | Resource | Accountability. canonChangeRequests: Governing Purpose | Policy | Circle Definition | Role Definition | Decision Rights | Legal Commitment | Financial Commitment | Land Stewardship | CCOS Ledger | Public Commitment.',
+          description: 'Optional type/category. profiles: Membership Type — Founding Member | Full Member | Associate Member | Guest | Steward | Partner (default Guest). memoryReviewQueue: Context | Relationship | Commitment | Decision | Learning | Process. tasks: High | Medium | Low (priority). ccosLedger: Tension | Proposal | Decision | Role | Policy | Resource | Accountability. canonChangeRequests: Governing Purpose | Policy | Circle Definition | Role Definition | Decision Rights | Legal Commitment | Financial Commitment | Land Stewardship | CCOS Ledger | Public Commitment.',
         },
       },
       required: ['database', 'title', 'body'],
@@ -284,6 +289,7 @@ export class SeraQAService {
   private readonly notion: Client;
   private readonly model: string;
   private readonly governingPurpose: string | null;
+  private readonly clientName: string;
 
   constructor() {
     const config = getConfig();
@@ -291,6 +297,7 @@ export class SeraQAService {
     this.notion = new Client({ auth: config.NOTION_API_KEY });
     this.model = config.CLAUDE_MODEL;
     this.governingPurpose = config.AMORA_GOVERNING_PURPOSE ?? null;
+    this.clientName = config.SABERRA_CLIENT_NAME ?? 'Amora';
   }
 
   private getDbMap(): Record<string, string | null | undefined> {
@@ -373,6 +380,12 @@ export class SeraQAService {
     return formatPagesAsContext(pages, sources);
   }
 
+  private notionPageUrl(pageId: string): string {
+    const c = pageId.replace(/-/g, '');
+    const slug = process.env.NOTION_WORKSPACE_SLUG;
+    return slug ? `https://app.notion.com/p/${slug}/${c}` : `https://app.notion.com/p/${c}`;
+  }
+
   private async runCreateRecord(
     database: string,
     title: string,
@@ -390,12 +403,40 @@ export class SeraQAService {
     const sel  = (name: string)    => ({ select: { name } });
     const ttl  = (content: string) => ({ title: [{ text: { content } }] });
 
+    if (database === 'profiles') {
+      const dbId = dbs.profiles;
+      if (!dbId) return 'Profiles database is not configured.';
+      const validMemberships = ['Founding Member', 'Full Member', 'Associate Member', 'Guest', 'Steward', 'Partner'];
+      const membership = validMemberships.includes(category ?? '') ? category! : 'Guest';
+      const today = new Date().toISOString().slice(0, 10);
+      // Best-effort email extraction from body
+      const emailMatch = (safeBody + ' ' + safeNotes).match(/[\w.+-]+@[\w-]+\.[a-zA-Z]{2,}/);
+      const email = emailMatch?.[0] ?? null;
+      const page = await this.notion.pages.create({
+        parent: { database_id: dbId },
+        properties: {
+          Name:                  ttl(safeTitle),
+          'Profile Type':        sel('Person'),
+          'Membership Type':     sel(membership),
+          'Engagement Status':   sel('Active'),
+          'Context Summary':     prop(safeBody),
+          ...(safeNotes ? { Source: prop(safeNotes) } : {}),
+          ...(email ? { Email: { email } } : {}),
+          'Sensitive Notes Flag': { checkbox: false },
+          'First Seen':          { date: { start: today } },
+          'Last Seen':           { date: { start: today } },
+        } as never,
+      });
+      const url = this.notionPageUrl(page.id);
+      return `Profile created: "${safeTitle}". Membership: ${membership}.\nNotion URL: ${url}\nOpen in Notion to add role, location, tags, or any details I may have missed.`;
+    }
+
     if (database === 'memoryReviewQueue') {
       const dbId = dbs.memoryReviewQueue;
       if (!dbId) return 'Memory Review Queue database is not configured.';
       const validCats = ['Context', 'Relationship', 'Commitment', 'Decision', 'Learning', 'Process'];
       const cat = validCats.includes(category ?? '') ? category! : 'Context';
-      await this.notion.pages.create({
+      const page = await this.notion.pages.create({
         parent: { database_id: dbId },
         properties: {
           'Proposed Memory': ttl(safeTitle),
@@ -406,7 +447,8 @@ export class SeraQAService {
           Status:            sel('Pending Review'),
         } as never,
       });
-      return `Memory candidate created: "${safeTitle}". Status: Pending Review in Memory Review Queue. Open Notion to review and approve before it becomes canon.`;
+      const url = this.notionPageUrl(page.id);
+      return `Memory candidate created: "${safeTitle}". Status: Pending Review in Memory Review Queue.\nNotion URL: ${url}\nOpen Notion to review and approve before it becomes canon.`;
     }
 
     if (database === 'tasks') {
@@ -414,7 +456,7 @@ export class SeraQAService {
       if (!dbId) return 'Tasks database is not configured.';
       const validPriorities = ['High', 'Medium', 'Low'];
       const priority = validPriorities.includes(category ?? '') ? category! : 'Medium';
-      await this.notion.pages.create({
+      const page = await this.notion.pages.create({
         parent: { database_id: dbId },
         properties: {
           Task:              ttl(safeTitle),
@@ -423,7 +465,8 @@ export class SeraQAService {
           Status:            sel('Open'),
         } as never,
       });
-      return `Task created: "${safeTitle}". Status: Open, Priority: ${priority}.`;
+      const url = this.notionPageUrl(page.id);
+      return `Task created: "${safeTitle}". Status: Open, Priority: ${priority}.\nNotion URL: ${url}`;
     }
 
     if (database === 'ccosLedger') {
@@ -431,7 +474,7 @@ export class SeraQAService {
       if (!dbId) return 'CCOS Ledger database is not configured.';
       const validTypes = ['Tension', 'Proposal', 'Decision', 'Role', 'Policy', 'Resource', 'Accountability'];
       const ledgerType = validTypes.includes(category ?? '') ? category! : 'Tension';
-      await this.notion.pages.create({
+      const page = await this.notion.pages.create({
         parent: { database_id: dbId },
         properties: {
           'Ledger Entry':   ttl(safeTitle),
@@ -441,7 +484,8 @@ export class SeraQAService {
           'Review Required': { checkbox: true },
         } as never,
       });
-      return `CCOS Ledger entry created: "${safeTitle}". Type: ${ledgerType}, Status: Draft.`;
+      const url = this.notionPageUrl(page.id);
+      return `CCOS Ledger entry created: "${safeTitle}". Type: ${ledgerType}, Status: Draft.\nNotion URL: ${url}`;
     }
 
     if (database === 'canonChangeRequests') {
@@ -449,7 +493,7 @@ export class SeraQAService {
       if (!dbId) return 'Canon Change Requests database is not configured.';
       const validAreas = ['Governing Purpose', 'Policy', 'Circle Definition', 'Role Definition', 'Decision Rights', 'Legal Commitment', 'Financial Commitment', 'Land Stewardship', 'CCOS Ledger', 'Public Commitment', 'Unknown'];
       const area = validAreas.includes(category ?? '') ? category! : 'Unknown';
-      await this.notion.pages.create({
+      const page = await this.notion.pages.create({
         parent: { database_id: dbId },
         properties: {
           'Proposed Change':     ttl(safeTitle),
@@ -460,7 +504,8 @@ export class SeraQAService {
           Status:                sel('Pending Review'),
         } as never,
       });
-      return `Canon Change Request created: "${safeTitle}". Area: ${area}, Status: Pending Review.`;
+      const url = this.notionPageUrl(page.id);
+      return `Canon Change Request created: "${safeTitle}". Area: ${area}, Status: Pending Review.\nNotion URL: ${url}`;
     }
 
     return `Unknown database: ${database}`;
@@ -500,7 +545,7 @@ export class SeraQAService {
     const langLine = language && language !== 'English'
       ? `\n\nRESPONSE LANGUAGE: Respond in ${language}. All answers, explanations, and lists must be in ${language}. Proper nouns (people's names, place names, organization names, and Notion record titles) may remain in their original form.`
       : '';
-    const systemPrompt = (mode === 'report' ? REPORT_MODE_SYSTEM_PROMPT : QA_SYSTEM_PROMPT) + langLine;
+    const systemPrompt = (mode === 'report' ? buildReportSystemPrompt(this.clientName) : buildQaSystemPrompt(this.clientName)) + langLine;
 
     const purposeSection = this.governingPurpose
       ? `\nGOVERNING PURPOSE STATEMENT:\n${sanitizeForPrompt(this.governingPurpose)}\n\n`
@@ -625,7 +670,7 @@ export class SeraQAService {
     const langLine = language && language !== 'English'
       ? `\n\nRESPONSE LANGUAGE: Respond in ${language}. All answers, explanations, and lists must be in ${language}. Proper nouns (people's names, place names, organization names, and Notion record titles) may remain in their original form.`
       : '';
-    const systemPrompt = (mode === 'report' ? REPORT_MODE_SYSTEM_PROMPT : QA_SYSTEM_PROMPT) + langLine;
+    const systemPrompt = (mode === 'report' ? buildReportSystemPrompt(this.clientName) : buildQaSystemPrompt(this.clientName)) + langLine;
     const purposeSection = this.governingPurpose
       ? `\nGOVERNING PURPOSE STATEMENT:\n${sanitizeForPrompt(this.governingPurpose)}\n\n`
       : '';

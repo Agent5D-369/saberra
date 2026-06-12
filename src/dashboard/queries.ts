@@ -5,9 +5,8 @@ import { HubSettingsService } from '../services/HubSettingsService';
 function notionDbUrl(id: string | undefined | null): string {
   if (!id) return '';
   const c = id.replace(/-/g, '');
-  // UUID-with-dashes format routes to workspace page; compact form routes to public-share handler
-  const uuid = `${c.slice(0,8)}-${c.slice(8,12)}-${c.slice(12,16)}-${c.slice(16,20)}-${c.slice(20)}`;
-  return `https://www.notion.so/${uuid}`;
+  const slug = process.env.NOTION_WORKSPACE_SLUG;
+  return slug ? `https://app.notion.com/p/${slug}/${c}` : `https://app.notion.com/p/${c}`;
 }
 
 const DASHBOARD_TZ = process.env.DASHBOARD_TIMEZONE ?? 'America/Costa_Rica';
@@ -47,9 +46,11 @@ async function countQuery(dbId: string, filter: object): Promise<number> {
       cursor = res.has_more && res.next_cursor ? res.next_cursor : undefined;
     } while (cursor);
   } catch (err: unknown) {
-    // Schema mismatch (e.g. filter expects relation but DB has text) - degrade to 0 rather
-    // than crashing the whole dashboard. Happens on tenants with incomplete schema setup.
-    if ((err as { code?: string })?.code === 'validation_error') return 0;
+    // Degrade gracefully rather than crashing the whole dashboard.
+    // validation_error: schema mismatch (filter type doesn't match DB property type).
+    // object_not_found: DB is inaccessible to the integration (e.g. moved to admin workspace).
+    const code = (err as { code?: string })?.code;
+    if (code === 'validation_error' || code === 'object_not_found') return 0;
     throw err;
   }
   return count;
@@ -513,10 +514,7 @@ async function fetchFreshData(activeTz = DASHBOARD_TZ): Promise<DashboardData> {
     }),
     notion.databases.query({
       database_id: dbs.processingEvents,
-      filter: { and: [
-        { property: 'Event Type', select: { equals: 'Poll Start' } },
-        { property: 'Status',     select: { equals: 'Success' } },
-      ] } as never,
+      filter: { property: 'Event Type', select: { equals: 'Poll Complete' } } as never,
       page_size: 1,
       sorts: [{ timestamp: 'created_time', direction: 'descending' }],
     }),
@@ -589,13 +587,13 @@ async function fetchFreshData(activeTz = DASHBOARD_TZ): Promise<DashboardData> {
       page_size: 15,
       sorts: [{ timestamp: 'created_time', direction: 'descending' }],
     }),
-    // Pending sensitive review items (top 10)
+    // Pending sensitive review items (top 10) — catch object_not_found (admin-only workspace)
     notion.databases.query({
       database_id: dbs.sensitiveReview,
       filter: { property: 'Status', select: { equals: 'Pending Review' } } as never,
       page_size: 10,
       sorts: [{ timestamp: 'created_time', direction: 'descending' }],
-    }),
+    }).catch(() => ({ results: [], has_more: false, object: 'list' as const, type: 'page_or_database' as const, page_or_database: {} })),
     // Last 10 source emails (all statuses, most recent first)
     notion.databases.query({
       database_id: dbs.sourceEmails,

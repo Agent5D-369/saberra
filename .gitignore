@@ -14,3 +14,4 @@ clients/*.progress.json
 clients/*.manifest.json
 clients/*.deployment.log
 clients/*.input.json
+clients/*.railway-vars.txt

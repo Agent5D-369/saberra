@@ -77,6 +77,10 @@ const configSchema = z.object({
   ORG_SHARED_DRIVE_ID:              z.string().min(1).optional(),
   ORG_SHARED_DRIVE_INBOX_FOLDER_ID: z.string().min(1).optional(),
 
+  // Notion workspace slug (e.g. "newearthcocreators"). When set, dashboard Notion links
+  // use https://app.notion.com/p/{slug}/{id} format. When absent, falls back to www.notion.so/{uuid}.
+  NOTION_WORKSPACE_SLUG: z.string().min(1).optional(),
+
   // Comma-separated list of email addresses. All receive access request and review alerts.
   ADMIN_NOTIFICATION_EMAIL: z.string().min(1).refine(
     (v) => v.split(',').map(s => s.trim()).every(e => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(e)),

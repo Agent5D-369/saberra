@@ -1382,15 +1382,11 @@ Return JSON with exactly these keys:
         const tensionText = t.tension?.trim() || '(untitled tension)';
         const sensedById = await resolve(profileIdMap, notion.dbIds.profiles, 'Name', t.sensed_by);
         const sensingCircleId = await resolve(circleIdMap, notion.dbIds.circles, 'Circle Name', t.sensing_circle);
-        const tensionEvidence = (t.source_evidence ?? '').trim();
-        const tensionConfidence = tensionEvidence.length > 100 ? 'High' : tensionEvidence.length > 20 ? 'Medium' : 'Low';
         const id = await notion.createPage(notion.dbIds.tensions, {
           Tension: N.title(tensionText),
           Type: N.select(sanitizeSelect(t.type, ['Governance', 'Operational', 'Relational', 'Structural'], 'Operational')),
           Status: N.select('Open'),
           'Source Evidence': N.richText(t.source_evidence ?? ''),
-          Lifecycle: N.select('Active'),
-          'Extraction Confidence': N.select(tensionConfidence),
           ...(sensedById     ? { 'Sensed By':      N.relation([sensedById])          } : {}),
           ...(sensingCircleId ? { 'Sensing Circle': N.relation([sensingCircleId])    } : {}),
           ...(sourceMeetingPageId ? { Meeting:       N.relation([sourceMeetingPageId]) } : {}),
@@ -1420,8 +1416,6 @@ Return JSON with exactly these keys:
         const agreementCircleIds = (await Promise.all(
           (Array.isArray(a.circles) ? a.circles : []).filter(Boolean).map((n) => resolve(circleIdMap, notion.dbIds.circles, 'Circle Name', n)),
         )).filter((id): id is string => id !== null);
-        const agreementEvidence = (a.source_evidence ?? '').trim();
-        const agreementConfidence = agreementEvidence.length > 100 ? 'High' : agreementEvidence.length > 20 ? 'Medium' : 'Low';
         const id = await notion.createPage(notion.dbIds.commitments, {
           'Agreement Title': N.title(agreementTitle),
           Terms: N.richText(a.terms ?? ''),
@@ -1430,8 +1424,6 @@ Return JSON with exactly these keys:
           'Effective Date': N.date(sanitizeDate(a.effective_date)),
           'Review Date': N.date(sanitizeDate(a.review_date)),
           'Source Evidence': N.richText(a.source_evidence ?? ''),
-          Lifecycle: N.select('Active'),
-          'Extraction Confidence': N.select(agreementConfidence),
           ...(partyIds.length          ? { Parties:          N.relation(partyIds)             } : {}),
           ...(agreementCircleIds.length ? { Circles:          N.relation(agreementCircleIds)   } : {}),
           ...(sourceMeetingPageId       ? { 'Source Meeting': N.relation([sourceMeetingPageId]) } : {}),
@@ -1458,16 +1450,12 @@ Return JSON with exactly these keys:
         const toId   = await resolve(profileIdMap, notion.dbIds.profiles, 'Name', g.to);
         if (!fromId && !toId) return; // need at least one end resolved
         const circleId = await resolve(circleIdMap, notion.dbIds.circles, 'Circle Name', g.circle);
-        const gratEvidence = (g.source_evidence ?? '').trim();
-        const gratConfidence = gratEvidence.length > 100 ? 'High' : gratEvidence.length > 20 ? 'Medium' : 'Low';
         const autoTitle = `${g.from ?? '?'} → ${g.to ?? '?'}`;
         const id = await notion.createPage(notion.dbIds.gratitudes, {
           Title:             N.title(autoTitle),
           Appreciation:      N.richText(g.appreciation ?? ''),
           Date:              N.date(sourceDate ?? null),
           'Source Evidence': N.richText(g.source_evidence ?? ''),
-          Lifecycle:         N.select('Active'),
-          'Extraction Confidence': N.select(gratConfidence),
           ...(fromId    ? { From:    N.relation([fromId])             } : {}),
           ...(toId      ? { To:      N.relation([toId])               } : {}),
           ...(circleId  ? { Circle:  N.relation([circleId])           } : {}),
@@ -1493,7 +1481,6 @@ Return JSON with exactly these keys:
           Location:     N.richText(ev.location ?? ''),
           Description:  N.richText(ev.description ?? ''),
           Status:       N.select('Proposed'),
-          Lifecycle:    N.select('Active'),
           ...(organizerId  ? { Organizer:          N.relation([organizerId])  } : {}),
           ...(orgCircleId  ? { 'Organizing Circle': N.relation([orgCircleId]) } : {}),
         });
@@ -1508,8 +1495,6 @@ Return JSON with exactly these keys:
       if (!notion.dbIds.retrospectives) return;
       try {
         const retroCircleId = await resolve(circleIdMap, notion.dbIds.circles, 'Circle Name', r.circle);
-        const retroEvidence = (r.source_evidence ?? '').trim();
-        const retroConfidence = retroEvidence.length > 100 ? 'High' : retroEvidence.length > 20 ? 'Medium' : 'Low';
         const id = await notion.createPage(notion.dbIds.retrospectives, {
           Title:            N.title(r.title ?? '(untitled retrospective)'),
           'Retro Date':     N.date(sanitizeDate(r.retro_date)),
@@ -1520,7 +1505,6 @@ Return JSON with exactly these keys:
           'Energy Level':   r.energy_level ? N.select(sanitizeSelect(r.energy_level, ['High', 'Good', 'Neutral', 'Low', 'Critical'], 'Neutral')) : N.select('Neutral'),
           Celebrations:     N.richText(r.celebrations ?? ''),
           Status:           N.select('Draft'),
-          'Extraction Confidence': N.select(retroConfidence),
           ...(retroCircleId     ? { Circle:  N.relation([retroCircleId])       } : {}),
           ...(sourceMeetingPageId ? { Meeting: N.relation([sourceMeetingPageId]) } : {}),
         });
