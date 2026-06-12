@@ -54,10 +54,12 @@ const PRICING = {
 };
 
 const TOOL_COSTS = {
-  googleWorkspaceLow: 7,
-  googleWorkspaceHigh: 26,
-  notionBusiness: 20
+  googleWorkspaceBusinessStandardMonthlyAnnual: 14,
+  notionBusinessMonthlyAnnual: 20
 };
+
+const PRICING_AS_OF = "June 2026";
+const CALENDAR_DEMO_LINK = "https://calendar.app.google/DuupxARDTdBwxAp48";
 
 const defaultState: CalculatorState = {
   teamSize: 25,
@@ -155,19 +157,18 @@ function getCalculations(state: CalculatorState) {
     firstYearSaberraInvestment && conservativeMonthlyRecovery > 0
       ? firstYearSaberraInvestment / conservativeMonthlyRecovery
       : null;
-  const googleMonthlyLow =
-    state.hasGoogleWorkspace === "yes" ? 0 : state.teamSize * TOOL_COSTS.googleWorkspaceLow;
-  const googleMonthlyHigh =
-    state.hasGoogleWorkspace === "yes" ? 0 : state.teamSize * TOOL_COSTS.googleWorkspaceHigh;
-  const notionMonthly =
-    state.hasNotion === "business" ? 0 : state.teamSize * TOOL_COSTS.notionBusiness;
-  const estimatedMonthlyClientToolLow = googleMonthlyLow + notionMonthly;
-  const estimatedMonthlyClientToolHigh = googleMonthlyHigh + notionMonthly;
-  const firstYearTotalWithToolsLow = firstYearSaberraInvestment
-    ? firstYearSaberraInvestment + estimatedMonthlyClientToolLow * 12
-    : null;
-  const firstYearTotalWithToolsHigh = firstYearSaberraInvestment
-    ? firstYearSaberraInvestment + estimatedMonthlyClientToolHigh * 12
+  const googleSeatMonthly = TOOL_COSTS.googleWorkspaceBusinessStandardMonthlyAnnual;
+  const notionSeatMonthly = TOOL_COSTS.notionBusinessMonthlyAnnual;
+  const needsGoogleWorkspace = state.hasGoogleWorkspace !== "yes";
+  const needsNotionBusiness = state.hasNotion !== "business";
+  const googleMonthly = needsGoogleWorkspace ? state.teamSize * googleSeatMonthly : 0;
+  const notionMonthly = needsNotionBusiness ? state.teamSize * notionSeatMonthly : 0;
+  const googleAnnual = googleMonthly * 12;
+  const notionAnnual = notionMonthly * 12;
+  const clientSubscriptionMonthlyEquivalent = googleMonthly + notionMonthly;
+  const clientSubscriptionAnnualTotal = googleAnnual + notionAnnual;
+  const firstYearTotalWithClientSubscriptions = firstYearSaberraInvestment
+    ? firstYearSaberraInvestment + clientSubscriptionAnnualTotal
     : null;
 
   return {
@@ -184,13 +185,17 @@ function getCalculations(state: CalculatorState) {
     firstYearSaberraInvestment,
     conservativeMonthlyRecovery,
     paybackMonths,
-    googleMonthlyLow,
-    googleMonthlyHigh,
+    needsGoogleWorkspace,
+    needsNotionBusiness,
+    googleSeatMonthly,
+    notionSeatMonthly,
+    googleMonthly,
+    googleAnnual,
     notionMonthly,
-    estimatedMonthlyClientToolLow,
-    estimatedMonthlyClientToolHigh,
-    firstYearTotalWithToolsLow,
-    firstYearTotalWithToolsHigh
+    notionAnnual,
+    clientSubscriptionMonthlyEquivalent,
+    clientSubscriptionAnnualTotal,
+    firstYearTotalWithClientSubscriptions
   };
 }
 
@@ -251,12 +256,19 @@ function resultText(state: CalculatorState) {
     `Recommended plan: ${details.title}`,
     `First-year Saberra investment: ${investment}`,
     `Google Workspace estimate: ${
-      state.hasGoogleWorkspace === "yes"
-        ? "Already in place"
-        : `${formatMoney(calc.googleMonthlyLow)}-${formatMoney(calc.googleMonthlyHigh)}/month`
+      calc.needsGoogleWorkspace
+        ? `${formatMoney(calc.googleAnnual)}/year (${state.teamSize} seats x ${formatMoney(calc.googleSeatMonthly)}/seat/month annual plan)`
+        : "Already in place"
     }`,
-    `Notion estimate: ${state.hasNotion === "business" ? "Already in place" : `${formatMoney(calc.notionMonthly)}/month`}`,
+    `Notion Business estimate: ${
+      calc.needsNotionBusiness
+        ? `${formatMoney(calc.notionAnnual)}/year (${state.teamSize} seats x ${formatMoney(calc.notionSeatMonthly)}/seat/month annual plan)`
+        : "Already in place"
+    }`,
+    `Estimated client-owned subscriptions: ${formatMoney(calc.clientSubscriptionAnnualTotal)}/year`,
     "",
+    `Third-party tool prices are public USD annual-plan assumptions as of ${PRICING_AS_OF}.`,
+    "Saberra rollout, migration, provisioning, or account administration is scoped separately when needed.",
     "Calculator results are estimates and not a formal quote."
   ].join("\n");
 }
@@ -456,7 +468,7 @@ function CurrentToolsStep({
         <div className="calculator-context-note">
           {state.hasGoogleWorkspace === "yes"
             ? "Good. Saberra is designed to work with your existing Google Meet, Gmail, Drive, and Docs workflow."
-            : "Google Workspace estimate: $7-$26/user/month. Exact cost depends on plan and region."}
+            : `Google Workspace estimate used here: Business Standard at ${formatMoney(TOOL_COSTS.googleWorkspaceBusinessStandardMonthlyAnnual)}/user/month on the annual plan, billed as ${formatMoney(TOOL_COSTS.googleWorkspaceBusinessStandardMonthlyAnnual * 12)}/user/year. Prices as of ${PRICING_AS_OF}.`}
         </div>
       </FieldGroup>
       <FieldGroup label="Do you already use Notion?">
@@ -475,7 +487,7 @@ function CurrentToolsStep({
         <div className="calculator-context-note">
           {state.hasNotion === "business"
             ? "Good. Saberra can use Notion as your inspectable memory backend."
-            : "Notion Business estimate: about $20/user/month if you need to add it."}
+            : `Notion Business estimate used here: ${formatMoney(TOOL_COSTS.notionBusinessMonthlyAnnual)}/member/month on the annual plan, billed as ${formatMoney(TOOL_COSTS.notionBusinessMonthlyAnnual * 12)}/member/year. Prices as of ${PRICING_AS_OF}.`}
         </div>
       </FieldGroup>
       <FieldGroup
@@ -684,20 +696,36 @@ function CostBreakdownCard({ state }: { state: CalculatorState }) {
 
   return (
     <article className="calculator-cost-card">
-      <h3>Client-owned tool estimates</h3>
+      <h3>Client-owned tool subscriptions</h3>
       <div className="calculator-cost-row">
-        <span>Google Workspace</span>
+        <span>Google Workspace Business Standard</span>
         <strong>
-          {state.hasGoogleWorkspace === "yes"
-            ? "Already in place"
-            : `${formatMoney(calc.googleMonthlyLow)}-${formatMoney(calc.googleMonthlyHigh)}/month`}
+          {calc.needsGoogleWorkspace ? `${formatMoney(calc.googleAnnual)}/year` : "Already in place"}
         </strong>
       </div>
+      {calc.needsGoogleWorkspace ? (
+        <p>
+          {state.teamSize} seats x {formatMoney(calc.googleSeatMonthly)}/user/month x 12 months.
+        </p>
+      ) : null}
       <div className="calculator-cost-row">
         <span>Notion Business</span>
-        <strong>{state.hasNotion === "business" ? "Already in place" : `${formatMoney(calc.notionMonthly)}/month`}</strong>
+        <strong>{calc.needsNotionBusiness ? `${formatMoney(calc.notionAnnual)}/year` : "Already in place"}</strong>
       </div>
-      <p>Displayed as estimates only. Final software costs depend on vendor plan, seats, billing terms, and region.</p>
+      {calc.needsNotionBusiness ? (
+        <p>
+          {state.teamSize} seats x {formatMoney(calc.notionSeatMonthly)}/member/month x 12 months.
+        </p>
+      ) : null}
+      <div className="calculator-cost-row total">
+        <span>Estimated client-owned subscriptions</span>
+        <strong>{formatMoney(calc.clientSubscriptionAnnualTotal)}/year</strong>
+      </div>
+      <p>
+        Third-party tool prices are public USD annual-plan assumptions as of {PRICING_AS_OF}. If Saberra provisions,
+        migrates, configures, or administers these accounts, that rollout work is scoped separately from subscription
+        costs.
+      </p>
     </article>
   );
 }
@@ -735,13 +763,22 @@ function RoiSummaryCard({ state }: { state: CalculatorState }) {
           <p>Uses midpoint setup and monthly pricing for Core or Growth.</p>
         </article>
         <article>
-          <span>Estimated client-owned tools</span>
+          <span>First-year total with subscriptions</span>
           <strong>
-            {calc.estimatedMonthlyClientToolHigh > 0
-              ? `${formatMoney(calc.estimatedMonthlyClientToolLow)}-${formatMoney(calc.estimatedMonthlyClientToolHigh)}/mo`
+            {calc.firstYearTotalWithClientSubscriptions
+              ? formatMoney(calc.firstYearTotalWithClientSubscriptions)
+              : "Scoped after discovery"}
+          </strong>
+          <p>Saberra midpoint plus any needed Google Workspace and Notion subscriptions.</p>
+        </article>
+        <article>
+          <span>Client-owned subscriptions</span>
+          <strong>
+            {calc.clientSubscriptionAnnualTotal > 0
+              ? `${formatMoney(calc.clientSubscriptionAnnualTotal)}/year`
               : "Already in place"}
           </strong>
-          <p>Changes when Google Workspace or Notion are not already available.</p>
+          <p>Exact seat math using annual-plan assumptions as of {PRICING_AS_OF}.</p>
         </article>
         <article>
           <span>Conservative recovery</span>
@@ -798,10 +835,10 @@ function LiveEstimate({ state }: { state: CalculatorState }) {
           <strong>{calc.pressureFactor.toFixed(2)}x</strong>
         </div>
         <div>
-          <span>Client tools</span>
+          <span>Subscriptions/year</span>
           <strong>
-            {calc.estimatedMonthlyClientToolHigh > 0
-              ? `${formatMoney(calc.estimatedMonthlyClientToolLow)}-${formatMoney(calc.estimatedMonthlyClientToolHigh)}/mo`
+            {calc.clientSubscriptionAnnualTotal > 0
+              ? formatMoney(calc.clientSubscriptionAnnualTotal)
               : "In place"}
           </strong>
         </div>
@@ -861,7 +898,12 @@ function CTASection({ state }: { state: CalculatorState }) {
           calculator_summary: summary
         })
       });
-      setSendStatus(response.ok ? "sent" : "error");
+      if (response.ok) {
+        setSendStatus("sent");
+        window.open(CALENDAR_DEMO_LINK, "_blank", "noopener,noreferrer");
+      } else {
+        setSendStatus("error");
+      }
     } catch {
       setSendStatus("error");
     }
@@ -889,6 +931,7 @@ function CTASection({ state }: { state: CalculatorState }) {
       </div>
       <form className="calculator-send-card" onSubmit={sendResults}>
         <h3>Send me my results</h3>
+        <p>Submit your results and book a live demo as a thank you for being curious.</p>
         <input value={name} onChange={(event) => setName(event.target.value)} placeholder="Name" />
         <input value={email} onChange={(event) => setEmail(event.target.value)} placeholder="Email" type="email" required />
         <input value={organization} onChange={(event) => setOrganization(event.target.value)} placeholder="Organization" />
@@ -896,7 +939,15 @@ function CTASection({ state }: { state: CalculatorState }) {
         <button className="btn btn-primary" type="submit" disabled={sendStatus === "sending"}>
           {sendStatus === "sending" ? "Sending..." : "Send Me My Results"} <Mail size={16} aria-hidden="true" />
         </button>
-        {sendStatus === "sent" ? <p>Your results were sent.</p> : null}
+        {sendStatus === "sent" ? (
+          <p>
+            Your results were sent. The demo calendar should open automatically.{" "}
+            <a href={CALENDAR_DEMO_LINK} target="_blank" rel="noreferrer">
+              Open the booking calendar
+            </a>
+            .
+          </p>
+        ) : null}
         {sendStatus === "error" ? <p>Something went wrong. Copy or download your results instead.</p> : null}
       </form>
     </section>
@@ -1034,13 +1085,16 @@ export function CalculatorPage() {
           <CTASection state={state} />
           <div className="calculator-notes">
             <p>
-              Calculator results are estimates and not a formal quote. Final pricing depends on team size, meeting
-              volume, workflow complexity, review needs, security requirements, and implementation scope.
+              Calculator results are estimates and not a formal quote. Google Workspace and Notion subscription
+              estimates use public USD annual-plan pricing as of {PRICING_AS_OF}; vendor pricing, taxes, discounts,
+              exchange rates, billing terms, seat counts, and plan selection may change the final number.
             </p>
             <p>
               Saberra Core usually requires Google Workspace, a dedicated capture inbox, Notion Business, and one
-              Memory Admin. Advanced integrations, custom security, Zoom, Teams, or non-Notion architectures are scoped
-              separately.
+              Memory Admin. Client-owned subscriptions are separate from Saberra service fees. If Saberra creates,
+              migrates, provisions, configures, or administers Google Workspace or Notion accounts, that rollout work is
+              scoped and compensated separately based on organization size, seat count, complexity, and implementation
+              needs.
             </p>
           </div>
         </div>

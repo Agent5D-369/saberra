@@ -4768,6 +4768,17 @@ button {
   text-align: right;
 }
 
+.calculator-cost-row.total {
+  border-top: 1px solid rgba(214, 162, 74, 0.22);
+  border-bottom-color: rgba(214, 162, 74, 0.22);
+  margin-top: 8px;
+  padding-top: 10px;
+}
+
+.calculator-cost-row.total strong {
+  color: var(--gold);
+}
+
 .calculator-two-list {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
