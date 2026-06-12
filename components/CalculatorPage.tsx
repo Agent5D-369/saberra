@@ -93,6 +93,10 @@ function formatMoney(value: number) {
   return money.format(Math.round(value));
 }
 
+function formatWholeNumber(value: number) {
+  return Math.round(value).toLocaleString();
+}
+
 function recommendPlan(state: CalculatorState): PlanKey {
   const highMeetingVolume =
     state.meetingsPerWeek === "31-60" ||
@@ -582,6 +586,26 @@ function MemoryLeakStep({
   update: (patch: Partial<CalculatorState>) => void;
 }) {
   const calc = getCalculations(state);
+  const recoveryScenarios = [
+    {
+      label: "Conservative recovery",
+      percent: 10,
+      value: calc.conservativeRecovery,
+      note: "Recovering one-tenth of the leak. Put simply: about 6 minutes returned for every leaked hour."
+    },
+    {
+      label: "Practical recovery",
+      percent: 20,
+      value: calc.moderateRecovery,
+      note: "Recovering one-fifth of the leak through clearer decisions, ownership, follow-through, and retrieval."
+    },
+    {
+      label: "Strong recovery",
+      percent: 30,
+      value: calc.highRecovery,
+      note: "Recovering three-tenths of the leak when meeting, email, and review loops are consistently captured."
+    }
+  ];
 
   return (
     <div className="calculator-fields">
@@ -606,28 +630,36 @@ function MemoryLeakStep({
         </div>
       </FieldGroup>
       <div className="calculator-estimate-grid">
-        <article>
+        <article className="calculator-estimate-primary">
           <span>Estimated annual cost of memory leaks</span>
           <strong>{formatMoney(calc.annualMemoryWasteCost)}</strong>
-          <p>Includes a {calc.pressureFactor.toFixed(2)}x pressure factor from volume and pain frequency.</p>
+          <p>
+            {formatWholeNumber(calc.weeklyMemoryWasteHours)} hours/week x {WORK_WEEKS_PER_YEAR} work weeks x{" "}
+            {formatMoney(calc.hourlyValue)}/hour, adjusted by a {calc.pressureFactor.toFixed(2)}x pressure factor from
+            meeting volume, email volume, and pain frequency.
+          </p>
         </article>
-        <article>
-          <span>10% of leak recovered</span>
-          <strong>{formatMoney(calc.conservativeRecovery)}</strong>
-          <p>A conservative scenario: recovering one-tenth of the estimated annual memory waste.</p>
-        </article>
-        <article>
-          <span>20% of leak recovered</span>
-          <strong>{formatMoney(calc.moderateRecovery)}</strong>
-        </article>
-        <article>
-          <span>30% of leak recovered</span>
-          <strong>{formatMoney(calc.highRecovery)}</strong>
-        </article>
+        {recoveryScenarios.map((scenario) => (
+          <article key={scenario.percent}>
+            <span>{scenario.label}</span>
+            <strong>{formatMoney(scenario.value)}</strong>
+            <em>
+              {scenario.percent}% of leak recovered - {formatMoney(scenario.value / 12)}/month
+            </em>
+            <p>{scenario.note}</p>
+          </article>
+        ))}
+      </div>
+      <div className="calculator-decision-read">
+        <strong>How to read this</strong>
+        <p>
+          These numbers are not claiming Saberra creates new money. They estimate how much existing paid time may stop
+          leaking when decisions, tasks, risks, ownership, and context become searchable, reviewable memory.
+        </p>
       </div>
       <p className="calculator-disclaimer">
-        These are directional estimates, not guarantees. The goal is to make the invisible cost visible enough for a
-        better decision.
+        Conservative is the main scenario to compare against Saberra cost. Practical and strong recovery show the upside
+        if memory loss is more systemic. These are directional estimates, not guarantees.
       </p>
     </div>
   );
@@ -782,9 +814,12 @@ function RoiSummaryCard({ state }: { state: CalculatorState }) {
           <p>Exact seat math using annual-plan assumptions as of {PRICING_AS_OF}.</p>
         </article>
         <article>
-          <span>10% recovery scenario</span>
+          <span>Conservative recovery</span>
           <strong>{formatMoney(calc.conservativeRecovery)}</strong>
-          <p>If Saberra helps recover one-tenth of the estimated annual memory waste.</p>
+          <p>
+            10% of the leak recovered. That is roughly 6 minutes returned for every hour currently lost to searching,
+            repeating, clarifying, re-deciding, or reconstructing context.
+          </p>
         </article>
       </div>
       <div className="calculator-payback">

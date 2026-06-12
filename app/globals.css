@@ -4701,6 +4701,13 @@ button {
   padding: 16px;
 }
 
+.calculator-estimate-primary {
+  grid-column: 1 / -1;
+  background:
+    linear-gradient(135deg, rgba(214, 162, 74, 0.1), rgba(111, 183, 183, 0.08)),
+    rgba(246, 244, 240, 0.045);
+}
+
 .calculator-estimate-grid strong,
 .calculator-roi-grid strong {
   display: block;
@@ -4712,10 +4719,37 @@ button {
   line-height: 1;
 }
 
+.calculator-estimate-grid em {
+  display: block;
+  margin-top: 8px;
+  color: #c3dfe0;
+  font-size: 0.9rem;
+  font-style: normal;
+  font-weight: 800;
+}
+
 .calculator-estimate-grid p {
   margin: 10px 0 0;
   color: #91aab0;
   font-size: 0.9rem;
+}
+
+.calculator-decision-read {
+  border: 1px solid rgba(111, 183, 183, 0.24);
+  border-radius: 10px;
+  background: rgba(111, 183, 183, 0.07);
+  padding: 14px 16px;
+}
+
+.calculator-decision-read strong {
+  color: var(--paper);
+  font-size: 0.96rem;
+}
+
+.calculator-decision-read p {
+  margin: 6px 0 0;
+  color: #b9c9cd;
+  font-size: 0.92rem;
 }
 
 .calculator-plan-card {
