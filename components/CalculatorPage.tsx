@@ -8,9 +8,11 @@ import {
   ClipboardCopy,
   Download,
   Mail,
+  MousePointer2,
   RotateCcw,
   Send,
-  Sparkles
+  Sparkles,
+  SunMedium
 } from "lucide-react";
 import { formspreeForms } from "@/lib/site";
 
@@ -308,6 +310,34 @@ function FieldGroup({ label, helper, children }: { label: string; helper?: strin
       <label>{label}</label>
       {children}
       {helper ? <p>{helper}</p> : null}
+    </div>
+  );
+}
+
+function CalculatorValueStrip() {
+  return (
+    <div className="calculator-value-strip" aria-label="What Saberra changes">
+      <article>
+        <MousePointer2 size={17} aria-hidden="true" />
+        <div>
+          <strong>Near-zero adoption</strong>
+          <span>Your team keeps using Google Meet, Gmail, and Notion.</span>
+        </div>
+      </article>
+      <article>
+        <Sparkles size={17} aria-hidden="true" />
+        <div>
+          <strong>Invisible work made visible</strong>
+          <span>Decisions, tasks, risks, and ownership stop disappearing after the call.</span>
+        </div>
+      </article>
+      <article>
+        <SunMedium size={17} aria-hidden="true" />
+        <div>
+          <strong>Time restored with AI assistance</strong>
+          <span>Sera helps recover context so people can spend less time searching and more time living.</span>
+        </div>
+      </article>
     </div>
   );
 }
@@ -771,15 +801,14 @@ function LiveEstimate({ state }: { state: CalculatorState }) {
           </strong>
         </div>
       </div>
-      <div className="calculator-memory-flow" aria-hidden="true">
-        <div>Meetings</div>
-        <div>Email</div>
-        <span>Human review</span>
+      <div className="calculator-memory-flow" aria-label="Saberra memory flow">
+        <div>Meetings + email</div>
+        <span>Human-reviewed memory</span>
         <strong>Ask Sera</strong>
       </div>
       <p>
-        Your team keeps using Google Meet, Gmail, and Notion. Sera becomes the natural language interface to the
-        memory your organization already creates.
+        Near-zero behavior change. Saberra brings invisible operational work to the surface, then Sera helps your team
+        retrieve what it already knows.
       </p>
     </aside>
   );
@@ -938,6 +967,7 @@ export function CalculatorPage() {
                 </button>
               ))}
             </div>
+            <CalculatorValueStrip />
             <CalculatorStep step={0} activeStep={activeStep}>
               <TeamProfileStep state={state} update={update} />
             </CalculatorStep>
