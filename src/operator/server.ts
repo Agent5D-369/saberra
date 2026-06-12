@@ -6,6 +6,14 @@
  *   [{"slug":"amora","name":"Amora LMH","apiUrl":"https://...","apiSecret":"...","dashboardUrl":"https://..."}]
  *
  * Falls back to clients/registry.json for local development.
+ *
+ * Alerting env vars:
+ *   ALERT_EMAIL          - where to send alerts (e.g. admin@saberra.com)
+ *   GOOGLE_CLIENT_ID     - Gmail OAuth2 client ID for sending alerts
+ *   GOOGLE_CLIENT_SECRET - Gmail OAuth2 client secret
+ *   GOOGLE_REFRESH_TOKEN - Gmail OAuth2 refresh token
+ *   GMAIL_SENDER_EMAIL   - Gmail address to send from
+ *   NOTIFY_TOKEN         - secret token for the /notify webhook endpoint
  */
 
 import * as dotenv from 'dotenv';
@@ -17,8 +25,17 @@ import * as fs from 'fs';
 import * as path from 'path';
 import * as crypto from 'crypto';
 
-const PORT = Number(process.env.PORT ?? 3003);
+const PORT              = Number(process.env.PORT ?? 3003);
 const OPERATOR_PASSWORD = process.env.OPERATOR_PASSWORD ?? '';
+const ALERT_EMAIL       = process.env.ALERT_EMAIL ?? '';
+const NOTIFY_TOKEN      = process.env.NOTIFY_TOKEN ?? '';
+const GMAIL_CLIENT_ID   = process.env.GOOGLE_CLIENT_ID ?? '';
+const GMAIL_CLIENT_SEC  = process.env.GOOGLE_CLIENT_SECRET ?? '';
+const GMAIL_REFRESH     = process.env.GOOGLE_REFRESH_TOKEN ?? '';
+const GMAIL_SENDER      = process.env.GMAIL_SENDER_EMAIL ?? '';
+
+const ALERT_THRESHOLD    = 3;   // consecutive failures before alerting
+const MONITOR_INTERVAL   = 60_000; // ms
 
 if (!OPERATOR_PASSWORD) {
   console.error('OPERATOR_PASSWORD env var is required');
@@ -72,7 +89,7 @@ function fetchJson(url: string, headers: Record<string, string> = {}): Promise<u
     const lib = url.startsWith('https://') ? https : http;
     const req = lib.get(url, { headers }, (res) => {
       let data = '';
-      res.on('data', (chunk) => { data += chunk; });
+      res.on('data', (chunk: Buffer) => { data += chunk; });
       res.on('end', () => {
         if (res.statusCode && res.statusCode >= 200 && res.statusCode < 300) {
           try { resolve(JSON.parse(data)); }
@@ -87,6 +104,35 @@ function fetchJson(url: string, headers: Record<string, string> = {}): Promise<u
   });
 }
 
+function postJson(url: string, body: unknown, headers: Record<string, string> = {}): Promise<unknown> {
+  return new Promise((resolve, reject) => {
+    const payload = JSON.stringify(body);
+    const parsed = new URL(url);
+    const options = {
+      hostname: parsed.hostname,
+      port: parsed.port || 443,
+      path: parsed.pathname + parsed.search,
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Content-Length': Buffer.byteLength(payload), ...headers },
+    };
+    const req = https.request(options, (res) => {
+      let data = '';
+      res.on('data', (chunk: Buffer) => { data += chunk; });
+      res.on('end', () => {
+        if (res.statusCode && res.statusCode >= 200 && res.statusCode < 300) {
+          try { resolve(JSON.parse(data)); } catch { resolve(data); }
+        } else {
+          reject(new Error(`HTTP ${res.statusCode}: ${data}`));
+        }
+      });
+    });
+    req.setTimeout(10000, () => { req.destroy(); reject(new Error('Timeout')); });
+    req.on('error', reject);
+    req.write(payload);
+    req.end();
+  });
+}
+
 async function fetchClientData(client: ClientConfig): Promise<{ health: 'online' | 'offline'; stats: ClientStats | null }> {
   const headers = { Authorization: `Bearer ${client.apiSecret}` };
   const [healthResult, statsResult] = await Promise.allSettled([
@@ -96,6 +142,115 @@ async function fetchClientData(client: ClientConfig): Promise<{ health: 'online'
   const health = healthResult.status === 'fulfilled' ? 'online' : 'offline';
   const stats  = statsResult.status === 'fulfilled' ? statsResult.value as ClientStats : null;
   return { health, stats };
+}
+
+// ─── Gmail API alerting ───────────────────────────────────────────────────────
+
+let cachedAccessToken: { token: string; expiresAt: number } | null = null;
+
+async function getGmailAccessToken(): Promise<string | null> {
+  if (!GMAIL_CLIENT_ID || !GMAIL_CLIENT_SEC || !GMAIL_REFRESH) return null;
+  if (cachedAccessToken && Date.now() < cachedAccessToken.expiresAt - 60_000) {
+    return cachedAccessToken.token;
+  }
+  try {
+    const result = await postJson('https://oauth2.googleapis.com/token', {
+      client_id: GMAIL_CLIENT_ID,
+      client_secret: GMAIL_CLIENT_SEC,
+      refresh_token: GMAIL_REFRESH,
+      grant_type: 'refresh_token',
+    }) as { access_token: string; expires_in: number };
+    cachedAccessToken = { token: result.access_token, expiresAt: Date.now() + result.expires_in * 1000 };
+    return result.access_token;
+  } catch (err) {
+    console.error('[alert] Failed to get Gmail access token:', err);
+    return null;
+  }
+}
+
+async function sendAlertEmail(subject: string, body: string): Promise<void> {
+  if (!ALERT_EMAIL || !GMAIL_SENDER) {
+    console.log(`[alert] No ALERT_EMAIL/GMAIL_SENDER configured — would send: ${subject}`);
+    return;
+  }
+  const token = await getGmailAccessToken();
+  if (!token) { console.error('[alert] No Gmail token — cannot send alert'); return; }
+
+  const message = [
+    `From: Saberra Operator <${GMAIL_SENDER}>`,
+    `To: ${ALERT_EMAIL}`,
+    `Subject: ${subject}`,
+    `Content-Type: text/plain; charset=utf-8`,
+    ``,
+    body,
+    ``,
+    `--`,
+    `Saberra Operator Portal`,
+    `https://sera-operator-production.up.railway.app`,
+  ].join('\r\n');
+
+  const encoded = Buffer.from(message).toString('base64url');
+  try {
+    await postJson(
+      'https://gmail.googleapis.com/gmail/v1/users/me/messages/send',
+      { raw: encoded },
+      { Authorization: `Bearer ${token}` },
+    );
+    console.log(`[alert] Sent alert to ${ALERT_EMAIL}: ${subject}`);
+  } catch (err) {
+    console.error('[alert] Failed to send alert email:', err);
+  }
+}
+
+// ─── Background monitor ───────────────────────────────────────────────────────
+
+interface MonitorState {
+  consecutiveFailures: number;
+  alertSent: boolean;
+  lastStatus: 'online' | 'offline' | 'unknown';
+}
+
+const monitorState = new Map<string, MonitorState>();
+
+async function runMonitorCycle(): Promise<void> {
+  const clients = loadClients();
+  if (clients.length === 0) return;
+
+  for (const client of clients) {
+    try {
+      const { health } = await fetchClientData(client);
+      const state = monitorState.get(client.slug) ?? { consecutiveFailures: 0, alertSent: false, lastStatus: 'unknown' };
+
+      if (health === 'offline') {
+        state.consecutiveFailures++;
+        console.log(`[monitor] ${client.slug} offline (${state.consecutiveFailures}/${ALERT_THRESHOLD})`);
+        if (state.consecutiveFailures >= ALERT_THRESHOLD && !state.alertSent) {
+          const mins = state.consecutiveFailures;
+          await sendAlertEmail(
+            `[Saberra Alert] ${client.name} is down`,
+            `${client.name} (${client.slug}) has been offline for ${mins} consecutive checks (~${mins} min).\n\nDashboard: ${client.dashboardUrl}\nAPI health: ${client.apiUrl}/health\n\nThis alert will not repeat until the service recovers and goes down again.`,
+          );
+          state.alertSent = true;
+        }
+      } else {
+        if (state.alertSent) {
+          await sendAlertEmail(
+            `[Saberra Recovery] ${client.name} is back online`,
+            `${client.name} (${client.slug}) has recovered and is now responding normally.\n\nDashboard: ${client.dashboardUrl}`,
+          );
+        }
+        if (state.consecutiveFailures > 0) {
+          console.log(`[monitor] ${client.slug} recovered after ${state.consecutiveFailures} failures`);
+        }
+        state.consecutiveFailures = 0;
+        state.alertSent = false;
+      }
+      state.lastStatus = health;
+      monitorState.set(client.slug, state);
+    } catch (err) {
+      console.error(`[monitor] Error checking ${client.slug}:`, err);
+    }
+  }
 }
 
 // ─── Auth ─────────────────────────────────────────────────────────────────────
@@ -133,6 +288,7 @@ function relativeTime(iso: string | null): string {
 }
 
 function renderCard(client: ClientConfig, health: 'online' | 'offline', stats: ClientStats | null): string {
+  const state = monitorState.get(client.slug);
   const dot = health === 'online' ? 'dot-online' : 'dot-offline';
   const statusLabel = health === 'online' ? 'Online' : 'Offline';
   const emails = stats?.last7Days.emailsIngested ?? '-';
@@ -140,16 +296,20 @@ function renderCard(client: ClientConfig, health: 'online' | 'offline', stats: C
   const errors = stats?.last7Days.errorsCount ?? '-';
   const lastPoll = relativeTime(stats?.last7Days.lastPollAt ?? null);
   const errClass = typeof errors === 'number' && errors > 0 ? ' metric-error' : '';
+  const alertBadge = state?.alertSent ? '<span class="alert-badge">ALERTED</span>' : '';
 
   return `
-    <div class="card">
+    <div class="card${health === 'offline' ? ' card-offline' : ''}">
       <div class="card-header">
         <span class="dot ${dot}"></span>
         <div class="card-title">
           <h2>${esc(stats?.clientName ?? client.name)}</h2>
           <span class="slug">${esc(client.slug)}</span>
         </div>
-        <span class="status-label ${health}">${statusLabel}</span>
+        <div class="card-status-group">
+          <span class="status-label ${health}">${statusLabel}</span>
+          ${alertBadge}
+        </div>
       </div>
       <div class="metrics">
         <div class="metric">
@@ -181,6 +341,9 @@ function renderPage(clients: ClientConfig[], results: Array<{ health: 'online' |
   const now = new Date().toLocaleString('en-US', { timeZone: 'UTC', dateStyle: 'medium', timeStyle: 'short' }) + ' UTC';
   const cards = clients.map((c, i) => renderCard(c, results[i].health, results[i].stats)).join('\n');
   const onlineCount = results.filter(r => r.health === 'online').length;
+  const alertingStatus = ALERT_EMAIL
+    ? `<span style="color:#4ade80">Alerts: ${esc(ALERT_EMAIL)}</span>`
+    : `<span style="color:#f87171">Alerts: not configured</span>`;
 
   return `<!DOCTYPE html>
 <html lang="en">
@@ -202,7 +365,7 @@ function renderPage(clients: ClientConfig[], results: Array<{ health: 'online' |
     .header-right { font-size: 13px; color: #64748b; text-align: right; }
     .header-right strong { display: block; color: #94a3b8; }
 
-    .summary-bar { padding: 12px 32px; background: #0f172a; border-bottom: 1px solid #1e293b; display: flex; gap: 24px; font-size: 13px; color: #64748b; }
+    .summary-bar { padding: 12px 32px; background: #0f172a; border-bottom: 1px solid #1e293b; display: flex; gap: 24px; font-size: 13px; color: #64748b; flex-wrap: wrap; }
     .summary-bar span { color: #e2e8f0; font-weight: 500; }
 
     .grid-container { padding: 24px 32px; }
@@ -210,17 +373,20 @@ function renderPage(clients: ClientConfig[], results: Array<{ health: 'online' |
 
     .card { background: #111827; border: 1px solid #1e293b; border-radius: 12px; padding: 20px; display: flex; flex-direction: column; gap: 16px; transition: border-color 0.2s; }
     .card:hover { border-color: #334155; }
+    .card.card-offline { border-color: #450a0a; }
 
     .card-header { display: flex; align-items: flex-start; gap: 12px; }
     .dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; margin-top: 6px; }
     .dot-online { background: #22c55e; box-shadow: 0 0 6px #22c55e66; }
-    .dot-offline { background: #ef4444; }
+    .dot-offline { background: #ef4444; box-shadow: 0 0 6px #ef444466; }
     .card-title { flex: 1; min-width: 0; }
     .card-title h2 { font-size: 15px; font-weight: 600; color: #f1f5f9; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
     .slug { font-size: 11px; color: #64748b; font-family: monospace; }
-    .status-label { font-size: 11px; font-weight: 600; padding: 3px 8px; border-radius: 4px; flex-shrink: 0; }
+    .card-status-group { display: flex; flex-direction: column; gap: 4px; align-items: flex-end; flex-shrink: 0; }
+    .status-label { font-size: 11px; font-weight: 600; padding: 3px 8px; border-radius: 4px; }
     .status-label.online { background: #14532d; color: #4ade80; }
     .status-label.offline { background: #450a0a; color: #f87171; }
+    .alert-badge { font-size: 10px; font-weight: 700; padding: 2px 6px; border-radius: 4px; background: #78350f; color: #fbbf24; letter-spacing: 0.5px; }
 
     .metrics { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
     .metric { background: #0f172a; border-radius: 8px; padding: 10px 12px; }
@@ -256,8 +422,9 @@ function renderPage(clients: ClientConfig[], results: Array<{ health: 'online' |
   <div class="summary-bar">
     <div>Clients: <span>${clients.length}</span></div>
     <div>Online: <span>${onlineCount}</span></div>
-    ${clients.length > 0 && results[0].stats ? `<div>Tenant IDs: <span>${results.map((r, i) => r.stats?.tenantId ?? clients[i].slug).join(', ')}</span></div>` : ''}
-    <div style="margin-left:auto">Auto-refreshes every 60s</div>
+    ${clients.length > 0 && results[0].stats ? `<div>Tenants: <span>${results.map((r, i) => r.stats?.tenantId ?? clients[i].slug).join(', ')}</span></div>` : ''}
+    <div>${alertingStatus}</div>
+    <div style="margin-left:auto">Background monitor active - alerts after ${ALERT_THRESHOLD} failures</div>
   </div>
   <div class="grid-container">
     ${clients.length === 0 ? `
@@ -270,9 +437,53 @@ function renderPage(clients: ClientConfig[], results: Array<{ health: 'online' |
 </html>`;
 }
 
+// ─── Request body reader ──────────────────────────────────────────────────────
+
+function readBody(req: http.IncomingMessage): Promise<string> {
+  return new Promise((resolve) => {
+    let body = '';
+    req.on('data', (chunk: Buffer) => { body += chunk; });
+    req.on('end', () => resolve(body));
+    req.on('error', () => resolve(''));
+  });
+}
+
 // ─── Server ───────────────────────────────────────────────────────────────────
 
 const server = http.createServer(async (req, res) => {
+  const url = req.url ?? '/';
+  const method = req.method ?? 'GET';
+
+  // Health check - no auth
+  if (method === 'GET' && url === '/health') {
+    res.writeHead(200, { 'Content-Type': 'application/json' });
+    res.end(JSON.stringify({ status: 'ok', ts: new Date().toISOString(), clients: loadClients().length }));
+    return;
+  }
+
+  // Webhook notify endpoint — called by CI on failure/recovery
+  // Auth: Bearer token via NOTIFY_TOKEN env var
+  if (method === 'POST' && url === '/notify') {
+    const authHeader = req.headers['authorization'] ?? '';
+    const token = authHeader.startsWith('Bearer ') ? authHeader.slice(7) : '';
+    if (!NOTIFY_TOKEN || !token || token.length !== NOTIFY_TOKEN.length ||
+        !crypto.timingSafeEqual(Buffer.from(token), Buffer.from(NOTIFY_TOKEN))) {
+      res.writeHead(401, { 'Content-Type': 'application/json' });
+      res.end(JSON.stringify({ error: 'unauthorized' }));
+      return;
+    }
+    const body = await readBody(req);
+    let payload: { subject?: string; message?: string } = {};
+    try { payload = JSON.parse(body); } catch { /* ignore */ }
+    const subject = payload.subject ?? '[Saberra] System notification';
+    const message = payload.message ?? '(no message)';
+    await sendAlertEmail(subject, message);
+    res.writeHead(200, { 'Content-Type': 'application/json' });
+    res.end(JSON.stringify({ ok: true }));
+    return;
+  }
+
+  // Dashboard — requires Basic Auth
   if (!checkBasicAuth(req)) {
     res.writeHead(401, {
       'WWW-Authenticate': 'Basic realm="Saberra Operator Portal"',
@@ -293,6 +504,12 @@ const server = http.createServer(async (req, res) => {
 server.listen(PORT, () => {
   console.log(`Saberra Operator Portal listening on port ${PORT}`);
   console.log(`Watching ${loadClients().length} client(s)`);
+  console.log(`Alert email: ${ALERT_EMAIL || 'not configured'}`);
+  console.log(`Gmail sender: ${GMAIL_SENDER || 'not configured'}`);
 });
+
+// Start background monitor loop
+setInterval(() => { runMonitorCycle().catch(err => console.error('[monitor] cycle error:', err)); }, MONITOR_INTERVAL);
+runMonitorCycle().catch(err => console.error('[monitor] initial cycle error:', err));
 
 process.on('SIGTERM', () => { server.close(() => process.exit(0)); });

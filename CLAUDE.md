@@ -138,7 +138,8 @@ The first 17 `NOTION_DB_*` vars (everything except the community layer) are requ
 - Worker service: `6ae15b70-ab51-448a-a28a-7082be22cdc0` — polls every 3 minutes (Railway: Sera Worker)
 - Dashboard service: `4bd316bd-1506-489b-88f7-e96aaa11c23b` — https://dashboard-production-1aae.up.railway.app (Railway: Sera Dashboard)
 - Sera API service: `da7bf532-c97c-4fe6-bbd5-74ac1e0324ee` — https://sera-api-production-28d0.up.railway.app (Railway: Sera API)
-- All env vars set via Railway (not `.env`). `SERVICE_TYPE` env var controls which service starts: `worker` | `dashboard` | `api`
+- Sera Operator service: `23c5a0a7-0510-470d-b19c-248bf97be926` — https://sera-operator-production.up.railway.app (Railway: Sera Operator) — requires `OPERATOR_PASSWORD` Basic Auth
+- All env vars set via Railway (not `.env`). `SERVICE_TYPE` env var controls which service starts: `worker` | `dashboard` | `api` | `operator`
 
 ## Sera API — "Hey Sera" routing
 
