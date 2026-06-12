@@ -23,6 +23,7 @@ export default function InstitutionalMemorySystemPage() {
   return (
     <main>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify({"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Home", "item": "https://saberra.com"}, {"@type": "ListItem", "position": 2, "name": "Resources", "item": "https://saberra.com/resources"}, {"@type": "ListItem", "position": 3, "name": "What Is an Institutional Memory System?", "item": "https://saberra.com/resources/institutional-memory-system"}]}) }} />
       <section className="page-hero">
         <div className="container">
           <h1>What is an institutional memory system?</h1>

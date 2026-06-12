@@ -23,6 +23,7 @@ export default function MeetingNotesAreNotMemoryPage() {
   return (
     <main>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify({"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Home", "item": "https://saberra.com"}, {"@type": "ListItem", "position": 2, "name": "Resources", "item": "https://saberra.com/resources"}, {"@type": "ListItem", "position": 3, "name": "Meeting Notes Are Not Memory", "item": "https://saberra.com/resources/meeting-notes-are-not-memory"}]}) }} />
       <section className="page-hero">
         <div className="container">
           <h1>Meeting notes are not organizational memory.</h1>

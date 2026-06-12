@@ -15,6 +15,9 @@ export default function DemoPage() {
     <main>
       <section className="page-hero">
         <div className="container">
+          <div style={{ display: "flex", alignItems: "center", gap: 16, flexWrap: "wrap", marginBottom: 8 }}>
+            <span className="scarcity-counter">3 of 5 founding spots remaining</span>
+          </div>
           <h1>Show us your real workflow. We&apos;ll show you what Sera would have captured.</h1>
           <p>
             Bring a real meeting scenario, a real decision that disappeared, or a real handoff that went wrong. We will

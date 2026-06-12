@@ -44,6 +44,7 @@ export default function SaberraVsMeetingNotetakersPage() {
   return (
     <main>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify({"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Home", "item": "https://saberra.com"}, {"@type": "ListItem", "position": 2, "name": "Resources", "item": "https://saberra.com/resources"}, {"@type": "ListItem", "position": 3, "name": "Saberra vs. Meeting Notetakers", "item": "https://saberra.com/resources/saberra-vs-meeting-notetakers"}]}) }} />
       <section className="page-hero">
         <div className="container">
           <div className="eyebrow">Comparison: Meeting notetakers vs Saberra</div>

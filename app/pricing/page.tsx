@@ -6,8 +6,20 @@ import { PipelineAnatomyVisual, SovereigntyVisual } from "@/components/VisualPan
 export const metadata: Metadata = {
   title: "Pricing",
   description:
-    "Saberra pricing for teams that need a done-for-you AI operations layer with Sera, human approval, and a private Living Memory Hub.",
-  alternates: { canonical: "/pricing" }
+    "Saberra costs less than one bad transition. Done-for-you deployment. No self-serve. See the plans.",
+  alternates: { canonical: "/pricing" },
+  openGraph: {
+    title: "Saberra Pricing — Costs less than one bad transition",
+    description:
+      "One key person leaves and you lose six months of operating context. Saberra costs less than that. Done-for-you deployment, no self-serve.",
+    images: [{ url: "/og-pricing.png", width: 1200, height: 630, alt: "Saberra pricing — institutional memory infrastructure" }]
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Saberra Pricing — Costs less than one bad transition",
+    description: "One key person leaves. You lose six months of context. Saberra costs less than that.",
+    images: ["/og-pricing.png"]
+  }
 };
 
 export default function PricingPage() {
@@ -59,6 +71,32 @@ export default function PricingPage() {
           <div style={{ marginTop: 32 }}>
             <PipelineAnatomyVisual />
           </div>
+        </div>
+      </section>
+
+      {/* ── COA COMPARISON: reframe price before tiers ───────── */}
+      <section className="section tight">
+        <div className="container">
+          <div className="eyebrow" style={{ textAlign: "center", marginBottom: 16 }}>The real comparison</div>
+          <p style={{ textAlign: "center", color: "#8da3a8", maxWidth: 560, margin: "0 auto 24px", fontSize: "1.05rem" }}>
+            The alternative to Saberra is not nothing. It is a part-time operations person doing this manually.
+          </p>
+          <div className="pricing-coa-compare">
+            <div className="pricing-coa-col saberra">
+              <div className="pricing-coa-label">Saberra</div>
+              <div className="pricing-coa-price">$300 &ndash; $500<span style={{ fontSize: "1rem", fontWeight: 400, color: "#6a8890" }}>/mo</span></div>
+              <div className="pricing-coa-desc">Done-for-you. Human-reviewed. Sera included. Setup in 4 weeks.</div>
+            </div>
+            <div className="pricing-coa-divider">VS</div>
+            <div className="pricing-coa-col manual">
+              <div className="pricing-coa-label">Fractional COO / Chief of Staff</div>
+              <div className="pricing-coa-price" style={{ color: "#6a8890" }}>$4,000 &ndash; $8,000<span style={{ fontSize: "1rem", fontWeight: 400 }}>/mo</span></div>
+              <div className="pricing-coa-desc">Manual documentation. Context still walks out the door when they leave.</div>
+            </div>
+          </div>
+          <p style={{ textAlign: "center", color: "#5a7880", fontSize: "0.9rem", marginTop: 12 }}>
+            One key-person transition costs your team an estimated $20,000 &ndash; $40,000 in lost context and re-ramp time. Saberra&apos;s full annual cost is less than half of one transition.
+          </p>
         </div>
       </section>
 

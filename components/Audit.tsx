@@ -127,8 +127,6 @@ function getFallbackAnswer(scoreBand: ScoreBand): string {
 }
 
 function diagnosis(score: number, segment: string): { headline: string; body: string } {
-  const bandLabel = band(score).label;
-
   const segmentContext: Record<string, string> = {
     "Self-managing or governance-driven team":
       "Your governance model depends on distributed memory. Right now, authority is more distributed than the record that should support it.",
@@ -174,9 +172,12 @@ function getShareText(score: number, segment: string, bandLabel: string): string
   return `I scored ${score}/50 on the Saberra Organizational Memory Audit.\n\nResult: ${bandLabel}\nSegment: ${segment}\n\n${diagnosis(score, segment).headline}\n\nTake the free audit at saberra.com/audit`;
 }
 
+type Phase = "start" | "segment" | "questions" | "complete";
+
 export function Audit() {
+  const [phase, setPhase] = useState<Phase>("start");
   const [segment, setSegment] = useState(segments[0]);
-  const [step, setStep] = useState(0);
+  const [questionIndex, setQuestionIndex] = useState(0);
   const [answers, setAnswers] = useState<number[]>(Array(questions.length).fill(3));
   const [copied, setCopied] = useState(false);
   const [seraInput, setSeraInput] = useState("");
@@ -184,8 +185,6 @@ export function Audit() {
   const [seraAsked, setSeraAsked] = useState(false);
 
   const score = useMemo(() => answers.reduce((sum, value) => sum + value, 0), [answers]);
-  const complete = step >= questions.length;
-  const progress = complete ? 100 : Math.round((step / questions.length) * 100);
   const { label: bandLabel } = band(score);
   const scoreBand = getScoreBand(score);
   const { headline: diagHeadline, body: diagBody } = useMemo(
@@ -194,7 +193,7 @@ export function Audit() {
   );
 
   function updateAnswer(value: number) {
-    setAnswers((current) => current.map((answer, index) => (index === step ? value : answer)));
+    setAnswers((current) => current.map((answer, index) => (index === questionIndex ? value : answer)));
   }
 
   function handleShare() {
@@ -219,7 +218,76 @@ export function Audit() {
     setSeraAsked(true);
   }
 
-  if (complete) {
+  // START SCREEN
+  if (phase === "start") {
+    return (
+      <div className="audit-shell">
+        <article className="card audit-start-card">
+          <div className="eyebrow">Free diagnostic</div>
+          <h2 className="serif" style={{ fontSize: "clamp(2rem, 5vw, 3.2rem)", lineHeight: 1.05, marginBottom: 16 }}>
+            Find out where your organization is leaking.
+          </h2>
+          <p style={{ color: "#9db5ba", fontSize: "1.05rem", lineHeight: 1.7, maxWidth: 520, marginBottom: 32 }}>
+            10 questions. Segment-specific results. See whether your memory risk is stable, early-stage, serious, or critical. Takes about 3 minutes.
+          </p>
+          <div className="audit-start-meta">
+            <span className="audit-meta-chip">10 questions</span>
+            <span className="audit-meta-chip">~3 minutes</span>
+            <span className="audit-meta-chip">Shareable result</span>
+          </div>
+          <button
+            className="btn audit-start-btn"
+            onClick={() => setPhase("segment")}
+          >
+            Start the Memory Audit
+            <span className="audit-start-arrow">&#8594;</span>
+          </button>
+        </article>
+      </div>
+    );
+  }
+
+  // SEGMENT SELECTION
+  if (phase === "segment") {
+    return (
+      <div className="audit-shell">
+        <article className="card">
+          <div className="eyebrow">Step 1 of 2 before we begin</div>
+          <h2 className="serif" style={{ fontSize: "clamp(1.8rem, 4vw, 2.8rem)", lineHeight: 1.1, marginBottom: 8 }}>
+            Which best describes your organization?
+          </h2>
+          <p style={{ color: "#9db5ba", marginBottom: 24 }}>
+            Your result will be specific to your org type.
+          </p>
+          <div className="audit-options">
+            {segments.map((item) => (
+              <button
+                className={`question-tab ${segment === item ? "active" : ""}`}
+                key={item}
+                onClick={() => setSegment(item)}
+              >
+                {item}
+              </button>
+            ))}
+          </div>
+          <div className="cta-row" style={{ marginTop: 28 }}>
+            <button className="btn btn-secondary" onClick={() => setPhase("start")}>
+              Back
+            </button>
+            <button
+              className="btn btn-primary"
+              onClick={() => setPhase("questions")}
+            >
+              Begin the audit
+            </button>
+          </div>
+        </article>
+      </div>
+    );
+  }
+
+  // RESULTS
+  if (phase === "complete") {
     const likelyRisks =
       score > 40
         ? [
@@ -263,11 +331,36 @@ export function Audit() {
             ))}
           </div>
 
-          <div className="cta-row" style={{ marginTop: 24 }}>
-            <CTAButton href="/founding-access">Apply for a founding spot</CTAButton>
-            <button className="btn btn-secondary" onClick={handleShare}>
-              {copied ? "Copied to clipboard" : "Share my result"}
-            </button>
+          <div className="audit-score-cta">
+            {scoreBand === "critical" || scoreBand === "serious" ? (
+              <div className="audit-urgency-cta">
+                <p className="audit-urgency-label">
+                  {scoreBand === "critical"
+                    ? "Your score is critical. Most teams at this level book a call within 48 hours."
+                    : "Your score shows a serious gap. Most teams at this level start with a team demo."}
+                </p>
+                <div className="cta-row" style={{ marginTop: 12 }}>
+                  <CTAButton href="/demo">Book a team demo</CTAButton>
+                  <button className="btn btn-secondary" onClick={handleShare}>
+                    {copied ? "Copied to clipboard" : "Share my result"}
+                  </button>
+                </div>
+              </div>
+            ) : scoreBand === "early" ? (
+              <div className="cta-row" style={{ marginTop: 24 }}>
+                <CTAButton href="/notion-template">Explore the demo hub</CTAButton>
+                <button className="btn btn-secondary" onClick={handleShare}>
+                  {copied ? "Copied to clipboard" : "Share my result"}
+                </button>
+              </div>
+            ) : (
+              <div className="cta-row" style={{ marginTop: 24 }}>
+                <CTAButton href="/founding-access">Apply for a founding spot</CTAButton>
+                <button className="btn btn-secondary" onClick={handleShare}>
+                  {copied ? "Copied to clipboard" : "Share my result"}
+                </button>
+              </div>
+            )}
           </div>
         </article>
 
@@ -320,35 +413,30 @@ export function Audit() {
     );
   }
 
+  // QUESTIONS (phase === "questions")
+  const progress = Math.round(((questionIndex) / questions.length) * 100);
+
   return (
     <div className="audit-shell">
       <div className="audit-progress" aria-label="Audit progress">
         <span style={{ width: `${progress}%` }} />
       </div>
-      {step === 0 ? (
-        <article className="card">
-          <h2 className="serif">Which best describes your organization?</h2>
-          <div className="audit-options">
-            {segments.map((item) => (
-              <button className={`question-tab ${segment === item ? "active" : ""}`} key={item} onClick={() => setSegment(item)}>
-                {item}
-              </button>
-            ))}
-          </div>
-        </article>
-      ) : null}
       <article className="card">
         <div className="eyebrow">
-          Question {step + 1} of {questions.length}
+          Question {questionIndex + 1} of {questions.length}
         </div>
         <h2 className="serif" style={{ fontSize: "clamp(1.8rem, 5vw, 3.4rem)", lineHeight: 1.05 }}>
-          {questions[step].text}
+          {questions[questionIndex].text}
         </h2>
         <div className="audit-options">
-          {questions[step].options.map((label, index) => {
+          {questions[questionIndex].options.map((label, index) => {
             const value = index + 1;
             return (
-              <button className={`score-button ${answers[step] === value ? "active" : ""}`} key={value} onClick={() => updateAnswer(value)}>
+              <button
+                className={`score-button ${answers[questionIndex] === value ? "active" : ""}`}
+                key={value}
+                onClick={() => updateAnswer(value)}
+              >
                 <span className="score-number">{value}</span>
                 <span>{label}</span>
               </button>
@@ -356,11 +444,23 @@ export function Audit() {
           })}
         </div>
         <div className="cta-row">
-          <button className="btn btn-secondary" disabled={step === 0} onClick={() => setStep((current) => Math.max(0, current - 1))}>
+          <button
+            className="btn btn-secondary"
+            onClick={() => {
+              if (questionIndex === 0) setPhase("segment");
+              else setQuestionIndex((i) => i - 1);
+            }}
+          >
             Back
           </button>
-          <button className="btn btn-primary" onClick={() => setStep((current) => current + 1)}>
-            {step === questions.length - 1 ? "Show my result" : "Next question"}
+          <button
+            className="btn btn-primary"
+            onClick={() => {
+              if (questionIndex === questions.length - 1) setPhase("complete");
+              else setQuestionIndex((i) => i + 1);
+            }}
+          >
+            {questionIndex === questions.length - 1 ? "Show my result" : "Next question"}
           </button>
         </div>
       </article>

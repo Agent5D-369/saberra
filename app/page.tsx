@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import {
   AudienceCards,
   CompetitiveComparison,
+  DataSovereigntySection,
   FinalCTA,
   FitQualifier,
   FoundingOffer,
@@ -73,6 +74,7 @@ export default function HomePage() {
       <SocialProof />
       <CompetitiveComparison />
       <TrustSection />
+      <DataSovereigntySection />
       <AudienceCards />
       <SeraDemoSection />
       <FitQualifier />

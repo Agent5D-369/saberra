@@ -23,6 +23,7 @@ export default function GoogleMeetInstitutionalMemoryPage() {
   return (
     <main>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify({"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Home", "item": "https://saberra.com"}, {"@type": "ListItem", "position": 2, "name": "Resources", "item": "https://saberra.com/resources"}, {"@type": "ListItem", "position": 3, "name": "Google Meet Institutional Memory", "item": "https://saberra.com/resources/google-meet-institutional-memory"}]}) }} />
       <section className="page-hero">
         <div className="container">
           <h1>Turn Google Meet output into institutional memory.</h1>

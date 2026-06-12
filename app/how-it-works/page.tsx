@@ -85,6 +85,58 @@ export default function HowItWorksPage() {
       <CaptureGrid />
       <SeraDemoSection />
       <TrustSection />
+
+      {/* ── COMPARISON TABLE ─────────────────────────────────────── */}
+      <section className="section tight">
+        <div className="container">
+          <div className="eyebrow" style={{ textAlign: "center", marginBottom: 8 }}>How Saberra is different</div>
+          <h2 className="serif" style={{ textAlign: "center", fontSize: "clamp(1.8rem,4vw,3rem)", marginBottom: 32, maxWidth: 600, marginLeft: "auto", marginRight: "auto" }}>
+            Not a notetaker. Not a search tool. Cumulative organizational memory.
+          </h2>
+          <table className="comparison-table">
+            <thead>
+              <tr>
+                <th>Dimension</th>
+                <th>Standard meeting bots (Fireflies, Otter, Fathom)</th>
+                <th className="saberra-col">Saberra</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Focus</td>
+                <td className="lose"><span className="lose-chip">Isolated meeting summaries</span></td>
+                <td className="win"><span className="win-chip">Cumulative organizational memory</span></td>
+              </tr>
+              <tr>
+                <td>Storage</td>
+                <td className="lose"><span className="lose-chip">Proprietary vendor dashboard</span></td>
+                <td className="win"><span className="win-chip">Private Notion workspace you own</span></td>
+              </tr>
+              <tr>
+                <td>Accuracy</td>
+                <td className="lose"><span className="lose-chip">100% automated, unverified</span></td>
+                <td className="win"><span className="win-chip">Human-reviewed and approved</span></td>
+              </tr>
+              <tr>
+                <td>Memory type</td>
+                <td className="lose"><span className="lose-chip">Per-meeting, searchable notes</span></td>
+                <td className="win"><span className="win-chip">Decisions, tasks, risks, roles as structured records</span></td>
+              </tr>
+              <tr>
+                <td>Retrieval</td>
+                <td className="lose"><span className="lose-chip">Re-read transcripts manually</span></td>
+                <td className="win"><span className="win-chip">Ask Sera — she answers with source citations</span></td>
+              </tr>
+              <tr>
+                <td>Transition coverage</td>
+                <td className="lose"><span className="lose-chip">Context still leaves with the person</span></td>
+                <td className="win"><span className="win-chip">Approved records persist through every role change</span></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
       <section className="section">
         <div className="container">
           <CTABand

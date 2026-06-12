@@ -48,6 +48,7 @@ export default function ConsultancyTransitionCasePage() {
   return (
     <main>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify({"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Home", "item": "https://saberra.com"}, {"@type": "ListItem", "position": 2, "name": "Case Studies", "item": "https://saberra.com/cases"}, {"@type": "ListItem", "position": 3, "name": "Consultancy Delivery Lead", "item": "https://saberra.com/cases/consultancy-delivery-lead"}]}) }} />
       <section className="page-hero">
         <div className="container">
           <div className="eyebrow">Case study: Boutique consultancy</div>

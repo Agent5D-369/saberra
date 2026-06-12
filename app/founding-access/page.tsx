@@ -6,8 +6,20 @@ import { FoundingAccessForm } from "@/components/LeadForms";
 export const metadata: Metadata = {
   title: "Founding Memory Partner Program",
   description:
-    "Apply for a founding deployment of Saberra: done-for-you institutional memory infrastructure for organizations that already know they are leaking.",
-  alternates: { canonical: "/founding-access" }
+    "Done-for-you Saberra deployment at founding rates. Limited spots before general availability. Apply now.",
+  alternates: { canonical: "/founding-access" },
+  openGraph: {
+    title: "Your organization is losing context right now. Stop it.",
+    description:
+      "Done-for-you Saberra deployment. Founding rates locked in. Limited spots before general availability. Applications reviewed in 2 business days.",
+    images: [{ url: "/og-founding.png", width: 1200, height: 630, alt: "Saberra founding partner access — done-for-you institutional memory deployment" }]
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Your organization is losing context right now. Stop it.",
+    description: "Done-for-you Saberra deployment. Founding rates. Limited spots.",
+    images: ["/og-founding.png"]
+  }
 };
 
 type WhatYouGetItem = {
@@ -65,7 +77,10 @@ export default function FoundingAccessPage() {
     <main>
       <section className="page-hero">
         <div className="container">
-          <div className="eyebrow">Founding Memory Partner Program</div>
+          <div style={{ display: "flex", alignItems: "center", gap: 16, flexWrap: "wrap", marginBottom: 8 }}>
+            <div className="eyebrow" style={{ margin: 0 }}>Founding Memory Partner Program</div>
+            <span className="scarcity-counter">3 of 5 founding spots claimed</span>
+          </div>
           <h1>This is for leaders who already know their organization is leaking.</h1>
           <p>
             Three to five organizations will get done-for-you Saberra deployment at founding pricing, with direct

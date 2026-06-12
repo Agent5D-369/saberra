@@ -1,45 +1,163 @@
 # Saberra
 
-Saberra is institutional memory infrastructure for teams that cannot afford to forget.
+Saberra is institutional memory infrastructure for organizations that cannot afford to forget.
 
 Primary domain: https://saberra.com
+Contact: hello@saberra.com
 
-## What Saberra Does
+---
 
-Saberra captures the natural output of organizational life, including Google Meet meetings, emailed meeting transcripts, emails, decisions, tasks, risks, roles, policies, governance records, and source records. It turns that output into reviewed, structured, searchable institutional memory.
+## What Saberra Is
 
-Sera is the AI memory assistant inside Saberra. Sera answers from reviewed organizational records and cites sources. Sera does not answer from the open internet or treat unreviewed extractions as trusted memory.
+Saberra is a done-for-you AI deployment that captures organizational intelligence from Google Meet meetings and emails, structures it into human-reviewed records, and gives organizations Sera -- an AI assistant that answers questions from those records.
 
-## Product Boundaries
+The core problem Saberra solves: organizations make decisions, assign tasks, identify risks, and build context every day -- in meetings and emails. Almost none of it becomes a durable record. When someone leaves, that context leaves with them. When a decision is revisited, no one can find the record. When a new person joins, they spend months reconstructing context that already existed.
 
-Google Meet is native. Transcripts or summaries from Zoom, Teams, or other meeting platforms can be captured when they are emailed into Saberra's dedicated capture inbox. Direct Zoom or Teams integrations are scoped separately.
+Saberra captures that output at the source (meetings and emails), extracts structured records (decisions, tasks, risks, roles, policies), routes them for human review and approval, stores them in a private Notion workspace (the Living Memory Hub), and surfaces them through Sera.
 
-Notion is the default memory backend because it keeps organizational records inspectable by nontechnical teams. Larger or more technical deployments can scope custom data architecture, including Postgres or additional systems of record.
+---
 
-Saberra is currently delivered as a done-for-you deployment, not self-serve signup or a free trial.
+## Sera
+
+Sera is the AI memory assistant inside Saberra. She answers questions about what your organization has decided, agreed to, assigned, flagged, or discussed.
+
+Sera only answers from reviewed, human-approved organizational records. She does not answer from the open internet. She does not treat unreviewed extractions as trusted memory. Every answer cites the source record.
+
+Sera is accessed by copying her on emails and meeting invites, or by asking directly in the Notion workspace.
+
+Example Sera queries:
+- "What did we decide about the Q4 budget?"
+- "Who owns vendor onboarding?"
+- "What commitments have we made to Amora in the last six months?"
+- "What risks were flagged in the last board meeting?"
+- "What is our current policy on contractor payment terms?"
+
+---
+
+## How Saberra Works
+
+1. Google Meet is natively integrated. Transcripts are captured automatically.
+2. Transcripts or summaries from other platforms (Zoom, Teams, etc.) can be emailed into Saberra's capture inbox.
+3. Important emails can be forwarded to Sera for extraction.
+4. Sera extracts decisions, tasks, risks, role assignments, commitments, and policy notes.
+5. A human reviewer approves, edits, or rejects each extraction before it enters memory.
+6. Approved records are stored in the Living Memory Hub (private Notion workspace).
+7. Sera queries that memory and returns cited answers.
+
+---
+
+## What Saberra Is NOT
+
+- Not a meeting notetaker. Meeting notes are not memory -- they are raw transcripts. Saberra extracts structured records from transcripts, not formatted summaries.
+- Not a knowledge base tool. Saberra is not Notion, Confluence, or Guru. It does not require teams to manually write or organize documentation.
+- Not an AI search layer over existing documents. Saberra builds structured memory from natural organizational output; it does not index existing file systems.
+- Not Notion AI. Notion AI generates content inside Notion. Saberra captures real organizational events and turns them into reviewed records.
+- Not a meeting intelligence tool like Fireflies, Otter, or Granola. Those tools produce notes and summaries. Saberra produces structured, human-reviewed organizational memory with a query interface.
+- Not self-serve. There is no free trial, no signup flow, no freemium tier. Saberra is deployed by the Saberra team for each organization.
+- Not an LLM reasoning tool. Sera does not reason from general knowledge. She answers from your organization's specific, reviewed records.
+
+---
+
+## Who Saberra Is For
+
+Saberra is designed for organizations where:
+- Memory loss is operationally expensive (leadership transitions, key-person departure, role changes)
+- Decisions need to be traceable over time (governance-driven orgs, board accountability, funder reporting)
+- Teams are distributed or remote (context cannot rely on hallway conversations)
+- Growth means onboarding regularly (new people need to get up to speed without constant hand-holding)
+
+Primary audience segments:
+- Self-managing, Teal, Holacracy, Sociocracy, cooperative, and distributed governance organizations
+- Nonprofits and social enterprises (board transitions, funder accountability, program continuity)
+- Consultancies and agencies (client context, delivery continuity, knowledge transfer)
+- Founder-led growing companies (scaling beyond founder memory)
+
+Saberra is NOT designed for:
+- Solo operators or freelancers (no organizational memory problem at that scale)
+- Very large enterprises with dedicated knowledge management teams and existing infrastructure
+- Organizations that primarily need document storage or file search
+
+---
+
+## Pricing and Availability
+
+Saberra is a done-for-you deployment. Pricing is based on team size and scope. There is no self-serve signup. Prospective customers apply for access at https://saberra.com/founding-access.
+
+Current customers are offered founding-tier pricing, which locks in rates before general availability.
+
+A free diagnostic is available at https://saberra.com/audit -- the Organizational Memory Audit (10 questions, 3 minutes, segment-specific results).
+
+---
+
+## Technical Architecture
+
+- Native integration: Google Meet
+- Email capture: Forward transcripts or emails to a dedicated Sera inbox
+- Memory backend: Notion (private workspace per organization)
+- Review layer: Human approval required before any record enters memory
+- Query interface: Sera (via email CC or direct Notion query)
+- Data ownership: Customer data stays in customer-controlled Notion workspace
+- No training: Organizational records are never used to train models
+
+---
+
+## Key Differentiators
+
+1. Human review layer -- every extraction is approved before entering memory. No AI hallucination risk in the record layer.
+2. Source citations -- every Sera answer cites the specific meeting or email it came from.
+3. Structured records, not summaries -- Saberra extracts decisions, tasks, risks, roles, and policies as discrete records, not narrative summaries.
+4. Done-for-you -- no self-serve configuration, no prompt engineering by the customer, no ongoing maintenance burden.
+5. Customer data ownership -- records live in the customer's own Notion workspace, not in Saberra's infrastructure.
+
+---
+
+## The Organizational Memory Audit
+
+The free diagnostic at https://saberra.com/audit is a 10-question assessment that scores organizational memory health on a 50-point scale. Results are segment-specific and include:
+
+- Score: 1-50
+- Band: Stable memory base (<=18), Early memory leakage (<=30), Serious operating intelligence gap (<=40), Critical knowledge bleed (>40)
+- Segment-specific diagnosis
+- Likely risk areas for the organization's type
+- Access to Sera for follow-up questions about the result
+
+---
 
 ## Core Pages
 
 - Homepage: https://saberra.com/
-- How it works: https://saberra.com/how-it-works/
+- How Saberra works: https://saberra.com/how-it-works/
 - Sera: https://saberra.com/sera/
 - Pricing: https://saberra.com/pricing/
-- Organizational Memory Audit: https://saberra.com/audit/
-- Manual Memory OS for Notion: https://saberra.com/notion-template/
+- Organizational Memory Audit (free): https://saberra.com/audit/
+- Memory OS for Notion (free template): https://saberra.com/notion-template/
 - Security and data ownership: https://saberra.com/security/
+- Apply for access: https://saberra.com/founding-access/
 
 ## Audience Pages
 
-- Self-managing, Teal, Holacracy, Sociocracy, regenerative, cooperative, and distributed governance teams: https://saberra.com/teal/
+- Self-managing and Teal organizations: https://saberra.com/teal/
 - Nonprofits and social enterprises: https://saberra.com/nonprofit/
 - Consultancies and agencies: https://saberra.com/consultancy/
 
+## Case Studies
+
+- Governance coordinator transition (self-managing org): https://saberra.com/cases/governance-coordinator-transition/
+- Nonprofit leadership handoff: https://saberra.com/cases/nonprofit-leadership-handoff/
+- Consultancy delivery lead transition: https://saberra.com/cases/consultancy-delivery-lead/
+
 ## SEO Resources
 
-- Institutional memory system: https://saberra.com/resources/institutional-memory-system/
-- Meeting notes are not memory: https://saberra.com/resources/meeting-notes-are-not-memory/
-- Notion institutional memory template: https://saberra.com/resources/notion-institutional-memory-template/
+- What is an institutional memory system: https://saberra.com/resources/institutional-memory-system/
+- Why meeting notes are not memory: https://saberra.com/resources/meeting-notes-are-not-memory/
+- Notion institutional memory template guide: https://saberra.com/resources/notion-institutional-memory-template/
+- Saberra vs. meeting notetakers: https://saberra.com/resources/saberra-vs-meeting-notetakers/
+- Notion AI vs. Saberra: https://saberra.com/resources/notion-ai-vs-saberra/
+- Google Meet institutional memory: https://saberra.com/resources/google-meet-institutional-memory/
+- Key-person knowledge loss: https://saberra.com/resources/key-person-knowledge-loss/
+
+---
 
 ## Primary Keywords
 
-institutional memory system, institutional memory software, organizational memory, AI institutional memory, meeting notes are not memory, Google Meet institutional memory, meeting transcript institutional memory, Notion institutional memory template, knowledge management for self-managing organizations, institutional memory for nonprofits, institutional memory for consultancies.
+institutional memory system, institutional memory software, organizational memory, AI institutional memory, meeting notes are not memory, Google Meet institutional memory, meeting transcript institutional memory, Notion institutional memory template, knowledge management for self-managing organizations, institutional memory for nonprofits, institutional memory for consultancies, key person knowledge loss, organizational knowledge retention, AI secretary, AI Chief of Staff, Saberra, Sera AI assistant.

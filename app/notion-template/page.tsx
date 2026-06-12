@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { ArrowRight, CalendarCheck, Download, Users } from "lucide-react";
+import { ArrowRight, CalendarCheck, Download, Users, Shield, Search, GitBranch, AlertTriangle, UserCheck, BookOpen, FileText } from "lucide-react";
 import { DemoRequestForm, NotionTemplateGateForm, WebinarWaitlistForm } from "@/components/LeadForms";
+import { SectionHeader } from "@/components/UI";
 
 export const metadata: Metadata = {
   title: "Open the Demo Hub | Saberra",
@@ -9,6 +10,44 @@ export const metadata: Metadata = {
     "Three ways to see Saberra in action: explore the Notion template yourself, join a live webinar, or book a focused team demo.",
   alternates: { canonical: "/notion-template" }
 };
+
+const databases = [
+  {
+    icon: "GitBranch",
+    name: "Decisions",
+    desc: "Every significant organizational decision captured with context, rationale, owner, and the meeting or email where it was made."
+  },
+  {
+    icon: "UserCheck",
+    name: "Tasks & Commitments",
+    desc: "Action items extracted from meetings with owner, due date, and the source record that created them. Nothing falls through because someone left."
+  },
+  {
+    icon: "AlertTriangle",
+    name: "Risks & Flags",
+    desc: "Concerns, dependencies, and blockers surfaced from meetings and email. Reviewed and tracked, not buried in a transcript."
+  },
+  {
+    icon: "Users",
+    name: "Roles & Responsibilities",
+    desc: "Who owns what, when the role was assigned, and what changed during transitions. Institutional role history that survives turnover."
+  },
+  {
+    icon: "Shield",
+    name: "Policies & Agreements",
+    desc: "Organizational rules, vendor agreements, and standing decisions. Searchable and traceable back to when and why they were created."
+  },
+  {
+    icon: "Search",
+    name: "Meetings",
+    desc: "Source meeting records linking to every decision, task, risk, and role change extracted from that session."
+  },
+  {
+    icon: "FileText",
+    name: "Sources",
+    desc: "Every email thread, document, or external record that informed a reviewed decision or commitment. Full traceability."
+  }
+];
 
 export default function DemoHubPage() {
   return (
@@ -23,7 +62,29 @@ export default function DemoHubPage() {
         </div>
       </section>
 
-      {/* ── THREE-PATH CHOOSER ─────────────────────────────────── */}
+      {/* ── WHAT'S INSIDE ──────────────────────────────── */}
+      <section className="section tight alt">
+        <div className="container">
+          <SectionHeader
+            eyebrow="What's inside the Living Memory Hub"
+            title="Seven databases. One organizational memory."
+            center
+          >
+            The Notion template includes the full structure Saberra deploys — all seven record types,
+            sample records you can inspect, and the review queue where Sera proposes and humans approve.
+          </SectionHeader>
+          <div className="hub-db-grid" style={{ marginTop: 40 }}>
+            {databases.map(({ name, desc }) => (
+              <div className="hub-db-card" key={name}>
+                <div className="hub-db-name">{name}</div>
+                <p className="hub-db-desc">{desc}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ── THREE-PATH CHOOSER ─────────────────────────── */}
       <section className="section tight">
         <div className="container demo-hub-paths">
 
@@ -94,7 +155,7 @@ export default function DemoHubPage() {
         </div>
       </section>
 
-      {/* ── BOTTOM NUDGE ──────────────────────────────────────── */}
+      {/* ── BOTTOM NUDGE ──────────────────────────────── */}
       <section className="section tight">
         <div className="container" style={{ textAlign: "center", maxWidth: 560 }}>
           <p style={{ color: "#9bb5ba", fontSize: "0.95rem" }}>

@@ -30,6 +30,7 @@ const stats = [
 export default function AmoraCase() {
   return (
     <main>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify({"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Home", "item": "https://saberra.com"}, {"@type": "ListItem", "position": 2, "name": "Case Studies", "item": "https://saberra.com/cases"}, {"@type": "ListItem", "position": 3, "name": "Amora Case Study", "item": "https://saberra.com/cases/amora"}]}) }} />
       <section className="page-hero">
         <div className="container">
           <Link href="/cases" className="back-link" style={{ display: "inline-flex", alignItems: "center", gap: 6, color: "#6FB7B7", fontSize: "0.88rem", marginBottom: 20, textDecoration: "none" }}>

@@ -50,6 +50,7 @@ export default function NotionAiVsSaberraPage() {
   return (
     <main>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify({"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Home", "item": "https://saberra.com"}, {"@type": "ListItem", "position": 2, "name": "Resources", "item": "https://saberra.com/resources"}, {"@type": "ListItem", "position": 3, "name": "Notion AI vs. Saberra", "item": "https://saberra.com/resources/notion-ai-vs-saberra"}]}) }} />
       <section className="page-hero">
         <div className="container">
           <div className="eyebrow">Comparison: Notion AI vs Saberra</div>

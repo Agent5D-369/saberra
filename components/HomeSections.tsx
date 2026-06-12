@@ -37,10 +37,12 @@ export function Hero() {
         <div>
           <div className="hero-eyebrow">Done-for-you AI Secretary</div>
           <h1>Ask Sera what your organization already knows.</h1>
+          <p className="hero-positioning">
+            We install a living institutional memory layer inside your existing Google Workspace and Notion stack
+            so your team stops losing decisions, tasks, risks, roles, and context across meetings, email, and transitions.
+          </p>
           <p>
-            Your team is having the same conversation for the fourth time this quarter. Decisions disappear into
-            transcripts. Context walks out when people leave. Sera stops that, automatically, from the meetings and
-            emails you already send. No new tools for your team. No new workflows. Just memory that finally sticks.
+            No new tools for your team. No new workflows. Just memory that finally sticks.
           </p>
           <div className="cta-row">
             <CTAButton href="/audit">Take the free Memory Audit</CTAButton>
@@ -420,13 +422,19 @@ export function AudienceCards() {
       "Your senior people should not be the archive. Saberra captures the judgment behind the work, not just the deliverables.",
       "See it for consultancies",
       "/consultancy"
+    ],
+    [
+      "Teams scaling headcount",
+      "Every new hire spends weeks reconstructing what the last person knew. Sera gives them the role history, open commitments, and key decisions on day one. No document required.",
+      "See how Sera onboards",
+      "/use-cases/new-hire-onboarding"
     ]
   ];
   return (
     <section className="section">
       <div className="container">
         <SectionHeader title="Which kind of memory loss is costing you most?" />
-        <div className="grid-3">
+        <div className="audience-grid">
           {audiences.map(([title, copy, cta, href]) => (
             <article className="card light" key={title}>
               <h3>{title}</h3>
@@ -436,6 +444,71 @@ export function AudienceCards() {
               </Link>
             </article>
           ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+export function DataSovereigntySection() {
+  const pillars = [
+    {
+      label: "Your Google Workspace",
+      copy: "Meeting capture and email routing happen inside your Google account. Saberra never holds your raw meeting data on its own servers."
+    },
+    {
+      label: "Your Notion workspace",
+      copy: "Every approved decision, task, risk, role, and policy record lives in databases your team owns, administers, and can export at any time."
+    },
+    {
+      label: "Your AI provider account",
+      copy: "Extraction and Sera run through your own OpenAI account. Saberra does not pool your data with other clients or use it to train models."
+    },
+    {
+      label: "When you leave",
+      copy: "You revoke access from your own account settings. Every record stays in your Notion workspace. Nothing you need to retrieve lives on Saberra infrastructure."
+    }
+  ];
+  return (
+    <section className="section sovereignty-section">
+      <div className="container">
+        <div className="sovereignty-header">
+          <div className="eyebrow">Data ownership</div>
+          <h2 className="serif">Your data never leaves your accounts. Not ours.</h2>
+          <p className="sovereignty-sub">
+            Most AI tools take your data, store it in their systems, and charge you to access it.
+            Saberra is built the opposite way. Every record lives in accounts your organization controls.
+            When you leave, everything stays with you.
+          </p>
+        </div>
+        <div className="sovereignty-grid-4">
+          {pillars.map(({ label, copy }) => (
+            <div className="sovereignty-pillar" key={label}>
+              <div className="sovereignty-pillar-label">{label}</div>
+              <p className="sovereignty-pillar-copy">{copy}</p>
+            </div>
+          ))}
+        </div>
+        <div className="sovereignty-contrast">
+          <div className="sovereignty-contrast-col sovereignty-contrast-bad">
+            <div className="contrast-label">Most AI SaaS tools</div>
+            <ul>
+              <li>Your data lives on their servers</li>
+              <li>They may train models on your content</li>
+              <li>Leaving means losing access to your history</li>
+              <li>You trust their security posture</li>
+            </ul>
+          </div>
+          <div className="sovereignty-contrast-divider">vs</div>
+          <div className="sovereignty-contrast-col sovereignty-contrast-good">
+            <div className="contrast-label contrast-label-good">Saberra</div>
+            <ul>
+              <li>Your data lives in your Google Workspace and Notion</li>
+              <li>Your AI provider account, your keys, your rules</li>
+              <li>Leaving means revoking access. Your records stay.</li>
+              <li>You inspect and control every account in the stack</li>
+            </ul>
+          </div>
         </div>
       </div>
     </section>
