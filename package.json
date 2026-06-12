@@ -5,6 +5,7 @@
   "main": "dist/worker.js",
   "scripts": {
     "build": "tsc && node -e \"const{cpSync}=require('fs');cpSync('src/dashboard/static','dist/dashboard/static',{recursive:true})\"",
+    "lint": "eslint src/**/*.ts",
     "dev": "ts-node src/worker.ts",
     "start": "node start.js",
     "oauth-setup": "ts-node scripts/oauth-setup.ts",
@@ -53,7 +54,11 @@
   "devDependencies": {
     "@types/mailparser": "^3.4.6",
     "@types/node": "^22.10.2",
+    "@typescript-eslint/eslint-plugin": "^8.61.0",
+    "@typescript-eslint/parser": "^8.61.0",
+    "eslint": "^10.4.1",
     "ts-node": "^10.9.2",
-    "typescript": "^5.7.2"
+    "typescript": "^5.7.2",
+    "typescript-eslint": "^8.61.0"
   }
 }
