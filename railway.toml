@@ -2,6 +2,6 @@
 builder = "nixpacks"
 
 [deploy]
-startCommand = "node -e \"const t=process.env.SERVICE_TYPE;require(t==='dashboard'?'./dist/dashboard/server':t==='api'?'./dist/api/server':'./dist/worker')\""
+startCommand = "node -e \"const t=process.env.SERVICE_TYPE;require(t==='dashboard'?'./dist/dashboard/server':t==='api'?'./dist/api/server':t==='operator'?'./dist/operator/server':'./dist/worker')\""
 restartPolicyType = "on_failure"
 restartPolicyMaxRetries = 5
