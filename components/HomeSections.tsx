@@ -33,6 +33,7 @@ export function Hero() {
     <section className="hero">
       <div className="container hero-grid">
         <div>
+          <div className="hero-eyebrow">Done-for-you AI Secretary</div>
           <h1>Ask Sera what your organization already knows.</h1>
           <p>
             Your team is having the same conversation for the fourth time this quarter. Decisions disappear into

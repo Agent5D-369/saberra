@@ -213,6 +213,16 @@ button {
   line-height: 0.91;
 }
 
+.hero-eyebrow {
+  display: inline-block;
+  color: var(--gold);
+  font-size: 0.8rem;
+  font-weight: 900;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  margin-bottom: 10px;
+}
+
 .hero h1 {
   max-width: 660px;
   font-size: clamp(3rem, 4.8vw, 4.9rem);
