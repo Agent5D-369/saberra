@@ -37,6 +37,7 @@ export function Hero() {
         <div>
           <div className="hero-eyebrow">Done-for-you AI Secretary</div>
           <h1>Ask Sera what your organization already knows.</h1>
+          <p className="hero-tagline">Saberra helps your organization stop paying the invisible tax of forgetting.</p>
           <p className="hero-positioning">
             We install a living institutional memory layer inside your existing Google Workspace and Notion stack
             so your team stops losing decisions, tasks, risks, roles, and context across meetings, email, and transitions.

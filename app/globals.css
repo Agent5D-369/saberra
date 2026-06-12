@@ -3793,6 +3793,14 @@ button {
 
 /* ── HERO POSITIONING LINE ──────────────────────────────── */
 
+.hero-tagline {
+  font-size: 1.15rem;
+  color: #e0f2f2;
+  font-weight: 600;
+  margin: 10px 0 18px;
+  letter-spacing: -0.01em;
+}
+
 .hero-positioning {
   font-size: 1.05rem;
   color: #7BCACA;
