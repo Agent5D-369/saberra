@@ -5008,40 +5008,6 @@ button {
   }
 }
 
-@media (min-width: 1100px) and (min-height: 760px) {
-  .calculator-shell {
-    align-items: stretch;
-  }
-
-  .calculator-workspace {
-    display: flex;
-    flex-direction: column;
-    height: calc(100vh - 124px);
-    min-height: 680px;
-  }
-
-  .calculator-step.active {
-    flex: 1 1 auto;
-    min-height: 0;
-    overflow-y: auto;
-    padding-right: 6px;
-  }
-
-  .calculator-nav-row {
-    margin-top: auto;
-    flex: 0 0 auto;
-  }
-
-  .calculator-step.active::-webkit-scrollbar {
-    width: 7px;
-  }
-
-  .calculator-step.active::-webkit-scrollbar-thumb {
-    border-radius: 999px;
-    background: rgba(111, 183, 183, 0.32);
-  }
-}
-
 @media (max-width: 700px) {
   .calculator-page .container {
     width: min(calc(100vw - 32px), 358px);
