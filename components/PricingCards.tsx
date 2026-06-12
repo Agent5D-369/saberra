@@ -103,4 +103,16 @@ export function PricingCards() {
                     <CheckCircle size={16} color="#D6A24A" aria-hidden="true" /> {feature}
                   </li>
                 ))}
-              <
+              </ul>
+              <div className="cta-row" style={{ marginTop: 20 }}>
+                <CTAButton href={tier.name === "Founding Partner" ? "/founding-access" : "/demo"}>
+                  {tier.name === "Founding Partner" ? "Apply for a founding spot" : "Book a 30-minute call"}
+                </CTAButton>
+              </div>
+            </article>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}

@@ -126,4 +126,44 @@ export default function PartnersPage() {
               <DollarSign color="#D6A24A" size={26} aria-hidden="true" />
               <h3>What you earn</h3>
               <ul className="list" style={{ marginTop: 14 }}>
-                <li><CheckCircle size={15} color="#D6A24A" aria-hidden="true" /> 20% of th
+                <li><CheckCircle size={15} color="#D6A24A" aria-hidden="true" /> 20% of the setup fee, paid at 30 days post-deployment</li>
+                <li><CheckCircle size={15} color="#D6A24A" aria-hidden="true" /> 15% of monthly recurring for the first 12 months</li>
+                <li><CheckCircle size={15} color="#D6A24A" aria-hidden="true" /> No minimums. No exclusivity. No client management required.</li>
+              </ul>
+            </article>
+            <article className="card">
+              <h3>Example: one referral at Core Deployment</h3>
+              <p style={{ fontSize: "0.9rem", color: "#9bb5ba" }}>Setup $4,000 + $1,000/month</p>
+              <ul className="list" style={{ marginTop: 14, fontSize: "0.95rem" }}>
+                <li><CheckCircle size={15} color="#6FB7B7" aria-hidden="true" /> Setup fee: <strong style={{ color: "#D6A24A" }}>$800</strong></li>
+                <li><CheckCircle size={15} color="#6FB7B7" aria-hidden="true" /> 12-month recurring: <strong style={{ color: "#D6A24A" }}>$1,800</strong></li>
+                <li><CheckCircle size={15} color="#6FB7B7" aria-hidden="true" /> Year-one total: <strong style={{ color: "#D6A24A" }}>$2,600</strong> from one introduction</li>
+              </ul>
+              <p style={{ marginTop: 12, fontSize: "0.85rem", color: "#6a8a90" }}>
+                You do none of the deployment work. We handle onboarding, setup, and client management.
+              </p>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section id="partner-form" className="section tight">
+        <div className="container split">
+          <div>
+            <div className="eyebrow">Referral form</div>
+            <h2 className="serif">Submit a referral or apply to become a partner.</h2>
+            <p>
+              A warm referral or a direct introduction both work. Fill in what you know. We will follow up directly
+              with you, not with the referred team, unless you indicate otherwise.
+            </p>
+            <p style={{ marginTop: 12 }}>
+              Not ready to refer yet? Send the Memory Audit to any team you suspect is leaking and let them find out
+              for themselves: saberra.com/audit.
+            </p>
+          </div>
+          <PartnerReferralForm />
+        </div>
+      </section>
+    </main>
+  );
+}

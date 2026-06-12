@@ -56,7 +56,7 @@ export function Hero() {
           </div>
           <div className="hero-quote">
             <blockquote>
-              &ldquo;We govern land decisions and community agreements across a distributed team. Sera started capturing the right conversations from week one. Our operating memory finally lives somewhere everyone can find it.&rdquo;
+              &ldquo;Week two: 76 governance decisions tracked, 148 tasks extracted, 23 community profiles built automatically. She found risks we had never formally logged. Our operating reality finally has a record.&rdquo;
             </blockquote>
             <cite>Amora Community &mdash; Regenerative Eco Village, Costa Rica</cite>
           </div>
@@ -659,3 +659,28 @@ export function FinalCTA() {
     <section className="section">
       <div className="container">
         <CTABand
+          title="Ready to stop losing context?"
+          copy="Take the free Memory Audit and find out exactly where your team is leaking. Results in 3 minutes."
+          primary="Take the free Memory Audit"
+          primaryHref="/audit"
+          secondary="Book a 30-minute call"
+          secondaryHref="/demo"
+        />
+      </div>
+    </section>
+  );
+}
+
+export function SeraDemoSection() {
+  return (
+    <section className="section tight">
+      <div className="container">
+        <SectionHeader eyebrow="Sera" title="Ask Sera what your team already knows." />
+        <p style={{ color: "#d5dddf", marginBottom: 32, maxWidth: 640 }}>
+          This is what it looks like when your organization can actually answer.
+        </p>
+        <SeraDemo />
+      </div>
+    </section>
+  );
+}

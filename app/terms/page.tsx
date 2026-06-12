@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import { CTABand } from "@/components/UI";
 
 export const metadata: Metadata = {
@@ -32,10 +33,23 @@ export default function TermsPage() {
             <a href="#site">Website use</a>
             <a href="#resources">Resources</a>
             <a href="#services">Services</a>
+            <a href="#client-tools">Client tools</a>
             <a href="#client-data">Client data</a>
             <a href="#ai">AI and Sera</a>
-            <a href="#payment">Payment</a>
+            <a href="#acceptable-use">Acceptable use</a>
+            <a href="#payment">Payment and billing</a>
+            <a href="#sla">Service levels</a>
+            <a href="#offboarding">Cancellation and offboarding</a>
+            <a href="#data-retention">Data retention</a>
+            <a href="#governing-purpose">Governing purpose clause</a>
             <a href="#liability">Liability</a>
+            <a href="#confidentiality">Confidentiality</a>
+            <a href="#ip">Intellectual property</a>
+            <a href="#third-parties">Third-party services</a>
+            <a href="#data-processing">Data processing (GDPR / CCPA)</a>
+            <a href="#disclaimers">Disclaimers</a>
+            <a href="#governing-law">Governing law</a>
+            <a href="#changes">Changes</a>
             <a href="#contact">Contact</a>
           </aside>
 
@@ -165,39 +179,233 @@ export default function TermsPage() {
               </p>
             </section>
 
-            <section id="payment">
-              <h2>Fees and payment</h2>
+            <section id="acceptable-use">
+              <h2>Acceptable use</h2>
               <p>
-                Pricing shown on the site is for early guidance and may change. Actual fees, setup costs, recurring
-                charges, payment schedule, taxes, expenses, and renewal terms should be confirmed in writing before a
-                deployment begins.
+                The Saberra capture inbox, Sera processing pipeline, and all related services must only be used for
+                content the client has the legal right to process. Specifically:
               </p>
+              <ul className="list">
+                <li>The capture inbox must only receive meetings, emails, and documents the client owns or has been
+                    authorized to process. Forwarding third-party communications without the original sender&apos;s
+                    consent may violate applicable privacy laws (including GDPR, CCPA, and equivalents). That
+                    compliance obligation rests entirely with the client.</li>
+                <li>Clients must not route content containing the personal data of individuals who have not consented
+                    to AI processing into the Saberra pipeline unless a lawful basis exists under applicable law.</li>
+                <li>Clients must not use Saberra to process content on behalf of third parties without written
+                    authorization from those third parties.</li>
+                <li>Sensitive categories of data (health information, financial account details, legal matter records,
+                    personnel files, biometric data) should not be routed through the capture inbox unless the client
+                    has implemented its own access controls and governance safeguards within its Notion backend.</li>
+                <li>Clients must not attempt to circumvent, reverse-engineer, or interfere with Sera&apos;s extraction
+                    logic, system health monitors, or queue infrastructure.</li>
+                <li>The Saberra system must not be used to surveil individuals without their knowledge, create records
+                    designed to deceive, or generate fabricated organizational history.</li>
+              </ul>
               <p>
-                Unless otherwise agreed in writing, fees are non-refundable once work has begun. Late payments may result
-                in paused work or suspended support.
+                Saberra reserves the right to suspend processing if we have reasonable grounds to believe the capture
+                inbox is receiving content that violates this policy.
               </p>
             </section>
 
-            <section id="intellectual-property">
-              <h2>Intellectual property</h2>
+            <section id="payment">
+              <h2>Payment and billing</h2>
               <p>
-                Saberra owns the Saberra name, site content, brand assets, design system, prompts, workflows, software,
-                diagrams, documentation, templates, and other materials we create, except for client data and materials
-                expressly owned by others.
+                <strong>Setup fees.</strong> Setup fees are invoiced at the start of the deployment or per a schedule
+                in the written agreement. Unless otherwise agreed in writing, setup fees are due within 7 days of
+                invoice. Work begins only after the setup invoice is paid or an explicit written exception is made.
               </p>
               <p>
-                During a deployment, the client receives a limited right to use delivered configurations, documentation,
-                and templates for its internal operations, subject to any signed agreement. This does not transfer
-                ownership of Saberra&apos;s underlying methods, software, brand, or reusable materials.
+                <strong>Monthly recurring fees.</strong> Monthly fees are invoiced in advance on the first day of each
+                monthly period. Payment is due within 7 days of invoice. Saberra may suspend active support and Sera
+                polling if payment is more than 14 days overdue. Saberra may terminate the engagement if payment is
+                more than 30 days overdue after written notice.
+              </p>
+              <p>
+                <strong>Refund policy.</strong> Setup fees are non-refundable once a deployment has begun. If Saberra
+                fails to complete a deployment milestone through its own fault, a pro-rated credit may be applied
+                toward future services at Saberra&apos;s discretion. Monthly fees are non-refundable for periods
+                already delivered. If Saberra terminates a client&apos;s engagement without cause mid-month, a
+                pro-rated refund for the unused portion of that month will be issued within 30 days.
+              </p>
+              <p>
+                <strong>Late fees.</strong> Overdue invoices accrue interest at 1.5% per month (18% per year), or
+                the maximum rate permitted by applicable law, whichever is lower, beginning 14 days after the invoice
+                due date.
+              </p>
+              <p>
+                <strong>Price changes.</strong> Saberra will provide at least 30 days&apos; written notice before
+                increasing the monthly recurring fee for an active deployment. Price changes take effect at the start
+                of the next monthly billing period after the notice period expires. Setup fees quoted in a signed
+                agreement are not subject to increase for the scope covered by that agreement.
+              </p>
+              <p>
+                <strong>Taxes.</strong> All fees are exclusive of applicable taxes, levies, or duties. The client is
+                responsible for paying all taxes applicable to its purchase of Saberra services, excluding taxes on
+                Saberra&apos;s own income.
+              </p>
+
+            </section>
+
+            <section id="sla">
+              <h2>Service levels</h2>
+              <p>
+                Saberra targets the following service levels for active paid deployments. These targets do not apply
+                to free resources, trial periods, or suspended accounts.
+              </p>
+              <ul className="list">
+                <li><strong>Sera processing cycle:</strong> Sera polls the capture inbox on a 3-minute cycle during
+                    normal operation. Most emails are processed within 5 minutes of arrival. Processing may be delayed
+                    by third-party service degradation (Railway, Google, the AI provider), which is outside
+                    Saberra&apos;s control.</li>
+                <li><strong>System availability target:</strong> Saberra targets 99% uptime per calendar month for
+                    the Sera processing pipeline. Scheduled maintenance windows (announced at least 24 hours in
+                    advance) and outages caused by third-party services are excluded from availability
+                    calculations.</li>
+                <li><strong>Support response times:</strong>
+                  <ul className="list" style={{ marginTop: 8 }}>
+                    <li>P1 (pipeline stopped more than 2 hours): response within 4 business hours.</li>
+                    <li>P2 (major function degraded): response within 1 business day.</li>
+                    <li>P3 (non-critical questions, configuration): response within 2 business days.</li>
+                  </ul>
+                </li>
+                <li><strong>SLA remedy:</strong> If Saberra fails the 99% target through its own fault, the client
+                    may request a pro-rated credit equal to the number of affected days at the monthly rate, applied
+                    to the next invoice. Credits are the sole remedy for SLA failures.</li>
+              </ul>
+            </section>
+
+            <section id="offboarding">
+              <h2>Cancellation and offboarding</h2>
+              <p>
+                <strong>How to cancel.</strong> Either party may cancel by providing at least 30 days&apos; written
+                notice. The cancellation takes effect at the end of the current monthly billing period after the
+                notice period expires.
+              </p>
+              <p>
+                <strong>Client data ownership.</strong> The client retains full ownership of all records in its own
+                Notion workspace, Gmail, and Google Drive. Saberra does not hold, transfer, or retain the
+                client&apos;s organizational records.
+              </p>
+              <p>
+                <strong>Transition period.</strong> Saberra will maintain the active Railway deployment and Sera
+                polling for 30 days after the effective cancellation date. During the Transition Period, the client
+                should: export any Notion data it wishes to preserve, redirect or deactivate the capture inbox
+                forwarding rule, remove Sera from standing meeting invites, and download any documentation it
+                wishes to retain.
+              </p>
+              <p>
+                <strong>Decommission.</strong> At the end of the Transition Period, Saberra will decommission the
+                Railway project, revoke provisioned credentials, and delete cached processing data in
+                Saberra-controlled systems.
+              </p>
+              <p>
+                <strong>Termination for cause.</strong> Saberra may terminate immediately if the client materially
+                breaches these terms and fails to cure within 10 days of written notice. No refund applies in
+                such cases.
+              </p>
+            </section>
+
+            <section id="data-retention">
+              <h2>Data retention and destruction</h2>
+              <p>
+                All organizational records processed through Saberra are stored in the client&apos;s own accounts.
+                Saberra does not maintain a separate copy. On Saberra&apos;s systems: temporary processing
+                artifacts are deleted within 24 hours of successful processing; system logs are retained for 30
+                days; deployment configuration is deleted within 30 days of decommission; billing records are
+                retained for 7 years as required for financial compliance. Clients may request written confirmation
+                of deletion within 30 days of decommission.
+              </p>
+            </section>
+
+            <section id="governing-purpose">
+              <h2>Governing purpose and AI advisory clause</h2>
+              <p>
+                Sera identifies and drafts candidate records for human review. These are proposals, not authoritative
+                statements. Nothing becomes trusted organizational memory until a designated human reviewer approves
+                it. Clients using the Governing Purpose Score or Collapse Health Monitor features acknowledge that
+                these outputs are advisory only and do not constitute legal, financial, governance, employment, or
+                therapeutic advice. They are diagnostic signals, not diagnoses.
+              </p>
+              <p>
+                Saberra is an operational memory tool, not a governance system. Having records in Saberra does not
+                create legal documentation, establish binding precedent, or substitute for formal governance
+                requirements under applicable law or your organization&apos;s bylaws.
+              </p>
+            </section>
+
+            <section id="liability">
+              <h2>Limitation of liability</h2>
+              <p>
+                To the maximum extent permitted by applicable law, Saberra will not be liable for indirect,
+                incidental, special, consequential, exemplary, or punitive damages, including lost profits, lost
+                revenue, lost data, business interruption, or damages arising from reliance on AI-extracted records
+                that were not reviewed by a human before use.
+              </p>
+              <p>
+                Saberra processes information and creates draft records for human review. All final decisions rest
+                with the client&apos;s designated reviewers. Saberra is not liable for decisions made based on
+                AI-extracted records that were not reviewed and approved, or for organizational outcomes resulting
+                from failure to review records in a timely manner.
+              </p>
+              <p>
+                Saberra&apos;s total aggregate liability will not exceed the total fees paid in the three calendar
+                months preceding the event giving rise to the claim, or $100 if no paid service is involved.
+              </p>
+            </section>
+
+            <section id="confidentiality">
+              <h2>Confidentiality</h2>
+              <p>
+                Saberra will use reasonable care to protect confidential organizational information received during
+                evaluation or deployment, and will use it only to provide services, support the relationship, or
+                comply with law. Saberra will not disclose a client&apos;s confidential information to third
+                parties except to sub-processors operating under appropriate confidentiality obligations.
+              </p>
+            </section>
+
+            <section id="ip">
+              <h2>Intellectual property</h2>
+              <p>
+                Saberra owns the Saberra name, site content, brand assets, design system, prompts, workflows,
+                software, and other materials we create. During a deployment, the client receives a limited,
+                non-exclusive, non-transferable right to use delivered configurations, documentation, and templates
+                for its own internal operations. This does not transfer ownership of Saberra&apos;s underlying
+                methods, software, brand, or reusable materials.
               </p>
             </section>
 
             <section id="third-parties">
               <h2>Third-party services</h2>
               <p>
-                Saberra depends on third-party services and client-authorized tools. Those services are governed by their
-                own terms and policies. Saberra is not responsible for third-party services, but we will use reasonable
-                care when configuring workflows that depend on them.
+                Saberra deployments depend on third-party services including Google Workspace, Anthropic (or other
+                AI providers), Notion, Railway, and Formspree. These services are governed by their own terms and
+                privacy policies. Saberra is not responsible for third-party outages, policy changes, pricing
+                changes, data loss events, or security incidents outside Saberra&apos;s control.
+              </p>
+            </section>
+
+            <section id="data-processing">
+              <h2>Data processing, GDPR, and CCPA</h2>
+              <p>
+                In processing personal data on behalf of clients, Saberra acts as a data processor (or service
+                provider under CCPA) and the client acts as the data controller (or business). Saberra processes
+                personal data only on documented client instructions and only as necessary to provide the services.
+              </p>
+              <p>
+                <strong>GDPR clients (EU/EEA).</strong> Clients subject to GDPR may request a Data Processing
+                Addendum (DPA) covering Article 28 obligations at{" "}
+                <a className="text-link" href="mailto:legal@saberra.com">legal@saberra.com</a>.
+              </p>
+              <p>
+                <strong>CCPA clients (California).</strong> Saberra operates as a Service Provider and does not
+                sell or share personal information received from clients. Saberra uses personal information only
+                to perform contracted services, prevent fraud, and comply with legal obligations.
+              </p>
+              <p>
+                <strong>Sub-processors.</strong> A current list is available on request at{" "}
+                <a className="text-link" href="mailto:legal@saberra.com">legal@saberra.com</a>. Saberra will
+                provide 30 days&apos; advance notice of material sub-processor changes.
               </p>
             </section>
 
@@ -206,76 +414,47 @@ export default function TermsPage() {
               <p>
                 The site, free resources, audit, templates, and services are provided on an &quot;as is&quot; and
                 &quot;as available&quot; basis unless a signed agreement says otherwise. Saberra does not guarantee
-                perfect extraction, uninterrupted service, error-free Sera answers, complete records, or that every
-                decision, task, risk, role, or policy will be captured.
-              </p>
-              <p>
-                Saberra is not legal, financial, tax, employment, security, or governance advice. You are responsible for
+                perfect extraction, uninterrupted service, error-free Sera answers, or complete records. Saberra is
+                not legal, financial, tax, employment, security, or governance advice. You are responsible for
                 decisions made using Saberra outputs.
               </p>
             </section>
 
-            <section id="liability">
-              <h2>Limitation of liability</h2>
-              <p>
-                To the maximum extent permitted by law, Saberra will not be liable for indirect, incidental, special,
-                consequential, exemplary, or punitive damages, or for lost profits, lost revenue, lost data, business
-                interruption, or loss of goodwill.
-              </p>
-              <p>
-                To the maximum extent permitted by law, Saberra&apos;s total liability related to the site, resources, or
-                services will not exceed the amounts paid to Saberra for the specific service giving rise to the claim in
-                the three months before the claim, or one hundred dollars if no paid service is involved.
-              </p>
-            </section>
-
-            <section id="termination">
-              <h2>Termination</h2>
-              <p>
-                We may suspend or terminate access to the site, resources, or services if you violate these terms,
-                create security risk, fail to provide required access or payment, or use Saberra in a way that could harm
-                Saberra, clients, users, or third parties.
-              </p>
-            </section>
-
             <section id="governing-law">
-              <h2>Governing law</h2>
+              <h2>Governing law and disputes</h2>
               <p>
-                Unless a signed agreement says otherwise, these terms are governed by the laws of the United States and
-                the state where Saberra principally operates, without regard to conflict-of-law rules. Any dispute should
-                first be raised in good faith by contacting Saberra.
+                Unless a signed agreement specifies otherwise, these terms are governed by the laws of the State of
+                Delaware, United States, without regard to conflict-of-law rules. Before initiating any formal
+                dispute process, each party agrees to attempt informal resolution by contacting{" "}
+                <a className="text-link" href="mailto:legal@saberra.com">legal@saberra.com</a> and negotiating in
+                good faith for at least 30 days. If informal resolution fails, disputes will be resolved by binding
+                individual arbitration administered by the AAA under its Commercial Arbitration Rules. Class actions
+                are not permitted.
               </p>
             </section>
 
             <section id="changes">
               <h2>Changes to these terms</h2>
               <p>
-                We may update these terms from time to time. The updated version will be posted on this page with a new
-                effective date. Continued use of the site or services after updates means you accept the updated terms.
+                For active paid clients, Saberra will provide at least 30 days&apos; written notice of material
+                changes before they take effect. Continued use after the notice period constitutes acceptance. If
+                you disagree with a material change, you may cancel before it takes effect under the cancellation
+                terms above with no cancellation fees.
               </p>
             </section>
 
             <section id="contact">
               <h2>Contact</h2>
               <p>
-                Questions about these terms can be sent to{" "}
-                <a className="text-link" href="mailto:legal@saberra.com">legal@saberra.com</a>.
+                Legal questions, DPA requests, and data deletion requests:{" "}
+                <a className="text-link" href="mailto:legal@saberra.com">legal@saberra.com</a>
+              </p>
+              <p>
+                Support:{" "}
+                <a className="text-link" href="mailto:support@saberra.com">support@saberra.com</a>
               </p>
             </section>
           </article>
-        </div>
-      </section>
-
-      <section className="section tight">
-        <div className="container">
-          <CTABand
-            title="Need to evaluate fit and trust?"
-            copy="Review the privacy policy and security page, then book a focused call when you want to discuss tools, review ownership, and deployment boundaries."
-            primary="Read Privacy Policy"
-            primaryHref="/privacy"
-            secondary="View Security"
-            secondaryHref="/security"
-          />
         </div>
       </section>
     </main>

@@ -11,16 +11,20 @@ export const metadata: Metadata = {
 };
 
 const results = [
-  "Governance decisions captured from week one of deployment",
-  "Operating memory accessible to the full founding team, not stored in one person",
-  "Community agreements and land stewardship decisions organized into inspectable records",
-  "New team members onboard with full context without needing 1:1 knowledge transfers",
+  "76 governance decisions tracked in the first two weeks (candidates + confirmed)",
+  "148 tasks extracted from emails and meetings across all community sources",
+  "69 risks formally logged — 66 still open, 17 flagged high severity",
+  "23 community member profiles auto-built from email without any manual data entry",
+  "9 CCOS governance circles identified and tracked by Sera",
+  "86 KB articles drafted from organizational context (6 pending review)",
+  "8 early-warning collapse signals detected across 4 risk categories",
+  "100% pipeline success rate — zero processing failures in week two",
 ];
 
 const stats = [
-  { number: "Week 1", label: "Sera capturing governance context from day one of deployment" },
-  { number: "5-person", label: "Founding team — every member can now find what was decided and why" },
-  { number: "Zero", label: "Key-person bottleneck for accessing community operating history" },
+  { number: "76", label: "Governance decisions tracked — candidates and confirmed — in the first two weeks" },
+  { number: "148", label: "Tasks extracted from emails and meetings across all community sources" },
+  { number: "23", label: "Community member profiles auto-built from email without any manual data entry" },
 ];
 
 export default function AmoraCase() {
@@ -60,9 +64,9 @@ export default function AmoraCase() {
           <div style={{ borderLeft: "4px solid #D6A24A", paddingLeft: 24, paddingTop: 4, paddingBottom: 4 }}>
             <Quote size={28} color="#D6A24A" style={{ marginBottom: 12, opacity: 0.7 }} aria-hidden="true" />
             <p style={{ fontSize: "clamp(1.1rem, 2.2vw, 1.35rem)", color: "#d5dddf", fontStyle: "italic", lineHeight: 1.6, margin: 0 }}>
-              &ldquo;We govern land decisions and community agreements across a distributed team. Sera started
-              capturing the right conversations from week one. Our operating memory finally lives somewhere
-              everyone can find it &mdash; not just in the heads of the people who were in the room.&rdquo;
+              &ldquo;In week two, Sera had already tracked 76 governance decisions, extracted 148 tasks from our emails
+              and meetings, and auto-built profiles for 23 community members. She found risks and patterns we had never
+              formally logged. Our operating reality finally has a record.&rdquo;
             </p>
             <p style={{ marginTop: 16, fontWeight: 700, color: "#D6A24A", fontSize: "0.88rem", letterSpacing: "0.03em" }}>
               AMORA COMMUNITY &mdash; Regenerative Eco Village, Dominicalito, Costa Rica
@@ -163,7 +167,7 @@ export default function AmoraCase() {
       {/* ── THE RESULT ─────────────────────────────────────────── */}
       <section className="section tight">
         <div className="container">
-          <SectionHeader eyebrow="The result" title="A community that can answer for itself." />
+          <SectionHeader eyebrow="Week-two results" title="What two weeks of Sera looks like in a real deployment." />
           <div className="grid-2 split">
             <div>
               <ul className="list" style={{ gap: 14 }}>
@@ -175,19 +179,71 @@ export default function AmoraCase() {
               </ul>
             </div>
             <article className="card" style={{ borderLeft: "3px solid #6FB7B7" }}>
-              <h3>What is true for Amora now</h3>
+              <h3>The Collapse Health Monitor</h3>
               <p>
-                Amora&apos;s operating memory is no longer stored in the heads of the founding members who happened
-                to be on a particular call. Governance decisions are captured, routed through human review, and
-                stored in a backend that every founding team member can query.
+                One of Saberra&apos;s most powerful features became visible immediately: the Collapse Health Monitor.
+                Sera monitors every processed meeting and email for early-warning signals across 7 organizational
+                collapse patterns.
               </p>
               <p>
-                As Amora grows &mdash; adding residents, expanding governance circles, onboarding new community
-                members &mdash; the institutional knowledge of how the community was built will be accessible to
-                every person who joins. The memory of the village survives beyond the original team.
+                In week two, Amora&apos;s dashboard showed 8 active signals across four categories: Poor Governance
+                (role ambiguity, repeated decisions, bypassed process), Financial Fragility (cash flow concerns,
+                runway pressure), Burnout (overwhelm, missed commitments), and Scale Trap (coordination failures,
+                capacity bottlenecks).
+              </p>
+              <p>
+                These signals were not new problems. They were patterns that existed in the organization&apos;s
+                conversations but had never been formally surfaced. Sera found them in the first two weeks. The
+                founding team now has a live dashboard showing exactly where organizational health risks are
+                accumulating.
               </p>
             </article>
           </div>
+        </div>
+      </section>
+
+      {/* ── PIPELINE PROOF ─────────────────────────────────────── */}
+      <section className="section tight">
+        <div className="container">
+          <SectionHeader eyebrow="Pipeline health" title="What Amora&apos;s operating record looks like right now." />
+          <div className="grid-4">
+            {[
+              { number: "60", label: "emails processed", sub: "100% success rate, zero failures" },
+              { number: "9", label: "governance circles", sub: "CCOS structure mapped and tracked" },
+              { number: "86", label: "KB articles drafted", sub: "6 pending human review" },
+              { number: "8", label: "collapse signals", sub: "detected across 4 risk categories" },
+            ].map(({ number, label, sub }) => (
+              <article className="card" key={label} style={{ textAlign: "center" }}>
+                <div style={{ fontSize: "clamp(1.8rem, 4vw, 2.6rem)", fontWeight: 900, color: "#D6A24A", lineHeight: 1 }}>{number}</div>
+                <div style={{ fontWeight: 700, color: "#d5dddf", fontSize: "0.9rem", marginTop: 6 }}>{label}</div>
+                <div style={{ color: "#6a8a90", fontSize: "0.8rem", marginTop: 4 }}>{sub}</div>
+              </article>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ── WHAT IS TRUE NOW ───────────────────────────────────── */}
+      <section className="section tight">
+        <div className="container" style={{ maxWidth: 720 }}>
+          <article className="card" style={{ borderLeft: "3px solid #6FB7B7" }}>
+            <h3>What is true for Amora now that was not true 14 days ago</h3>
+            <p>
+              Amora&apos;s operating memory is no longer stored in the heads of the founding members who happened to
+              be on a particular call. 76 governance decisions are captured, tracked, and accessible. 148 tasks are
+              assigned and visible across the whole team. 23 community member profiles were built automatically from
+              email without anyone filling out a form.
+            </p>
+            <p>
+              And Sera is scanning every conversation for the early warning signals that typically precede
+              organizational health crises &mdash; surfacing them while there is still time to act.
+            </p>
+            <p>
+              As Amora grows &mdash; adding residents, expanding governance circles, onboarding new community
+              members &mdash; every person who joins will inherit the full operating history of how the village was
+              built. The memory survives beyond the original team.
+            </p>
+          </article>
         </div>
       </section>
 
@@ -195,10 +251,9 @@ export default function AmoraCase() {
       <section className="section tight">
         <div className="container" style={{ maxWidth: 640 }}>
           <p style={{ color: "#6a8a90", fontSize: "0.88rem", fontStyle: "italic" }}>
-            Amora Community is in active deployment with Saberra (week two at time of publication). Results will
-            expand as the deployment matures. Governance complexity and the community&apos;s distributed
-            decision-making model make Amora an ideal long-term case study for organizational memory infrastructure
-            in intentional community settings.
+            All metrics above are from Amora&apos;s live Saberra dashboard at the end of week two of deployment.
+            Results will expand significantly as the deployment matures and more meetings and emails are processed.
+            Dashboard screenshots available on request.
           </p>
         </div>
       </section>
