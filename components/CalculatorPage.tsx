@@ -271,7 +271,12 @@ function OptionButton({
   onClick: () => void;
 }) {
   return (
-    <button className={`calculator-option ${active ? "active" : ""}`} type="button" onClick={onClick}>
+    <button
+      className={`calculator-option ${active ? "active" : ""}`}
+      type="button"
+      aria-pressed={active}
+      onClick={onClick}
+    >
       <span>{children}</span>
       {active ? <CheckCircle2 size={16} aria-hidden="true" /> : null}
     </button>

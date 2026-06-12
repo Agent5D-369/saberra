@@ -4618,20 +4618,41 @@ button {
   transition: transform 180ms ease, border-color 180ms ease, background 180ms ease, color 180ms ease, box-shadow 180ms ease;
 }
 
-.calculator-option:hover,
-.calculator-option.active {
-  border-color: rgba(214, 162, 74, 0.72);
+.calculator-option:hover {
+  border-color: rgba(111, 183, 183, 0.48);
   background:
-    linear-gradient(135deg, rgba(214, 162, 74, 0.18), rgba(111, 183, 183, 0.09)),
-    rgba(214, 162, 74, 0.08);
+    linear-gradient(135deg, rgba(111, 183, 183, 0.11), rgba(246, 244, 240, 0.035)),
+    rgba(7, 21, 36, 0.68);
   color: var(--paper);
-  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.2), inset 0 0 0 1px rgba(214, 162, 74, 0.08);
+  box-shadow: 0 10px 22px rgba(0, 0, 0, 0.16);
+  transform: translateY(-1px);
+}
+
+.calculator-option:focus-visible {
+  outline: 3px solid rgba(111, 183, 183, 0.38);
+  outline-offset: 3px;
+}
+
+.calculator-option.active {
+  border-color: rgba(214, 162, 74, 0.92);
+  background:
+    linear-gradient(135deg, rgba(214, 162, 74, 0.26), rgba(111, 183, 183, 0.12)),
+    rgba(214, 162, 74, 0.12);
+  color: var(--paper);
+  box-shadow:
+    0 14px 30px rgba(0, 0, 0, 0.24),
+    inset 0 0 0 1px rgba(214, 162, 74, 0.22),
+    inset 4px 0 0 rgba(214, 162, 74, 0.88);
   transform: translateY(-1px);
 }
 
 .calculator-option svg {
   flex: 0 0 auto;
   color: var(--gold);
+}
+
+.calculator-option.active svg {
+  filter: drop-shadow(0 0 8px rgba(214, 162, 74, 0.28));
 }
 
 .calculator-custom-input {
@@ -5073,6 +5094,11 @@ button {
     width: 100%;
   }
 
+  .calculator-option {
+    min-height: 52px;
+    padding: 13px 14px;
+  }
+
   .calculator-nav-row {
     padding-bottom: 82px;
   }
@@ -5108,5 +5134,29 @@ button {
   .calculator-mobile-sticky .btn {
     min-height: 42px;
     padding: 0 16px;
+  }
+}
+
+@media (hover: none) {
+  .calculator-option:hover {
+    border-color: rgba(246, 244, 240, 0.13);
+    background:
+      linear-gradient(135deg, rgba(246, 244, 240, 0.055), rgba(246, 244, 240, 0.025)),
+      rgba(5, 17, 29, 0.52);
+    box-shadow: none;
+    transform: none;
+  }
+
+  .calculator-option.active,
+  .calculator-option.active:hover {
+    border-color: rgba(214, 162, 74, 0.92);
+    background:
+      linear-gradient(135deg, rgba(214, 162, 74, 0.26), rgba(111, 183, 183, 0.12)),
+      rgba(214, 162, 74, 0.12);
+    box-shadow:
+      0 14px 30px rgba(0, 0, 0, 0.24),
+      inset 0 0 0 1px rgba(214, 162, 74, 0.22),
+      inset 4px 0 0 rgba(214, 162, 74, 0.88);
+    transform: none;
   }
 }
