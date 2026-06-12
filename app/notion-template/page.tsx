@@ -67,11 +67,12 @@ export default function DemoHubPage() {
         <div className="container">
           <SectionHeader
             eyebrow="What's inside the Living Memory Hub"
-            title="Seven databases. One organizational memory."
+            title="20+ relational databases. One organizational memory."
             center
           >
-            The Notion template includes the full structure Saberra deploys — all seven record types,
-            sample records you can inspect, and the review queue where Sera proposes and humans approve.
+            The Notion template includes the full structure Saberra deploys — 20+ relational record types
+            covering decisions, tasks, roles, risks, policies, and more. Sample records you can inspect,
+            and the review queue where Sera proposes and humans approve.
           </SectionHeader>
           <div className="hub-db-grid" style={{ marginTop: 40 }}>
             {databases.map(({ name, desc }) => (
