@@ -1003,7 +1003,7 @@ Return JSON with exactly these keys:
               Name: N.title(t.owner.trim()),
               'Profile Type': N.select('Person'),
               'Engagement Status': N.select('Unknown'),
-              'Relationship to Amora': N.select('Unknown'),
+              'Relationship to Org': N.select('Unknown'),
               Source: N.richText('Auto-created from task extraction'),
               'Sensitive Notes Flag': N.checkbox(false),
               'First Seen': N.date(today),

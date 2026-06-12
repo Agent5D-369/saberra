@@ -368,7 +368,7 @@ export class PipelineService {
                 ...(organizerEmail.includes('@') ? { Email: { email: organizerEmail } } : {}),
                 'Profile Type': N.select('Person'),
                 'Engagement Status': N.select('Unknown'),
-                'Relationship to Amora': N.select('Unknown'),
+                'Relationship to Org': N.select('Unknown'),
                 Source: N.richText('Auto-created from meeting organizer'),
                 'Sensitive Notes Flag': N.checkbox(false),
                 'First Seen': N.date(today),
@@ -461,11 +461,12 @@ export class PipelineService {
     lines.push('');
     lines.push('Tasks and decisions are in Draft/Candidate status and need your review before they are acted on.');
     lines.push('');
-    lines.push('-- Sera, Amora Living Memory');
+    const clientName = getConfig().SABERRA_CLIENT_NAME ?? getConfig().TENANT_ID;
+    lines.push(`-- Sera, ${clientName}`);
 
     await this.smtp.sendEmail(
       organizerEmail,
-      `[Amora] Meeting processed: ${title}`,
+      `[${clientName}] Meeting processed: ${title}`,
       lines.join('\n'),
     );
     logger.info({ organizerEmail, taskCount, decCount, riskCount }, 'Meeting recap email sent');
@@ -589,11 +590,13 @@ export class PipelineService {
 
     lines.push('='.repeat(50));
     lines.push('Review and manage all items in Notion.');
-    lines.push('To regenerate this agenda, email roots@amora.cr with [GOVERNANCE AGENDA] in the subject.');
+    const rootsEmail = getConfig().ROOTS_EMAIL;
+    const clientName2 = getConfig().SABERRA_CLIENT_NAME ?? getConfig().TENANT_ID;
+    lines.push(`To regenerate this agenda, email ${rootsEmail} with [GOVERNANCE AGENDA] in the subject.`);
 
     await this.smtp.sendEmail(
       senderEmail,
-      `[Amora] Governance Agenda - ${today}`,
+      `[${clientName2}] Governance Agenda - ${today}`,
       lines.join('\n'),
     );
 
@@ -728,7 +731,7 @@ export class PipelineService {
           ...(senderEmail.includes('@') ? { Email: { email: senderEmail } } : {}),
           'Profile Type': N.select('Person'),
           'Engagement Status': N.select('Unknown'),
-          'Relationship to Amora': N.select('Unknown'),
+          'Relationship to Org': N.select('Unknown'),
           Source: N.richText('Auto-created from message ingestion'),
           'Sensitive Notes Flag': N.checkbox(false),
           'First Seen': N.date(today),
@@ -771,7 +774,7 @@ export class PipelineService {
               Email: { email },
               'Profile Type': N.select('Person'),
               'Engagement Status': N.select('Unknown'),
-              'Relationship to Amora': N.select('Unknown'),
+              'Relationship to Org': N.select('Unknown'),
               Source: N.richText('Auto-created from message ingestion'),
               'Sensitive Notes Flag': N.checkbox(false),
               'First Seen': N.date(today),
