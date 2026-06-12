@@ -48,6 +48,7 @@ const routeConfigs: RouteConfig[] = [
   { path: "/cases/governance-coordinator-transition", priority: MED, changeFrequency: "monthly" },
   { path: "/cases/nonprofit-leadership-handoff", priority: MED, changeFrequency: "monthly" },
   { path: "/cases/consultancy-delivery-lead", priority: MED, changeFrequency: "monthly" },
+  { path: "/cases/amora", priority: MED, changeFrequency: "monthly" },
   { path: "/careers", priority: LOW, changeFrequency: "monthly" },
   { path: "/summit", priority: LOW, changeFrequency: "monthly" },
   { path: "/security", priority: LOW, changeFrequency: "yearly" },
