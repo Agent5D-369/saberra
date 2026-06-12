@@ -86,7 +86,7 @@ export function Footer() {
           <strong>Category</strong>
           <Link href="/institutional-memory-system">Institutional Memory System</Link>
           <Link href="/institutional-memory-infrastructure">Institutional Memory Infrastructure</Link>
-                  <Link href="/resources/meeting-notes-are-not-memory">Meeting Notes Are Not Memory</Link>
+          <Link href="/resources/meeting-notes-are-not-memory">Meeting Notes Are Not Memory</Link>
         </div>
       </div>
     </footer>

@@ -45,6 +45,7 @@ const routeConfigs: RouteConfig[] = [
   { path: "/resources/key-person-knowledge-loss", priority: MED, changeFrequency: "monthly" },
   { path: "/institutional-memory-system", priority: MED, changeFrequency: "monthly" },
   { path: "/institutional-memory-infrastructure", priority: MED, changeFrequency: "monthly" },
+  { path: "/cases", priority: MED, changeFrequency: "monthly" },
   { path: "/cases/governance-coordinator-transition", priority: MED, changeFrequency: "monthly" },
   { path: "/cases/nonprofit-leadership-handoff", priority: MED, changeFrequency: "monthly" },
   { path: "/cases/consultancy-delivery-lead", priority: MED, changeFrequency: "monthly" },
