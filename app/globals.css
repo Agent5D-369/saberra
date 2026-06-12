@@ -4192,3 +4192,21 @@ button {
   .onboarding-before { display: none; }
   .onboarding-sovereignty-note { flex-direction: column; gap: 16px; }
 }
+
+/* ── Kit email capture card ─────────────────────────────────────────────── */
+.kit-capture-card {
+  border: 1px solid #2A7D7D44;
+  background: linear-gradient(135deg, #0d1f24 0%, #0a1520 100%);
+}
+.kit-form-row {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+.kit-form-row .sera-input {
+  min-width: 0;
+}
+@media (max-width: 600px) {
+  .kit-form-row { flex-direction: column; }
+  .kit-form-row .sera-input { flex: 1 1 auto !important; }
+}

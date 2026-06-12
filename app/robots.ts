@@ -9,5 +9,10 @@ export default function robots(): MetadataRoute.Robots {
       {
         // All crawlers: full access
         userAgent: "*",
-        allow: "/"
-   
+        allow: "/",
+      },
+    ],
+    sitemap: `${siteUrl}/sitemap.xml`,
+    host: siteUrl,
+  };
+}

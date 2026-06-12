@@ -75,16 +75,18 @@ export function Footer() {
         </div>
         <div>
           <strong>Cases</strong>
+          <Link href="/cases/amora">Amora Community</Link>
           <Link href="/cases/governance-coordinator-transition">Governance Transition</Link>
           <Link href="/cases/nonprofit-leadership-handoff">Nonprofit Handoff</Link>
           <Link href="/cases/consultancy-delivery-lead">Delivery Lead Transition</Link>
           <Link href="/resources/key-person-knowledge-loss">Key Person Knowledge Loss</Link>
+          <Link href="/use-cases/new-hire-onboarding">New Hire Onboarding</Link>
         </div>
         <div>
           <strong>Category</strong>
           <Link href="/institutional-memory-system">Institutional Memory System</Link>
           <Link href="/institutional-memory-infrastructure">Institutional Memory Infrastructure</Link>
-          <Link href="/resources/meeting-notes-are-not-memory">Meeting Notes Are Not Memory</Link>
+                  <Link href="/resources/meeting-notes-are-not-memory">Meeting Notes Are Not Memory</Link>
         </div>
       </div>
     </footer>

@@ -3,6 +3,34 @@
 import { useMemo, useState } from "react";
 import { CTAButton, SourceBadge } from "@/components/UI";
 
+// ── Kit integration ───────────────────────────────────────────────────────────
+// Fill in your Kit API key and sequence ID to activate email nurture
+const KIT_API_KEY      = "REPLACE_WITH_KIT_API_KEY";       // Kit → Settings → API
+const KIT_SEQUENCE_ID  = "REPLACE_WITH_KIT_SEQUENCE_ID";   // Kit → Sequences → URL
+
+async function subscribeToKit(email: string, firstName: string, score: number, band: string, segment: string) {
+  if (KIT_API_KEY === "REPLACE_WITH_KIT_API_KEY") return; // skip if not configured
+  try {
+    await fetch(`https://api.convertkit.com/v3/sequences/${KIT_SEQUENCE_ID}/subscribe`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        api_key: KIT_API_KEY,
+        email,
+        first_name: firstName,
+        fields: {
+          audit_score: String(score),
+          audit_band:  band,
+          audit_segment: segment,
+        },
+        tags: [`audit-${band.toLowerCase()}`],
+      }),
+    });
+  } catch {
+    // silent — don't block the UI
+  }
+}
+
 const segments = [
   "Self-managing or governance-driven team",
   "Nonprofit or social enterprise",
@@ -184,6 +212,12 @@ export function Audit() {
   const [seraAnswer, setSeraAnswer] = useState("");
   const [seraAsked, setSeraAsked] = useState(false);
 
+  // Kit email capture
+  const [kitEmail, setKitEmail]           = useState("");
+  const [kitName, setKitName]             = useState("");
+  const [kitSubmitted, setKitSubmitted]   = useState(false);
+  const [kitLoading, setKitLoading]       = useState(false);
+
   const score = useMemo(() => answers.reduce((sum, value) => sum + value, 0), [answers]);
   const { label: bandLabel } = band(score);
   const scoreBand = getScoreBand(score);
@@ -194,6 +228,14 @@ export function Audit() {
 
   function updateAnswer(value: number) {
     setAnswers((current) => current.map((answer, index) => (index === questionIndex ? value : answer)));
+  }
+
+  async function handleKitSubmit() {
+    if (!kitEmail.trim()) return;
+    setKitLoading(true);
+    await subscribeToKit(kitEmail.trim(), kitName.trim() || "there", score, bandLabel, segment);
+    setKitLoading(false);
+    setKitSubmitted(true);
   }
 
   function handleShare() {
@@ -363,6 +405,53 @@ export function Audit() {
             )}
           </div>
         </article>
+
+        {/* ── Kit email capture ───────────────────────────────────────────── */}
+        {!kitSubmitted ? (
+          <article className="card kit-capture-card">
+            <div className="eyebrow">Get your recovery plan</div>
+            <h3 style={{ margin: "8px 0 6px" }}>Send this result + a 3-part action plan to your inbox</h3>
+            <p style={{ color: "#9bb4b8", fontSize: "0.95rem", marginBottom: 20 }}>
+              You will receive your score breakdown, a story from a team at your exact risk level, and a clear picture of what fixing it looks like. No pitch. Just context.
+            </p>
+            <div className="kit-form-row">
+              <input
+                type="text"
+                className="sera-input"
+                placeholder="First name"
+                value={kitName}
+                onChange={(e) => setKitName(e.target.value)}
+                style={{ flex: "0 0 140px" }}
+              />
+              <input
+                type="email"
+                className="sera-input"
+                placeholder="Work email"
+                value={kitEmail}
+                onChange={(e) => setKitEmail(e.target.value)}
+                onKeyDown={(e) => { if (e.key === "Enter") handleKitSubmit(); }}
+                style={{ flex: 1 }}
+              />
+              <button
+                className="btn btn-primary"
+                disabled={!kitEmail.trim() || kitLoading}
+                onClick={handleKitSubmit}
+              >
+                {kitLoading ? "Sending..." : "Send it"}
+              </button>
+            </div>
+            <p style={{ fontSize: "0.8rem", color: "#5a7a7f", marginTop: 10 }}>
+              No spam. Unsubscribe any time. Your data stays with you.
+            </p>
+          </article>
+        ) : (
+          <article className="card kit-capture-card">
+            <h3 style={{ margin: "8px 0 6px" }}>Check your inbox</h3>
+            <p style={{ color: "#9bb4b8", fontSize: "0.95rem" }}>
+              Your audit result and 3-part recovery plan are on the way to {kitEmail}. Email 1 arrives in the next few minutes.
+            </p>
+          </article>
+        )}
 
         <article className="card sera-ask-card">
           <div className="eyebrow">Ask Sera about your result</div>
