@@ -582,9 +582,18 @@ Return JSON with exactly these keys:
     const assignTypeOptions = ['Consent Election', 'Appointed', 'Interim', 'Volunteer'];
     const sectorOptions     = ['Sector 1 — Health & Holistic Wellness', 'Sector 2 — Governance & Justice', 'Sector 3 — Culture & Spirit', 'Sector 4 — Learning & Innovation', 'Sector 5 — Ecology & Infrastructure', 'Sector 6 — Economy & Exchange', 'Sector 7 — Media & Technology'];
 
+    // System email local-parts that should never be extracted as human profiles
+    const rootsEmailLocal = (getConfig().ROOTS_EMAIL ?? '').split('@')[0].toLowerCase();
+    const systemNameBlacklist = new Set(['sera', 'noreply', 'no-reply', 'admin', rootsEmailLocal].filter(Boolean));
+
     // ── 1. Profiles (must be first — everything else references them)
     for (let p of (Array.isArray(data.profile_updates) ? data.profile_updates : [])) {
       if (!p.name) continue;
+      // Skip system accounts (IMAP inbox, AI persona) — these are never real people
+      if (systemNameBlacklist.has(p.name.trim().toLowerCase())) {
+        logger.debug({ name: p.name }, 'Profile extraction: skipping system account name');
+        continue;
+      }
       try {
         // Layer 1: deterministic alias resolution — catches known nicknames and name variants
         // before any Notion query runs, preventing duplicate profile creation at the source.
@@ -1155,13 +1164,22 @@ Return JSON with exactly these keys:
     // ── 8. Risks (needs profiles) — parallelized; dedup against meeting if linked
     await Promise.all((Array.isArray(data.risks) ? data.risks : []).map(async (r) => {
       try {
-        // Dedup: skip if this risk already exists on the same meeting
-        if (sourceMeetingPageId && r.risk?.trim()) {
-          const existingRisk = await notion.findByTitleInMeeting(notion.dbIds.risks, 'Risk', r.risk, sourceMeetingPageId);
-          if (existingRisk) {
-            logger.debug({ risk: r.risk, meetingPageId: sourceMeetingPageId }, 'Risk already exists for this meeting — skipping');
-            created.push(`Risk:${existingRisk}(dedup-skipped)`);
-            return;
+        // Dedup: skip if this risk already exists
+        if (r.risk?.trim()) {
+          if (sourceMeetingPageId) {
+            const existingRisk = await notion.findByTitleInMeeting(notion.dbIds.risks, 'Risk', r.risk, sourceMeetingPageId);
+            if (existingRisk) {
+              logger.debug({ risk: r.risk, meetingPageId: sourceMeetingPageId }, 'Risk already exists for this meeting — skipping');
+              created.push(`Risk:${existingRisk}(dedup-skipped)`);
+              return;
+            }
+          } else {
+            const existingRisk = await notion.findByTitle(notion.dbIds.risks, 'Risk', r.risk);
+            if (existingRisk) {
+              logger.warn({ risk: r.risk }, 'Duplicate risk suppressed (email dedup)');
+              created.push(`Risk:${existingRisk}(email-dedup-skipped)`);
+              return;
+            }
           }
         }
 

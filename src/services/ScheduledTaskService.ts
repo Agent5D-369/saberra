@@ -129,7 +129,7 @@ export class ScheduledTaskService {
     const now = new Date().toISOString();
     try {
       await this.notion.createPage(this.notion.dbIds.processingEvents, {
-        Event:         N.title(`Scheduled Task — ${taskName}`),
+        Event:         N.title(`Scheduled Task - ${taskName}`),
         'Tenant ID':   N.richText(this.tenantId),
         'Event Type':  N.select('Scheduled Task'),
         Service:       N.select('Worker'),

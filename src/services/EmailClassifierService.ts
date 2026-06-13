@@ -51,7 +51,6 @@ const FORWARDED_PATTERNS = [
 ];
 
 const CAPTURE_PATTERNS = [
-  /\[amora capture\]/i,
   /\[capture\]/i,
 ];
 

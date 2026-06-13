@@ -1330,7 +1330,7 @@ async function logAdminAction(action: string, targetId: string): Promise<void> {
     await notion.pages.create({
       parent: { database_id: dbs.processingEvents },
       properties: {
-        Event:         { title: [{ text: { content: `Admin Action — ${action}` } }] },
+        Event:         { title: [{ text: { content: `Admin Action - ${action}` } }] },
         'Tenant ID':   { rich_text: [{ text: { content: tenantId } }] },
         'Event Type':  { select: { name: 'Admin Action' } },
         Service:       { select: { name: 'Dashboard' } },
