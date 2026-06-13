@@ -12,7 +12,7 @@ A TypeScript/Node.js Railway background worker that processes emails sent to `ro
 - **Email ingestion**: WPX IMAP (`s25.wpx.net:993`) via `imapflow` + `mailparser`
 - **Google APIs**: Drive v3 (access check), Docs v1 (text export), Gmail v1 (outbound only) — OAuth2 via `googleapis`
 - **AI extraction**: Anthropic Claude API (`@anthropic-ai/sdk`) — primary model in `CLAUDE_MODEL` env var, Haiku fallback
-- **State store**: Notion (`@notionhq/client`) — 23 databases, no Postgres
+- **State store**: Notion (`@notionhq/client`) — 26 databases, no Postgres
 - **Config validation**: Zod schema at startup (`src/config/ConfigService.ts`)
 - **Logging**: pino (`src/config/logger.ts`)
 
@@ -52,6 +52,8 @@ IMAP (WPX) → classify → Source Email record (Notion)
 | `src/services/GoogleAccessService.ts` | Drive access check (canDownload \|\| canCopy) |
 | `src/services/GoogleDocsExportService.ts` | Google Docs → plain text via Docs API |
 | `src/services/ClaudeExtractionService.ts` | Claude extraction + Notion writes for all 19 entity types |
+| `src/services/LanguageNormalizationService.ts` | Scans databases for wrong-language records, creates MRQ correction items |
+| `src/services/HubSettingsService.ts` | Reads/writes Hub Settings Notion page; provides outputLanguage + correctionMode |
 | `src/services/RetryService.ts` | Retry queue: 0→30min→2h→24h, then Manual Review |
 | `src/services/AccessRequestService.ts` | Admin notification emails for denied assets |
 | `src/services/ReviewRoutingService.ts` | Canon/sensitive review admin alerts |
@@ -130,7 +132,8 @@ Env var prefix: `NOTION_DB_`
 | `ADMIN_NOTIFICATION_EMAIL` | Human inbox for access requests + review alerts (≠ ROOTS_EMAIL) |
 | `TENANT_ID` | Amora tenant identifier written to Processing Events |
 | `CLAUDE_MODEL` | Primary model, e.g. `claude-sonnet-4-6` |
-| `EXTRACTION_LANGUAGE` | Language all extracted field values must be written in (default: English). Set to `Dutch`, `Spanish`, etc. for non-English clients. |
+| `EXTRACTION_LANGUAGE` | Language all extracted field values must be written in (default: English). Set to `Dutch`, `Spanish`, etc. for non-English clients. Also acts as fallback for `OUTPUT_LANGUAGE` in HubSettingsService. |
+| `RECORD_CORRECTION_MODE` | Language normalization correction mode (default: B). A=Recommend Only, B=Propose MRQ Update, C=Auto-Update Low-Risk, D=Auto-Update All Allowed. Overridden by Hub Settings Notion page. |
 | `MAX_RETRY_COUNT` | Max retries before escalation (default: 4) |
 | `GMAIL_POLL_INTERVAL_SECONDS` | Poll interval (default: 180) |
 

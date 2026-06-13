@@ -95,7 +95,7 @@ function buildAliasHints(): string {
 // ─── Prompt builders ──────────────────────────────────────────────────────────
 
 function buildSystemPrompt(): string {
-  const lang = getConfig().EXTRACTION_LANGUAGE;
+  const lang = HubSettingsService.getInstance().outputLanguage;
   return `You are processing institutional records for an organization's Living Memory Hub.
 
 Your job is to extract structured operational intelligence from meeting notes, transcripts, recordings, emails, or forwarded threads.
@@ -1229,7 +1229,7 @@ Return JSON with exactly these keys:
         const id = await notion.createPage(notion.dbIds.memoryReviewQueue, {
           'Proposed Memory': N.title(mrqTitle),
           'Memory Detail':   N.richText(m.proposed_memory ?? ''),
-          Category: N.select(sanitizeSelect(m.category, ['Context', 'Relationship', 'Commitment', 'Decision', 'Learning', 'Process', 'Unknown'], 'Unknown')),
+          Category: N.select(sanitizeSelect(m.category, ['Context', 'Relationship', 'Commitment', 'Decision', 'Learning', 'Process', 'Language Normalization', 'Unknown'], 'Unknown')),
           'Source Evidence': N.richText(m.source_evidence),
           Confidence: N.select(sanitizeSelect(m.confidence, ['High', 'Medium', 'Low'], 'Medium')),
           Priority: N.select(mrqPriority),

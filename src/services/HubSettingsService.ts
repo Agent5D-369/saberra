@@ -5,10 +5,13 @@ import { logger } from '../config/logger';
 
 const REFRESH_MS = 2 * 60 * 1000; // 2 minutes
 
+export type CorrectionMode = 'A' | 'B' | 'C' | 'D';
+
 export interface HubSettings {
   governingPurpose: string | null;
   purposeTest: string | null;
   outputLanguage: string;
+  correctionMode: CorrectionMode;
   lastRefreshed: Date | null;
   source: 'notion' | 'env';
 }
@@ -24,10 +27,12 @@ export class HubSettingsService {
     const config = getConfig();
     this.notion = new NotionClient({ auth: config.NOTION_API_KEY });
     this.pageId = process.env.NOTION_HUB_SETTINGS_PAGE_ID ?? null;
+    const rawCorrectionMode = process.env.RECORD_CORRECTION_MODE ?? 'B';
     this.settings = {
       governingPurpose: process.env.AMORA_GOVERNING_PURPOSE ?? null,
       purposeTest: process.env.AMORA_PURPOSE_TEST ?? null,
-      outputLanguage: process.env.OUTPUT_LANGUAGE ?? 'English',
+      outputLanguage: process.env.EXTRACTION_LANGUAGE ?? process.env.OUTPUT_LANGUAGE ?? 'English',
+      correctionMode: (['A', 'B', 'C', 'D'].includes(rawCorrectionMode) ? rawCorrectionMode : 'B') as CorrectionMode,
       lastRefreshed: null,
       source: 'env',
     };
@@ -50,6 +55,7 @@ export class HubSettingsService {
   get governingPurpose(): string | null { return this.settings.governingPurpose; }
   get purposeTest(): string | null { return this.settings.purposeTest; }
   get outputLanguage(): string { return this.settings.outputLanguage; }
+  get correctionMode(): CorrectionMode { return this.settings.correctionMode; }
 
   getSettings(): HubSettings { return { ...this.settings }; }
 
@@ -74,6 +80,13 @@ export class HubSettingsService {
     logger.info({ language }, 'Hub Settings: output_language updated');
   }
 
+  async updateCorrectionMode(mode: CorrectionMode): Promise<void> {
+    if (!this.pageId) throw new Error('NOTION_HUB_SETTINGS_PAGE_ID not set');
+    await this.writeBlock('record_correction_mode', mode);
+    this.settings.correctionMode = mode;
+    logger.info({ mode }, 'Hub Settings: record_correction_mode updated');
+  }
+
   private async refresh(): Promise<void> {
     if (!this.pageId) return;
     try {
@@ -82,9 +95,14 @@ export class HubSettingsService {
       const gps = this.extractValue(blocks, 'governing_purpose');
       const pt = this.extractValue(blocks, 'purpose_test');
       const lang = this.extractValue(blocks, 'output_language');
+      const corrMode = this.extractValue(blocks, 'record_correction_mode');
       if (gps !== null) this.settings.governingPurpose = gps;
       if (pt !== null) this.settings.purposeTest = pt;
       if (lang) this.settings.outputLanguage = lang;
+      if (corrMode) {
+        const upper = corrMode.trim().toUpperCase();
+        if (['A', 'B', 'C', 'D'].includes(upper)) this.settings.correctionMode = upper as CorrectionMode;
+      }
       this.settings.lastRefreshed = new Date();
       this.settings.source = 'notion';
     } catch (err) {

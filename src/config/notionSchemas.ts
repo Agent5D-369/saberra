@@ -313,7 +313,7 @@ export const DATABASE_SCHEMAS: Record<string, { title: string; properties: Prope
     properties: {
       'Proposed Memory': title(),   // Short label only (3-10 words). Full text lives in Memory Detail.
       'Memory Detail': richText(),  // Full proposed memory text
-      Category: select(['Context', 'Relationship', 'Commitment', 'Decision', 'Learning', 'Process', 'Unknown']),
+      Category: select(['Context', 'Relationship', 'Commitment', 'Decision', 'Learning', 'Process', 'Language Normalization', 'Unknown']),
       'Source Evidence': richText(),
       Confidence: select(['High', 'Medium', 'Low']),
       Priority: select(['Urgent', 'This Week', 'Backlog']),

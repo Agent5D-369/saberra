@@ -9,7 +9,8 @@ import { getConfig } from '../config/ConfigService';
 import { SeraQAService, type StreamEvent, type AttachmentInput } from './SeraQAService';
 import { ClaudeExtractionService } from '../services/ClaudeExtractionService';
 import { NotionWriterService } from '../services/NotionWriterService';
-import { HubSettingsService } from '../services/HubSettingsService';
+import { HubSettingsService, type CorrectionMode } from '../services/HubSettingsService';
+import { LanguageNormalizationService } from '../services/LanguageNormalizationService';
 import { handleSse, handleMcpPost, handleMcpHttp } from './mcpServer';
 import { handleOAuthMetadata, handleOAuthAuthorizeGet, handleOAuthAuthorizePost, handleOAuthToken, handleOAuthRegister, handleProtectedResourceMetadata } from './oauthServer';
 
@@ -402,6 +403,55 @@ const server = http.createServer(async (req, res) => {
     } catch (err) {
       logger.error(err, '/settings/language error');
       json(res, 500, { error: 'Failed to update language setting' });
+    }
+    return;
+  }
+
+  // ── GET /settings/correction-mode ─────────────────────────────────────────
+  if (method === 'GET' && path === '/settings/correction-mode') {
+    json(res, 200, { correctionMode: HubSettingsService.getInstance().correctionMode });
+    return;
+  }
+
+  // ── POST /settings/correction-mode ────────────────────────────────────────
+  // Body: { mode: 'A'|'B'|'C'|'D' }
+  // A=Recommend Only, B=Propose MRQ Update (default), C=Auto-Update Low-Risk, D=Auto-Update All Allowed
+  if (method === 'POST' && path === '/settings/correction-mode') {
+    let body: unknown;
+    try { body = await readBody(req); } catch { json(res, 400, { error: 'Invalid JSON' }); return; }
+    const { mode } = body as { mode?: string };
+    if (!mode || !['A', 'B', 'C', 'D'].includes(mode)) { json(res, 400, { error: '"mode" must be A, B, C, or D' }); return; }
+    try {
+      await HubSettingsService.getInstance().updateCorrectionMode(mode as CorrectionMode);
+      json(res, 200, { correctionMode: mode });
+    } catch (err) {
+      logger.error(err, '/settings/correction-mode error');
+      json(res, 500, { error: 'Failed to update correction mode setting' });
+    }
+    return;
+  }
+
+  // ── POST /normalize-language ───────────────────────────────────────────────
+  // Scans Notion databases for records in the wrong language and creates MRQ items.
+  // Body: { databases?: string[], dryRun?: boolean, limitPerDb?: number, mode?: 'A'|'B'|'C'|'D' }
+  // Returns: { hubLanguage, correctionMode, scanned, flagged, created, errors, databaseResults }
+  if (method === 'POST' && path === '/normalize-language') {
+    let body: unknown;
+    try { body = await readBody(req); } catch { json(res, 400, { error: 'Invalid JSON' }); return; }
+    const { databases, dryRun, limitPerDb, mode } = body as {
+      databases?: string[];
+      dryRun?: boolean;
+      limitPerDb?: number;
+      mode?: string;
+    };
+    const correctionModeOverride = (mode && ['A', 'B', 'C', 'D'].includes(mode)) ? mode as CorrectionMode : undefined;
+    try {
+      const svc = new LanguageNormalizationService();
+      const result = await svc.scan({ databases, dryRun, limitPerDb, correctionModeOverride });
+      json(res, 200, result);
+    } catch (err) {
+      logger.error(err, '/normalize-language error');
+      json(res, 500, { error: 'Language normalization failed - check logs' });
     }
     return;
   }
