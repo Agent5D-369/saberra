@@ -610,7 +610,7 @@ export class ScheduledTaskService {
         lines.push('');
       }
 
-      lines.push('Take what is useful here. Forward any updates, new tensions, or decisions to roots@amora.cr and Sera will capture them.');
+      lines.push(`Take what is useful here. Forward any updates, new tensions, or decisions to ${getConfig().ROOTS_EMAIL} and Sera will capture them.`);
 
       const subject = `[${circleName}] Weekly digest - ${cutoff} to ${today}`;
       for (const email of leadEmails) {

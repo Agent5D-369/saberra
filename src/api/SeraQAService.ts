@@ -297,7 +297,7 @@ export class SeraQAService {
     this.notion = new Client({ auth: config.NOTION_API_KEY });
     this.model = config.CLAUDE_MODEL;
     this.governingPurpose = config.AMORA_GOVERNING_PURPOSE ?? null;
-    this.clientName = config.SABERRA_CLIENT_NAME ?? 'Amora';
+    this.clientName = config.SABERRA_CLIENT_NAME ?? config.TENANT_ID ?? 'your organization';
   }
 
   private getDbMap(): Record<string, string | null | undefined> {

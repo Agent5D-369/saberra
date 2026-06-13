@@ -232,7 +232,8 @@ export class NotionWriterService {
 
       if (!tasks.length && !decisions.length && !risks.length) return '';
 
-      const lines: string[] = [`Amora institutional context from the last ${days} days (do NOT re-extract these — use them to detect contradictions, link related items, and avoid duplicates):`];
+      const clientLabel = getConfig().SABERRA_CLIENT_NAME ?? getConfig().TENANT_ID ?? 'Organization';
+      const lines: string[] = [`${clientLabel} institutional context from the last ${days} days (do NOT re-extract these — use them to detect contradictions, link related items, and avoid duplicates):`];
       if (tasks.length) {
         lines.push('\nOPEN TASKS:');
         tasks.forEach((r) => {
@@ -675,7 +676,7 @@ export class NotionWriterService {
     blocks.push(H('Policy & Legal Compliance'));
     blocks.push(P(typeof g.policy_legal_compliance === 'string' && g.policy_legal_compliance
       ? g.policy_legal_compliance
-      : 'All activities must comply with applicable laws, Amora community agreements, and relevant data privacy obligations.'));
+      : 'All activities must comply with applicable laws, community governance agreements, and relevant data privacy obligations.'));
 
     // Notion API max 100 blocks per append; our template is ~35 blocks - well within limit
     await this.withRetry(() =>

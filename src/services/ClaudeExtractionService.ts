@@ -632,14 +632,14 @@ Return JSON with exactly these keys:
         // True when found by email but not by name — means we can safely upgrade a short name
         const foundByEmail = !existingByName && !!existingByEmail;
         const tags = Array.isArray(p.tags) ? p.tags.filter(Boolean).map(String) : [];
-        const relToAmora = sanitizeSelect(
+        const relToOrg = sanitizeSelect(
           p.relationship_to_org,
           ['Member', 'Partner', 'Vendor', 'Advisor', 'Funder', 'Contact', 'Community', 'Alumni', 'Government', 'Unknown'],
           'Unknown',
         );
         let profileId: string;
         if (existing) {
-          const relToAmoraUpdate = p.relationship_to_org ? sanitizeSelect(
+          const relToOrgUpdate = p.relationship_to_org ? sanitizeSelect(
             p.relationship_to_org,
             ['Member', 'Partner', 'Vendor', 'Advisor', 'Funder', 'Contact', 'Community', 'Alumni', 'Government', 'Unknown'],
             'Unknown',
@@ -650,7 +650,7 @@ Return JSON with exactly these keys:
             ...(foundByEmail ? { Name: N.title(p.name) } : {}),
             ...(p.email ? { Email: { email: p.email } } : {}),
             ...(p.profile_type ? { 'Profile Type': N.select(sanitizeSelect(p.profile_type, ['Person', 'Organization', 'Both'], 'Person')) } : {}),
-            ...(relToAmoraUpdate ? { 'Relationship to Org': N.select(relToAmoraUpdate) } : {}),
+            ...(relToOrgUpdate ? { 'Relationship to Org': N.select(relToOrgUpdate) } : {}),
             ...(p.role_title ? { 'Role / Title': N.richText(p.role_title) } : {}),
             ...(p.location ? { Location: N.richText(p.location) } : {}),
             ...(p.website ? { Website: N.url(p.website) } : {}),
@@ -675,7 +675,7 @@ Return JSON with exactly these keys:
             ...(p.location ? { Location: N.richText(p.location) } : {}),
             ...(p.website ? { Website: N.url(p.website) } : {}),
             ...(p.linkedin ? { LinkedIn: N.url(p.linkedin) } : {}),
-            'Relationship to Org': N.select(relToAmora),
+            'Relationship to Org': N.select(relToOrg),
             'Engagement Status': N.select('Active'),
             ...(sectorCreate ? { 'Primary Sector': N.select(sectorCreate) } : {}),
             ...(p.membership_type ? { 'Membership Type': N.select(sanitizeSelect(p.membership_type, ['Founding Member', 'Full Member', 'Associate Member', 'Guest', 'Steward', 'Partner'], 'Full Member')) } : {}),
