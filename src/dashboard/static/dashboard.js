@@ -1296,6 +1296,28 @@ function saveLanguage() {
   });
 }
 
+function saveCorrectionMode() {
+  var select = document.getElementById('correction-mode-select');
+  var mode = select ? select.value : '';
+  var status = document.getElementById('correction-mode-status');
+  if (!mode) return;
+  if (status) { status.textContent = 'Saving...'; status.style.color = 'var(--muted)'; }
+  fetch('/settings/correction-mode', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+    body: 'mode=' + encodeURIComponent(mode),
+  }).then(function(r) { return r.json(); }).then(function(d) {
+    if (d.ok) {
+      if (status) { status.textContent = 'Saved.'; status.style.color = 'var(--green)'; }
+      setTimeout(function() { window.location.reload(); }, 800);
+    } else {
+      if (status) { status.textContent = 'Error: ' + (d.error || 'unknown'); status.style.color = 'var(--red)'; }
+    }
+  }).catch(function() {
+    if (status) { status.textContent = 'Network error.'; status.style.color = 'var(--red)'; }
+  });
+}
+
 // Global helper: fill the Sera chat with a question and optionally auto-send it.
 // Called by collapse pattern "Ask Sera for guidance" buttons.
 window.askSera = function(question, autoSend) {

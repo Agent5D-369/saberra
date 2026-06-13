@@ -396,6 +396,31 @@ const server = http.createServer(async (req, res) => {
     return;
   }
 
+  // POST /settings/correction-mode — update language normalization correction mode
+  if (method === 'POST' && url === '/settings/correction-mode') {
+    let body = '';
+    req.on('data', (c: Buffer) => { body += c; });
+    await new Promise<void>(resolve => req.on('end', resolve).on('close', resolve));
+    try {
+      const params = new URLSearchParams(body);
+      const mode = (params.get('mode') ?? '').trim().toUpperCase();
+      if (!['A', 'B', 'C', 'D'].includes(mode)) {
+        res.writeHead(400, { 'Content-Type': 'application/json' });
+        res.end(JSON.stringify({ error: 'Mode must be A, B, C, or D' }));
+        return;
+      }
+      await HubSettingsService.getInstance().updateCorrectionMode(mode as import('../services/HubSettingsService').CorrectionMode);
+      clearDashboardCache();
+      res.writeHead(200, { 'Content-Type': 'application/json' });
+      res.end(JSON.stringify({ ok: true }));
+    } catch (err) {
+      logger.error(err, '/settings/correction-mode error');
+      res.writeHead(500, { 'Content-Type': 'application/json' });
+      res.end(JSON.stringify({ error: 'Failed to update — is NOTION_HUB_SETTINGS_PAGE_ID set?' }));
+    }
+    return;
+  }
+
   // GET /api/balances — live credit/cost data from Anthropic and Railway
   if (method === 'GET' && url === '/api/balances') {
     const now = new Date();

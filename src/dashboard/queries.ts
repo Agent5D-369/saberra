@@ -287,6 +287,7 @@ export interface SystemConfig {
   governingPurpose: string | null;
   purposeTest: string | null;
   outputLanguage: string;
+  correctionMode: string;
   hubSettingsConfigured: boolean;
 }
 
@@ -394,6 +395,7 @@ function buildEmptyData(activeTz: string, error: string): DashboardData {
       governingPurpose:      HubSettingsService.getInstance().governingPurpose,
       purposeTest:           HubSettingsService.getInstance().purposeTest,
       outputLanguage:        HubSettingsService.getInstance().outputLanguage,
+      correctionMode:        HubSettingsService.getInstance().correctionMode,
       hubSettingsConfigured: Boolean(process.env.NOTION_HUB_SETTINGS_PAGE_ID),
     },
     dataError: error,
@@ -874,6 +876,7 @@ async function fetchFreshData(activeTz = DASHBOARD_TZ): Promise<DashboardData> {
       governingPurpose:       HubSettingsService.getInstance().governingPurpose,
       purposeTest:            HubSettingsService.getInstance().purposeTest,
       outputLanguage:         HubSettingsService.getInstance().outputLanguage,
+      correctionMode:         HubSettingsService.getInstance().correctionMode,
       hubSettingsConfigured:  Boolean(process.env.NOTION_HUB_SETTINGS_PAGE_ID),
     },
   };

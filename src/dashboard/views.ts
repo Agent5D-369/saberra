@@ -819,6 +819,9 @@ interface UiStrings {
   sectionSeraLanguage: string;
   languageDesc: string;
   labelResponseLanguage: string;
+  sectionCorrectionMode: string;
+  correctionModeDesc: string;
+  labelCorrectionMode: string;
   sectionGoverningPurpose: string;
   gpsDesc: string;
   labelFullGps: string;
@@ -1030,6 +1033,9 @@ const UI_EN: UiStrings = {
   sectionSeraLanguage: 'Hub Language',
   languageDesc: 'Controls the language Sera uses for Q&A answers, role cards, circle charters, and all extracted Notion record fields. Changes take effect within 2 minutes - no redeploy needed. Use POST /normalize-language to clean up existing records written in the wrong language.',
   labelResponseLanguage: 'Hub language:',
+  sectionCorrectionMode: 'Record Correction Mode',
+  correctionModeDesc: 'Controls how Sera handles records written in the wrong language. A: scan only (report). B: create Memory Review Queue items with proposed corrections (default). C/D: auto-update (coming soon). Changes take effect within 2 minutes.',
+  labelCorrectionMode: 'Correction mode:',
   sectionGoverningPurpose: 'Governing Purpose Statement',
   gpsDesc: 'Sera injects this into every extraction to score Purpose Alignment on all Decision Candidates. Changes take effect within 30 minutes — no redeploy needed.',
   labelFullGps: 'Full GPS',
@@ -1240,6 +1246,9 @@ const UI_ES: UiStrings = {
   sectionSeraLanguage: 'Idioma del Hub',
   languageDesc: 'Controla el idioma que usa Sera en respuestas de Q&A, tarjetas de roles, estatutos de círculos y todos los campos de registros en Notion. Los cambios tienen efecto en 2 minutos, sin redespliegue.',
   labelResponseLanguage: 'Idioma del hub:',
+  sectionCorrectionMode: 'Modo de Corrección de Registros',
+  correctionModeDesc: 'Controla cómo Sera maneja los registros escritos en el idioma incorrecto. A: solo escanear. B: crear elementos en la cola de revisión con correcciones propuestas (predeterminado). C/D: actualización automática (próximamente).',
+  labelCorrectionMode: 'Modo de corrección:',
   sectionGoverningPurpose: 'Declaración de Propósito Rector',
   gpsDesc: 'Sera inyecta esto en cada extracción para puntuar la Alineación de Propósito en todos los Candidatos de Decisión. Los cambios tienen efecto en 30 minutos, sin redespliegue.',
   labelFullGps: 'GPS Completo',
@@ -2238,6 +2247,29 @@ ${dataErrorBannerHtml}${alertBannerHtml}
         </select>
         <button onclick="saveLanguage()" style="font-size:13px;padding:6px 14px;background:var(--accent);color:#fff;border:none;border-radius:6px;cursor:pointer;font-weight:500">${locale.ui.btnSave}</button>
         <span id="lang-status" style="font-size:12px;color:var(--muted)"></span>
+      </div>
+      ` : `<p class="dim">${locale.ui.hubSettingsNotConfigured}</p>`}
+    </section>
+
+    <!-- ── Record Correction Mode ──────────────────────── -->
+    <section>
+      <h2>${locale.ui.sectionCorrectionMode}</h2>
+      <p class="dim" style="margin-bottom:14px">${locale.ui.correctionModeDesc}</p>
+      ${d.systemConfig.hubSettingsConfigured ? `
+      <div style="display:flex;align-items:flex-start;gap:10px;flex-wrap:wrap">
+        <div>
+          <label for="correction-mode-select" style="font-size:13px;font-weight:500;display:block;margin-bottom:6px">${locale.ui.labelCorrectionMode}</label>
+          <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap">
+            <select id="correction-mode-select" style="font-size:13px;padding:6px 10px;border:1px solid var(--border);border-radius:6px;background:var(--card);color:var(--text);cursor:pointer">
+              <option value="A"${d.systemConfig.correctionMode === 'A' ? ' selected' : ''}>A - Scan only (report, no changes)</option>
+              <option value="B"${d.systemConfig.correctionMode === 'B' ? ' selected' : ''}>B - Propose corrections via Memory Review Queue</option>
+              <option value="C"${d.systemConfig.correctionMode === 'C' ? ' selected' : ''} disabled>C - Auto-update low-risk fields (coming soon)</option>
+              <option value="D"${d.systemConfig.correctionMode === 'D' ? ' selected' : ''} disabled>D - Auto-update all allowed fields (coming soon)</option>
+            </select>
+            <button onclick="saveCorrectionMode()" style="font-size:13px;padding:6px 14px;background:var(--accent);color:#fff;border:none;border-radius:6px;cursor:pointer;font-weight:500">${locale.ui.btnSave}</button>
+            <span id="correction-mode-status" style="font-size:12px;color:var(--muted)"></span>
+          </div>
+        </div>
       </div>
       ` : `<p class="dim">${locale.ui.hubSettingsNotConfigured}</p>`}
     </section>
