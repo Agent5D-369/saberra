@@ -13,6 +13,8 @@ import type { ClientPlugin } from '../interface';
  *   - onRecordsWritten: runs after writes — use ctx.notion.createPage() for custom DBs
  */
 const plugin: ClientPlugin = {
+  suppressOutboundEmail: true,
+
   // customDatabases: ['NOTION_DB_VERDANA_PROPERTIES'],
 
   // async onExtractionComplete(event, ctx) {

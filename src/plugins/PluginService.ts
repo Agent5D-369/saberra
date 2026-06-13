@@ -49,6 +49,8 @@ export class PluginService {
 
   isActive(): boolean { return this.plugin !== null && this.ctx !== null; }
 
+  suppressEmail(): boolean { return this.plugin?.suppressOutboundEmail ?? false; }
+
   async callOnExtractionComplete(event: ExtractionEvent): Promise<void> {
     if (!this.plugin?.onExtractionComplete || !this.ctx) return;
     try {

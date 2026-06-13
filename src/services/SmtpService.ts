@@ -2,6 +2,7 @@ import * as nodemailer from 'nodemailer';
 import { google } from 'googleapis';
 import { getConfig } from '../config/ConfigService';
 import { logger } from '../config/logger';
+import { PluginService } from '../plugins/PluginService';
 
 // RFC 2047 base64 encoded-word encoding for email Subject headers.
 // Required whenever the subject contains non-ASCII characters (e.g. accented chars
@@ -14,6 +15,11 @@ function encodeSubject(subject: string): string {
 
 export class SmtpService {
   async sendEmail(to: string, subject: string, body: string): Promise<void> {
+    if (PluginService.getInstance().suppressEmail()) {
+      logger.info({ to, subject }, 'Outbound email suppressed by tenant plugin');
+      return;
+    }
+
     const config = getConfig();
     const safeTo = to.replace(/[\r\n]/g, '');
 

@@ -53,6 +53,13 @@ export interface ClientPlugin {
    */
   customDatabases?: string[];
 
+  /**
+   * When true, all outbound emails (access requests, admin alerts) are
+   * silently suppressed for this tenant. Use for demo environments with
+   * fictional email addresses to prevent undeliverable mail errors.
+   */
+  suppressOutboundEmail?: boolean;
+
   /** Called before any Notion writes. Plugin can augment extraction. */
   onExtractionComplete?(event: ExtractionEvent, ctx: PluginContext): Promise<void>;
 
