@@ -1037,7 +1037,7 @@ const UI_EN: UiStrings = {
   labelActiveTimezone: 'Active timezone:',
   btnSave: 'Save',
   sectionSeraLanguage: 'Hub Language',
-  languageDesc: 'Controls the language Sera writes all Notion record fields and Q&A answers in. Changes take effect within 2 minutes - no redeploy needed. Use POST /normalize-language to clean up existing records in the wrong language. Note: the dashboard UI itself only displays in English or Spanish — other languages apply to Notion records only.',
+  languageDesc: 'Controls the language Sera writes all Notion record fields and Q&A answers in. Changes take effect within 2 minutes — no redeploy needed. Dashboard UI displays in English or Spanish only; other languages apply to Notion records only.',
   labelResponseLanguage: 'Hub language:',
   sectionCorrectionMode: 'Record Correction Mode',
   correctionModeDesc: 'Controls how Sera handles records written in the wrong language. A: scan only. B: propose corrections via Memory Review Queue (default). C: auto-update text fields in non-governance databases (decisions, canon, ledger entries still go to MRQ). D: coming soon. Changes take effect within 2 minutes.',
@@ -2205,88 +2205,25 @@ ${dataErrorBannerHtml}${alertBannerHtml}
   <!-- ── Tab 5: Settings ───────────────────────────────────── -->
   <div id="tab-settings" class="tab-panel">
 
-    <!-- ── Timezone selector ─────────────────────────────── -->
+    <!-- ── Governing Purpose Statement ──────────────────── -->
     <section>
-      <h2>${locale.ui.sectionDashboardTimezone}</h2>
-      <p class="dim" style="margin-bottom:14px">${locale.ui.timezoneDesc}</p>
-      <form method="POST" action="/settings/timezone" style="display:flex;align-items:center;gap:10px;flex-wrap:wrap">
-        <label for="tz-select" style="font-size:13px;font-weight:500">${locale.ui.labelActiveTimezone}</label>
-        <select id="tz-select" name="tz" style="font-size:13px;padding:6px 10px;border:1px solid var(--border);border-radius:6px;background:var(--card);color:var(--text);cursor:pointer">
-          ${[
-            ['Pacific/Honolulu',     'Hawaii (UTC-10)'],
-            ['America/Anchorage',    'Alaska (UTC-9)'],
-            ['America/Los_Angeles',  'Pacific (UTC-8/-7)'],
-            ['America/Denver',       'Mountain (UTC-7/-6)'],
-            ['America/Chicago',      'Central (UTC-6/-5)'],
-            ['America/New_York',     'Eastern (UTC-5/-4)'],
-            ['America/Costa_Rica',   'Costa Rica (UTC-6)'],
-            ['America/Bogota',       'Colombia (UTC-5)'],
-            ['America/Lima',         'Peru (UTC-5)'],
-            ['America/Santiago',     'Chile (UTC-4/-3)'],
-            ['America/Sao_Paulo',    'Brazil / Sao Paulo (UTC-3)'],
-            ['America/Argentina/Buenos_Aires', 'Argentina (UTC-3)'],
-            ['Atlantic/Azores',      'Azores (UTC-1/0)'],
-            ['Europe/London',        'UK (UTC+0/+1)'],
-            ['Europe/Paris',         'Central Europe (UTC+1/+2)'],
-            ['Europe/Helsinki',      'Eastern Europe (UTC+2/+3)'],
-            ['Africa/Nairobi',       'East Africa (UTC+3)'],
-            ['Asia/Dubai',           'UAE (UTC+4)'],
-            ['Asia/Kolkata',         'India (UTC+5:30)'],
-            ['Asia/Bangkok',         'Southeast Asia (UTC+7)'],
-            ['Asia/Singapore',       'Singapore (UTC+8)'],
-            ['Asia/Tokyo',           'Japan (UTC+9)'],
-            ['Australia/Sydney',     'Sydney (UTC+10/+11)'],
-            ['Pacific/Auckland',     'New Zealand (UTC+12/+13)'],
-          ].map(([val, label]) =>
-            `<option value="${val}"${d.systemConfig.activeTz === val ? ' selected' : ''}>${label}</option>`
-          ).join('')}
-        </select>
-        <button type="submit" style="font-size:13px;padding:6px 14px;background:var(--accent);color:#fff;border:none;border-radius:6px;cursor:pointer;font-weight:500">${locale.ui.btnSave}</button>
-      </form>
-      <p class="dim" style="margin-top:10px;font-size:11px">Server default: <code>${esc(process.env.DASHBOARD_TIMEZONE ?? 'America/Costa_Rica')}</code> &nbsp;-&nbsp; override with <code>DASHBOARD_TIMEZONE</code> Railway env var.</p>
-    </section>
-
-    <!-- ── Sera Language ─────────────────────────────────── -->
-    <section>
-      <h2>${locale.ui.sectionSeraLanguage}</h2>
-      <p class="dim" style="margin-bottom:14px">${locale.ui.languageDesc}</p>
+      <h2>${locale.ui.sectionGoverningPurpose}</h2>
+      <p class="dim" style="margin-bottom:14px">${locale.ui.gpsDesc}</p>
       ${d.systemConfig.hubSettingsConfigured ? `
-      <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap">
-        <label for="lang-select" style="font-size:13px;font-weight:500">${locale.ui.labelResponseLanguage}</label>
-        <select id="lang-select" style="font-size:13px;padding:6px 10px;border:1px solid var(--border);border-radius:6px;background:var(--card);color:var(--text);cursor:pointer">
-          ${[
-            'English', 'Spanish', 'Portuguese', 'French', 'German',
-            'Italian', 'Dutch', 'Polish', 'Russian', 'Arabic',
-            'Hindi', 'Bengali', 'Japanese', 'Chinese (Simplified)', 'Chinese (Traditional)',
-            'Korean', 'Turkish', 'Vietnamese', 'Thai', 'Swahili',
-          ].map(lang =>
-            `<option value="${lang}"${d.systemConfig.outputLanguage === lang ? ' selected' : ''}>${lang}</option>`
-          ).join('')}
-        </select>
-        <button onclick="saveLanguage()" style="font-size:13px;padding:6px 14px;background:var(--accent);color:#fff;border:none;border-radius:6px;cursor:pointer;font-weight:500">${locale.ui.btnSave}</button>
-        <span id="lang-status" style="font-size:12px;color:var(--muted)"></span>
+      <div style="margin-bottom:16px">
+        <label style="font-size:13px;font-weight:500;display:block;margin-bottom:6px">${locale.ui.labelFullGps}</label>
+        <textarea id="gps-text" rows="6" style="width:100%;font-size:13px;padding:10px;border:1px solid var(--border);border-radius:8px;background:var(--card);color:var(--text);resize:vertical;line-height:1.6">${esc(d.systemConfig.governingPurpose ?? '')}</textarea>
+        <div style="margin-top:8px;display:flex;align-items:center;gap:10px">
+          <button onclick="saveGPS()" style="font-size:13px;padding:6px 16px;background:var(--accent);color:#fff;border:none;border-radius:6px;cursor:pointer;font-weight:500">${locale.ui.btnSaveGps}</button>
+          <span id="gps-status" style="font-size:12px;color:var(--muted)"></span>
+        </div>
       </div>
-      ` : `<p class="dim">${locale.ui.hubSettingsNotConfigured}</p>`}
-    </section>
-
-    <!-- ── Record Correction Mode ──────────────────────── -->
-    <section>
-      <h2>${locale.ui.sectionCorrectionMode}</h2>
-      <p class="dim" style="margin-bottom:14px">${locale.ui.correctionModeDesc}</p>
-      ${d.systemConfig.hubSettingsConfigured ? `
-      <div style="display:flex;align-items:flex-start;gap:10px;flex-wrap:wrap">
-        <div>
-          <label for="correction-mode-select" style="font-size:13px;font-weight:500;display:block;margin-bottom:6px">${locale.ui.labelCorrectionMode}</label>
-          <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap">
-            <select id="correction-mode-select" style="font-size:13px;padding:6px 10px;border:1px solid var(--border);border-radius:6px;background:var(--card);color:var(--text);cursor:pointer">
-              <option value="A"${d.systemConfig.correctionMode === 'A' ? ' selected' : ''}>A - Scan only (report, no changes)</option>
-              <option value="B"${d.systemConfig.correctionMode === 'B' ? ' selected' : ''}>B - Propose corrections via Memory Review Queue</option>
-              <option value="C"${d.systemConfig.correctionMode === 'C' ? ' selected' : ''}>C - Auto-update text fields in non-governance databases</option>
-              <option value="D"${d.systemConfig.correctionMode === 'D' ? ' selected' : ''} disabled>D - Auto-update all databases including governance (coming soon)</option>
-            </select>
-            <button onclick="saveCorrectionMode()" style="font-size:13px;padding:6px 14px;background:var(--accent);color:#fff;border:none;border-radius:6px;cursor:pointer;font-weight:500">${locale.ui.btnSave}</button>
-            <span id="correction-mode-status" style="font-size:12px;color:var(--muted)"></span>
-          </div>
+      <div>
+        <label style="font-size:13px;font-weight:500;display:block;margin-bottom:6px">${locale.ui.labelPurposeTest} <span class="dim">${locale.ui.purposeTestSub}</span></label>
+        <textarea id="pt-text" rows="2" style="width:100%;font-size:13px;padding:10px;border:1px solid var(--border);border-radius:8px;background:var(--card);color:var(--text);resize:vertical;line-height:1.6">${esc(d.systemConfig.purposeTest ?? '')}</textarea>
+        <div style="margin-top:8px;display:flex;align-items:center;gap:10px">
+          <button onclick="savePurposeTest()" style="font-size:13px;padding:6px 16px;background:var(--accent);color:#fff;border:none;border-radius:6px;cursor:pointer;font-weight:500">${locale.ui.btnSavePurposeTest}</button>
+          <span id="pt-status" style="font-size:12px;color:var(--muted)"></span>
         </div>
       </div>
       ` : `<p class="dim">${locale.ui.hubSettingsNotConfigured}</p>`}
@@ -2359,28 +2296,91 @@ ${dataErrorBannerHtml}${alertBannerHtml}
       ` : `<p class="dim">${locale.ui.hubSettingsNotConfigured}</p>`}
     </section>
 
-    <!-- ── Governing Purpose Statement ──────────────────── -->
+    <!-- ── Hub Language ──────────────────────────────────── -->
     <section>
-      <h2>${locale.ui.sectionGoverningPurpose}</h2>
-      <p class="dim" style="margin-bottom:14px">${locale.ui.gpsDesc}</p>
+      <h2>${locale.ui.sectionSeraLanguage}</h2>
+      <p class="dim" style="margin-bottom:14px">${locale.ui.languageDesc}</p>
       ${d.systemConfig.hubSettingsConfigured ? `
-      <div style="margin-bottom:16px">
-        <label style="font-size:13px;font-weight:500;display:block;margin-bottom:6px">${locale.ui.labelFullGps}</label>
-        <textarea id="gps-text" rows="6" style="width:100%;font-size:13px;padding:10px;border:1px solid var(--border);border-radius:8px;background:var(--card);color:var(--text);resize:vertical;line-height:1.6">${esc(d.systemConfig.governingPurpose ?? '')}</textarea>
-        <div style="margin-top:8px;display:flex;align-items:center;gap:10px">
-          <button onclick="saveGPS()" style="font-size:13px;padding:6px 16px;background:var(--accent);color:#fff;border:none;border-radius:6px;cursor:pointer;font-weight:500">${locale.ui.btnSaveGps}</button>
-          <span id="gps-status" style="font-size:12px;color:var(--muted)"></span>
-        </div>
+      <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap">
+        <label for="lang-select" style="font-size:13px;font-weight:500">${locale.ui.labelResponseLanguage}</label>
+        <select id="lang-select" style="font-size:13px;padding:6px 10px;border:1px solid var(--border);border-radius:6px;background:var(--card);color:var(--text);cursor:pointer">
+          ${[
+            'English', 'Spanish', 'Portuguese', 'French', 'German',
+            'Italian', 'Dutch', 'Polish', 'Russian', 'Arabic',
+            'Hindi', 'Bengali', 'Japanese', 'Chinese (Simplified)', 'Chinese (Traditional)',
+            'Korean', 'Turkish', 'Vietnamese', 'Thai', 'Swahili',
+          ].map(lang =>
+            `<option value="${lang}"${d.systemConfig.outputLanguage === lang ? ' selected' : ''}>${lang}</option>`
+          ).join('')}
+        </select>
+        <button onclick="saveLanguage()" style="font-size:13px;padding:6px 14px;background:var(--accent);color:#fff;border:none;border-radius:6px;cursor:pointer;font-weight:500">${locale.ui.btnSave}</button>
+        <span id="lang-status" style="font-size:12px;color:var(--muted)"></span>
       </div>
-      <div>
-        <label style="font-size:13px;font-weight:500;display:block;margin-bottom:6px">${locale.ui.labelPurposeTest} <span class="dim">${locale.ui.purposeTestSub}</span></label>
-        <textarea id="pt-text" rows="2" style="width:100%;font-size:13px;padding:10px;border:1px solid var(--border);border-radius:8px;background:var(--card);color:var(--text);resize:vertical;line-height:1.6">${esc(d.systemConfig.purposeTest ?? '')}</textarea>
-        <div style="margin-top:8px;display:flex;align-items:center;gap:10px">
-          <button onclick="savePurposeTest()" style="font-size:13px;padding:6px 16px;background:var(--accent);color:#fff;border:none;border-radius:6px;cursor:pointer;font-weight:500">${locale.ui.btnSavePurposeTest}</button>
-          <span id="pt-status" style="font-size:12px;color:var(--muted)"></span>
+      ` : `<p class="dim">${locale.ui.hubSettingsNotConfigured}</p>`}
+    </section>
+
+    <!-- ── Record Correction Mode ──────────────────────── -->
+    <section>
+      <h2>${locale.ui.sectionCorrectionMode}</h2>
+      <p class="dim" style="margin-bottom:14px">${locale.ui.correctionModeDesc}</p>
+      ${d.systemConfig.hubSettingsConfigured ? `
+      <div style="display:flex;align-items:flex-start;gap:10px;flex-wrap:wrap">
+        <div>
+          <label for="correction-mode-select" style="font-size:13px;font-weight:500;display:block;margin-bottom:6px">${locale.ui.labelCorrectionMode}</label>
+          <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap">
+            <select id="correction-mode-select" style="font-size:13px;padding:6px 10px;border:1px solid var(--border);border-radius:6px;background:var(--card);color:var(--text);cursor:pointer">
+              <option value="A"${d.systemConfig.correctionMode === 'A' ? ' selected' : ''}>A - Scan only (report, no changes)</option>
+              <option value="B"${d.systemConfig.correctionMode === 'B' ? ' selected' : ''}>B - Propose corrections via Memory Review Queue</option>
+              <option value="C"${d.systemConfig.correctionMode === 'C' ? ' selected' : ''}>C - Auto-update text fields in non-governance databases</option>
+              <option value="D"${d.systemConfig.correctionMode === 'D' ? ' selected' : ''} disabled>D - Auto-update all databases including governance (coming soon)</option>
+            </select>
+            <button onclick="saveCorrectionMode()" style="font-size:13px;padding:6px 14px;background:var(--accent);color:#fff;border:none;border-radius:6px;cursor:pointer;font-weight:500">${locale.ui.btnSave}</button>
+            <span id="correction-mode-status" style="font-size:12px;color:var(--muted)"></span>
+          </div>
         </div>
       </div>
       ` : `<p class="dim">${locale.ui.hubSettingsNotConfigured}</p>`}
+    </section>
+
+    <!-- ── Timezone selector ─────────────────────────────── -->
+    <section>
+      <h2>${locale.ui.sectionDashboardTimezone}</h2>
+      <p class="dim" style="margin-bottom:14px">${locale.ui.timezoneDesc}</p>
+      <form method="POST" action="/settings/timezone" style="display:flex;align-items:center;gap:10px;flex-wrap:wrap">
+        <label for="tz-select" style="font-size:13px;font-weight:500">${locale.ui.labelActiveTimezone}</label>
+        <select id="tz-select" name="tz" style="font-size:13px;padding:6px 10px;border:1px solid var(--border);border-radius:6px;background:var(--card);color:var(--text);cursor:pointer">
+          ${[
+            ['Pacific/Honolulu',     'Hawaii (UTC-10)'],
+            ['America/Anchorage',    'Alaska (UTC-9)'],
+            ['America/Los_Angeles',  'Pacific (UTC-8/-7)'],
+            ['America/Denver',       'Mountain (UTC-7/-6)'],
+            ['America/Chicago',      'Central (UTC-6/-5)'],
+            ['America/New_York',     'Eastern (UTC-5/-4)'],
+            ['America/Costa_Rica',   'Costa Rica (UTC-6)'],
+            ['America/Bogota',       'Colombia (UTC-5)'],
+            ['America/Lima',         'Peru (UTC-5)'],
+            ['America/Santiago',     'Chile (UTC-4/-3)'],
+            ['America/Sao_Paulo',    'Brazil / Sao Paulo (UTC-3)'],
+            ['America/Argentina/Buenos_Aires', 'Argentina (UTC-3)'],
+            ['Atlantic/Azores',      'Azores (UTC-1/0)'],
+            ['Europe/London',        'UK (UTC+0/+1)'],
+            ['Europe/Paris',         'Central Europe (UTC+1/+2)'],
+            ['Europe/Helsinki',      'Eastern Europe (UTC+2/+3)'],
+            ['Africa/Nairobi',       'East Africa (UTC+3)'],
+            ['Asia/Dubai',           'UAE (UTC+4)'],
+            ['Asia/Kolkata',         'India (UTC+5:30)'],
+            ['Asia/Bangkok',         'Southeast Asia (UTC+7)'],
+            ['Asia/Singapore',       'Singapore (UTC+8)'],
+            ['Asia/Tokyo',           'Japan (UTC+9)'],
+            ['Australia/Sydney',     'Sydney (UTC+10/+11)'],
+            ['Pacific/Auckland',     'New Zealand (UTC+12/+13)'],
+          ].map(([val, label]) =>
+            `<option value="${val}"${d.systemConfig.activeTz === val ? ' selected' : ''}>${label}</option>`
+          ).join('')}
+        </select>
+        <button type="submit" style="font-size:13px;padding:6px 14px;background:var(--accent);color:#fff;border:none;border-radius:6px;cursor:pointer;font-weight:500">${locale.ui.btnSave}</button>
+      </form>
+      <p class="dim" style="margin-top:10px;font-size:11px">Server default: <code>${esc(process.env.DASHBOARD_TIMEZONE ?? 'America/Costa_Rica')}</code> &nbsp;-&nbsp; override with <code>DASHBOARD_TIMEZONE</code> Railway env var.</p>
     </section>
 
     <!-- ── System settings ───────────────────────────────── -->
