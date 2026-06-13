@@ -376,12 +376,7 @@ async function updateRoles(): Promise<{ updated: number; skipped: number }> {
 
   for (const [name, data] of Object.entries(ROLE_DATA)) {
     try {
-      const pageId = await findPageByTitle(DB_ROLES, 'Role Name', name);
-      if (!pageId) {
-        console.log(`  SKIP (not found): ${name}`);
-        skipped++;
-        continue;
-      }
+      let pageId = await findPageByTitle(DB_ROLES, 'Role Name', name);
 
       const arcParts: string[] = [];
       if (data.arcAwareness)   arcParts.push(`ARC — Awareness:\n${data.arcAwareness}`);
@@ -404,8 +399,13 @@ async function updateRoles(): Promise<{ updated: number; skipped: number }> {
         ...(notesContent ? { Notes: { rich_text: rt(notesContent) } } : {}),
       };
 
-      await notion.pages.update({ page_id: pageId, properties });
-      console.log(`  Updated: ${name}`);
+      if (pageId) {
+        await notion.pages.update({ page_id: pageId, properties });
+        console.log(`  Updated: ${name}`);
+      } else {
+        await notion.pages.create({ parent: { database_id: DB_ROLES }, properties: { 'Role Name': { title: rt(name) }, ...properties } });
+        console.log(`  Created: ${name}`);
+      }
       updated++;
     } catch (err: any) {
       console.error(`  ERROR updating role "${name}": ${err.message}`);
@@ -474,8 +474,6 @@ async function createTensions(): Promise<{ created: number; skipped: number }> {
           Type:               { select: { name: t.type } },
           Status:             { select: { name: 'Open' } },
           'Source Evidence':  { rich_text: rt(t.evidence) },
-          Lifecycle:          { select: { name: 'Active' } },
-          'Extraction Confidence': { select: { name: 'High' } },
         } as any,
       });
       console.log(`  Created: ${t.title}`);
@@ -516,7 +514,6 @@ async function createEvents(): Promise<{ created: number; skipped: number }> {
           Status:        { select: { name: e.status } },
           Location:      { rich_text: rt(e.location) },
           Description:   { rich_text: rt(e.description) },
-          Lifecycle:     { select: { name: 'Active' } },
         } as any,
       });
       console.log(`  Created: ${e.name}`);
@@ -558,8 +555,6 @@ async function createCommitments(): Promise<{ created: number; skipped: number }
           'Effective Date':   { date: { start: c.effectiveDate } },
           'Review Date':      { date: { start: c.reviewDate } },
           'Source Evidence':  { rich_text: rt(c.evidence) },
-          Lifecycle:          { select: { name: 'Active' } },
-          'Extraction Confidence': { select: { name: 'High' } },
         } as any,
       });
       console.log(`  Created: ${c.title}`);
@@ -584,7 +579,7 @@ async function createGratitudes(): Promise<{ created: number; skipped: number }>
 
   for (const g of GRATITUDES_DATA) {
     try {
-      const existing = await findPageByTitle(DB_GRATITUDES, 'Title', g.title);
+      const existing = await findPageByTitle(DB_GRATITUDES, 'Appreciation', g.title);
       if (existing) {
         console.log(`  SKIP (exists): ${g.title}`);
         skipped++;
@@ -594,12 +589,9 @@ async function createGratitudes(): Promise<{ created: number; skipped: number }>
       await notion.pages.create({
         parent: { database_id: DB_GRATITUDES },
         properties: {
-          Title:               { title: rt(g.title) },
-          Appreciation:        { rich_text: rt(g.appreciation) },
+          Appreciation:        { title: rt(g.title) },
           Date:                { date: { start: g.date } },
           'Source Evidence':   { rich_text: rt(`Submitted by ${g.fromName}`) },
-          Lifecycle:           { select: { name: 'Active' } },
-          'Extraction Confidence': { select: { name: 'High' } },
         } as any,
       });
       console.log(`  Created: ${g.title}`);
