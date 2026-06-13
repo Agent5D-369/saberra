@@ -4,7 +4,11 @@ import type {
   QueryDatabaseParameters,
 } from '@notionhq/client/build/src/api-endpoints';
 import { getConfig, getNotionDatabaseIds } from '../config/ConfigService';
+import { HubSettingsService } from './HubSettingsService';
 import { logger } from '../config/logger';
+
+/** Sentinel returned by createPage when the operation is blocked by db permissions. */
+export const PERM_SKIP = '__perm_skip__';
 
 type NotionProperties = CreatePageParameters['properties'];
 // The Notion SDK's property union type is very wide; use this alias for builder returns
@@ -14,16 +18,27 @@ export type NotionPropValue = any;
 export class NotionWriterService {
   private readonly client: Client;
   readonly dbIds: ReturnType<typeof getNotionDatabaseIds>;
+  private readonly dbKeyById: Record<string, string>;
 
   constructor() {
     const config = getConfig();
     this.client = new Client({ auth: config.NOTION_API_KEY });
     this.dbIds = getNotionDatabaseIds(config);
+    this.dbKeyById = Object.fromEntries(
+      Object.entries(this.dbIds)
+        .filter(([, id]) => Boolean(id))
+        .map(([key, id]) => [id as string, key]),
+    );
   }
 
   // ─── Core helpers ──────────────────────────────────────────────────────────
 
   async createPage(databaseId: string, properties: Record<string, NotionPropValue>): Promise<string> {
+    const key = this.dbKeyById[databaseId];
+    if (key && !HubSettingsService.getInstance().canCreate(key)) {
+      logger.info({ key }, 'Write skipped: create permission disabled for database');
+      return PERM_SKIP;
+    }
     const page = await this.withRetry(() =>
       this.client.pages.create({
         parent: { database_id: databaseId },
@@ -33,7 +48,12 @@ export class NotionWriterService {
     return page.id;
   }
 
-  async updatePage(pageId: string, properties: Record<string, NotionPropValue>): Promise<void> {
+  async updatePage(pageId: string, properties: Record<string, NotionPropValue>, dbKey?: string): Promise<void> {
+    if (pageId === PERM_SKIP) return;
+    if (dbKey && !HubSettingsService.getInstance().canUpdate(dbKey)) {
+      logger.info({ dbKey }, 'Write skipped: update permission disabled for database');
+      return;
+    }
     await this.withRetry(() =>
       this.client.pages.update({
         page_id: pageId,

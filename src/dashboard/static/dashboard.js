@@ -1318,6 +1318,34 @@ function saveCorrectionMode() {
   });
 }
 
+function saveDbPermissions() {
+  var status = document.getElementById('db-perm-status');
+  var checkboxes = document.querySelectorAll('.db-perm');
+  var permissions = {};
+  checkboxes.forEach(function(cb) {
+    var key = cb.getAttribute('data-key');
+    var op = cb.getAttribute('data-op');
+    if (!key || !op) return;
+    if (!permissions[key]) permissions[key] = { create: true, update: true };
+    permissions[key][op] = cb.checked;
+  });
+  if (status) { status.textContent = 'Saving...'; status.style.color = 'var(--muted)'; }
+  fetch('/settings/db-permissions', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(permissions),
+  }).then(function(r) { return r.json(); }).then(function(d) {
+    if (d.ok) {
+      if (status) { status.textContent = 'Saved.'; status.style.color = 'var(--green)'; }
+      setTimeout(function() { if (status) status.textContent = ''; }, 3000);
+    } else {
+      if (status) { status.textContent = 'Error: ' + (d.error || 'unknown'); status.style.color = 'var(--red)'; }
+    }
+  }).catch(function() {
+    if (status) { status.textContent = 'Network error.'; status.style.color = 'var(--red)'; }
+  });
+}
+
 // Global helper: fill the Sera chat with a question and optionally auto-send it.
 // Called by collapse pattern "Ask Sera for guidance" buttons.
 window.askSera = function(question, autoSend) {

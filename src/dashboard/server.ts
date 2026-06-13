@@ -7,7 +7,7 @@ import * as http from 'http';
 import * as path from 'path';
 import { getDashboardData, resetAssetForRetry, resetEmailForRetry, clearDashboardCache } from './queries';
 import { renderDashboard, SABERRA_ICON_B64 } from './views';
-import { HubSettingsService } from '../services/HubSettingsService';
+import { HubSettingsService, type DbWritePermissions } from '../services/HubSettingsService';
 import { logger } from '../config/logger';
 
 const DASHBOARD_JS = fs.readFileSync(path.join(__dirname, 'static', 'dashboard.js'), 'utf8');
@@ -415,6 +415,25 @@ const server = http.createServer(async (req, res) => {
       res.end(JSON.stringify({ ok: true }));
     } catch (err) {
       logger.error(err, '/settings/correction-mode error');
+      res.writeHead(500, { 'Content-Type': 'application/json' });
+      res.end(JSON.stringify({ error: 'Failed to update — is NOTION_HUB_SETTINGS_PAGE_ID set?' }));
+    }
+    return;
+  }
+
+  // POST /settings/db-permissions — update per-database write permissions
+  if (method === 'POST' && url === '/settings/db-permissions') {
+    let body = '';
+    req.on('data', (c: Buffer) => { body += c; });
+    await new Promise<void>(resolve => req.on('end', resolve).on('close', resolve));
+    try {
+      const parsed = JSON.parse(body) as DbWritePermissions;
+      await HubSettingsService.getInstance().updateDbPermissions(parsed);
+      clearDashboardCache();
+      res.writeHead(200, { 'Content-Type': 'application/json' });
+      res.end(JSON.stringify({ ok: true }));
+    } catch (err) {
+      logger.error(err, '/settings/db-permissions error');
       res.writeHead(500, { 'Content-Type': 'application/json' });
       res.end(JSON.stringify({ error: 'Failed to update — is NOTION_HUB_SETTINGS_PAGE_ID set?' }));
     }

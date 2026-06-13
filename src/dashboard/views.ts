@@ -822,6 +822,12 @@ interface UiStrings {
   sectionCorrectionMode: string;
   correctionModeDesc: string;
   labelCorrectionMode: string;
+  sectionDbPermissions: string;
+  dbPermissionsDesc: string;
+  dbPermColCreate: string;
+  dbPermColUpdate: string;
+  dbPermLocked: string;
+  btnSavePermissions: string;
   sectionGoverningPurpose: string;
   gpsDesc: string;
   labelFullGps: string;
@@ -1031,11 +1037,17 @@ const UI_EN: UiStrings = {
   labelActiveTimezone: 'Active timezone:',
   btnSave: 'Save',
   sectionSeraLanguage: 'Hub Language',
-  languageDesc: 'Controls the language Sera uses for Q&A answers, role cards, circle charters, and all extracted Notion record fields. Changes take effect within 2 minutes - no redeploy needed. Use POST /normalize-language to clean up existing records written in the wrong language.',
+  languageDesc: 'Controls the language Sera writes all Notion record fields and Q&A answers in. Changes take effect within 2 minutes - no redeploy needed. Use POST /normalize-language to clean up existing records in the wrong language. Note: the dashboard UI itself only displays in English or Spanish — other languages apply to Notion records only.',
   labelResponseLanguage: 'Hub language:',
   sectionCorrectionMode: 'Record Correction Mode',
   correctionModeDesc: 'Controls how Sera handles records written in the wrong language. A: scan only (report). B: create Memory Review Queue items with proposed corrections (default). C/D: auto-update (coming soon). Changes take effect within 2 minutes.',
   labelCorrectionMode: 'Correction mode:',
+  sectionDbPermissions: 'Database Write Permissions',
+  dbPermissionsDesc: 'Controls whether Sera can create new records or update existing ones in each database. Disable Create to make a database read-only for new extraction. Disable Update to prevent Sera from overwriting existing records. Infrastructure databases are always writable.',
+  dbPermColCreate: 'Create',
+  dbPermColUpdate: 'Update',
+  dbPermLocked: 'Infrastructure',
+  btnSavePermissions: 'Save Permissions',
   sectionGoverningPurpose: 'Governing Purpose Statement',
   gpsDesc: 'Sera injects this into every extraction to score Purpose Alignment on all Decision Candidates. Changes take effect within 30 minutes — no redeploy needed.',
   labelFullGps: 'Full GPS',
@@ -1249,6 +1261,12 @@ const UI_ES: UiStrings = {
   sectionCorrectionMode: 'Modo de Corrección de Registros',
   correctionModeDesc: 'Controla cómo Sera maneja los registros escritos en el idioma incorrecto. A: solo escanear. B: crear elementos en la cola de revisión con correcciones propuestas (predeterminado). C/D: actualización automática (próximamente).',
   labelCorrectionMode: 'Modo de corrección:',
+  sectionDbPermissions: 'Permisos de Escritura por Base de Datos',
+  dbPermissionsDesc: 'Controla si Sera puede crear nuevos registros o actualizar los existentes en cada base de datos. Las bases de datos de infraestructura siempre son escribibles.',
+  dbPermColCreate: 'Crear',
+  dbPermColUpdate: 'Actualizar',
+  dbPermLocked: 'Infraestructura',
+  btnSavePermissions: 'Guardar Permisos',
   sectionGoverningPurpose: 'Declaración de Propósito Rector',
   gpsDesc: 'Sera inyecta esto en cada extracción para puntuar la Alineación de Propósito en todos los Candidatos de Decisión. Los cambios tienen efecto en 30 minutos, sin redespliegue.',
   labelFullGps: 'GPS Completo',
@@ -2270,6 +2288,73 @@ ${dataErrorBannerHtml}${alertBannerHtml}
             <span id="correction-mode-status" style="font-size:12px;color:var(--muted)"></span>
           </div>
         </div>
+      </div>
+      ` : `<p class="dim">${locale.ui.hubSettingsNotConfigured}</p>`}
+    </section>
+
+    <!-- ── Database Write Permissions ──────────────────── -->
+    <section>
+      <h2>${locale.ui.sectionDbPermissions}</h2>
+      <p class="dim" style="margin-bottom:16px">${locale.ui.dbPermissionsDesc}</p>
+      ${d.systemConfig.hubSettingsConfigured ? `
+      <div style="overflow-x:auto">
+        <table style="width:100%;border-collapse:collapse;font-size:13px">
+          <thead>
+            <tr style="border-bottom:2px solid var(--border)">
+              <th style="text-align:left;padding:8px 12px;font-weight:600;color:var(--muted)">Database</th>
+              <th style="text-align:center;padding:8px 12px;font-weight:600;color:var(--muted);width:80px">${locale.ui.dbPermColCreate}</th>
+              <th style="text-align:center;padding:8px 12px;font-weight:600;color:var(--muted);width:80px">${locale.ui.dbPermColUpdate}</th>
+            </tr>
+          </thead>
+          <tbody>
+            ${[
+              ['messages',           'Messages'],
+              ['profiles',           'Profiles'],
+              ['projects',           'Projects'],
+              ['circles',            'Circles'],
+              ['roles',              'Roles'],
+              ['roleAssignments',    'Role Assignments'],
+              ['tasks',              'Tasks'],
+              ['decisionCandidates', 'Decision Candidates'],
+              ['risks',              'Risks'],
+              ['memoryReviewQueue',  'Memory Review Queue'],
+              ['canonChangeRequests','Canon Change Requests'],
+              ['ccosLedgerEntries',  'CCOS Ledger Entries'],
+              ...(d.systemConfig.enabledDbs['knowledgeBase']  ? [['knowledgeBase',  'Knowledge Base']]  as [string,string][] : []),
+              ...(d.systemConfig.enabledDbs['interactions']   ? [['interactions',   'Interactions']]    as [string,string][] : []),
+              ...(d.systemConfig.enabledDbs['tensions']       ? [['tensions',       'Tensions']]        as [string,string][] : []),
+              ...(d.systemConfig.enabledDbs['commitments']    ? [['commitments',    'Commitments']]     as [string,string][] : []),
+              ...(d.systemConfig.enabledDbs['gratitudes']     ? [['gratitudes',     'Gratitudes']]      as [string,string][] : []),
+              ...(d.systemConfig.enabledDbs['events']         ? [['events',         'Events']]          as [string,string][] : []),
+              ...(d.systemConfig.enabledDbs['retrospectives'] ? [['retrospectives', 'Retrospectives']]  as [string,string][] : []),
+              ...(d.systemConfig.enabledDbs['resources']      ? [['resources',      'Resources']]       as [string,string][] : []),
+            ].map(([key, label]) => {
+              const p = d.systemConfig.dbPermissions[key as string];
+              const canCreate = p?.create !== false;
+              const canUpdate = p?.update !== false;
+              return `<tr style="border-bottom:1px solid var(--border)">
+                <td style="padding:8px 12px;font-weight:500">${label}</td>
+                <td style="text-align:center;padding:8px 12px"><input type="checkbox" class="db-perm" data-key="${key}" data-op="create"${canCreate ? ' checked' : ''} style="width:16px;height:16px;cursor:pointer;accent-color:var(--accent)"></td>
+                <td style="text-align:center;padding:8px 12px"><input type="checkbox" class="db-perm" data-key="${key}" data-op="update"${canUpdate ? ' checked' : ''} style="width:16px;height:16px;cursor:pointer;accent-color:var(--accent)"></td>
+              </tr>`;
+            }).join('')}
+            ${[
+              ['sourceEmails',   'Source Emails'],
+              ['meetings',       'Meetings'],
+              ['meetingAssets',  'Meeting Assets'],
+              ['processingEvents','Processing Events'],
+              ['sensitiveReview','Sensitive Review'],
+            ].map(([, label]) => `<tr style="border-bottom:1px solid var(--border);opacity:0.5">
+                <td style="padding:8px 12px">${label} <span style="font-size:10px;background:var(--border);color:var(--muted);padding:1px 5px;border-radius:4px;vertical-align:middle">${locale.ui.dbPermLocked}</span></td>
+                <td style="text-align:center;padding:8px 12px"><input type="checkbox" checked disabled style="width:16px;height:16px;accent-color:var(--accent)"></td>
+                <td style="text-align:center;padding:8px 12px"><input type="checkbox" checked disabled style="width:16px;height:16px;accent-color:var(--accent)"></td>
+              </tr>`).join('')}
+          </tbody>
+        </table>
+      </div>
+      <div style="margin-top:14px;display:flex;align-items:center;gap:10px">
+        <button onclick="saveDbPermissions()" style="font-size:13px;padding:6px 16px;background:var(--accent);color:#fff;border:none;border-radius:6px;cursor:pointer;font-weight:500">${locale.ui.btnSavePermissions}</button>
+        <span id="db-perm-status" style="font-size:12px;color:var(--muted)"></span>
       </div>
       ` : `<p class="dim">${locale.ui.hubSettingsNotConfigured}</p>`}
     </section>

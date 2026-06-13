@@ -288,6 +288,8 @@ export interface SystemConfig {
   purposeTest: string | null;
   outputLanguage: string;
   correctionMode: string;
+  dbPermissions: Record<string, { create: boolean; update: boolean }>;
+  enabledDbs: Record<string, boolean>;
   hubSettingsConfigured: boolean;
 }
 
@@ -396,6 +398,8 @@ function buildEmptyData(activeTz: string, error: string): DashboardData {
       purposeTest:           HubSettingsService.getInstance().purposeTest,
       outputLanguage:        HubSettingsService.getInstance().outputLanguage,
       correctionMode:        HubSettingsService.getInstance().correctionMode,
+      dbPermissions:         HubSettingsService.getInstance().dbPermissions,
+      enabledDbs:            {},
       hubSettingsConfigured: Boolean(process.env.NOTION_HUB_SETTINGS_PAGE_ID),
     },
     dataError: error,
@@ -877,6 +881,17 @@ async function fetchFreshData(activeTz = DASHBOARD_TZ): Promise<DashboardData> {
       purposeTest:            HubSettingsService.getInstance().purposeTest,
       outputLanguage:         HubSettingsService.getInstance().outputLanguage,
       correctionMode:         HubSettingsService.getInstance().correctionMode,
+      dbPermissions:          HubSettingsService.getInstance().dbPermissions,
+      enabledDbs: {
+        knowledgeBase:  Boolean(dbs.knowledgeBase),
+        interactions:   Boolean(dbs.interactions),
+        tensions:       Boolean(dbs.tensions),
+        commitments:    Boolean(dbs.commitments),
+        gratitudes:     Boolean(dbs.gratitudes),
+        events:         Boolean(dbs.events),
+        retrospectives: Boolean(dbs.retrospectives),
+        resources:      Boolean(dbs.resources),
+      },
       hubSettingsConfigured:  Boolean(process.env.NOTION_HUB_SETTINGS_PAGE_ID),
     },
   };

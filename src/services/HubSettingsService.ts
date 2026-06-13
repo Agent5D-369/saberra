@@ -7,11 +7,20 @@ const REFRESH_MS = 2 * 60 * 1000; // 2 minutes
 
 export type CorrectionMode = 'A' | 'B' | 'C' | 'D';
 
+export type DbWritePermissions = Record<string, { create: boolean; update: boolean }>;
+
+// These databases are infrastructure — always writable regardless of permissions settings.
+const LOCKED_DBS = new Set([
+  'sourceEmails', 'meetings', 'meetingAssets',
+  'processingEvents', 'sensitiveReview', 'policies',
+]);
+
 export interface HubSettings {
   governingPurpose: string | null;
   purposeTest: string | null;
   outputLanguage: string;
   correctionMode: CorrectionMode;
+  dbPermissions: DbWritePermissions;
   lastRefreshed: Date | null;
   source: 'notion' | 'env';
 }
@@ -33,6 +42,7 @@ export class HubSettingsService {
       purposeTest: process.env.AMORA_PURPOSE_TEST ?? null,
       outputLanguage: process.env.EXTRACTION_LANGUAGE ?? process.env.OUTPUT_LANGUAGE ?? 'English',
       correctionMode: (['A', 'B', 'C', 'D'].includes(rawCorrectionMode) ? rawCorrectionMode : 'B') as CorrectionMode,
+      dbPermissions: {},
       lastRefreshed: null,
       source: 'env',
     };
@@ -56,6 +66,19 @@ export class HubSettingsService {
   get purposeTest(): string | null { return this.settings.purposeTest; }
   get outputLanguage(): string { return this.settings.outputLanguage; }
   get correctionMode(): CorrectionMode { return this.settings.correctionMode; }
+  get dbPermissions(): DbWritePermissions { return this.settings.dbPermissions; }
+
+  canCreate(dbKey: string): boolean {
+    if (LOCKED_DBS.has(dbKey)) return true;
+    const p = this.settings.dbPermissions[dbKey];
+    return p === undefined ? true : p.create;
+  }
+
+  canUpdate(dbKey: string): boolean {
+    if (LOCKED_DBS.has(dbKey)) return true;
+    const p = this.settings.dbPermissions[dbKey];
+    return p === undefined ? true : p.update;
+  }
 
   getSettings(): HubSettings { return { ...this.settings }; }
 
@@ -87,6 +110,13 @@ export class HubSettingsService {
     logger.info({ mode }, 'Hub Settings: record_correction_mode updated');
   }
 
+  async updateDbPermissions(permissions: DbWritePermissions): Promise<void> {
+    if (!this.pageId) throw new Error('NOTION_HUB_SETTINGS_PAGE_ID not set');
+    await this.writeBlock('db_permissions', JSON.stringify(permissions));
+    this.settings.dbPermissions = permissions;
+    logger.info('Hub Settings: db_permissions updated');
+  }
+
   private async refresh(): Promise<void> {
     if (!this.pageId) return;
     try {
@@ -102,6 +132,10 @@ export class HubSettingsService {
       if (corrMode) {
         const upper = corrMode.trim().toUpperCase();
         if (['A', 'B', 'C', 'D'].includes(upper)) this.settings.correctionMode = upper as CorrectionMode;
+      }
+      const dbPermsRaw = this.extractValue(blocks, 'db_permissions');
+      if (dbPermsRaw) {
+        try { this.settings.dbPermissions = JSON.parse(dbPermsRaw) as DbWritePermissions; } catch {}
       }
       this.settings.lastRefreshed = new Date();
       this.settings.source = 'notion';
