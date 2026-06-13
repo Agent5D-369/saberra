@@ -1286,8 +1286,8 @@ function saveLanguage() {
     body: 'language=' + encodeURIComponent(lang),
   }).then(function(r) { return r.json(); }).then(function(d) {
     if (d.ok) {
-      if (status) { status.textContent = 'Saved.'; status.style.color = 'var(--green)'; }
-      setTimeout(function() { window.location.reload(); }, 800);
+      if (status) { status.textContent = 'Saved. Worker syncing within 2 min.'; status.style.color = 'var(--muted)'; }
+      setTimeout(function() { if (status) { status.textContent = 'Active.'; status.style.color = 'var(--green)'; } }, 120000);
     } else {
       if (status) { status.textContent = 'Error: ' + (d.error || 'unknown'); status.style.color = 'var(--red)'; }
     }
@@ -1308,8 +1308,8 @@ function saveCorrectionMode() {
     body: 'mode=' + encodeURIComponent(mode),
   }).then(function(r) { return r.json(); }).then(function(d) {
     if (d.ok) {
-      if (status) { status.textContent = 'Saved.'; status.style.color = 'var(--green)'; }
-      setTimeout(function() { window.location.reload(); }, 800);
+      if (status) { status.textContent = 'Saved. Worker syncing within 2 min.'; status.style.color = 'var(--muted)'; }
+      setTimeout(function() { if (status) { status.textContent = 'Active.'; status.style.color = 'var(--green)'; } }, 120000);
     } else {
       if (status) { status.textContent = 'Error: ' + (d.error || 'unknown'); status.style.color = 'var(--red)'; }
     }
@@ -1336,8 +1336,21 @@ function saveDbPermissions() {
     body: JSON.stringify(permissions),
   }).then(function(r) { return r.json(); }).then(function(d) {
     if (d.ok) {
-      if (status) { status.textContent = 'Saved.'; status.style.color = 'var(--green)'; }
-      setTimeout(function() { if (status) status.textContent = ''; }, 3000);
+      if (status) {
+        var secs = 120;
+        status.style.color = 'var(--muted)';
+        var tick = setInterval(function() {
+          secs--;
+          if (!status) { clearInterval(tick); return; }
+          if (secs <= 0) {
+            clearInterval(tick);
+            status.textContent = 'Active on all services.';
+            status.style.color = 'var(--green)';
+          } else {
+            status.textContent = 'Saved. Worker syncing... (' + secs + 's)';
+          }
+        }, 1000);
+      }
     } else {
       if (status) { status.textContent = 'Error: ' + (d.error || 'unknown'); status.style.color = 'var(--red)'; }
     }
