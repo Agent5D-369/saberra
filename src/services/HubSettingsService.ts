@@ -129,6 +129,12 @@ export class HubSettingsService {
   private async writeBlock(key: string, value: string): Promise<void> {
     const resp = await this.notion.blocks.children.list({ block_id: this.pageId!, page_size: 50 });
     const blocks = resp.results as BlockObjectResponse[];
+
+    // Notion max rich_text content per block is 2000 chars; split if needed
+    const chunks: string[] = [];
+    for (let s = 0; s < value.length; s += 2000) chunks.push(value.slice(s, s + 2000));
+    const richText = chunks.map(c => ({ type: 'text', text: { content: c } }));
+
     for (let i = 0; i < blocks.length - 1; i++) {
       const b = blocks[i] as any;
       if (b.type === 'heading_2') {
@@ -136,18 +142,24 @@ export class HubSettingsService {
         if (heading === key) {
           const next = blocks[i + 1] as any;
           if (next?.type === 'paragraph') {
-            // Notion max rich_text content per block is 2000 chars; split if needed
-            const chunks: string[] = [];
-            for (let s = 0; s < value.length; s += 2000) chunks.push(value.slice(s, s + 2000));
             await (this.notion.blocks.update as any)({
               block_id: next.id,
-              paragraph: { rich_text: chunks.map(c => ({ type: 'text', text: { content: c } })) },
+              paragraph: { rich_text: richText },
             });
             return;
           }
         }
       }
     }
-    throw new Error(`Hub Settings: block for key "${key}" not found in page`);
+
+    // Block pair not found — create it by appending to the page
+    await (this.notion.blocks.children.append as any)({
+      block_id: this.pageId!,
+      children: [
+        { type: 'heading_2', heading_2: { rich_text: [{ type: 'text', text: { content: key } }] } },
+        { type: 'paragraph', paragraph: { rich_text: richText } },
+      ],
+    });
+    logger.info({ key }, 'Hub Settings: created new setting block');
   }
 }

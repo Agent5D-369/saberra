@@ -1295,3 +1295,20 @@ function saveLanguage() {
     if (status) { status.textContent = 'Network error.'; status.style.color = 'var(--red)'; }
   });
 }
+
+// Global helper: fill the Sera chat with a question and optionally auto-send it.
+// Called by collapse pattern "Ask Sera for guidance" buttons.
+window.askSera = function(question, autoSend) {
+  var inp = document.getElementById('chat-input');
+  if (!inp) return;
+  // Switch to Sera chat tab if visible
+  if (typeof window.switchTab === 'function') window.switchTab('sera-chat');
+  inp.value = question;
+  inp.style.height = 'auto';
+  inp.style.height = Math.min(inp.scrollHeight, 140) + 'px';
+  inp.focus();
+  if (autoSend) {
+    var sendBtn = document.getElementById('chat-send');
+    if (sendBtn && !sendBtn.disabled) setTimeout(function() { sendBtn.click(); }, 100);
+  }
+};

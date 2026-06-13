@@ -1027,9 +1027,9 @@ const UI_EN: UiStrings = {
   timezoneDesc: 'Controls how "Last 7 Days" counts and date displays are calculated. Your selection is saved in a browser cookie.',
   labelActiveTimezone: 'Active timezone:',
   btnSave: 'Save',
-  sectionSeraLanguage: 'Sera Response Language',
-  languageDesc: 'Controls the language Sera uses in Q&A answers, role cards, and circle charters. Notion record field values remain in English for consistency. Changes take effect within 30 minutes - no redeploy needed.',
-  labelResponseLanguage: 'Response language:',
+  sectionSeraLanguage: 'Hub Language',
+  languageDesc: 'Controls the language Sera uses for Q&A answers, role cards, circle charters, and all extracted Notion record fields. Changes take effect within 2 minutes - no redeploy needed. Use POST /normalize-language to clean up existing records written in the wrong language.',
+  labelResponseLanguage: 'Hub language:',
   sectionGoverningPurpose: 'Governing Purpose Statement',
   gpsDesc: 'Sera injects this into every extraction to score Purpose Alignment on all Decision Candidates. Changes take effect within 30 minutes — no redeploy needed.',
   labelFullGps: 'Full GPS',
@@ -1237,9 +1237,9 @@ const UI_ES: UiStrings = {
   timezoneDesc: 'Controla cómo se calculan los conteos de "Últimos 7 Días" y la visualización de fechas. Tu selección se guarda en una cookie del navegador.',
   labelActiveTimezone: 'Zona horaria activa:',
   btnSave: 'Guardar',
-  sectionSeraLanguage: 'Idioma de Respuesta de Sera',
-  languageDesc: 'Controla el idioma que usa Sera en respuestas de Q&A, tarjetas de roles y estatutos de círculos. Los valores de campos en Notion permanecen en inglés por consistencia. Los cambios tienen efecto en 30 minutos, sin redespliegue.',
-  labelResponseLanguage: 'Idioma de respuesta:',
+  sectionSeraLanguage: 'Idioma del Hub',
+  languageDesc: 'Controla el idioma que usa Sera en respuestas de Q&A, tarjetas de roles, estatutos de círculos y todos los campos de registros en Notion. Los cambios tienen efecto en 2 minutos, sin redespliegue.',
+  labelResponseLanguage: 'Idioma del hub:',
   sectionGoverningPurpose: 'Declaración de Propósito Rector',
   gpsDesc: 'Sera inyecta esto en cada extracción para puntuar la Alineación de Propósito en todos los Candidatos de Decisión. Los cambios tienen efecto en 30 minutos, sin redespliegue.',
   labelFullGps: 'GPS Completo',
@@ -1306,19 +1306,58 @@ function buildCollapseHealthSection(d: DashboardData, ui: UiStrings): string {
   const headerCls = total === 0 ? 'ok' : anyHigh ? 'err' : 'warn';
   const headerMsg = total === 0 ? ui.collapseAllClear : ui.collapseHasSignals(total);
 
+  // Group signals by pattern for the expanded panel
+  const signalsByPattern: Record<string, typeof ch.signals> = {};
+  for (const s of ch.signals) { (signalsByPattern[s.patternType] ??= []).push(s); }
+
   const patternCards = (COLLAPSE_PATTERNS as readonly string[]).map(name => {
     const count = ch.patternCounts[name] ?? 0;
     const statusColor = count === 0 ? 'var(--green)' : count <= 2 ? 'var(--amber)' : 'var(--red)';
     const statusLabel = count === 0 ? ui.collapseStatusClear : count <= 2 ? ui.collapseStatusWarning : ui.collapseStatusCritical;
-    return `<div style="background:var(--card);border:1px solid ${count === 0 ? 'var(--card-border)' : statusColor};border-radius:10px;padding:14px 16px;display:flex;flex-direction:column;gap:6px">
+
+    const cardInner = `
       <div style="display:flex;align-items:center;justify-content:space-between;gap:8px">
         <span style="font-size:18px">${PATTERN_ICONS[name] ?? ''}</span>
         <span style="font-size:11px;font-weight:600;padding:2px 8px;border-radius:99px;background:${statusColor}22;color:${statusColor}">${statusLabel}</span>
       </div>
       <div style="font-weight:600;font-size:13px">${esc(name)}</div>
       <div style="font-size:11px;color:var(--muted)">${esc(PATTERN_DESCRIPTIONS[name] ?? '')}</div>
-      ${count > 0 ? `<div style="font-size:20px;font-weight:700;color:${statusColor};margin-top:4px">${count}</div>` : `<div style="font-size:12px;color:var(--green);margin-top:4px">${ui.collapseNoSignals}</div>`}
-    </div>`;
+      ${count > 0 ? `<div style="font-size:20px;font-weight:700;color:${statusColor};margin-top:4px">${count}</div>` : `<div style="font-size:12px;color:var(--green);margin-top:4px">${ui.collapseNoSignals}</div>`}`;
+
+    if (count === 0) {
+      return `<div style="background:var(--card);border:1px solid var(--card-border);border-radius:10px;padding:14px 16px;display:flex;flex-direction:column;gap:6px">${cardInner}</div>`;
+    }
+
+    // Active pattern: make it an expandable details panel
+    const patternSignals = signalsByPattern[name] ?? [];
+    const signalItems = patternSignals.map(s => {
+      const display = s.risk.replace(/^\[[^\]]+\]\s*/, '');
+      const sevColor = s.severity === 'High' ? 'var(--red)' : 'var(--amber)';
+      return `<div style="display:flex;align-items:flex-start;gap:8px;padding:6px 0;border-bottom:1px solid var(--card-border)">
+        <span style="font-size:11px;padding:1px 6px;border-radius:99px;background:${sevColor}22;color:${sevColor};font-weight:600;flex-shrink:0;margin-top:1px">${esc(s.severity)}</span>
+        <div style="flex:1;min-width:0">
+          ${s.url ? `<a href="${esc(s.url)}" target="_blank" rel="noopener" style="font-size:12px;color:var(--accent);text-decoration:none">${esc(display)}</a>` : `<span style="font-size:12px">${esc(display)}</span>`}
+          <div style="font-size:11px;color:var(--muted)">${esc(s.detectedAt)}</div>
+        </div>
+      </div>`;
+    }).join('');
+
+    const signalSummaryLines = patternSignals
+      .map(s => `- "${s.risk.replace(/^\[[^\]]+\]\s*/, '')}" (${s.severity})`)
+      .join('\n');
+    const seraQ = `We have ${count} active ${name} signal${count !== 1 ? 's' : ''} in our organization:\n${signalSummaryLines}\n\nWhat are the 3-5 most important actions to address this ${name} pattern? Reference any relevant circle roles, open decisions, or policies. Be specific and context-sensitive.`;
+
+    return `<details style="background:var(--card);border:1px solid ${statusColor};border-radius:10px;overflow:hidden">
+      <summary style="padding:14px 16px;display:flex;flex-direction:column;gap:6px;cursor:pointer;list-style:none;-webkit-details-marker:display:none">
+        ${cardInner}
+        <div style="font-size:11px;color:var(--accent);margin-top:2px">Click to view sources &amp; get guidance</div>
+      </summary>
+      <div style="padding:0 14px 14px;border-top:1px solid ${statusColor}33;margin-top:4px">
+        <div style="font-size:11px;font-weight:600;color:var(--muted);margin:10px 0 6px">Signal sources:</div>
+        ${signalItems}
+        <button data-sera-q="${esc(seraQ)}" onclick="window.askSera(this.getAttribute('data-sera-q'),true)" style="margin-top:10px;width:100%;background:var(--accent);color:#fff;border:none;border-radius:8px;padding:8px 12px;font-size:12px;font-weight:600;cursor:pointer">Ask Sera for guidance</button>
+      </div>
+    </details>`;
   }).join('');
 
   const signalRows = ch.signals.length === 0 ? '' : `
@@ -1328,7 +1367,7 @@ function buildCollapseHealthSection(d: DashboardData, ui: UiStrings): string {
         ${ch.signals.slice(0, 10).map(s => {
           const sevColor = s.severity === 'High' ? 'var(--red)' : s.severity === 'Medium' ? 'var(--amber)' : 'var(--muted)';
           const display = s.risk.replace(/^\[[^\]]+\]\s*/, '');
-          return `<div style="display:flex;align-items:flex-start;gap:10px;padding:10px 12px;background:var(--card);border:1px solid var(--card-border);border-left:3px solid ${sevColor};border-radius:8px">
+          return `<a href="${s.url ? esc(s.url) : '#'}" target="_blank" rel="noopener" style="text-decoration:none;color:inherit;display:flex;align-items:flex-start;gap:10px;padding:10px 12px;background:var(--card);border:1px solid var(--card-border);border-left:3px solid ${sevColor};border-radius:8px">
             <div style="flex:1;min-width:0">
               <div style="font-size:12px;font-weight:600;color:var(--muted);margin-bottom:2px">${esc(s.patternType)}</div>
               <div style="font-size:13px">${esc(display)}</div>
@@ -1337,7 +1376,7 @@ function buildCollapseHealthSection(d: DashboardData, ui: UiStrings): string {
               <span style="font-size:11px;padding:2px 7px;border-radius:99px;background:${sevColor}22;color:${sevColor};font-weight:600">${esc(s.severity)}</span>
               <span style="font-size:11px;color:var(--muted)">${esc(s.detectedAt)}</span>
             </div>
-          </div>`;
+          </a>`;
         }).join('')}
         ${ch.signals.length > 10 ? `<div style="font-size:12px;color:var(--muted);padding:6px 0">${ui.collapseAndMore(ch.signals.length - 10)}</div>` : ''}
       </div>
@@ -1347,7 +1386,7 @@ function buildCollapseHealthSection(d: DashboardData, ui: UiStrings): string {
     <h2>${ui.sectionCollapseHealth}</h2>
     <p class="dim" style="margin-bottom:14px">${ui.collapseHealthDesc}</p>
     <div class="banner ${headerCls}">${headerMsg}</div>
-    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:12px;margin-top:16px">
+    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:12px;margin-top:16px">
       ${patternCards}
     </div>
     ${signalRows}
