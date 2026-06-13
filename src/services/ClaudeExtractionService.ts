@@ -4,6 +4,7 @@ import * as fs from 'fs';
 import * as path from 'path';
 import { NotionWriterService } from './NotionWriterService';
 import { HubSettingsService } from './HubSettingsService';
+import { PluginService } from '../plugins/PluginService';
 import { logger } from '../config/logger';
 import { getConfig } from '../config/ConfigService';
 import { sanitizeDate, sanitizeSelect } from '../utils/sanitize';
@@ -479,6 +480,17 @@ Return JSON with exactly these keys:
     let sensitiveReviewRequired = false;
     const sensitiveRecordIds: string[] = [];
     const canonRecordIds: string[] = [];
+
+    // Plugin hook: onExtractionComplete — runs before any Notion writes.
+    // Plugin may mutate extraction to add custom fields or entity types.
+    await PluginService.getInstance().callOnExtractionComplete({
+      extraction,
+      sourceDate,
+      sourceEmailPageId,
+      sourceMeetingPageId,
+      sourceDocUrl: sourceDocUrl ?? null,
+    });
+
     // Truncate full-text to a short title if Claude didn't provide one
     const shortLabel = (text: string | undefined, fallback: string, max = 80): string => {
       if (!text) return fallback;
@@ -1596,6 +1608,16 @@ Return JSON with exactly these keys:
         logger.warn({ err }, 'Interaction log failed — non-fatal');
       }
     }
+
+    // Plugin hook: onRecordsWritten — runs after all core Notion writes complete.
+    await PluginService.getInstance().callOnRecordsWritten({
+      createdRecords: created,
+      sourceDate,
+      sourceEmailPageId,
+      sourceMeetingPageId,
+      canonReviewRequired,
+      sensitiveReviewRequired,
+    });
 
     return { createdRecords: created, canonReviewRequired, sensitiveReviewRequired, sensitiveRecordIds, canonRecordIds };
   }

@@ -9,8 +9,9 @@ import { getConfig } from '../config/ConfigService';
 import { SeraQAService, type StreamEvent, type AttachmentInput } from './SeraQAService';
 import { ClaudeExtractionService } from '../services/ClaudeExtractionService';
 import { NotionWriterService } from '../services/NotionWriterService';
-import { HubSettingsService, type CorrectionMode } from '../services/HubSettingsService';
+import { HubSettingsService, type CorrectionMode, type DbWritePermissions } from '../services/HubSettingsService';
 import { LanguageNormalizationService } from '../services/LanguageNormalizationService';
+import { PluginService } from '../plugins/PluginService';
 import { handleSse, handleMcpPost, handleMcpHttp } from './mcpServer';
 import { handleOAuthMetadata, handleOAuthAuthorizeGet, handleOAuthAuthorizePost, handleOAuthToken, handleOAuthRegister, handleProtectedResourceMetadata } from './oauthServer';
 
@@ -63,6 +64,7 @@ function readBody(req: http.IncomingMessage, maxBytes = BODY_LIMIT_SMALL): Promi
 }
 
 HubSettingsService.getInstance().init().catch(() => {});
+PluginService.getInstance().init(process.env.TENANT_ID ?? '').catch(() => {});
 
 // Per-IP rate limit for /ask-stream: 20 requests per minute
 const streamRateLimitMap = new Map<string, { count: number; resetAt: number }>();

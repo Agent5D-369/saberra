@@ -5,6 +5,7 @@ import { getConfig } from './config/ConfigService';
 import { logger } from './config/logger';
 import { PipelineService } from './services/PipelineService';
 import { HubSettingsService } from './services/HubSettingsService';
+import { PluginService } from './plugins/PluginService';
 
 async function main(): Promise<void> {
   logger.info({ tenant: process.env.TENANT_ID }, 'Sera starting');
@@ -13,6 +14,7 @@ async function main(): Promise<void> {
   logger.info({ tenantId: config.TENANT_ID, rootsEmail: config.ROOTS_EMAIL }, 'Config loaded');
 
   await HubSettingsService.getInstance().init();
+  await PluginService.getInstance().init(config.TENANT_ID);
   const pipeline = new PipelineService();
   const intervalMs = config.GMAIL_POLL_INTERVAL_SECONDS * 1000;
 
