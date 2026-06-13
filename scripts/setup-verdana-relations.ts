@@ -413,7 +413,7 @@ async function main() {
     addRelation(DB.roleAssignments, 'Circle', DB.circles, 'Circle Assignments'));
 
   await step('Role Assignments: add Energization Level select', () =>
-    addSelect(DB.roleAssignments, 'Energization Level', ['Full', 'Partial', 'Flagging', 'Seeking Successor']));
+    addSelect(DB.roleAssignments, 'Energization Level', ['Energized', 'Willing', 'Unwilling']));
 
   await step('Role Assignments: delete Role Text (cleanup)', () =>
     deleteProperty(DB.roleAssignments, 'Role Text'));

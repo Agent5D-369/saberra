@@ -71,8 +71,11 @@ const configSchema = z.object({
   // Governing Purpose Statement — stored as env var, injected into every extraction
   // Format: full multi-sentence purpose statement following the Teal GPS formula
   // Optional — when set, Sera evaluates every decision and canon change for purpose alignment
-  AMORA_GOVERNING_PURPOSE: z.string().min(1).optional(),
+  GOVERNING_PURPOSE: z.string().min(1).optional(),
   // One-sentence decision test derived from the GPS (e.g. "Does this move us from X to Y without degrading people, trust, or the land?")
+  PURPOSE_TEST: z.string().min(1).optional(),
+  // Legacy aliases - read during transition; prefer GOVERNING_PURPOSE / PURPOSE_TEST for new clients
+  AMORA_GOVERNING_PURPOSE: z.string().min(1).optional(),
   AMORA_PURPOSE_TEST: z.string().min(1).optional(),
 
   ORG_SHARED_DRIVE_ID:              z.string().min(1).optional(),
@@ -81,6 +84,8 @@ const configSchema = z.object({
   // Notion workspace slug (e.g. "newearthcocreators"). When set, dashboard Notion links
   // use https://app.notion.com/p/{slug}/{id} format. When absent, falls back to www.notion.so/{uuid}.
   NOTION_WORKSPACE_SLUG: z.string().min(1).optional(),
+  // Verification token from Notion workspace webhook settings (enables POST /webhook/notion)
+  NOTION_WEBHOOK_SECRET: z.string().min(1).optional(),
 
   // Comma-separated list of email addresses. All receive access request and review alerts.
   ADMIN_NOTIFICATION_EMAIL: z.string().min(1).refine(

@@ -38,8 +38,8 @@ export class HubSettingsService {
     this.pageId = process.env.NOTION_HUB_SETTINGS_PAGE_ID ?? null;
     const rawCorrectionMode = process.env.RECORD_CORRECTION_MODE ?? 'B';
     this.settings = {
-      governingPurpose: process.env.AMORA_GOVERNING_PURPOSE ?? null,
-      purposeTest: process.env.AMORA_PURPOSE_TEST ?? null,
+      governingPurpose: process.env.GOVERNING_PURPOSE ?? process.env.AMORA_GOVERNING_PURPOSE ?? null,
+      purposeTest: process.env.PURPOSE_TEST ?? process.env.AMORA_PURPOSE_TEST ?? null,
       outputLanguage: process.env.EXTRACTION_LANGUAGE ?? process.env.OUTPUT_LANGUAGE ?? 'English',
       correctionMode: (['A', 'B', 'C', 'D'].includes(rawCorrectionMode) ? rawCorrectionMode : 'B') as CorrectionMode,
       dbPermissions: {},

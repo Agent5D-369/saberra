@@ -5,7 +5,7 @@ import * as http from 'http';
 import * as crypto from 'crypto';
 import { Client } from '@notionhq/client';
 import { logger } from '../config/logger';
-import { getConfig } from '../config/ConfigService';
+import { getConfig, getNotionDatabaseIds } from '../config/ConfigService';
 import { SeraQAService, type StreamEvent, type AttachmentInput } from './SeraQAService';
 import { ClaudeExtractionService } from '../services/ClaudeExtractionService';
 import { NotionWriterService } from '../services/NotionWriterService';
@@ -66,6 +66,23 @@ function readBody(req: http.IncomingMessage, maxBytes = BODY_LIMIT_SMALL): Promi
 HubSettingsService.getInstance().init().catch(() => {});
 PluginService.getInstance().init(process.env.TENANT_ID ?? '').catch(() => {});
 
+// Static health info — built once at startup, no API calls on every /health request
+const _healthInfo = (() => {
+  try {
+    const cfg = getConfig();
+    const ids = getNotionDatabaseIds(cfg);
+    const required = ['sourceEmails', 'meetings', 'meetingAssets', 'messages', 'profiles', 'projects', 'circles', 'roles', 'roleAssignments', 'tasks', 'decisionCandidates', 'risks', 'memoryReviewQueue', 'canonChangeRequests', 'ccosLedgerEntries', 'processingEvents', 'sensitiveReview'] as const;
+    const missing = required.filter(k => !ids[k]);
+    return {
+      tenant: cfg.SABERRA_CLIENT_NAME ?? cfg.TENANT_ID ?? 'unknown',
+      dbsConfigured: Object.values(ids).filter(Boolean).length,
+      dbsMissing: missing,
+    };
+  } catch {
+    return { tenant: 'unknown', dbsConfigured: 0, dbsMissing: [] as string[] };
+  }
+})();
+
 // Per-IP rate limit for /ask-stream: 20 requests per minute
 const streamRateLimitMap = new Map<string, { count: number; resetAt: number }>();
 setInterval(() => {
@@ -95,7 +112,15 @@ const server = http.createServer(async (req, res) => {
   // ── Public routes (no auth) ────────────────────────────────────────────────
 
   if (method === 'GET' && path === '/health') {
-    json(res, 200, { status: 'ok', service: 'sera-api', ts: new Date().toISOString() });
+    const status = _healthInfo.dbsMissing.length === 0 ? 'ok' : 'degraded';
+    json(res, 200, {
+      status,
+      service: 'sera-api',
+      tenant: _healthInfo.tenant,
+      dbsConfigured: _healthInfo.dbsConfigured,
+      dbsMissing: _healthInfo.dbsMissing,
+      ts: new Date().toISOString(),
+    });
     return;
   }
 
@@ -454,6 +479,49 @@ const server = http.createServer(async (req, res) => {
     } catch (err) {
       logger.error(err, '/normalize-language error');
       json(res, 500, { error: 'Language normalization failed - check logs' });
+    }
+    return;
+  }
+
+  // ── POST /webhook/notion ───────────────────────────────────────────────────
+  // Receives Notion workspace webhook events (beta). Verifies HMAC-SHA256 signature.
+  // NOTION_WEBHOOK_SECRET must be set to the verification token from Notion settings.
+  // Events are logged; page.updated events trigger a re-extraction queue entry (future).
+  if (method === 'POST' && path === '/webhook/notion') {
+    const secret = process.env.NOTION_WEBHOOK_SECRET;
+    if (!secret) { json(res, 503, { error: 'Notion webhooks not configured — NOTION_WEBHOOK_SECRET not set' }); return; }
+
+    // Collect raw body for signature verification
+    const rawChunks: Buffer[] = [];
+    let rawSize = 0;
+    for await (const chunk of req as AsyncIterable<Buffer>) {
+      rawSize += chunk.length;
+      if (rawSize > BODY_LIMIT_SMALL) { res.writeHead(413).end(); return; }
+      rawChunks.push(chunk);
+    }
+    const rawBody = Buffer.concat(rawChunks);
+
+    // Verify signature: X-Notion-Signature: sha256=<hex>
+    const sigHeader = String(req.headers['x-notion-signature'] ?? '');
+    const expectedSig = 'sha256=' + crypto.createHmac('sha256', secret).update(rawBody).digest('hex');
+    if (!sigHeader || sigHeader.length !== expectedSig.length || !crypto.timingSafeEqual(Buffer.from(sigHeader), Buffer.from(expectedSig))) {
+      logger.warn({ sigHeader }, 'Notion webhook: invalid signature');
+      json(res, 401, { error: 'Invalid signature' });
+      return;
+    }
+
+    let payload: unknown;
+    try { payload = JSON.parse(rawBody.toString('utf-8')); } catch { json(res, 400, { error: 'Invalid JSON' }); return; }
+
+    const event = payload as { type?: string; entity?: { id?: string; type?: string }; data?: unknown };
+    logger.info({ type: event.type, entityId: event.entity?.id, entityType: event.entity?.type }, 'Notion webhook received');
+
+    // Acknowledge immediately; processing happens async
+    json(res, 200, { received: true });
+
+    // Future: queue page.updated events for targeted re-extraction
+    if (event.type === 'page.updated' && event.entity?.id) {
+      logger.info({ pageId: event.entity.id }, 'Notion webhook: page.updated queued for review');
     }
     return;
   }

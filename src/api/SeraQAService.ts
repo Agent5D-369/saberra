@@ -296,7 +296,7 @@ export class SeraQAService {
     this.anthropic = new Anthropic({ apiKey: config.ANTHROPIC_API_KEY, maxRetries: 3, timeout: 60_000 });
     this.notion = new Client({ auth: config.NOTION_API_KEY });
     this.model = config.CLAUDE_MODEL;
-    this.governingPurpose = config.AMORA_GOVERNING_PURPOSE ?? null;
+    this.governingPurpose = config.GOVERNING_PURPOSE ?? config.AMORA_GOVERNING_PURPOSE ?? null;
     this.clientName = config.SABERRA_CLIENT_NAME ?? config.TENANT_ID ?? 'your organization';
   }
 

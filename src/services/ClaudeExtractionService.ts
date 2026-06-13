@@ -210,8 +210,8 @@ export class ClaudeExtractionService {
     });
     this.model = config.CLAUDE_MODEL;
     // Seed from env vars; HubSettingsService will override with live Notion values
-    this.governingPurpose = config.AMORA_GOVERNING_PURPOSE ?? null;
-    this.purposeTest = config.AMORA_PURPOSE_TEST ?? null;
+    this.governingPurpose = config.GOVERNING_PURPOSE ?? config.AMORA_GOVERNING_PURPOSE ?? null;
+    this.purposeTest = config.PURPOSE_TEST ?? config.AMORA_PURPOSE_TEST ?? null;
   }
 
   // ─── Extract ──────────────────────────────────────────────────────────────
