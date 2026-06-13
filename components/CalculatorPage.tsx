@@ -930,9 +930,9 @@ function CTASection({ state }: { state: CalculatorState }) {
     if (!email.trim()) return;
     setSendStatus("sending");
     try {
-      const response = await fetch(formspreeForms.demoRequest, {
+      const response = await fetch(formspreeForms.calculatorResults, {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: { "Content-Type": "application/json", Accept: "application/json" },
         body: JSON.stringify({
           name,
           email,

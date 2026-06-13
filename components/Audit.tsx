@@ -2,34 +2,7 @@
 
 import { useMemo, useState } from "react";
 import { CTAButton, SeraPortrait, SourceBadge } from "@/components/UI";
-
-// ── Kit integration ───────────────────────────────────────────────────────────
-// Fill in your Kit API key and sequence ID to activate email nurture
-const KIT_API_KEY      = "REPLACE_WITH_KIT_API_KEY";       // Kit → Settings → API
-const KIT_SEQUENCE_ID  = "REPLACE_WITH_KIT_SEQUENCE_ID";   // Kit → Sequences → URL
-
-async function subscribeToKit(email: string, firstName: string, score: number, band: string, segment: string) {
-  if (KIT_API_KEY === "REPLACE_WITH_KIT_API_KEY") return; // skip if not configured
-  try {
-    await fetch(`https://api.convertkit.com/v3/sequences/${KIT_SEQUENCE_ID}/subscribe`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        api_key: KIT_API_KEY,
-        email,
-        first_name: firstName,
-        fields: {
-          audit_score: String(score),
-          audit_band:  band,
-          audit_segment: segment,
-        },
-        tags: [`audit-${band.toLowerCase()}`],
-      }),
-    });
-  } catch {
-    // silent — don't block the UI
-  }
-}
+import { formspreeForms } from "@/lib/site";
 
 const segments = [
   "Self-managing or governance-driven team",
@@ -212,11 +185,11 @@ export function Audit() {
   const [seraAnswer, setSeraAnswer] = useState("");
   const [seraAsked, setSeraAsked] = useState(false);
 
-  // Kit email capture
-  const [kitEmail, setKitEmail]           = useState("");
-  const [kitName, setKitName]             = useState("");
-  const [kitSubmitted, setKitSubmitted]   = useState(false);
-  const [kitLoading, setKitLoading]       = useState(false);
+  const [kitEmail, setKitEmail] = useState("");
+  const [kitName, setKitName] = useState("");
+  const [kitSubmitted, setKitSubmitted] = useState(false);
+  const [kitLoading, setKitLoading] = useState(false);
+  const [kitError, setKitError] = useState(false);
 
   const score = useMemo(() => answers.reduce((sum, value) => sum + value, 0), [answers]);
   const { label: bandLabel } = band(score);
@@ -233,9 +206,31 @@ export function Audit() {
   async function handleKitSubmit() {
     if (!kitEmail.trim()) return;
     setKitLoading(true);
-    await subscribeToKit(kitEmail.trim(), kitName.trim() || "there", score, bandLabel, segment);
-    setKitLoading(false);
-    setKitSubmitted(true);
+    setKitError(false);
+    try {
+      const response = await fetch(formspreeForms.auditRecoveryKit, {
+        method: "POST",
+        headers: { "Content-Type": "application/json", Accept: "application/json" },
+        body: JSON.stringify({
+          source: "Saberra Organizational Memory Audit recovery kit",
+          name: kitName.trim(),
+          email: kitEmail.trim(),
+          score,
+          band: bandLabel,
+          segment,
+          diagnosis_headline: diagHeadline,
+          diagnosis_body: diagBody,
+          share_text: getShareText(score, segment, bandLabel)
+        })
+      });
+
+      if (!response.ok) throw new Error("Audit recovery kit submission failed.");
+      setKitSubmitted(true);
+    } catch {
+      setKitError(true);
+    } finally {
+      setKitLoading(false);
+    }
   }
 
   function handleShare() {
@@ -406,7 +401,7 @@ export function Audit() {
           </div>
         </article>
 
-        {/* ── Kit email capture ───────────────────────────────────────────── */}
+        {/* ── Recovery kit email capture ──────────────────────────────────── */}
         {!kitSubmitted ? (
           <article className="card kit-capture-card">
             <div className="eyebrow">Get your recovery plan</div>
@@ -443,6 +438,11 @@ export function Audit() {
             <p style={{ fontSize: "0.8rem", color: "#5a7a7f", marginTop: 10 }}>
               No spam. Unsubscribe any time. Your data stays with you.
             </p>
+            {kitError ? (
+              <p className="form-error" role="alert">
+                The recovery plan did not send. Please try again in a moment.
+              </p>
+            ) : null}
           </article>
         ) : (
           <article className="card kit-capture-card">

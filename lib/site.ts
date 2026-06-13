@@ -11,7 +11,9 @@ export const formspreeForms = {
   foundingAccess: "https://formspree.io/f/mqeoevor",
   partnerReferral: "https://formspree.io/f/mvznqrkv",
   jobApplication: "https://formspree.io/f/xwvjnnpv",
-  webinarDemo: "https://formspree.io/f/mqeodvvz"
+  webinarDemo: "https://formspree.io/f/mqeodvvz",
+  auditRecoveryKit: "https://formspree.io/f/mpqeolbo",
+  calculatorResults: "https://formspree.io/f/mrevoljv"
 };
 
 export const navItems = [
