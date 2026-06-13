@@ -57,7 +57,8 @@ export interface DbNormalizationResult {
   database: string;
   scanned: number;
   flagged: number;
-  created: number;
+  created: number;  // MRQ items created
+  updated: number;  // Records auto-updated (mode C/D)
 }
 
 export interface NormalizationResult {
@@ -67,6 +68,7 @@ export interface NormalizationResult {
   scanned: number;
   flagged: number;
   created: number;
+  updated: number;
   errors: number;
   databaseResults: DbNormalizationResult[];
 }
@@ -103,6 +105,7 @@ export class LanguageNormalizationService {
       scanned: 0,
       flagged: 0,
       created: 0,
+      updated: 0,
       errors: 0,
       databaseResults: [],
     };
@@ -118,7 +121,7 @@ export class LanguageNormalizationService {
         continue;
       }
 
-      const dbResult: DbNormalizationResult = { database: db.label, scanned: 0, flagged: 0, created: 0 };
+      const dbResult: DbNormalizationResult = { database: db.label, scanned: 0, flagged: 0, created: 0, updated: 0 };
       try {
         await this.scanDatabase(db, dbId, hubLanguage, correctionMode, dryRun, limitPerDb, dbResult, result);
       } catch (err) {
@@ -205,22 +208,41 @@ export class LanguageNormalizationService {
 
     if (flagged.length === 0 || correctionMode === 'A' || dryRun) {
       if (dryRun && flagged.length > 0) {
-        logger.info({ db: db.label, flagged: flagged.map(r => r.title) }, 'Language normalization: dry run - would create MRQ items');
+        const action = (correctionMode === 'C' || correctionMode === 'D') && !AUTO_UPDATE_PROTECTED.has(db.key)
+          ? 'would auto-update records'
+          : 'would create MRQ items';
+        logger.info({ db: db.label, flagged: flagged.map(r => r.title) }, `Language normalization: dry run - ${action}`);
       }
       return;
     }
 
-    // Mode B: create MRQ items with proposed corrections
-    // Modes C/D: auto-update non-protected databases (future - falls back to B for now)
+    const canAutoUpdate = (correctionMode === 'C' || correctionMode === 'D') && !AUTO_UPDATE_PROTECTED.has(db.key);
+
     for (const record of flagged) {
       try {
         const detectedLanguage = record.detectedLanguage;
         const corrections = await this.generateCorrections(record, detectedLanguage, hubLanguage);
-        await this.createMrqItem(record, corrections, detectedLanguage, hubLanguage);
-        dbResult.created++;
-        globalResult.created++;
+
+        if (canAutoUpdate) {
+          const updated = await this.applyCorrections(db, record, corrections);
+          if (updated) {
+            dbResult.updated++;
+            globalResult.updated++;
+            logger.info({ db: db.label, page: record.pageId, title: record.title }, 'Language normalization: record auto-updated');
+          } else {
+            // Corrections were empty or identical — still flag via MRQ so it doesn't get lost
+            await this.createMrqItem(record, corrections, detectedLanguage, hubLanguage);
+            dbResult.created++;
+            globalResult.created++;
+          }
+        } else {
+          // Mode B, or protected DB in mode C/D — propose via MRQ
+          await this.createMrqItem(record, corrections, detectedLanguage, hubLanguage);
+          dbResult.created++;
+          globalResult.created++;
+        }
       } catch (err) {
-        logger.warn({ err, page: record.pageId, db: db.label }, 'Language normalization: failed to create MRQ item');
+        logger.warn({ err, page: record.pageId, db: db.label }, 'Language normalization: failed to process record');
         globalResult.errors++;
       }
     }
@@ -353,6 +375,32 @@ ${fieldsJson}`;
     });
 
     logger.info({ mrqTitle, db: record.dbLabel, detectedLanguage }, 'Language normalization: MRQ item created');
+  }
+
+  /**
+   * Applies translated corrections directly to the Notion record.
+   * Returns true if at least one field was updated, false if nothing changed.
+   */
+  private async applyCorrections(
+    db: ScannableDb,
+    record: RecordSample,
+    corrections: Record<string, string>,
+  ): Promise<boolean> {
+    const props: Record<string, unknown> = {};
+
+    for (const [fieldName, corrected] of Object.entries(corrections)) {
+      const original = record.fields[fieldName];
+      if (!corrected || !original || corrected.trim() === original.trim()) continue;
+      if (fieldName === db.titleProp) {
+        props[fieldName] = N.title(corrected);
+      } else {
+        props[fieldName] = N.richTextLong(corrected);
+      }
+    }
+
+    if (Object.keys(props).length === 0) return false;
+    await this.writer.updatePage(record.pageId, props, db.key);
+    return true;
   }
 
   private extractTitle(props: Record<string, any>, propName: string): string {

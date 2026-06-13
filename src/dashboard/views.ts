@@ -1040,7 +1040,7 @@ const UI_EN: UiStrings = {
   languageDesc: 'Controls the language Sera writes all Notion record fields and Q&A answers in. Changes take effect within 2 minutes - no redeploy needed. Use POST /normalize-language to clean up existing records in the wrong language. Note: the dashboard UI itself only displays in English or Spanish — other languages apply to Notion records only.',
   labelResponseLanguage: 'Hub language:',
   sectionCorrectionMode: 'Record Correction Mode',
-  correctionModeDesc: 'Controls how Sera handles records written in the wrong language. A: scan only (report). B: create Memory Review Queue items with proposed corrections (default). C/D: auto-update (coming soon). Changes take effect within 2 minutes.',
+  correctionModeDesc: 'Controls how Sera handles records written in the wrong language. A: scan only. B: propose corrections via Memory Review Queue (default). C: auto-update text fields in non-governance databases (decisions, canon, ledger entries still go to MRQ). D: coming soon. Changes take effect within 2 minutes.',
   labelCorrectionMode: 'Correction mode:',
   sectionDbPermissions: 'Database Write Permissions',
   dbPermissionsDesc: 'Controls whether Sera can create new records or update existing ones in each database. Disable Create to make a database read-only for new extraction. Disable Update to prevent Sera from overwriting existing records. Infrastructure databases are always writable.',
@@ -1259,7 +1259,7 @@ const UI_ES: UiStrings = {
   languageDesc: 'Controla el idioma que usa Sera en respuestas de Q&A, tarjetas de roles, estatutos de círculos y todos los campos de registros en Notion. Los cambios tienen efecto en 2 minutos, sin redespliegue.',
   labelResponseLanguage: 'Idioma del hub:',
   sectionCorrectionMode: 'Modo de Corrección de Registros',
-  correctionModeDesc: 'Controla cómo Sera maneja los registros escritos en el idioma incorrecto. A: solo escanear. B: crear elementos en la cola de revisión con correcciones propuestas (predeterminado). C/D: actualización automática (próximamente).',
+  correctionModeDesc: 'Controla cómo Sera maneja los registros escritos en el idioma incorrecto. A: solo escanear. B: proponer correcciones via Cola de Revisión (predeterminado). C: actualizar automáticamente campos de texto en bases de datos no-gobernanza. D: próximamente.',
   labelCorrectionMode: 'Modo de corrección:',
   sectionDbPermissions: 'Permisos de Escritura por Base de Datos',
   dbPermissionsDesc: 'Controla si Sera puede crear nuevos registros o actualizar los existentes en cada base de datos. Las bases de datos de infraestructura siempre son escribibles.',
@@ -2281,8 +2281,8 @@ ${dataErrorBannerHtml}${alertBannerHtml}
             <select id="correction-mode-select" style="font-size:13px;padding:6px 10px;border:1px solid var(--border);border-radius:6px;background:var(--card);color:var(--text);cursor:pointer">
               <option value="A"${d.systemConfig.correctionMode === 'A' ? ' selected' : ''}>A - Scan only (report, no changes)</option>
               <option value="B"${d.systemConfig.correctionMode === 'B' ? ' selected' : ''}>B - Propose corrections via Memory Review Queue</option>
-              <option value="C"${d.systemConfig.correctionMode === 'C' ? ' selected' : ''} disabled>C - Auto-update low-risk fields (coming soon)</option>
-              <option value="D"${d.systemConfig.correctionMode === 'D' ? ' selected' : ''} disabled>D - Auto-update all allowed fields (coming soon)</option>
+              <option value="C"${d.systemConfig.correctionMode === 'C' ? ' selected' : ''}>C - Auto-update text fields in non-governance databases</option>
+              <option value="D"${d.systemConfig.correctionMode === 'D' ? ' selected' : ''} disabled>D - Auto-update all databases including governance (coming soon)</option>
             </select>
             <button onclick="saveCorrectionMode()" style="font-size:13px;padding:6px 14px;background:var(--accent);color:#fff;border:none;border-radius:6px;cursor:pointer;font-weight:500">${locale.ui.btnSave}</button>
             <span id="correction-mode-status" style="font-size:12px;color:var(--muted)"></span>
