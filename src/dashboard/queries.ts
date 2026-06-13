@@ -955,6 +955,10 @@ async function fetchFreshData(activeTz = DASHBOARD_TZ): Promise<DashboardData> {
       profiles:            notionDbUrl(dbs.profiles),
       sourceEmails:        notionDbUrl(dbs.sourceEmails),
       knowledgeBase:       notionDbUrl(dbs.knowledgeBase),
+      tensions:            notionDbUrl(dbs.tensions),
+      events:              notionDbUrl(dbs.events),
+      commitments:         notionDbUrl(dbs.commitments),
+      gratitudes:          notionDbUrl(dbs.gratitudes),
     },
     systemConfig: {
       pollIntervalSeconds:    config.GMAIL_POLL_INTERVAL_SECONDS,

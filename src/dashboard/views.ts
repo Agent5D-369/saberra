@@ -572,7 +572,8 @@ a.hero-card:hover .cn-hint{opacity:1}
 /* ─── Community Pulse tiles ────────────────────────────── */
 .pulse-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-top:20px}
 @media(max-width:700px){.pulse-grid{grid-template-columns:repeat(2,1fr)}}
-.pulse-tile{background:var(--card);border:1px solid var(--card-border);border-radius:10px;padding:16px;text-align:center}
+.pulse-tile{background:var(--card);border:1px solid var(--card-border);border-radius:10px;padding:16px;text-align:center;transition:border-color .15s,box-shadow .15s}
+a.pulse-tile:hover{border-color:var(--accent);box-shadow:0 0 0 1px var(--accent)}
 .pulse-tile .p-icon{font-size:22px;line-height:1;margin-bottom:6px}
 .pulse-tile .p-value{font-size:26px;font-weight:700;line-height:1;color:var(--text)}
 .pulse-tile .p-label{font-size:11px;color:var(--muted);margin-top:4px;font-weight:500}
@@ -594,6 +595,7 @@ a.hero-card:hover .cn-hint{opacity:1}
 .lb-bar-wrap{height:6px;background:rgba(99,102,241,0.12);border-radius:3px;overflow:hidden}
 .lb-bar{height:100%;background:var(--accent);border-radius:3px}
 .lb-count{font-size:13px;font-weight:700;color:var(--text);text-align:right}
+a.lb-row:hover{background:var(--accent-glow);border-radius:6px}
 
 /* ─── Queue Ask Sera pills ─────────────────────────────── */
 .q-ask-row{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
@@ -1897,23 +1899,34 @@ export function renderDashboard(d: DashboardData, orgName = 'Living Memory'): st
   // ── Community Pulse tiles ────────────────────────────────────────────────────
   const hasPulseData = d.communityPulse.openTensions > 0 || d.communityPulse.upcomingEvents > 0
     || d.communityPulse.activeCommitments > 0 || d.communityPulse.recentGratitudes > 0;
+  function pulseTile(icon: string, value: number, label: string, url: string | undefined): string {
+    const inner = `<div class="p-icon">${icon}</div><div class="p-value">${value}</div><div class="p-label">${label}</div>`;
+    return url
+      ? `<a class="pulse-tile" href="${esc(url)}" target="_blank" rel="noopener" style="text-decoration:none;color:inherit">${inner}</a>`
+      : `<div class="pulse-tile">${inner}</div>`;
+  }
   const communityPulseHtml = !hasPulseData ? '' : `
   <div class="pulse-grid">
-    <div class="pulse-tile"><div class="p-icon">&#128172;</div><div class="p-value">${d.communityPulse.openTensions}</div><div class="p-label">Open Tensions</div></div>
-    <div class="pulse-tile"><div class="p-icon">&#128197;</div><div class="p-value">${d.communityPulse.upcomingEvents}</div><div class="p-label">Upcoming Events</div></div>
-    <div class="pulse-tile"><div class="p-icon">&#129309;</div><div class="p-value">${d.communityPulse.activeCommitments}</div><div class="p-label">Active Commitments</div></div>
-    <div class="pulse-tile"><div class="p-icon">&#10024;</div><div class="p-value">${d.communityPulse.recentGratitudes}</div><div class="p-label">Gratitudes (30d)</div></div>
+    ${pulseTile('&#128172;', d.communityPulse.openTensions,    'Open Tensions',       d.notionUrls.tensions)}
+    ${pulseTile('&#128197;', d.communityPulse.upcomingEvents,  'Upcoming Events',     d.notionUrls.events)}
+    ${pulseTile('&#129309;', d.communityPulse.activeCommitments,'Active Commitments', d.notionUrls.commitments)}
+    ${pulseTile('&#10024;',  d.communityPulse.recentGratitudes, 'Gratitudes (30d)',   d.notionUrls.gratitudes)}
   </div>`;
 
   // ── Contributor leaderboard ──────────────────────────────────────────────────
   const maxContrib = d.contributors.length > 0 ? d.contributors[0].emailCount : 1;
+  const sourceEmailsUrl = d.notionUrls.sourceEmails;
   const contributorHtml = d.contributors.length === 0
     ? '<p class="dim">No email senders found in the last 90 days.</p>'
     : `<div class="lb-table">${d.contributors.map((c, i) => {
         const barPct = Math.round((c.emailCount / maxContrib) * 100);
         const medals = ['&#127947;', '&#129352;', '&#129353;'];
         const rank = medals[i] ?? `${i + 1}`;
-        return `<div class="lb-row">
+        const rowTag = sourceEmailsUrl
+          ? `a class="lb-row" href="${esc(sourceEmailsUrl)}" target="_blank" rel="noopener" style="text-decoration:none;color:inherit;display:grid"`
+          : `div class="lb-row"`;
+        const rowEnd = sourceEmailsUrl ? 'a' : 'div';
+        return `<${rowTag}>
           <div class="lb-rank">${rank}</div>
           <div>
             <div class="lb-name">${esc(c.name)}</div>
@@ -1921,7 +1934,7 @@ export function renderDashboard(d: DashboardData, orgName = 'Living Memory'): st
           </div>
           <div class="lb-bar-wrap"><div class="lb-bar" style="width:${barPct}%"></div></div>
           <div class="lb-count">${c.emailCount}</div>
-        </div>`;
+        </${rowEnd}>`;
       }).join('')}</div>`;
 
   // ── Queue Ask Sera pills ─────────────────────────────────────────────────────
