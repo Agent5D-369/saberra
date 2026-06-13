@@ -568,7 +568,40 @@ a.hero-card:hover .cn-hint{opacity:1}
 .md-code{background:rgba(0,0,0,0.25);border-radius:3px;padding:1px 5px;font-size:12px;font-family:'SF Mono',monospace}
 [data-theme="light"] .md-code{background:rgba(0,0,0,0.08)}
 .md-code-block{font-family:'SF Mono',monospace;font-size:12px;color:var(--text);white-space:pre-wrap;word-break:break-word}
+
+/* ─── Community Pulse tiles ────────────────────────────── */
+.pulse-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-top:20px}
+@media(max-width:700px){.pulse-grid{grid-template-columns:repeat(2,1fr)}}
+.pulse-tile{background:var(--card);border:1px solid var(--card-border);border-radius:10px;padding:16px;text-align:center}
+.pulse-tile .p-icon{font-size:22px;line-height:1;margin-bottom:6px}
+.pulse-tile .p-value{font-size:26px;font-weight:700;line-height:1;color:var(--text)}
+.pulse-tile .p-label{font-size:11px;color:var(--muted);margin-top:4px;font-weight:500}
+
+/* ─── Prompt library pills ─────────────────────────────── */
+.prompt-section{padding:12px 16px 0;border-top:1px solid var(--card-border);margin-top:4px}
+.prompt-section-label{font-size:10px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.6px;margin-bottom:8px}
+.prompt-pills{display:flex;flex-wrap:wrap;gap:6px}
+.prompt-pill{background:var(--card);border:1px solid var(--card-border);border-radius:20px;padding:5px 12px;font-size:12px;color:var(--text);cursor:pointer;transition:border-color .12s,background .12s;white-space:nowrap}
+.prompt-pill:hover{border-color:var(--accent);background:var(--accent-glow)}
+
+/* ─── Contributor leaderboard ──────────────────────────── */
+.lb-table{width:100%}
+.lb-row{display:grid;grid-template-columns:24px 1fr 80px 60px;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid var(--border)}
+.lb-row:last-child{border-bottom:none}
+.lb-rank{font-size:12px;font-weight:700;color:var(--muted);text-align:center}
+.lb-name{font-size:13px;font-weight:500;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.lb-email{font-size:11px;color:var(--muted);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.lb-bar-wrap{height:6px;background:rgba(99,102,241,0.12);border-radius:3px;overflow:hidden}
+.lb-bar{height:100%;background:var(--accent);border-radius:3px}
+.lb-count{font-size:13px;font-weight:700;color:var(--text);text-align:right}
+
+/* ─── Queue Ask Sera pills ─────────────────────────────── */
+.q-ask-row{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
+.q-ask-pill{background:var(--card);border:1px solid var(--card-border);border-radius:20px;padding:6px 14px;font-size:12px;color:var(--text);cursor:pointer;transition:border-color .12s,background .12s;display:flex;align-items:center;gap:6px}
+.q-ask-pill:hover{border-color:var(--accent);background:var(--accent-glow)}
+.q-ask-pill .ask-icon{opacity:.6;font-size:13px}
 `;
+
 
 const QUEUE_DEFS: Array<{
   key: keyof import('./queries').QueueCounts;
@@ -1861,6 +1894,72 @@ export function renderDashboard(d: DashboardData, orgName = 'Living Memory'): st
         </div>`;
       }).join('');
 
+  // ── Community Pulse tiles ────────────────────────────────────────────────────
+  const hasPulseData = d.communityPulse.openTensions > 0 || d.communityPulse.upcomingEvents > 0
+    || d.communityPulse.activeCommitments > 0 || d.communityPulse.recentGratitudes > 0;
+  const communityPulseHtml = !hasPulseData ? '' : `
+  <div class="pulse-grid">
+    <div class="pulse-tile"><div class="p-icon">&#128172;</div><div class="p-value">${d.communityPulse.openTensions}</div><div class="p-label">Open Tensions</div></div>
+    <div class="pulse-tile"><div class="p-icon">&#128197;</div><div class="p-value">${d.communityPulse.upcomingEvents}</div><div class="p-label">Upcoming Events</div></div>
+    <div class="pulse-tile"><div class="p-icon">&#129309;</div><div class="p-value">${d.communityPulse.activeCommitments}</div><div class="p-label">Active Commitments</div></div>
+    <div class="pulse-tile"><div class="p-icon">&#10024;</div><div class="p-value">${d.communityPulse.recentGratitudes}</div><div class="p-label">Gratitudes (30d)</div></div>
+  </div>`;
+
+  // ── Contributor leaderboard ──────────────────────────────────────────────────
+  const maxContrib = d.contributors.length > 0 ? d.contributors[0].emailCount : 1;
+  const contributorHtml = d.contributors.length === 0
+    ? '<p class="dim">No email senders found in the last 90 days.</p>'
+    : `<div class="lb-table">${d.contributors.map((c, i) => {
+        const barPct = Math.round((c.emailCount / maxContrib) * 100);
+        const medals = ['&#127947;', '&#129352;', '&#129353;'];
+        const rank = medals[i] ?? `${i + 1}`;
+        return `<div class="lb-row">
+          <div class="lb-rank">${rank}</div>
+          <div>
+            <div class="lb-name">${esc(c.name)}</div>
+            <div class="lb-email">${esc(c.email)}</div>
+          </div>
+          <div class="lb-bar-wrap"><div class="lb-bar" style="width:${barPct}%"></div></div>
+          <div class="lb-count">${c.emailCount}</div>
+        </div>`;
+      }).join('')}</div>`;
+
+  // ── Queue Ask Sera pills ─────────────────────────────────────────────────────
+  const QUEUE_SERA_PROMPTS: Record<string, string> = {
+    canonChangeRequests: 'Summarize the pending canon change requests and their implications',
+    memoryReviewQueue:   'Walk me through the top memory review items and help me decide which to approve',
+    decisionCandidates:  'What are the most important decisions waiting for review and what do I need to know?',
+    tasksNeedingOwner:   'Which tasks need an owner assigned and who might be a good fit?',
+    highRisks:           'Summarize the high-severity open risks and what actions would reduce them',
+    kbDrafts:            'Review the knowledge base drafts and tell me which ones are worth publishing',
+  };
+  const queueAskPillsHtml = (() => {
+    const pills = QUEUE_DEFS
+      .filter(q => d.queues[q.key] > 0 && QUEUE_SERA_PROMPTS[q.key])
+      .map(q => {
+        const prompt = QUEUE_SERA_PROMPTS[q.key];
+        const label = locale.ui.queueLabels[QUEUE_DEFS.indexOf(q)]?.label ?? q.label;
+        return `<button class="q-ask-pill" onclick="window.askSera(${JSON.stringify(prompt)},true)"><span class="ask-icon">&#128172;</span>Ask about ${esc(label)}</button>`;
+      });
+    return pills.length === 0 ? '' : `<div class="q-ask-row">${pills.join('')}</div>`;
+  })();
+
+  // ── Prompt library ───────────────────────────────────────────────────────────
+  const PROMPT_LIBRARY = [
+    { label: 'Catch me up',      prompt: 'Give me a summary of the most important things that happened in the last 2 weeks - decisions made, tasks created, risks flagged, and anything I should act on.' },
+    { label: 'Open tasks',       prompt: 'What are the highest priority open tasks right now and who owns them?' },
+    { label: 'Risk landscape',   prompt: 'Give me a risk assessment - what are our biggest open risks and what patterns are emerging?' },
+    { label: 'Decisions made',   prompt: 'Summarize the key decisions made in the last month and their current implementation status.' },
+    { label: 'Who is active',    prompt: 'Which community members have been most active recently based on meetings and emails?' },
+    { label: 'Memory to approve', prompt: 'Walk me through the memory review queue. What should I approve as long-term institutional knowledge?' },
+    { label: 'Canon health',     prompt: 'Are there any pending canon change requests that need attention? Summarize them.' },
+    { label: 'Role gaps',        prompt: 'Which roles are currently vacant or have terms expiring soon?' },
+    { label: 'How to use Sera',  prompt: 'What are the best ways to use Sera to reduce my workload and stay on top of institutional memory?' },
+  ];
+  const promptPillsHtml = PROMPT_LIBRARY.map(p =>
+    `<button class="prompt-pill" onclick="window.askSera(${JSON.stringify(p.prompt)},true)">${esc(p.label)}</button>`
+  ).join('');
+
   return `<!DOCTYPE html>
 <html lang="en" data-theme="dark">
 <head>
@@ -1994,6 +2093,7 @@ ${dataErrorBannerHtml}${alertBannerHtml}
         <div class="s-sub">${locale.ui.subDraftsPending(d.queues.kbDrafts)}</div>
       ${d.notionUrls.knowledgeBase ? '</a>' : '</div>'}
     </div>
+    ${communityPulseHtml}
 
   </div>
 
@@ -2005,6 +2105,7 @@ ${dataErrorBannerHtml}${alertBannerHtml}
       <h2>${locale.ui.sectionReviewQueues}</h2>
       <div class="banner ${bannerCls}">${bannerMsg}</div>
       <div class="queue-grid">${queueCards}</div>
+      ${queueAskPillsHtml}
     </section>
 
     <!-- ── Queue health chart ────────────────────────── -->
@@ -2092,6 +2193,12 @@ ${dataErrorBannerHtml}${alertBannerHtml}
         <div class="s-sub">${d.failedEmailList.length > 0 ? locale.ui.subEmailsStuck : locale.ui.subAllClear}</div>
       </div>
     </div>
+
+    <!-- ── Contributor leaderboard ───────────────────────── -->
+    <section>
+      <h2>Top Contributors <span class="dim" style="font-weight:400;font-size:13px">- who is feeding Sera (last 90 days)</span></h2>
+      ${contributorHtml}
+    </section>
 
     <!-- ── Last 10 emails ────────────────────────────────── -->
     <section>
@@ -2640,6 +2747,10 @@ ${dataErrorBannerHtml}${alertBannerHtml}
         <div class="chat-drop-overlay" id="chat-drop-overlay">${locale.ui.dropOverlay}</div>
         <div class="chat-messages" id="chat-messages"></div>
         <div class="chat-attach-strip" id="chat-attach-strip"></div>
+        <div class="prompt-section">
+          <div class="prompt-section-label">Ask Sera</div>
+          <div class="prompt-pills">${promptPillsHtml}</div>
+        </div>
         <div class="chat-input-row">
           <button class="chat-attach-btn" id="chat-attach-btn" title="Attach image or text file">+</button>
           <input type="file" id="chat-file-input" accept="image/jpeg,image/png,image/gif,image/webp,.txt,.md,.csv" multiple style="display:none">

@@ -320,6 +320,20 @@ export interface CollapseHealth {
   totalActive: number;
 }
 
+export interface ContributorEntry {
+  name: string;
+  email: string;
+  emailCount: number;
+  lastSeen: string;
+}
+
+export interface CommunityPulse {
+  openTensions: number;
+  upcomingEvents: number;
+  activeCommitments: number;
+  recentGratitudes: number;
+}
+
 export interface DashboardData {
   queues: QueueCounts;
   policies: PolicyStats;
@@ -339,6 +353,8 @@ export interface DashboardData {
   performance: PerformanceData;
   crm: CrmData;
   collapseHealth: CollapseHealth;
+  contributors: ContributorEntry[];
+  communityPulse: CommunityPulse;
   lastPollAt: string | null;
   lastHeartbeatAt: string | null;
   fetchedAt: string;
@@ -380,6 +396,8 @@ function buildEmptyData(activeTz: string, error: string): DashboardData {
     performance: { leaderboard: [], velocity: [], byStatus: { open: 0, inProgress: 0, done: 0, cancelled: 0, needsOwner: 0 }, priorityBreakdown: { high: 0, medium: 0, low: 0 }, totalOverdue: 0 },
     crm: { pipeline: [], followUps: [], recentInteractions: [], totalContacts: 0, interactionsEnabled: false },
     collapseHealth: { signals: [], patternCounts: {}, totalActive: 0 },
+    contributors: [],
+    communityPulse: { openTensions: 0, upcomingEvents: 0, activeCommitments: 0, recentGratitudes: 0 },
     lastPollAt: null,
     lastHeartbeatAt: null,
     fetchedAt: new Date().toISOString(),
@@ -439,14 +457,77 @@ export async function getDashboardData(timezone?: string): Promise<DashboardData
   }
 }
 
+async function fetchCommunityPulse(notion: Client, dbs: DbIds, activeTz: string): Promise<CommunityPulse> {
+  const todayDate = isoToTzDate(new Date().toISOString(), activeTz);
+  const thirtyDaysAgoDate = isoToTzDate(new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString(), activeTz);
+  const [openTensions, upcomingEvents, activeCommitments, recentGratitudes] = await Promise.all([
+    dbs.tensions   ? countQuery(dbs.tensions,    { property: 'Status', select: { equals: 'Open' } }).catch(() => 0)      : Promise.resolve(0),
+    dbs.events     ? countQuery(dbs.events,      { property: 'Date', date: { on_or_after: todayDate } } as never).catch(() => 0) : Promise.resolve(0),
+    dbs.commitments ? countQuery(dbs.commitments, { property: 'Status', select: { equals: 'Active' } }).catch(() => 0)   : Promise.resolve(0),
+    dbs.gratitudes ? countQuery(dbs.gratitudes, { timestamp: 'created_time', created_time: { on_or_after: thirtyDaysAgoDate } } as never).catch(() => 0) : Promise.resolve(0),
+  ]);
+  return { openTensions, upcomingEvents, activeCommitments, recentGratitudes };
+}
+
+async function fetchContributors(notion: Client, dbs: DbIds, rootsEmail: string): Promise<ContributorEntry[]> {
+  const ninetyDaysAgo = isoToTzDate(new Date(Date.now() - 90 * 24 * 60 * 60 * 1000).toISOString());
+  const pages: unknown[] = [];
+  let cursor: string | undefined;
+  do {
+    const res = await notion.databases.query({
+      database_id: dbs.sourceEmails,
+      filter: { timestamp: 'created_time', created_time: { on_or_after: ninetyDaysAgo } } as never,
+      page_size: 100,
+      ...(cursor ? { start_cursor: cursor } : {}),
+    });
+    pages.push(...res.results);
+    cursor = res.has_more && res.next_cursor ? res.next_cursor : undefined;
+  } while (cursor);
+
+  const counts = new Map<string, { name: string; count: number; lastSeen: string }>();
+  const rootsLower = rootsEmail.toLowerCase();
+  const systemDomains = ['noreply.', 'mailer.', 'no-reply.', 'notifications.', 'notify.', 'reply.'];
+
+  for (const p of pages) {
+    const page = p as Record<string, unknown>;
+    const from = extractProp(page, 'From').trim();
+    if (!from) continue;
+
+    // Parse "Name <email@example.com>" or just "email@example.com"
+    const angleMatch = from.match(/^(.+?)\s*<([^>]+)>$/);
+    const rawEmail = angleMatch ? angleMatch[2].trim().toLowerCase() : from.toLowerCase();
+    const displayName = angleMatch ? angleMatch[1].trim().replace(/^["']|["']$/g, '') : rawEmail;
+
+    if (rawEmail === rootsLower) continue;
+    if (systemDomains.some(d => rawEmail.includes(d))) continue;
+    if (rawEmail.includes('google.com') || rawEmail.includes('gmail.com') && displayName.toLowerCase().includes('google')) continue;
+
+    const createdTime = String((page as Record<string, string>).created_time ?? '');
+    const existing = counts.get(rawEmail);
+    if (!existing) {
+      counts.set(rawEmail, { name: displayName || rawEmail, count: 1, lastSeen: createdTime });
+    } else {
+      existing.count++;
+      if (createdTime > existing.lastSeen) existing.lastSeen = createdTime;
+    }
+  }
+
+  return Array.from(counts.entries())
+    .map(([email, v]) => ({ name: v.name, email, emailCount: v.count, lastSeen: v.lastSeen }))
+    .sort((a, b) => b.emailCount - a.emailCount)
+    .slice(0, 10);
+}
+
 async function fetchFreshData(activeTz = DASHBOARD_TZ): Promise<DashboardData> {
   const { notion, dbs } = clients();
   const config = getConfig();
   const sevenDaysAgoLocalDate = isoToTzDate(new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString(), activeTz);
 
   // Kick off heavy data fetches concurrently with the rest
-  const perfDataPromise   = fetchTaskPerformanceData(notion, dbs.tasks);
-  const peopleDataPromise = fetchPeopleData(notion, dbs);
+  const perfDataPromise        = fetchTaskPerformanceData(notion, dbs.tasks);
+  const peopleDataPromise      = fetchPeopleData(notion, dbs);
+  const communityPulsePromise  = fetchCommunityPulse(notion, dbs, activeTz);
+  const contributorsPromise    = fetchContributors(notion, dbs, config.ROOTS_EMAIL);
 
   const [
     canonPending,
@@ -792,6 +873,10 @@ async function fetchFreshData(activeTz = DASHBOARD_TZ): Promise<DashboardData> {
     topProfiles: [], totalProfiles: 0, totalPeople: 0, totalOrgs: 0, totalActive: 0,
     byRelationship: [], byTag: [], byType: {}, timeline: [],
   }));
+  const communityPulse = await communityPulsePromise.catch((): CommunityPulse => ({
+    openTensions: 0, upcomingEvents: 0, activeCommitments: 0, recentGratitudes: 0,
+  }));
+  const contributors = await contributorsPromise.catch((): ContributorEntry[] => []);
 
   return {
     queues: {
@@ -849,6 +934,8 @@ async function fetchFreshData(activeTz = DASHBOARD_TZ): Promise<DashboardData> {
     performance: performanceData,
     crm: crmData,
     collapseHealth,
+    contributors,
+    communityPulse,
     lastPollAt:      (lastPollRes.results[0] as Record<string, string> | undefined)?.created_time ?? null,
     lastHeartbeatAt: (lastHeartbeatRes.results[0] as Record<string, string> | undefined)?.created_time ?? null,
     fetchedAt: new Date().toISOString(),
