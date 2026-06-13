@@ -863,6 +863,9 @@ const DB_DISCOVERY_MAP: Array<{ key: string; names: string[]; required: boolean;
   { key: 'eventsId',          names: ['Events'],                                 required: false, community: true  },
   { key: 'retrosId',          names: ['Retrospectives'],                         required: false, community: true  },
   { key: 'resourcesId',       names: ['Resources'],                              required: false, community: true  },
+  { key: 'knowledgeBaseId',   names: ['Knowledge Base'],                         required: false, community: false },
+  { key: 'policiesId',        names: ['Policies'],                               required: false, community: false },
+  { key: 'interactionsId',    names: ['Interactions'],                           required: false, community: false },
 ];
 
 async function discoverNotionDatabases(
@@ -918,7 +921,7 @@ async function step6_databases(rl: readline.Interface, state: Partial<DeployStat
   header(6, 10, 'Notion Database Discovery');
 
   const expectedCount = state.communityLayer ? 23 : 17;
-  console.log(`\n  Sera needs ${expectedCount} Notion databases on your hub page.`);
+  console.log(`\n  Sera needs ${expectedCount} core Notion databases (+ Knowledge Base, Policies, Interactions if available).`);
   console.log(`  Hub page: ${state.notionParentPageId}`);
   console.log(`\n  How should we get the databases?\n`);
   console.log(`  [a] Scan existing  — databases are already on the hub page`);
@@ -1031,6 +1034,10 @@ async function step7_envVars(state: Partial<DeployState>): Promise<void> {
     if (dbIds['retrosId'])     notionVars['NOTION_DB_RETROSPECTIVES']  = dbIds['retrosId'];
     if (dbIds['resourcesId'])  notionVars['NOTION_DB_RESOURCES']      = dbIds['resourcesId'];
   }
+
+  if (dbIds['knowledgeBaseId']) notionVars['NOTION_DB_KNOWLEDGE_BASE'] = dbIds['knowledgeBaseId'];
+  if (dbIds['policiesId'])      notionVars['NOTION_DB_POLICIES']       = dbIds['policiesId'];
+  if (dbIds['interactionsId'])  notionVars['NOTION_DB_INTERACTIONS']   = dbIds['interactionsId'];
 
   const baseVars: Record<string, string> = {
     ...notionVars,

@@ -94,13 +94,15 @@ function buildAliasHints(): string {
 
 // ─── Prompt builders ──────────────────────────────────────────────────────────
 
-const SYSTEM_PROMPT = `You are processing institutional records for an organization's Living Memory Hub.
+function buildSystemPrompt(): string {
+  const lang = getConfig().EXTRACTION_LANGUAGE;
+  return `You are processing institutional records for an organization's Living Memory Hub.
 
 Your job is to extract structured operational intelligence from meeting notes, transcripts, recordings, emails, or forwarded threads.
 
 Do not invent decisions, commitments, owners, dates, roles, permissions, or policies.
 
-All extracted text written to structured fields must be in English, regardless of the source document language. Translate field values (summaries, task descriptions, decisions, memory proposals, etc.) to English when the source is in another language. Proper nouns (names of people, places, and organizations) should not be translated. Source evidence quotes may preserve the original language but must be followed by an English translation in brackets.
+LANGUAGE RULE (strictly enforced): All extracted text written to structured fields MUST be in ${lang}. This applies to every field: summaries, titles, task descriptions, decisions, notes, risk descriptions, memory proposals, and all other text fields. Translate ALL field values to ${lang} when the source is in another language. Proper nouns (names of people, places, and organizations) should not be translated. Source evidence quotes may preserve the original language but must be followed by a ${lang} translation in brackets. Never write field values in any language other than ${lang}.
 
 Separate confirmed decisions from candidate decisions.
 
@@ -150,6 +152,7 @@ Return only valid JSON. Only include fields that are relevant:
 - "events": array of community gatherings, ceremonies, or shared experiences. Extract when a specific named event is announced, planned, or described in the source. Do not extract governance meetings (those are already captured in Meetings). Each entry: { "event_name": string, "type": "Community Dinner"|"Ceremony"|"Workshop"|"Learning Circle"|"Celebration"|"Work Party"|"Retreat"|"Other", "date": string|null (YYYY-MM-DD), "end_date": string|null (YYYY-MM-DD), "location": string|null, "description": string|null (1-2 sentences), "organizing_circle": string|null, "organizer": string|null (person name), "source_evidence": string }.
 - "retrospectives": array of structured retrospective or lookback reviews. Only extract when a meeting or document is clearly structured as a retrospective (end-of-cycle, end-of-project, or explicit "what worked / what didn't" format). Do not extract from regular meeting notes. Each entry: { "title": string (e.g. "Governance Circle Q2 2026 Retrospective"), "circle": string|null, "retro_date": string|null (YYYY-MM-DD), "period_covered": string|null (e.g. "Q2 2026" or "May-June 2026"), "what_worked": string|null (2-5 sentences), "what_didnt_work": string|null (2-5 sentences), "what_to_change": string|null (concrete proposals), "energy_level": "High"|"Good"|"Neutral"|"Low"|"Critical"|null (overall team energy at time of retro), "celebrations": string|null (things worth celebrating from this period), "source_evidence": string }.
 `;
+}
 
 function buildUserPrompt(input: ExtractionInput): string {
   const projectsLine = input.existingProjects?.length
@@ -250,7 +253,7 @@ export class ClaudeExtractionService {
       // One repair attempt with fallback model
       logger.warn('Claude returned invalid JSON — retrying with repair hint');
       const repairHint = `${buildUserPrompt(truncatedInput)}\n\nIMPORTANT: Your previous response was not valid JSON. Return ONLY valid JSON with no markdown, no explanation, no code fences.`;
-      const retryResult = await this.callClaudeRaw(SYSTEM_PROMPT, repairHint, FALLBACK_MODEL);
+      const retryResult = await this.callClaudeRaw(buildSystemPrompt(), repairHint, FALLBACK_MODEL);
       if (!retryResult) return null;
       totalTokens += retryResult.tokens;
       const retryParsed = this.parseJson(retryResult.text);
@@ -268,7 +271,7 @@ export class ClaudeExtractionService {
       const schemaErrors = validateSchema.errors?.map((e) => `${e.instancePath} ${e.message}`).join('; ') ?? 'unknown';
       logger.warn({ schemaErrors }, 'Schema validation failed — retrying with repair hint');
       const repairHint = `${buildUserPrompt(truncatedInput)}\n\nIMPORTANT: Your previous response had schema errors: ${schemaErrors}. Return ONLY valid JSON. Never use null for object fields — use an empty object {} or omit the field entirely instead.`;
-      const retryResult = await this.callClaudeRaw(SYSTEM_PROMPT, repairHint, FALLBACK_MODEL);
+      const retryResult = await this.callClaudeRaw(buildSystemPrompt(), repairHint, FALLBACK_MODEL);
       if (!retryResult) return null;
       totalTokens += retryResult.tokens;
       const retryParsed = this.parseJson(retryResult.text);
@@ -280,7 +283,7 @@ export class ClaudeExtractionService {
   }
 
   private async callClaude(input: ExtractionInput, model?: string): Promise<{ text: string; tokens: number } | null> {
-    return this.callClaudeRaw(SYSTEM_PROMPT, buildUserPrompt(input), model);
+    return this.callClaudeRaw(buildSystemPrompt(), buildUserPrompt(input), model);
   }
 
   private async callClaudeRaw(systemPrompt: string, userPrompt: string, model?: string): Promise<{ text: string; tokens: number } | null> {

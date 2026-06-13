@@ -792,7 +792,44 @@ async function run() {
   });
 
   // ──────────────────────────────────────────────────────────────────────────
-  // 12. Knowledge Base
+  // 12. Policies
+  // Target users: circle leads, governance stewards
+  // Property groups: Identity | Review | Source
+  // ──────────────────────────────────────────────────────────────────────────
+  const policiesId = await createDb(PARENT!, 'Policies', {
+    'Policy Name':     title('Short name for this policy, canon rule, or governing commitment.'),
+    'Policy Area':     sel(['Governing Purpose', 'Policy', 'Circle Definition', 'Role Definition', 'Decision Rights',
+                            'Legal Commitment', 'Financial Commitment', 'Land Stewardship', 'CCOS Ledger',
+                            'Public Commitment', 'Unknown'],
+                           'Governance domain this policy governs.'),
+    Status:            sel(['Active', 'Under Review', 'Superseded', 'Draft', 'Archived'],
+                          'Active = in force; Under Review = being revised; Superseded = replaced by newer policy; Draft = not yet ratified.'),
+    'Current Text Summary': text('Plain-language summary of what this policy says and requires.'),
+    'Review Cadence':  sel(['Monthly', 'Quarterly', 'Semi-Annual', 'Annual', 'As Needed'],
+                          'How frequently this policy should be reviewed.'),
+    'Next Review Date': formula(REVIEW_DATE_BY_CADENCE('Review Cadence', 'Last Review Date'),
+                               'Auto-calculated from Review Cadence + Last Review Date.'),
+    'Last Review Date': date('When this policy was last formally reviewed.'),
+    'Effective Date':   date('When this policy came into force.'),
+    'Google Drive Doc': url('Link to the full policy document in Google Drive.'),
+    Notes:             text('Context, background, or notes about this policy.'),
+  }, 'Formal policies, canon rules, and governing commitments. Saberra flags potential policy conflicts during extraction and links decisions and canon changes to affected policies. Property groups: Identity | Review | Source.');
+
+  await addRow(policiesId, {
+    'Policy Name': T('Consent-based decision making for all circle-level decisions'),
+    'Policy Area': S('Policy'), Status: S('Active'), 'Review Cadence': S('Annual'),
+    'Current Text Summary': RT('All decisions within a circle require consent — no member has a paramount objection — rather than consensus. Any member may raise a tension to reopen a decision.'),
+    'Effective Date': D('2026-01-01'),
+  });
+  await addRow(policiesId, {
+    'Policy Name': T('Financial commitments above threshold require steward approval'),
+    'Policy Area': S('Financial Commitment'), Status: S('Active'), 'Review Cadence': S('Annual'),
+    'Current Text Summary': RT('Any financial commitment exceeding the circle budget threshold requires written approval from the Finance Steward before execution.'),
+    'Effective Date': D('2026-01-01'),
+  });
+
+  // ──────────────────────────────────────────────────────────────────────────
+  // 13. Knowledge Base
   // Target users: all members
   // Property groups: Identity | Content | Metadata
   // ──────────────────────────────────────────────────────────────────────────
@@ -870,7 +907,30 @@ async function run() {
   });
 
   // ──────────────────────────────────────────────────────────────────────────
-  // Community layer (14-19): Tensions, Agreements, Gratitudes, Events,
+  // 15. Interactions (CRM contact history — auto-logged by Sera)
+  // Target users: circle leads, stewards, anyone managing external relationships
+  // ──────────────────────────────────────────────────────────────────────────
+  const interactionsId = await createDb(PARENT!, 'Interactions', {
+    Name:              title('Auto-generated: "[Type] · [Contact] · [Date]"'),
+    Date:              date('Date this interaction occurred.'),
+    Type:              sel(['Email', 'Meeting', 'Call', 'Note', 'Forward', 'Other'],
+                          'Type of interaction. Sera auto-sets this based on the source email or meeting.'),
+    Direction:         sel(['Inbound', 'Outbound', 'Internal'],
+                          'Whether the communication came in, went out, or was internal.'),
+    Summary:           text('AI-generated one-line summary of what was communicated.'),
+    'Logged By':       text('Email address or system that created this record. Sera logs "Sera (auto)" for automated entries.'),
+    'Follow-up Needed': check('Check if a follow-up action or response is required.'),
+  }, 'Contact history: every email and meeting where an external contact or profile appeared is auto-logged here by Sera. Builds a running timeline of organizational relationships without manual data entry.');
+
+  await addRow(interactionsId, {
+    Name: T('Email · legal@partnerfirm.com · 2026-06-01'),
+    Date: D('2026-06-01'), Type: S('Email'), Direction: S('Inbound'),
+    Summary: RT('Partnership renewal terms received from legal counsel.'),
+    'Logged By': RT('Sera (auto)'), 'Follow-up Needed': CB(true),
+  });
+
+  // ──────────────────────────────────────────────────────────────────────────
+  // Community layer (16-21): Tensions, Agreements, Gratitudes, Events,
   // Retrospectives, Resources — gated on COMMUNITY_LAYER env var.
   // ──────────────────────────────────────────────────────────────────────────
   const communityLayer = process.env.COMMUNITY_LAYER !== 'false';
@@ -1174,8 +1234,10 @@ async function run() {
     assignmentsId,
     canonId,
     ledgerId,
+    policiesId,
     kbId,
     messagesId,
+    interactionsId,
     tensionsId:         tensionsId         ?? null,
     agreementsId:       agreementsId       ?? null,
     gratitudesId:       gratitudesId       ?? null,

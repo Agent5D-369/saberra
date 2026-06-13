@@ -59,6 +59,7 @@ const configSchema = z.object({
 
   ANTHROPIC_API_KEY: z.string().startsWith('sk-ant-'),
   CLAUDE_MODEL: z.string().default('claude-sonnet-4-6'),
+  EXTRACTION_LANGUAGE: z.string().min(1).default('English'),
 
   GMAIL_POLL_INTERVAL_SECONDS: z.coerce.number().int().positive().default(180),
   MAX_RETRY_COUNT: z.coerce.number().int().positive().default(4),

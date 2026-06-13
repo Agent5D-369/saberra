@@ -58,11 +58,11 @@ IMAP (WPX) → classify → Source Email record (Notion)
 | `src/services/NotionWriterService.ts` | All Notion API calls, property builders |
 | `src/services/ProcessingEventService.ts` | Audit trail in Processing Events DB |
 | `src/services/SmtpService.ts` | Outbound email via Gmail API (not SMTP) |
-| `src/config/ConfigService.ts` | Zod config + all 23 Notion DB ID getters |
-| `src/config/notionSchemas.ts` | Schema definitions for all 23 Notion databases |
+| `src/config/ConfigService.ts` | Zod config + all 26 Notion DB ID getters |
+| `src/config/notionSchemas.ts` | Schema definitions for all 26 Notion databases |
 | `src/utils/sanitize.ts` | `sanitizeDate()`, `sanitizeSelect()` shared utilities |
 
-## Notion databases (23)
+## Notion databases (26)
 
 Env var prefix: `NOTION_DB_`
 
@@ -85,6 +85,9 @@ Env var prefix: `NOTION_DB_`
 | `CCOS_LEDGER_ENTRIES` | CCOS Ledger Entries | Governance actions (Draft only) |
 | `PROCESSING_EVENTS` | Processing Events | Audit log for every poll/extraction |
 | `SENSITIVE_REVIEW` | Sensitive Review | **Admin-only** — sensitive flags, must live outside main teamspace |
+| `KNOWLEDGE_BASE` | Knowledge Base | KB articles extracted as Draft for human review; optional |
+| `POLICIES` | Policies | Active policies read during extraction for conflict detection; optional |
+| `INTERACTIONS` | Interactions | CRM contact history, auto-logged on every processed email/meeting; optional |
 | `TENSIONS` | Tensions | Named governance/operational gaps, gated (optional) |
 | `COMMITMENTS` | Commitments | Ongoing inter-party agreements, gated (optional) |
 | `GRATITUDES` | Gratitudes | Appreciations between community members, gated (optional) |
@@ -127,6 +130,7 @@ Env var prefix: `NOTION_DB_`
 | `ADMIN_NOTIFICATION_EMAIL` | Human inbox for access requests + review alerts (≠ ROOTS_EMAIL) |
 | `TENANT_ID` | Amora tenant identifier written to Processing Events |
 | `CLAUDE_MODEL` | Primary model, e.g. `claude-sonnet-4-6` |
+| `EXTRACTION_LANGUAGE` | Language all extracted field values must be written in (default: English). Set to `Dutch`, `Spanish`, etc. for non-English clients. |
 | `MAX_RETRY_COUNT` | Max retries before escalation (default: 4) |
 | `GMAIL_POLL_INTERVAL_SECONDS` | Poll interval (default: 180) |
 
