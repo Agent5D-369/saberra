@@ -6,6 +6,7 @@
     document.querySelectorAll('.tab-btn').forEach(function(b){ b.classList.toggle('active', b.getAttribute('data-tab') === name); });
     var panel = document.getElementById('tab-' + name);
     if (panel) panel.classList.add('active');
+    if (name !== 'sera-chat') window.scrollTo({ top: 0, behavior: 'instant' });
     try { localStorage.setItem('lm-tab', name); } catch(e) {}
     // rebuild charts when a chart tab becomes visible (setTimeout gives browser a tick to apply display:block)
     setTimeout(function(){
@@ -519,6 +520,7 @@
     var activeId = null;
     var pendingAttachments = [];
     var _activeController = null;
+    var _queuedMessage = null;
     var _sidebarCollapsed = false;
 
     function esc(s) {
@@ -710,6 +712,35 @@
         sidebar.classList.remove('collapsed');
         if (toggleBtn) toggleBtn.innerHTML = '&#8249;';
       }
+    }
+
+    function setSendStreaming(streaming) {
+      var btn = document.getElementById('chat-send');
+      if (!btn) return;
+      var sendIcon = btn.querySelector('.send-icon');
+      var stopIcon = btn.querySelector('.stop-icon');
+      if (streaming) {
+        btn.classList.add('streaming');
+        if (sendIcon) sendIcon.style.display = 'none';
+        if (stopIcon) stopIcon.style.display = '';
+      } else {
+        btn.classList.remove('streaming');
+        if (sendIcon) sendIcon.style.display = '';
+        if (stopIcon) stopIcon.style.display = 'none';
+      }
+    }
+
+    function showQueuedNotice(text) {
+      var notice = document.getElementById('chat-queued-notice');
+      var textEl = document.getElementById('chat-queued-text');
+      if (!notice) return;
+      if (textEl) textEl.textContent = (text || '').slice(0, 70) + ((text || '').length > 70 ? '…' : '');
+      notice.style.display = 'flex';
+    }
+
+    function hideQueuedNotice() {
+      var notice = document.getElementById('chat-queued-notice');
+      if (notice) notice.style.display = 'none';
     }
 
     function renderMessages() {
@@ -924,7 +955,9 @@
       var input = document.getElementById('chat-input');
       var sendBtn = document.getElementById('chat-send');
       var cancelBtn = document.getElementById('chat-cancel-btn');
-      if (!input || !sendBtn || sendBtn.disabled) return;
+      if (!input || !sendBtn) return;
+      // Stop button: abort active stream (queued message stays if set)
+      if (_activeController) { _activeController.abort(); return; }
       var q = input.value.trim();
       if (!q && pendingAttachments.length === 0) return;
       if (!activeId) createThread();
@@ -946,8 +979,7 @@
       renderAttachmentStrip();
 
       input.value = ''; input.style.height = '';
-      sendBtn.disabled = true;
-      if (cancelBtn) cancelBtn.style.display = '';
+      setSendStreaming(true);
 
       // User bubble shows typed text + image thumbnails (not raw file content)
       var displayLabel = q || (imageAttachments.length > 0 ? '[image]' : '[file]');
@@ -973,8 +1005,24 @@
 
       function cleanup(focusInput) {
         _activeController = null;
-        sendBtn.disabled = false;
-        if (cancelBtn) cancelBtn.style.display = 'none';
+        setSendStreaming(false);
+        if (_queuedMessage) {
+          var queued = _queuedMessage;
+          _queuedMessage = null;
+          hideQueuedNotice();
+          var inp = document.getElementById('chat-input');
+          if (inp) {
+            inp.value = queued.text;
+            inp.style.height = 'auto';
+            inp.style.height = Math.min(inp.scrollHeight, 180) + 'px';
+          }
+          if (queued.attachments && queued.attachments.length > 0) {
+            pendingAttachments = queued.attachments;
+            renderAttachmentStrip();
+          }
+          setTimeout(function() { sendQuestion(); }, 80);
+          return;
+        }
         if (focusInput) { var inp = document.getElementById('chat-input'); if (inp) inp.focus(); }
       }
 
@@ -1117,20 +1165,39 @@
     var sendBtnEl = document.getElementById('chat-send');
     if (sendBtnEl) sendBtnEl.addEventListener('click', sendQuestion);
 
-    // Cancel button — aborts the active stream
+    // Cancel button element kept for code compatibility but hidden — stop is via send button
     var cancelBtnEl = document.getElementById('chat-cancel-btn');
-    if (cancelBtnEl) {
-      cancelBtnEl.addEventListener('click', function() {
-        if (_activeController) { _activeController.abort(); }
+
+    // Queued message cancel button
+    var queuedCancelEl = document.getElementById('chat-queued-cancel');
+    if (queuedCancelEl) {
+      queuedCancelEl.addEventListener('click', function() {
+        _queuedMessage = null;
+        hideQueuedNotice();
       });
     }
 
     var chatInput = document.getElementById('chat-input');
     if (chatInput) {
       chatInput.addEventListener('keydown', function(e) {
-        // Escape cancels a running stream
         if (e.key === 'Escape' && _activeController) { e.preventDefault(); _activeController.abort(); return; }
-        if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); sendQuestion(); }
+        if (e.key === 'Enter' && !e.shiftKey) {
+          e.preventDefault();
+          if (_activeController) {
+            // Queue this message while Sera is responding
+            var q = chatInput.value.trim();
+            if (q || pendingAttachments.length > 0) {
+              _queuedMessage = { text: q, attachments: pendingAttachments.slice() };
+              pendingAttachments = [];
+              renderAttachmentStrip();
+              chatInput.value = '';
+              chatInput.style.height = '';
+              showQueuedNotice(q);
+            }
+          } else {
+            sendQuestion();
+          }
+        }
       });
       chatInput.addEventListener('input', function() {
         this.style.height = 'auto';

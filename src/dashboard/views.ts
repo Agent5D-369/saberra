@@ -212,14 +212,14 @@ p.dim{font-style:italic;font-size:13px;padding:4px 0}
 .chat-messages{flex:1;overflow-y:auto;padding:18px 8px 8px;display:flex;flex-direction:column;gap:14px;scrollbar-width:thin;scrollbar-color:var(--border) transparent;min-height:0}
 .chat-messages::-webkit-scrollbar{width:4px}
 .chat-messages::-webkit-scrollbar-thumb{background:var(--border);border-radius:2px}
-.chat-msg{display:flex;gap:10px;align-items:flex-start;min-width:0;width:100%}
+.chat-msg{display:flex;gap:12px;align-items:flex-start;min-width:0;width:100%}
 .chat-msg.user{flex-direction:row-reverse}
-.chat-bubble-wrap{display:flex;flex-direction:column;align-items:flex-end;max-width:65%}
+.chat-bubble-wrap{display:flex;flex-direction:column;align-items:flex-end;max-width:75%}
 .chat-msg.user .chat-bubble{max-width:100%}
-.chat-bubble{padding:10px 14px;border-radius:12px;font-size:13.5px;line-height:1.65;word-break:break-word;overflow-wrap:break-word;min-width:0;max-width:100%}
-.chat-msg.user .chat-bubble{background:var(--accent);color:#fff;border-radius:12px 12px 2px 12px}
-.chat-msg.sera .chat-bubble{background:var(--card);border:1px solid var(--card-border);border-radius:12px 12px 12px 2px}
-.chat-avatar{width:30px;height:30px;border-radius:50%;flex-shrink:0;min-width:30px;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;color:#fff}
+.chat-bubble{padding:10px 14px;border-radius:14px;font-size:13.5px;line-height:1.7;word-break:break-word;overflow-wrap:break-word;min-width:0;max-width:100%}
+.chat-msg.user .chat-bubble{background:var(--accent);color:#fff;border-radius:16px 16px 4px 16px}
+.chat-msg.sera .chat-bubble{background:transparent;border:none;border-radius:0;padding:2px 0;font-size:14px;line-height:1.75;max-width:700px;width:100%}
+.chat-avatar{width:28px;height:28px;border-radius:50%;flex-shrink:0;min-width:28px;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:#fff}
 .chat-avatar.user-icon{background:var(--accent)}
 /* Sources: collapsed <details> — click to expand */
 .chat-sources{margin-top:10px}
@@ -239,17 +239,23 @@ p.dim{font-style:italic;font-size:13px;padding:4px 0}
 .chat-thinking-dots span:nth-child(2){animation-delay:.2s}
 .chat-thinking-dots span:nth-child(3){animation-delay:.4s}
 @keyframes chatDot{0%,80%,100%{transform:scale(0.6);opacity:.4}40%{transform:scale(1);opacity:1}}
-.chat-input-row{display:flex;gap:8px;padding:12px 10px;border-top:1px solid var(--card-border);flex-shrink:0;width:100%;box-sizing:border-box}
-.chat-input{flex:1;min-width:0;background:var(--card);border:1px solid var(--card-border);border-radius:10px;color:var(--text);font-size:13px;padding:10px 14px;resize:none;min-height:44px;max-height:140px;outline:none;font-family:inherit;transition:border-color .15s,box-shadow .15s}
-.chat-input:focus{border-color:var(--accent);box-shadow:0 0 0 3px rgba(99,102,241,0.12)}
-.chat-send{background:var(--accent);color:#fff;border:none;border-radius:10px;padding:10px 18px;cursor:pointer;font-size:13px;font-weight:600;transition:opacity .15s;white-space:nowrap;align-self:flex-end;flex-shrink:0}
+.chat-input-row{display:flex;gap:8px;padding:10px 14px 14px;border-top:1px solid var(--card-border);flex-shrink:0;width:100%;box-sizing:border-box;align-items:flex-end}
+.chat-input{flex:1;min-width:0;background:var(--card);border:1px solid var(--card-border);border-radius:12px;color:var(--text);font-size:13.5px;padding:11px 14px;resize:none;min-height:46px;max-height:180px;outline:none;font-family:inherit;transition:border-color .15s,box-shadow .15s;line-height:1.5}
+.chat-input:focus{border-color:var(--accent);box-shadow:0 0 0 2px rgba(99,102,241,0.14)}
+.chat-send{width:38px;height:38px;min-width:38px;background:var(--accent);color:#fff;border:none;border-radius:50%;padding:0;cursor:pointer;font-size:13px;font-weight:600;transition:background .15s,opacity .15s,border-color .15s;align-self:flex-end;flex-shrink:0;display:flex;align-items:center;justify-content:center}
 .chat-send:hover{opacity:.85}
-.chat-send:disabled{opacity:.4;cursor:not-allowed}
+.chat-send.streaming{background:var(--card);border:1.5px solid var(--card-border);color:var(--text);opacity:1}
+.chat-send.streaming:hover{border-color:var(--red);color:var(--red);background:rgba(239,68,68,0.08)}
 .chat-empty{display:flex;flex-direction:column;align-items:center;justify-content:center;flex:1;gap:12px;color:var(--muted);padding:40px 0}
 .chat-empty-icon{font-size:36px;opacity:.5}
 .chat-empty-text{font-size:13px;text-align:center;max-width:300px;line-height:1.6}
 .chat-tokens{font-size:10px;color:var(--muted);text-align:center;padding:4px 20px 6px;opacity:.6;flex-shrink:0}
-@media(max-width:600px){.chat-sidebar{width:150px}.chat-thread-title{font-size:11px}.chat-input-row{padding:10px 8px}.chat-bubble-wrap{max-width:80%}}
+.chat-queued-notice{display:none;align-items:center;gap:8px;padding:7px 14px;background:rgba(99,102,241,0.1);border-top:1px solid rgba(99,102,241,0.2);flex-shrink:0;font-size:12px;color:var(--muted)}
+.chat-queued-text{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:var(--text)}
+.chat-queued-label{font-weight:600;color:var(--accent);flex-shrink:0}
+.chat-queued-cancel{background:none;border:none;color:var(--muted);cursor:pointer;font-size:16px;line-height:1;padding:0 2px;flex-shrink:0;transition:color .12s}
+.chat-queued-cancel:hover{color:var(--red)}
+@media(max-width:600px){.chat-sidebar{width:150px}.chat-thread-title{font-size:11px}.chat-input-row{padding:10px 8px}.chat-bubble-wrap{max-width:85%}}
 
 /* ─── Sera tip panel ───────────────────────────────────── */
 .sera-panel{display:flex;align-items:center;gap:20px;background:var(--surface);border:1px solid var(--card-border);border-left:3px solid var(--accent);border-radius:var(--radius);padding:18px 22px;margin-bottom:20px;box-shadow:var(--shadow);position:relative;overflow:hidden;min-height:112px}
@@ -2764,12 +2770,17 @@ ${dataErrorBannerHtml}${alertBannerHtml}
           <div class="prompt-section-label">Ask Sera</div>
           <div class="prompt-pills">${promptPillsHtml}</div>
         </div>
+        <div class="chat-queued-notice" id="chat-queued-notice">
+          <span class="chat-queued-label">Queued</span>
+          <span class="chat-queued-text" id="chat-queued-text"></span>
+          <button class="chat-queued-cancel" id="chat-queued-cancel" title="Cancel queued message">&#x2715;</button>
+        </div>
         <div class="chat-input-row">
           <button class="chat-attach-btn" id="chat-attach-btn" title="Attach image or text file">+</button>
           <input type="file" id="chat-file-input" accept="image/jpeg,image/png,image/gif,image/webp,.txt,.md,.csv" multiple style="display:none">
           <textarea class="chat-input" id="chat-input" rows="1" placeholder="${esc(locale.ui.chatPlaceholder)}"></textarea>
-          <button class="chat-cancel-btn" id="chat-cancel-btn">&#x2715; ${locale.ui.btnCancel}</button>
-          <button class="chat-send" id="chat-send">${locale.ui.btnSend}</button>
+          <button class="chat-cancel-btn" id="chat-cancel-btn" style="display:none" aria-hidden="true"></button>
+          <button class="chat-send" id="chat-send" title="Send (Enter) / Stop (while responding)"><svg class="send-icon" viewBox="0 0 20 20" fill="currentColor" width="17" height="17" aria-hidden="true"><path d="M10.894 2.553a1 1 0 00-1.788 0l-7 14a1 1 0 001.169 1.409l5-1.429A1 1 0 009 15.571V11a1 1 0 112 0v4.571a1 1 0 00.725.962l5 1.428a1 1 0 001.17-1.408l-7-14z"/></svg><svg class="stop-icon" viewBox="0 0 20 20" fill="currentColor" width="14" height="14" aria-hidden="true" style="display:none"><rect x="4" y="4" width="12" height="12" rx="2.5"/></svg></button>
         </div>
         <div class="chat-tokens" id="chat-tokens"></div>
       </div>
