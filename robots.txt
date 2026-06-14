@@ -1,0 +1,5 @@
+User-Agent: *
+Allow: /
+
+Host: https://saberra.com
+Sitemap: https://saberra.com/sitemap.xml
