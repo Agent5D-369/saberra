@@ -74,6 +74,16 @@ export class ScheduledTaskService {
         intervalMs: 7 * 24 * 60 * 60 * 1000,
         run: () => this.sendWeeklyPulse(),
       },
+      {
+        name: 'monthly-health-report',
+        intervalMs: 28 * 24 * 60 * 60 * 1000,
+        run: () => this.sendMonthlyHealthReport(),
+      },
+      {
+        name: 'milestone-check',
+        intervalMs: 0,
+        run: () => this.checkMilestoneEmails(),
+      },
     ];
   }
 
@@ -975,5 +985,199 @@ export class ScheduledTaskService {
       { emails: emails.length, meetings: newMeetings.length, tasks: newTasks.length, decisions: newDecisions.length, risks: newRisks.length, urgentQueue: urgentQueue.length, orgHealthTensions: orgHealthTensions.length, hasSynthesis: Boolean(synthesis) },
       'Weekly pulse sent',
     );
+  }
+
+  // ─── Monthly memory health report ────────────────────────────────────────────
+
+  private async sendMonthlyHealthReport(): Promise<void> {
+    const cutoff   = new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString();
+    const today    = new Date().toISOString().slice(0, 10);
+    const monthAgo = cutoff.slice(0, 10);
+    const tsFilter = { timestamp: 'created_time', created_time: { after: cutoff } } as any;
+
+    const [emails, meetings, decisions, risks, profiles, openTasks, pendingReviews] = await Promise.all([
+      this.notion.queryDatabase(this.notion.dbIds.sourceEmails,      { and: [tsFilter] } as any, 200),
+      this.notion.queryDatabase(this.notion.dbIds.meetings,           { and: [tsFilter] } as any, 100),
+      this.notion.queryDatabase(this.notion.dbIds.decisionCandidates, { and: [tsFilter] } as any, 100),
+      this.notion.queryDatabase(this.notion.dbIds.risks,              { and: [tsFilter] } as any, 100),
+      this.notion.queryDatabase(this.notion.dbIds.profiles,           { and: [tsFilter] } as any, 100),
+      this.notion.queryDatabase(
+        this.notion.dbIds.tasks,
+        { and: [
+          { property: 'Status', select: { does_not_equal: 'Done' } },
+          { property: 'Status', select: { does_not_equal: 'Cancelled' } },
+        ]} as any,
+        200,
+      ),
+      this.notion.queryDatabase(
+        this.notion.dbIds.memoryReviewQueue,
+        { property: 'Status', select: { equals: 'Pending Review' } } as any,
+        100,
+      ),
+    ]);
+
+    const totalCaptured = emails.length + meetings.length + decisions.length + risks.length;
+
+    const rawLines: string[] = [
+      `${this.clientName.toUpperCase()} MONTHLY MEMORY HEALTH`,
+      `${monthAgo} to ${today}`,
+      '='.repeat(50),
+      '',
+      'CAPTURED THIS MONTH:',
+      `  Emails processed:      ${emails.length}`,
+      `  Meetings captured:     ${meetings.length}`,
+      `  Decisions recorded:    ${decisions.length}`,
+      `  Risks flagged:         ${risks.length}`,
+      `  New people tracked:    ${profiles.length}`,
+      '',
+      'CUMULATIVE STATE:',
+      `  Open tasks:            ${openTasks.length}`,
+      `  Items awaiting review: ${pendingReviews.length}`,
+      '',
+    ];
+
+    let synthesis = '';
+    try {
+      const systemPrompt = [
+        `You are the organisational intelligence layer for ${this.clientName}, a teal self-managing organisation.`,
+        'Write one short paragraph called "Something to notice this month" (3-5 sentences).',
+        'Name one pattern, ratio, absence, or implication in the numbers worth sitting with.',
+        'End with a single open question for the leadership team.',
+        'Plain text only. No markdown. No em dashes.',
+      ].join(' ');
+
+      const ctx = `Monthly data (${monthAgo} to ${today}): emails=${emails.length}, meetings=${meetings.length}, decisions=${decisions.length}, risks=${risks.length}, new profiles=${profiles.length}, open tasks=${openTasks.length}, pending review=${pendingReviews.length}`;
+
+      const msg = await this.claude.messages.create({
+        model: this.claudeModel,
+        max_tokens: 200,
+        system: systemPrompt,
+        messages: [{ role: 'user', content: ctx }],
+      });
+      const block = msg.content.find(b => b.type === 'text');
+      synthesis = block?.type === 'text' ? block.text.trim() : '';
+    } catch (err) {
+      logger.warn({ err }, 'Claude synthesis failed for monthly health report');
+    }
+
+    const lines = [...rawLines];
+    if (synthesis) {
+      lines.push('SOMETHING TO NOTICE THIS MONTH:');
+      lines.push(synthesis);
+      lines.push('');
+    }
+    lines.push('-'.repeat(50));
+    lines.push(`${totalCaptured} memory items captured this month.`);
+
+    const subject = `[${this.clientName}] Monthly memory health - ${monthAgo} to ${today}`;
+    await this.smtp.sendEmail(this.adminEmail, subject, lines.join('\n'));
+    logger.info(
+      { emails: emails.length, meetings: meetings.length, decisions: decisions.length, risks: risks.length, profiles: profiles.length, openTasks: openTasks.length, pendingReviews: pendingReviews.length },
+      'Monthly health report sent',
+    );
+  }
+
+  // ─── Day-30 / day-90 milestone emails ────────────────────────────────────────
+
+  private async hasNeverRun(taskName: string): Promise<boolean> {
+    try {
+      const results = await this.notion.queryDatabase(
+        this.notion.dbIds.processingEvents,
+        {
+          and: [
+            { property: 'Event Type', select: { equals: 'Scheduled Task' } },
+            { property: 'Tenant ID',  rich_text: { equals: this.tenantId } },
+            { property: 'Details',    rich_text: { contains: `sched:${taskName}` } },
+          ],
+        } as any,
+        1,
+      );
+      return results.length === 0;
+    } catch {
+      return false; // assume it ran on error - do not re-send milestone emails on transient failures
+    }
+  }
+
+  private async checkMilestoneEmails(): Promise<void> {
+    const cfg = getConfig();
+    if (!cfg.DEPLOYED_AT) return;
+
+    const deployedDate = new Date(cfg.DEPLOYED_AT);
+    if (isNaN(deployedDate.getTime())) return;
+
+    const daysElapsed  = Math.floor((Date.now() - deployedDate.getTime()) / (24 * 60 * 60 * 1000));
+    const testimonialUrl = cfg.TESTIMONIAL_REQUEST_URL ?? '';
+    const affiliateUrl   = cfg.TOLT_AFFILIATE_SIGNUP_URL;
+
+    for (const days of [30, 90]) {
+      if (daysElapsed < days) continue;
+      const taskName = `milestone-${days}day`;
+      if (!(await this.hasNeverRun(taskName))) continue;
+
+      await this.sendMilestoneEmail(days, testimonialUrl, affiliateUrl);
+      await this.recordRun(taskName);
+      logger.info({ days, taskName }, 'Milestone email sent');
+    }
+  }
+
+  private async sendMilestoneEmail(days: number, testimonialUrl: string, affiliateUrl: string): Promise<void> {
+    const cutoff   = new Date(Date.now() - days * 24 * 60 * 60 * 1000).toISOString();
+    const tsFilter = { timestamp: 'created_time', created_time: { after: cutoff } } as any;
+
+    const [emails, meetings, decisions, risks, profiles] = await Promise.all([
+      this.notion.queryDatabase(this.notion.dbIds.sourceEmails,      { and: [tsFilter] } as any, 200),
+      this.notion.queryDatabase(this.notion.dbIds.meetings,           { and: [tsFilter] } as any, 100),
+      this.notion.queryDatabase(this.notion.dbIds.decisionCandidates, { and: [tsFilter] } as any, 100),
+      this.notion.queryDatabase(this.notion.dbIds.risks,              { and: [tsFilter] } as any, 100),
+      this.notion.queryDatabase(this.notion.dbIds.profiles,           { and: [tsFilter] } as any, 100),
+    ]);
+
+    const totalMemory = emails.length + meetings.length + decisions.length + risks.length;
+
+    const lines: string[] = [
+      `${days} days with Sera`,
+      '',
+      `It has been ${days} days since Sera went live for ${this.clientName}.`,
+      'Here is what she has been holding for you:',
+      '',
+      `  Emails processed:    ${emails.length}`,
+      `  Meetings captured:   ${meetings.length}`,
+      `  Decisions recorded:  ${decisions.length}`,
+      `  Risks flagged:       ${risks.length}`,
+      `  People tracked:      ${profiles.length}`,
+      '',
+      `In ${days} days, ${totalMemory} pieces of institutional memory have been moved from scattered inboxes and meeting recordings into a searchable, structured archive.`,
+      '',
+    ];
+
+    if (days === 30) {
+      lines.push(
+        'We hope Sera has been useful. If so, we would genuinely love to hear about it.',
+        'Honest feedback - good or complicated - helps us build the right thing.',
+      );
+    } else {
+      lines.push(
+        'Ninety days in. Sera is now part of how your organisation remembers.',
+        'We hope that has made a real difference.',
+      );
+    }
+    lines.push('');
+
+    if (testimonialUrl) {
+      lines.push(`Share your experience: ${testimonialUrl}`, '');
+    }
+
+    lines.push(
+      'If you have found value in Sera, you might know others who would too.',
+      "Saberra's affiliate program pays 15% recurring revenue for 12 months on every client you refer.",
+      '',
+      `Join the affiliate program: ${affiliateUrl}`,
+      '',
+      'With care,',
+      'The Saberra team',
+    );
+
+    const subject = `[${this.clientName}] ${days} days with Sera`;
+    await this.smtp.sendEmail(this.adminEmail, subject, lines.join('\n'));
   }
 }

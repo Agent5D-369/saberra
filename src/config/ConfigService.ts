@@ -68,6 +68,14 @@ const configSchema = z.object({
   // Defaults to TENANT_ID when absent.
   SABERRA_CLIENT_NAME: z.string().min(1).optional(),
 
+  // ISO date (YYYY-MM-DD) when this client's Sera instance went live.
+  // Drives day-30 and day-90 milestone email triggers. Leave unset to disable milestone emails.
+  DEPLOYED_AT: z.string().min(1).optional(),
+  // URL for collecting a client testimonial (e.g. Testimonial.to share link).
+  TESTIMONIAL_REQUEST_URL: z.string().min(1).optional(),
+  // Saberra affiliate signup URL. Defaults to the Tolt partner portal.
+  TOLT_AFFILIATE_SIGNUP_URL: z.string().min(1).default('https://partners.saberra.com'),
+
   // Governing Purpose Statement — stored as env var, injected into every extraction
   // Format: full multi-sentence purpose statement following the Teal GPS formula
   // Optional — when set, Sera evaluates every decision and canon change for purpose alignment
