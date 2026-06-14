@@ -28,7 +28,7 @@ const roles = [
     title: "Memory Architecture Steward",
     conventional: "Implementation Lead",
     phase: "Phase 2",
-    compensation: "25–35% of setup net collected revenue from deployments you lead (inside Delivery Pool)",
+    compensation: "25–35% of setup net collected revenue from deployments you lead (inside Delivery Pool), with a $500–$1,500 deployment floor recouped from your NCR share",
     summary:
       "This role delivers the core Saberra offer: the 30-day founder-led institutional memory deployment. You configure the capture infrastructure, build the Notion Memory OS, train the client's Memory Admin, and produce the Week 4 Memory Health Readout. When this role is filled, the founder stops being the only person who can close and deliver.",
     accountabilities: [
@@ -90,7 +90,7 @@ const roles = [
     title: "Ecosystem Bridge Steward",
     conventional: "Partnerships",
     phase: "Phase 2 / Phase 3",
-    compensation: "5–10% of setup net collected revenue when a referral materially contributes to a closed deployment, plus 5% of first 3 months retainer NCR (inside Market Pool)",
+    compensation: "10–15% of setup net collected revenue when a referral materially contributes to a closed deployment, plus 5% of first 3 months retainer NCR (inside Market Pool)",
     summary:
       "Saberra grows through trusted relationships with people who already serve the teams we help: Notion consultants, operations advisors, fractional COOs, governance practitioners, cooperative developers, and organizational design consultants. This role builds those relationships, qualifies referrals, and brings market feedback back. It is not a sales role. It is a trust-building role with an economic incentive.",
     accountabilities: [
@@ -164,8 +164,9 @@ export default function CareersPage() {
           </SectionHeader>
           <div className="grid-3" style={{ marginTop: 32 }}>
             {[
-              ["Role-share compensation", "Each role draws from a specific pool as a percentage of net collected revenue from the work it contributes to. No base salary, no equity promises, no vague future upside."],
-              ["Written before work begins", "Scope, compensation, review dates, and exit conditions are written and agreed before any engagement starts. If the math does not work for both sides, we do not start."],
+              ["Role-share compensation", "Each role draws from a specific pool as a percentage of net collected revenue from the work it contributes to. No equity promises, no vague future upside. Implementation roles may include a small deployment floor that is recouped from the final NCR share."],
+              ["Written before work begins", "Scope, compensation, review dates, payment timing, and exit conditions are written and agreed before any engagement starts. If the math does not work for both sides, we do not start."],
+              ["Payment timing", "NCR shares are settled monthly and paid within 30 days after Saberra collects the related client revenue, unless the written agreement sets a different schedule."],
               ["Independent contractor", "These are project-based and ongoing retainer engagements for independent contractors. You keep your own practice. You set your own hours within agreed delivery expectations."]
             ].map(([title, copy]) => (
               <article className="card" key={title}>
