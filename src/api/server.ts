@@ -526,6 +526,43 @@ const server = http.createServer(async (req, res) => {
     return;
   }
 
+  // ── GET /backup - full Notion database snapshot (for nightly automated backup) ──
+  // Returns JSON of all database records. Authenticated. Paginated to handle large DBs.
+  if (method === 'GET' && path === '/backup') {
+    try {
+      const cfg = getConfig();
+      const notionClient = new Client({ auth: cfg.NOTION_API_KEY });
+      const dbIds = getNotionDatabaseIds(cfg);
+      const snapshot: Record<string, unknown[]> = {};
+
+      for (const [name, id] of Object.entries(dbIds)) {
+        if (!id) continue;
+        const records: unknown[] = [];
+        let cursor: string | undefined;
+        do {
+          const resp = await notionClient.databases.query({
+            database_id: id,
+            page_size: 100,
+            ...(cursor ? { start_cursor: cursor } : {}),
+          });
+          records.push(...resp.results);
+          cursor = resp.has_more && resp.next_cursor ? resp.next_cursor : undefined;
+        } while (cursor);
+        snapshot[name] = records;
+      }
+
+      json(res, 200, {
+        tenant: cfg.SABERRA_CLIENT_NAME ?? cfg.TENANT_ID,
+        timestamp: new Date().toISOString(),
+        databases: snapshot,
+      });
+    } catch (err) {
+      logger.error(err, '/backup error');
+      json(res, 500, { error: 'Backup failed - check logs' });
+    }
+    return;
+  }
+
   json(res, 404, { error: 'Not found' });
 });
 

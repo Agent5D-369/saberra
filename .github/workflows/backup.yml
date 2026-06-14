@@ -1,0 +1,104 @@
+name: Nightly Backup
+
+on:
+  schedule:
+    - cron: '0 2 * * *'   # 2am UTC every night
+  workflow_dispatch:        # allow manual trigger from GitHub Actions UI
+
+jobs:
+  backup:
+    name: Backup All Notion Databases
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout backups branch
+        uses: actions/checkout@v4
+        with:
+          ref: backups
+          token: ${{ secrets.GITHUB_TOKEN }}
+        id: checkout
+        continue-on-error: true
+
+      - name: Initialize backups branch (first run only)
+        if: steps.checkout.outcome == 'failure'
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Create backups branch on first run
+        if: steps.checkout.outcome == 'failure'
+        run: |
+          git config user.name "Saberra Backup"
+          git config user.email "backup@saberra.com"
+          git checkout --orphan backups
+          git rm -rf .
+          echo "# Saberra Nightly Backups" > README.md
+          echo "Automated nightly Notion database exports. One JSON per client per day." >> README.md
+          git add README.md
+          git commit -m "init: backups branch"
+          git push origin backups
+
+      - name: Re-checkout backups branch after init
+        if: steps.checkout.outcome == 'failure'
+        uses: actions/checkout@v4
+        with:
+          ref: backups
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Download Amora backup
+        env:
+          API_URL: ${{ secrets.AMORA_API_URL }}
+          API_SECRET: ${{ secrets.AMORA_API_SECRET }}
+        run: |
+          DATE=$(date +%Y-%m-%d)
+          mkdir -p amora
+          HTTP_STATUS=$(curl -s -o "amora/$DATE.json" -w "%{http_code}" \
+            -H "Authorization: Bearer $API_SECRET" \
+            "$API_URL/backup")
+          if [ "$HTTP_STATUS" != "200" ]; then
+            echo "ERROR: Amora backup returned HTTP $HTTP_STATUS"
+            cat "amora/$DATE.json" || true
+            exit 1
+          fi
+          SIZE=$(du -h "amora/$DATE.json" | cut -f1)
+          echo "Amora backup complete: $SIZE"
+
+      - name: Download Verdana backup
+        env:
+          API_URL: ${{ secrets.VERDANA_API_URL }}
+          API_SECRET: ${{ secrets.VERDANA_API_SECRET }}
+        run: |
+          DATE=$(date +%Y-%m-%d)
+          mkdir -p verdana
+          HTTP_STATUS=$(curl -s -o "verdana/$DATE.json" -w "%{http_code}" \
+            -H "Authorization: Bearer $API_SECRET" \
+            "$API_URL/backup")
+          if [ "$HTTP_STATUS" != "200" ]; then
+            echo "ERROR: Verdana backup returned HTTP $HTTP_STATUS"
+            cat "verdana/$DATE.json" || true
+            exit 1
+          fi
+          SIZE=$(du -h "verdana/$DATE.json" | cut -f1)
+          echo "Verdana backup complete: $SIZE"
+
+      - name: Commit and push
+        run: |
+          git config user.name "Saberra Backup"
+          git config user.email "backup@saberra.com"
+          DATE=$(date +%Y-%m-%d)
+          git add amora/ verdana/
+          git diff --cached --quiet || git commit -m "backup: $DATE"
+          git push origin backups
+
+      - name: Alert on failure
+        if: failure() && env.OPERATOR_NOTIFY_URL != '' && env.OPERATOR_NOTIFY_TOKEN != ''
+        env:
+          OPERATOR_NOTIFY_URL: ${{ secrets.OPERATOR_NOTIFY_URL }}
+          OPERATOR_NOTIFY_TOKEN: ${{ secrets.OPERATOR_NOTIFY_TOKEN }}
+        run: |
+          curl -sf -X POST "$OPERATOR_NOTIFY_URL" \
+            -H "Authorization: Bearer $OPERATOR_NOTIFY_TOKEN" \
+            -H "Content-Type: application/json" \
+            -d "{\"subject\":\"[Saberra Backup] Nightly backup failed\",\"message\":\"Backup workflow failed on $(date +%Y-%m-%d). Check: $GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID\"}"
