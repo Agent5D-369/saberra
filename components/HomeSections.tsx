@@ -18,10 +18,11 @@ import {
   Workflow
 } from "lucide-react";
 import { captureItems, faqs } from "@/lib/site";
-import { CTAButton, CTABand, HumanReviewBadge, SectionHeader, SeraPortrait, SourceBackedBadge } from "@/components/UI";
+import { CTAButton, CTABand, HumanReviewBadge, SectionHeader, SeraPortrait, SeraScene, SourceBackedBadge } from "@/components/UI";
 import { SeraDemo } from "@/components/SeraDemo";
 import { EditorialStoryStrip } from "@/components/EditorialVisuals";
 import {
+  CollapsePatternVisual,
   DatabaseMapVisual,
   GovernanceConsoleVisual,
   MemoryLoopVisual,
@@ -38,13 +39,6 @@ export function Hero() {
           <div className="hero-eyebrow">Done-for-you AI Secretary</div>
           <h1>Ask Sera what your organization already knows.</h1>
           <p className="hero-tagline">Saberra helps your organization stop paying the invisible tax of forgetting.</p>
-          <p className="hero-positioning">
-            We install a living institutional memory layer inside your existing Google Workspace and Notion stack
-            so your team stops losing decisions, tasks, risks, roles, and context across meetings, email, and transitions.
-          </p>
-          <p>
-            No new tools for your team. No new workflows. Just memory that finally sticks.
-          </p>
           <div className="cta-row">
             <CTAButton href="/audit">Take the free Memory Audit</CTAButton>
             <CTAButton href="/demo" variant="secondary">
@@ -52,6 +46,10 @@ export function Hero() {
             </CTAButton>
           </div>
           <p className="cta-note">10 questions. Find out exactly where your organization is leaking.</p>
+          <p className="hero-positioning">
+            We install a living institutional memory layer for meeting-heavy teams. Plugs into Google Workspace
+            and Notion — or we provision the foundation as paid setup. No new tools or workflows for your team.
+          </p>
           <div className="trust-chips">
             <span className="trust-chip"><Workflow size={11} aria-hidden="true" /> No workflow change for your team</span>
             <span className="trust-chip"><Lock size={11} aria-hidden="true" /> Data stays in your accounts</span>
@@ -174,13 +172,16 @@ export function PainCards() {
 export function CategoryBreak() {
   return (
     <section className="section statement">
-      <div className="container">
-        <h2>Sera turns organizational chaos into operating intelligence.</h2>
-        <p>
-          Memory is the foundation, not the ceiling. Saberra captures what your team already says and sends, then Sera
-          organizes it into decisions, tasks, risks, projects, roles, policies, profiles, relationships, and reviewed
-          memory your organization can actually trust.
-        </p>
+      <div className="container statement-with-sera">
+        <div>
+          <h2>Sera turns organizational chaos into operating intelligence.</h2>
+          <p>
+            Memory is the foundation, not the ceiling. Saberra captures what your team already says and sends, then Sera
+            organizes it into decisions, tasks, risks, projects, roles, policies, profiles, relationships, and reviewed
+            memory your organization can actually trust.
+          </p>
+        </div>
+        <SeraScene variant="memory" />
       </div>
     </section>
   );
@@ -257,13 +258,16 @@ export function ProcessFlow() {
     <section className="section" id="how-it-works">
       <div className="container">
         <SectionHeader eyebrow="How it works" title="Your team keeps working. The operating record builds itself." />
-        <div className="grid-3">
-          {steps.map(([title, copy]) => (
-            <article className="card" key={title}>
-              <h3>{title}</h3>
-              <p>{copy}</p>
-            </article>
-          ))}
+        <div className="process-sera-layout">
+          <div className="grid-3">
+            {steps.map(([title, copy]) => (
+              <article className="card" key={title}>
+                <h3>{title}</h3>
+                <p>{copy}</p>
+              </article>
+            ))}
+          </div>
+          <SeraScene variant="meeting" />
         </div>
         <div className="pipeline" aria-label="Saberra pipeline">
           {pipeline.map(([label, Icon]) => {
@@ -340,8 +344,8 @@ export function ProductProof() {
           Saberra is not a summary screen. It is a done-for-you AI operations layer with intake health, review queues,
           governance signals, role ownership, source records, project context, and workspace controls your team can inspect.
         </SectionHeader>
-        <div className="sera-proof-callout">
-          <SeraPortrait variant="environment" size="md" />
+        <div className="sera-proof-callout sera-proof-callout-scene">
+          <SeraScene variant="dashboard" />
           <div>
             <div className="eyebrow">Sera in the loop</div>
             <h3>Sera is the intelligent organizational operator inside Saberra.</h3>
@@ -356,6 +360,41 @@ export function ProductProof() {
           <GovernanceConsoleVisual />
           <DatabaseMapVisual />
         </div>
+      </div>
+    </section>
+  );
+}
+
+export function OperatingHealthSection() {
+  const outcomes = [
+    ["Fewer repeated decisions", "Sera notices when the same topic keeps resurfacing without a trusted decision record."],
+    ["Clearer role ownership", "Role drift, vacant ownership, and hidden dependencies become reviewable signals."],
+    ["Earlier risk surfacing", "Concerns buried in meetings and email become candidates before they become expensive."],
+    ["Less founder gravity", "The people who remember everything stop being the only way the organization can move."]
+  ];
+
+  return (
+    <section className="section tight operating-health-section">
+      <div className="container operating-health-layout">
+        <div>
+          <SectionHeader
+            eyebrow="Quiet strategic value"
+            title="Sera helps the organization become more regenerative without making the team learn a new philosophy."
+          >
+            The deeper benefit is not just memory retrieval. Sera helps prevent the patterns that make growing teams
+            brittle: repeated decisions, unclear authority, hidden risks, founder dependency, burnout signals, and
+            governance bypasses. Your team experiences it as better follow-through and cleaner context.
+          </SectionHeader>
+          <div className="operating-health-grid">
+            {outcomes.map(([title, copy]) => (
+              <article className="health-outcome" key={title}>
+                <h3>{title}</h3>
+                <p>{copy}</p>
+              </article>
+            ))}
+          </div>
+        </div>
+        <CollapsePatternVisual />
       </div>
     </section>
   );
@@ -589,14 +628,14 @@ export function SocialProof() {
 
 export function FitQualifier() {
   const bestFor = [
-    "Teams on Google Workspace and Google Meet (or meeting tools that can email transcripts)",
-    "Notion-native workflows, or willingness to adopt Notion as the memory backend",
+    "Teams already on Google Workspace and Google Meet, or ready for us to configure that foundation",
+    "Notion-native workflows, or willingness to adopt Notion as the inspectable memory backend",
     "15 to 200 people feeling real pain from knowledge loss or context drift",
     "One person who can own memory review for about 1–2 hours per week"
   ];
   const notYet = [
     "Teams that require native Zoom or Teams integrations on day one",
-    "Teams not ready for Notion and not scoped for a custom backend",
+    "Teams unwilling to adopt an inspectable backend or scope a custom backend",
     "Self-serve buyers looking for instant no-touch signup",
     "Organizations with no one to own the human review step"
   ];
@@ -681,8 +720,8 @@ export function LeadMagnets() {
 export function FoundingOffer() {
   const criteria = [
     "15 to 200 people",
-    "Google Workspace",
-    "Notion-native or willing to use Notion",
+    "Google Workspace already in place, or willing to add setup scope",
+    "Notion-native, Notion-ready, or open to a configured memory backend",
     "Meeting-heavy operations",
     "Real, expensive memory loss pain",
     "One person can own memory review (~1–2 hrs/week)"
@@ -692,69 +731,4 @@ export function FoundingOffer() {
       <div className="container">
         <CTABand
           title="Founding Memory Partner Program: limited spots."
-          copy="We onboard a limited number of teams each month with full founder-led deployment: done-for-you setup, a memory audit before and after, human approval workflow design, and direct founder access for the first 90 days. If you've been nodding through this page, that's the signal."
-          primary="Apply for a founding spot"
-          primaryHref="/founding-access"
-          secondary="See Sera organize chaos"
-          secondaryHref="/demo"
-        />
-        <div className="grid-3" style={{ marginTop: 16 }}>
-          {criteria.map((item) => (
-            <div className="card" key={item}>
-              <CheckCircle size={18} color="#6FB7B7" aria-hidden="true" /> {item}
-            </div>
-          ))}
-        </div>
-      </div>
-    </section>
-  );
-}
-
-export function FAQ() {
-  return (
-    <section className="section tight">
-      <div className="container">
-        <SectionHeader eyebrow="FAQ" title="The questions you're already asking." />
-        <div className="grid-2 split">
-          {faqs.map(([question, answer]) => (
-            <article className="card" key={question}>
-              <h3>{question}</h3>
-              <p>{answer}</p>
-            </article>
-          ))}
-        </div>
-      </div>
-    </section>
-  );
-}
-
-export function FinalCTA() {
-  return (
-    <section className="section">
-      <div className="container">
-        <CTABand
-          title="Ready to stop losing context?"
-          copy="Take the free Memory Audit and find out exactly where your team is leaking. Results in 3 minutes."
-          primary="Take the free Memory Audit"
-          primaryHref="/audit"
-          secondary="Book a 30-minute call"
-          secondaryHref="/demo"
-        />
-      </div>
-    </section>
-  );
-}
-
-export function SeraDemoSection() {
-  return (
-    <section className="section tight">
-      <div className="container">
-        <SectionHeader eyebrow="Sera" title="Ask Sera what your team already knows." />
-        <p style={{ color: "#d5dddf", marginBottom: 32, maxWidth: 640 }}>
-          This is what it looks like when your organization can actually answer.
-        </p>
-        <SeraDemo />
-      </div>
-    </section>
-  );
-}
+          copy="We onboard a limited number of teams each month with full founder-led deployment: done-for-you setup, a memory audit before and after, human approval workflow design, and direct founder access for the first 90 da
