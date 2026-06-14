@@ -456,7 +456,7 @@ function CurrentToolsStep({
     <div className="calculator-fields">
       <StepTitle
         title="Current tools"
-        copy="Saberra is strongest when it turns your existing workspace into memory infrastructure."
+        copy="Saberra is fastest when the right workspace already exists. If it does not, setup can be included in the implementation scope."
       />
       <FieldGroup label="Do you already use Google Workspace?">
         <div className="calculator-options compact">
@@ -473,7 +473,7 @@ function CurrentToolsStep({
         <div className="calculator-context-note">
           {state.hasGoogleWorkspace === "yes"
             ? "Good. Saberra is designed to work with your existing Google Meet, Gmail, Drive, and Docs workflow."
-            : `Google Workspace estimate used here: Business Standard at ${formatMoney(TOOL_COSTS.googleWorkspaceBusinessStandardMonthlyAnnual)}/user/month on the annual plan, billed as ${formatMoney(TOOL_COSTS.googleWorkspaceBusinessStandardMonthlyAnnual * 12)}/user/year. Prices as of ${PRICING_AS_OF}.`}
+            : `No problem. The calculator estimates Google Workspace Business Standard at ${formatMoney(TOOL_COSTS.googleWorkspaceBusinessStandardMonthlyAnnual)}/user/month on the annual plan, billed as ${formatMoney(TOOL_COSTS.googleWorkspaceBusinessStandardMonthlyAnnual * 12)}/user/year. Provisioning or migration work is scoped separately. Prices as of ${PRICING_AS_OF}.`}
         </div>
       </FieldGroup>
       <FieldGroup label="Do you already use Notion?">
@@ -492,7 +492,7 @@ function CurrentToolsStep({
         <div className="calculator-context-note">
           {state.hasNotion === "business"
             ? "Good. Saberra can use Notion as your inspectable memory backend."
-            : `Notion Business estimate used here: ${formatMoney(TOOL_COSTS.notionBusinessMonthlyAnnual)}/member/month on the annual plan, billed as ${formatMoney(TOOL_COSTS.notionBusinessMonthlyAnnual * 12)}/member/year. Prices as of ${PRICING_AS_OF}.`}
+            : `No problem. The calculator estimates Notion Business at ${formatMoney(TOOL_COSTS.notionBusinessMonthlyAnnual)}/member/month on the annual plan, billed as ${formatMoney(TOOL_COSTS.notionBusinessMonthlyAnnual * 12)}/member/year. Workspace design or cleanup is scoped separately. Prices as of ${PRICING_AS_OF}.`}
         </div>
       </FieldGroup>
       <FieldGroup
@@ -803,7 +803,7 @@ function RoiSummaryCard({ state }: { state: CalculatorState }) {
               ? formatMoney(calc.firstYearTotalWithClientSubscriptions)
               : "Scoped after discovery"}
           </strong>
-          <p>Saberra midpoint plus any needed Google Workspace and Notion subscriptions.</p>
+          <p>Saberra midpoint plus estimated client-owned subscriptions if the workspace foundation is not in place.</p>
         </article>
         <article>
           <span>Client-owned subscriptions</span>

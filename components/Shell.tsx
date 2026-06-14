@@ -29,8 +29,8 @@ export function Header() {
             </Link>
           ))}
         </nav>
-        <Link className="btn btn-primary" href="/notion-template">
-          Open the demo hub <ArrowRight size={16} aria-hidden="true" />
+        <Link className="btn btn-primary" href="/audit">
+          Take the free audit <ArrowRight size={16} aria-hidden="true" />
         </Link>
       </div>
     </header>
@@ -52,7 +52,7 @@ export function Footer() {
           <Link href="/how-it-works">How it works</Link>
           <Link href="/product">Inside the product</Link>
           <Link href="/weekly-pulse">Weekly Pulse</Link>
-          <Link href="/sera">Ask Sera</Link>
+          <Link href="/sera">Sera</Link>
           <Link href="/pricing">Pricing</Link>
         </div>
         <div>
@@ -67,7 +67,7 @@ export function Footer() {
           <Link href="/calculator">Cost Calculator</Link>
           <Link href="/notion-template">Demo Hub</Link>
           <Link href="/founding-access">Founding Access</Link>
-          <Link href="/partners">Partner Referrals</Link>
+          <Link href="/partners">Channel Partners</Link>
           <Link href="/careers">Work With Us</Link>
           <Link href="/resources">Resources</Link>
           <Link href="/security">Security</Link>

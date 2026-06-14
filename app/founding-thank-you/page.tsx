@@ -25,7 +25,7 @@ export default function FoundingThankYouPage() {
             exactly what the record looks like after Sera organizes it and a human approves it.
           </p>
           <div className="cta-row">
-            <CTAButton href="/demo">See Sera organize chaos</CTAButton>
+            <CTAButton href="/demo">Watch Sera work</CTAButton>
             <CTAButton href="/notion-template" variant="secondary">
               Open the demo hub
             </CTAButton>

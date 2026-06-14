@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { CTABand, SectionHeader } from "@/components/UI";
+import { CTABand, SectionHeader, SeraScene } from "@/components/UI";
 import { NotionWorkspaceVisual } from "@/components/VisualPanels";
 
 export const metadata: Metadata = {
@@ -78,7 +78,7 @@ export default function WeeklyPulsePage() {
       </section>
 
       <section className="section tight alt">
-        <div className="container split">
+        <div className="container weekly-sera-layout">
           <div>
             <div className="eyebrow">How it works</div>
             <h2 className="serif">Sera writes it. A human approves the memory behind it. You read it.</h2>
@@ -95,6 +95,7 @@ export default function WeeklyPulsePage() {
             <li>The digest arrives in your team&apos;s inbox with links to source records in Notion.</li>
             <li>Clicking any item opens the full record with its source meeting or email trail.</li>
           </ul>
+          <SeraScene variant="timeline" />
         </div>
       </section>
 

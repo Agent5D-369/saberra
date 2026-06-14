@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Image from "next/image";
 import { CaptureGrid, ProcessFlow, SeraDemoSection, TrustSection } from "@/components/HomeSections";
-import { CTABand, SectionHeader } from "@/components/UI";
+import { CTABand, SectionHeader, SeraScene } from "@/components/UI";
 import { PipelineAnatomyVisual } from "@/components/VisualPanels";
 
 export const metadata: Metadata = {
@@ -68,18 +68,21 @@ export default function HowItWorksPage() {
         </div>
       </section>
       <section className="section tight">
-        <div className="container split">
-          <SectionHeader title="No new habits. No new logins for your team. Just memory that sticks.">
-            A dedicated inbox receives Google Meet outputs and important operational email. Sera proposes structured
-            records. A human reviews the queue. Approved records become the source Sera can answer from.
-          </SectionHeader>
-          <ul className="list">
-            <li>Google Meet recordings, transcripts, and Gemini notes are captured through email.</li>
-            <li>Operational email threads can be forwarded when they contain decisions, risks, or commitments.</li>
-            <li>Sera creates candidates for decisions, tasks, roles, risks, policies, people, projects, and memory.</li>
-            <li>Records enter the Living Memory Hub with status and source traceability.</li>
-            <li>Nothing becomes trusted operating intelligence until human review accepts it.</li>
-          </ul>
+        <div className="container sera-record-layout">
+          <div>
+            <SectionHeader title="No new habits. No new logins for your team. Just memory that sticks.">
+              A dedicated inbox receives Google Meet outputs and important operational email. Sera proposes structured
+              records. A human reviews the queue. Approved records become the source Sera can answer from.
+            </SectionHeader>
+            <ul className="list">
+              <li>Google Meet recordings, transcripts, and Gemini notes are captured through email.</li>
+              <li>Operational email threads can be forwarded when they contain decisions, risks, or commitments.</li>
+              <li>Sera creates candidates for decisions, tasks, roles, risks, policies, people, projects, and memory.</li>
+              <li>Records enter the Living Memory Hub with status and source traceability.</li>
+              <li>Nothing becomes trusted operating intelligence until human review accepts it.</li>
+            </ul>
+          </div>
+          <SeraScene variant="workflow" />
         </div>
       </section>
       <CaptureGrid />

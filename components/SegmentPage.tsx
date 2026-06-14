@@ -1,6 +1,6 @@
 import { CTABand, SectionHeader } from "@/components/UI";
 import { ProcessFlow, SeraDemoSection, TrustSection } from "@/components/HomeSections";
-import { SegmentMemoryVisual } from "@/components/VisualPanels";
+import { CollapsePatternVisual, SegmentMemoryVisual } from "@/components/VisualPanels";
 
 type SegmentPageProps = {
   headline: string;
@@ -60,6 +60,13 @@ export function SegmentPage({
           <SegmentMemoryVisual type={visualType} />
         </div>
       </section>
+      {visualType === "governance" ? (
+        <section className="section tight">
+          <div className="container">
+            <CollapsePatternVisual />
+          </div>
+        </section>
+      ) : null}
       <section className="section tight">
         <div className="container split">
           <article className="case-vignette segment-vignette">

@@ -4,7 +4,7 @@ import { SegmentMemoryVisual } from "@/components/VisualPanels";
 import { siteUrl } from "@/lib/site";
 
 export const metadata: Metadata = {
-  title: "Case Study: Nonprofit Leadership Handoff",
+  title: "Representative Case Study: Nonprofit Leadership Handoff",
   description:
     "How a 12-person nonprofit captured 6 years of funder context, program memory, and board decisions before an executive director transition. The incoming ED had institutional context the board thought was permanently lost.",
   alternates: { canonical: "/cases/nonprofit-leadership-handoff" }
@@ -51,12 +51,16 @@ export default function NonprofitHandoffCasePage() {
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify({"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Home", "item": "https://saberra.com"}, {"@type": "ListItem", "position": 2, "name": "Case Studies", "item": "https://saberra.com/cases"}, {"@type": "ListItem", "position": 3, "name": "Nonprofit Leadership Handoff", "item": "https://saberra.com/cases/nonprofit-leadership-handoff"}]}) }} />
       <section className="page-hero">
         <div className="container">
-          <div className="eyebrow">Case study: Nonprofit organization</div>
+          <div className="eyebrow">Representative case study: Nonprofit organization</div>
           <h1>Six years of funder context. Preserved through a leadership transition the board thought would erase it.</h1>
           <p>
             A 12-person nonprofit used Saberra to capture its executive director&apos;s institutional memory before a
             planned leadership transition. The incoming ED had full funder, program, and board context before the first
             board meeting.
+          </p>
+          <p className="case-placeholder-note">
+            Placeholder conversion story based on Saberra&apos;s target deployment patterns. Replace with named client
+            proof when approved.
           </p>
         </div>
       </section>

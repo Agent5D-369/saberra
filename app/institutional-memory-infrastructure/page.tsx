@@ -111,7 +111,7 @@ export default function InstitutionalMemoryInfrastructurePage() {
             copy="Start with the Living Memory Hub demo, then book a focused walkthrough when you want to map meetings, emails, decisions, tasks, roles, policies, people, and projects from your actual tools."
             primary="Open the demo hub"
             primaryHref="/notion-template"
-            secondary="See Sera organize chaos"
+            secondary="Watch Sera work"
             secondaryHref="/demo"
           />
         </div>

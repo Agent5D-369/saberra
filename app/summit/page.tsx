@@ -9,6 +9,7 @@ import {
   UsersRound
 } from "lucide-react";
 import { siteUrl } from "@/lib/site";
+import { SeraScene } from "@/components/UI";
 
 const summitTitle = "June 11 AI Epidemic / Building for Life Summit";
 const summitDescription =
@@ -83,15 +84,18 @@ export default function SummitPage() {
             </div>
             <SummitCTA />
           </div>
-          <div className="summit-video-wrap">
-            <video
-              src="/Saberra Explainer Video - Phase 3 - compressed.mp4"
-              poster="/saberra-video-poster.jpg"
-              controls
-              preload="metadata"
-              className="summit-video"
-              playsInline
-            />
+          <div className="summit-media-stack">
+            <SeraScene variant="dashboardWide" priority />
+            <div className="summit-video-wrap">
+              <video
+                src="/Saberra Explainer Video - Phase 3 - compressed.mp4"
+                poster="/saberra-video-poster.jpg"
+                controls
+                preload="metadata"
+                className="summit-video"
+                playsInline
+              />
+            </div>
           </div>
         </div>
       </section>
@@ -129,6 +133,7 @@ export default function SummitPage() {
         <div className="container summit-fit-grid">
           <div>
             <h2 className="serif">Built for teams where context loss is expensive.</h2>
+            <SeraScene variant="timeline" />
           </div>
           <div className="summit-audience-list">
             {audienceRows.map(([group, copy]) => (

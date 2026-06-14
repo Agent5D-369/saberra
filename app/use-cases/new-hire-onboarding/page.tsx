@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { ArrowRight, CheckCircle, Users, BookOpen, Clock, Zap, Shield } from "lucide-react";
-import { CTABand, SectionHeader } from "@/components/UI";
+import { CheckCircle, Users, BookOpen, Clock, Zap, Shield } from "lucide-react";
+import { CTABand, SectionHeader, SeraScene } from "@/components/UI";
 import { siteUrl } from "@/lib/site";
 
 export const metadata: Metadata = {
@@ -74,18 +74,21 @@ export default function NewHireOnboardingPage() {
 
       {/* ── HERO ───────────────────────────────────────── */}
       <section className="page-hero">
-        <div className="container">
-          <div className="eyebrow">Use case: new hire onboarding</div>
-          <h1>The last onboarding doc your organization will ever write.</h1>
-          <p>
-            Static onboarding documents are outdated the day they are written. They capture what one person
-            knew at one point in time and then age in silence. Sera replaces them with something better:
-            a living role memory that every new hire can query on day one, from reviewed organizational records.
-          </p>
-          <div className="cta-row" style={{ marginTop: 32 }}>
-            <Link className="btn btn-primary" href="/demo">See Sera in action</Link>
-            <Link className="btn btn-secondary" href="/audit">Take the Memory Audit</Link>
+        <div className="container use-case-hero-grid">
+          <div>
+            <div className="eyebrow">Use case: new hire onboarding</div>
+            <h1>The last onboarding doc your organization will ever write.</h1>
+            <p>
+              Static onboarding documents are outdated the day they are written. They capture what one person
+              knew at one point in time and then age in silence. Sera replaces them with something better:
+              a living role memory that every new hire can query on day one, from reviewed organizational records.
+            </p>
+            <div className="cta-row" style={{ marginTop: 32 }}>
+              <Link className="btn btn-primary" href="/demo">See Sera in action</Link>
+              <Link className="btn btn-secondary" href="/audit">Take the Memory Audit</Link>
+            </div>
           </div>
+          <SeraScene variant="chat" priority />
         </div>
       </section>
 
@@ -126,19 +129,22 @@ export default function NewHireOnboardingPage() {
             the human-reviewed organizational record: role history, active decisions, open commitments,
             current risks, and standing policies. All source-backed. All up to the second.
           </SectionHeader>
-          <div className="sera-exchange-list" style={{ marginTop: 40 }}>
-            {seraExchanges.map(({ q, a }) => (
-              <div className="sera-exchange" key={q}>
-                <div className="sera-exchange-q">
-                  <span className="sera-exchange-who">New hire</span>
-                  <p>{q}</p>
+          <div className="onboarding-sera-layout">
+            <SeraScene variant="operator" />
+            <div className="sera-exchange-list" style={{ marginTop: 40 }}>
+              {seraExchanges.map(({ q, a }) => (
+                <div className="sera-exchange" key={q}>
+                  <div className="sera-exchange-q">
+                    <span className="sera-exchange-who">New hire</span>
+                    <p>{q}</p>
+                  </div>
+                  <div className="sera-exchange-a">
+                    <span className="sera-exchange-who sera-who">Sera</span>
+                    <p>{a}</p>
+                  </div>
                 </div>
-                <div className="sera-exchange-a">
-                  <span className="sera-exchange-who sera-who">Sera</span>
-                  <p>{a}</p>
-                </div>
-              </div>
-            ))}
+              ))}
+            </div>
           </div>
         </div>
       </section>

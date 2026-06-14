@@ -225,8 +225,8 @@ button {
 
 .hero h1 {
   max-width: 660px;
-  font-size: clamp(3rem, 4.8vw, 4.9rem);
-  line-height: 0.94;
+  font-size: clamp(2.9rem, 4.4vw, 4.35rem);
+  line-height: 0.96;
 }
 
 .hero p,
@@ -319,6 +319,10 @@ button {
   flex-wrap: wrap;
   gap: 12px;
   margin-top: 20px;
+}
+
+.hero .cta-row {
+  margin-top: 14px;
 }
 
 .hero-visual {
@@ -2486,6 +2490,38 @@ button {
 
 .demo-layout .anatomy-stage small {
   font-size: 0.78rem;
+}
+
+.demo-outcome-list {
+  display: grid;
+  gap: 12px;
+  margin-top: 18px;
+}
+
+.demo-outcome {
+  border: 1px solid rgba(111, 183, 183, 0.22);
+  border-radius: 8px;
+  background: rgba(246, 244, 240, 0.055);
+  padding: 16px;
+}
+
+.demo-outcome strong {
+  display: block;
+  color: var(--gold);
+  font-size: 0.8rem;
+  font-weight: 900;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.demo-outcome p {
+  margin: 7px 0 0;
+  color: #d5dddf;
+  font-size: 0.96rem;
+}
+
+.faq-list.compact details {
+  padding: 14px 0;
 }
 
 .fit-grid {

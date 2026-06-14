@@ -13,27 +13,44 @@ export const metadata: Metadata = {
 const cases = [
   {
     slug: "amora",
-    eyebrow: "Governance memory",
+    eyebrow: "Live deployment",
     title: "The operating memory of a village.",
     org: "Amora Community &mdash; Regenerative Eco Village, Costa Rica",
     summary:
       "A 5-person founding team governing land decisions, community agreements, and distributed stewardship. Sera capturing governance context from week one of deployment.",
-    stat: "Week 1 deployment &mdash; full founding team access to operating memory",
+    stat: "76 decisions tracked · 148 tasks extracted · 8 health signals surfaced",
     color: "#D6A24A"
   },
-];
-
-const comingSoon = [
   {
-    eyebrow: "Key person transition",
+    slug: "governance-coordinator-transition",
+    eyebrow: "Representative placeholder",
     title: "The coordinator left. The memory did not.",
-    summary: "A governance-driven consultancy preserves full account context through three coordinator transitions in 12 months.",
+    org: "Distributed governance team &mdash; 6-person leadership circle",
+    summary:
+      "A self-managing organization prepares for a coordinator transition without recentralizing authority around the one person who remembered every decision.",
+    stat: "38 decisions surfaced · 22 role records preserved · day-one continuity",
+    color: "#6FB7B7"
   },
   {
-    eyebrow: "Scaling founder",
-    title: "The founder stopped being the system.",
-    summary: "A 55-person founder-led company removes the founder from 40+ weekly context questions within 90 days of deployment.",
+    slug: "nonprofit-leadership-handoff",
+    eyebrow: "Representative placeholder",
+    title: "The new program lead inherited the reasoning, not just the folders.",
+    org: "Nonprofit program team &mdash; leadership handoff",
+    summary:
+      "A nonprofit preserves board decisions, funder context, partner commitments, and open risks before a leadership transition forces the organization to reconstruct its own history.",
+    stat: "6 years of context mapped · grant commitments surfaced · no 3-month re-ramp",
+    color: "#D6A24A"
   },
+  {
+    slug: "consultancy-delivery-lead",
+    eyebrow: "Representative placeholder",
+    title: "The senior consultant stopped being the account archive.",
+    org: "Boutique consultancy &mdash; delivery lead transition",
+    summary:
+      "A client-services team captures delivery decisions, relationship history, risks, and open commitments so a new delivery lead can step in without dragging the founder back into every thread.",
+    stat: "8 accounts mapped · 4 fewer founder calls/week · client context source-backed",
+    color: "#6FB7B7"
+  }
 ];
 
 export default function CasesPage() {
@@ -44,14 +61,16 @@ export default function CasesPage() {
           <div className="eyebrow">Case studies</div>
           <h1>The record survives. The organization stops starting over.</h1>
           <p>
-            Real deployments. Real operating patterns. What changes when memory stops leaking.
+            Live and representative case studies showing what changes when memory stops leaking. Placeholders are
+            conversion drafts based on Saberra&apos;s target deployment patterns and should be replaced with named client
+            stories as they are approved.
           </p>
         </div>
       </section>
 
       <section className="section tight">
         <div className="container">
-          <SectionHeader eyebrow="Live deployments" title="Organizations using Saberra now." />
+          <SectionHeader eyebrow="Case study library" title="Use these stories to help buyers see themselves." />
           <div className="grid-2 split" style={{ marginBottom: 48 }}>
             {cases.map((c) => (
               <Link
@@ -72,18 +91,6 @@ export default function CasesPage() {
                   </div>
                 </article>
               </Link>
-            ))}
-          </div>
-
-          <SectionHeader eyebrow="Coming soon" title="More deployments in progress." />
-          <div className="grid-2 split">
-            {comingSoon.map((c) => (
-              <article key={c.title} className="card" style={{ opacity: 0.65 }}>
-                <div className="eyebrow">{c.eyebrow}</div>
-                <h3 style={{ marginTop: 10 }}>{c.title}</h3>
-                <p>{c.summary}</p>
-                <p style={{ marginTop: 14, fontSize: "0.82rem", color: "#6FB7B7", fontWeight: 700 }}>Publishing soon</p>
-              </article>
             ))}
           </div>
         </div>

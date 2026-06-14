@@ -61,10 +61,15 @@ export function SeraPortrait({
   variant = "primary",
   size = "md"
 }: {
-  variant?: "primary" | "environment";
+  variant?: "primary" | "soft" | "environment";
   size?: "sm" | "md" | "lg";
 }) {
-  const src = variant === "environment" ? "/sera-avatar-environment-web.jpg" : "/sera-realistic-web.jpg";
+  const src =
+    variant === "environment"
+      ? "/sera/sera-laptop-direct.png"
+      : variant === "soft"
+        ? "/sera/sera-portrait-soft.png"
+        : "/sera/sera-portrait-direct.png";
   const dimensions = size === "lg" ? 420 : size === "md" ? 220 : 76;
 
   return (
@@ -76,6 +81,71 @@ export function SeraPortrait({
       height={dimensions}
       priority={size === "lg"}
     />
+  );
+}
+
+const seraSceneMap = {
+  dashboard: {
+    src: "/sera/sera-dashboard-presenting.png",
+    alt: "Sera presenting an operating intelligence dashboard"
+  },
+  dashboardWide: {
+    src: "/sera/sera-dashboard-wide.png",
+    alt: "Sera beside a Saberra dashboard with organizational signals"
+  },
+  meeting: {
+    src: "/sera/sera-meeting-headset.png",
+    alt: "Sera listening to a live meeting and organizing notes"
+  },
+  memory: {
+    src: "/sera/sera-memory-network.png",
+    alt: "Sera organizing projects, people, tasks, and decisions into memory"
+  },
+  cards: {
+    src: "/sera/sera-memory-cards.png",
+    alt: "Sera converting meeting transcripts into memory cards"
+  },
+  timeline: {
+    src: "/sera/sera-timeline-planning.png",
+    alt: "Sera planning work across a weekly operating timeline"
+  },
+  workflow: {
+    src: "/sera/sera-workflow-board.png",
+    alt: "Sera arranging workflow records on a visual board"
+  },
+  chat: {
+    src: "/sera/sera-chat-laptop.png",
+    alt: "Sera answering from reviewed memory on a laptop"
+  },
+  operator: {
+    src: "/sera/sera-laptop-direct.png",
+    alt: "Sera seated at a laptop as an AI organizational operator"
+  }
+} as const;
+
+export type SeraSceneVariant = keyof typeof seraSceneMap;
+
+export function SeraScene({
+  variant,
+  className = "",
+  priority = false
+}: {
+  variant: SeraSceneVariant;
+  className?: string;
+  priority?: boolean;
+}) {
+  const scene = seraSceneMap[variant];
+
+  return (
+    <div className={`sera-scene sera-scene-${variant} ${className}`}>
+      <Image
+        src={scene.src}
+        alt={scene.alt}
+        width={1280}
+        height={1280}
+        priority={priority}
+      />
+    </div>
   );
 }
 

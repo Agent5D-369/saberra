@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { PricingCards } from "@/components/PricingCards";
-import { CTABand, SectionHeader } from "@/components/UI";
+import { CTABand, SectionHeader, SeraScene } from "@/components/UI";
 import { PipelineAnatomyVisual, SovereigntyVisual } from "@/components/VisualPanels";
 
 export const metadata: Metadata = {
@@ -31,7 +31,8 @@ export default function PricingPage() {
           <p>
             Saberra is a done-for-you deployment, not instant self-serve software. We set up the full system inside
             your own tool accounts, configure Sera for your operating patterns, and design the human review workflow
-            around your team. You own the record. We handle the setup.
+            around your team. If the right Google Workspace or Notion foundation does not exist yet, we can provision,
+            migrate, or clean it up as additional implementation scope. You own the record. We handle the setup.
           </p>
         </div>
       </section>
@@ -49,6 +50,7 @@ export default function PricingPage() {
             <li>Your tool accounts stay yours. Saberra is a configuration, not a custody arrangement.</li>
             <li>Every record is traceable to its source meeting or email.</li>
             <li>Sera answers from records your team can inspect, edit, and govern.</li>
+            <li>Workspace provisioning, Notion cleanup, account migration, and custom backend work are scoped separately.</li>
             <li>Custom data architecture, including Postgres or additional systems of record, available for larger deployments.</li>
           </ul>
         </div>
@@ -59,18 +61,21 @@ export default function PricingPage() {
 
       {/* ── PIPELINE ANATOMY: what they are paying for ───────── */}
       <section className="section tight">
-        <div className="container">
-          <SectionHeader
-            eyebrow="What you are paying for"
-            title="Every step is visible. Every record is traceable."
-          >
-            Saberra is a complete pipeline: capture to Sera-drafted candidate to human-reviewed record to
-            source-backed answer. You see every step. Nothing becomes trusted organizational memory without a
-            human decision.
-          </SectionHeader>
-          <div style={{ marginTop: 32 }}>
-            <PipelineAnatomyVisual />
+        <div className="container pricing-sera-layout">
+          <div>
+            <SectionHeader
+              eyebrow="What you are paying for"
+              title="Every step is visible. Every record is traceable."
+            >
+              Saberra is a complete pipeline: capture to Sera-drafted candidate to human-reviewed record to
+              source-backed answer. You see every step. Nothing becomes trusted organizational memory without a
+              human decision.
+            </SectionHeader>
+            <div style={{ marginTop: 32 }}>
+              <PipelineAnatomyVisual />
+            </div>
           </div>
+          <SeraScene variant="operator" />
         </div>
       </section>
 
@@ -109,7 +114,7 @@ export default function PricingPage() {
             copy="Book 30 minutes. We'll show you exactly what leaks from your current system and what Saberra would look like for your team."
             primary="Apply for a founding spot"
             primaryHref="/founding-access"
-            secondary="See Sera organize chaos"
+            secondary="Watch Sera work"
             secondaryHref="/demo"
           />
         </div>

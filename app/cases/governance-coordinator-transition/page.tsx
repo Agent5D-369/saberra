@@ -4,7 +4,7 @@ import { SegmentMemoryVisual } from "@/components/VisualPanels";
 import { siteUrl } from "@/lib/site";
 
 export const metadata: Metadata = {
-  title: "Case Study: Governance Coordinator Transition",
+  title: "Representative Case Study: Governance Coordinator Transition",
   description:
     "How a self-managing organization used Saberra to capture 38 decisions, 22 role records, and 14 open risks before a coordinator transition. The incoming coordinator had full context on day one.",
   alternates: { canonical: "/cases/governance-coordinator-transition" }
@@ -51,12 +51,16 @@ export default function GovernanceTransitionCasePage() {
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify({"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Home", "item": "https://saberra.com"}, {"@type": "ListItem", "position": 2, "name": "Case Studies", "item": "https://saberra.com/cases"}, {"@type": "ListItem", "position": 3, "name": "Governance Coordinator Transition", "item": "https://saberra.com/cases/governance-coordinator-transition"}]}) }} />
       <section className="page-hero">
         <div className="container">
-          <div className="eyebrow">Case study: Self-managing organization</div>
+          <div className="eyebrow">Representative case study: Self-managing organization</div>
           <h1>The governance director transitioned. The organization did not notice.</h1>
           <p>
             A 40-person self-managing organization used Saberra to capture six months of governance decisions, role
             records, and open risks before a planned coordinator transition. The incoming coordinator had full context
             on day one.
+          </p>
+          <p className="case-placeholder-note">
+            Placeholder conversion story based on Saberra&apos;s target deployment patterns. Replace with named client
+            proof when approved.
           </p>
         </div>
       </section>

@@ -92,7 +92,7 @@ export default function ResourcesPage() {
             copy="Inspect the backend for decisions, tasks, risks, roles, meetings, policies, people, projects, review queues, and source records. Then see how Sera keeps it current from meetings and emails."
             primary="Open the demo hub"
             primaryHref="/notion-template"
-            secondary="See Sera organize chaos"
+            secondary="Watch Sera work"
             secondaryHref="/demo"
           />
         </div>

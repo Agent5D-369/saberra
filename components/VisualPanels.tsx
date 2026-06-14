@@ -430,6 +430,53 @@ export function GovernanceConsoleVisual() {
   );
 }
 
+export function CollapsePatternVisual() {
+  const patterns = [
+    ["Decision replay", "Repeated debates", "Watch"],
+    ["Role fog", "Unclear ownership", "Warning"],
+    ["Founder gravity", "Context bottleneck", "Warning"],
+    ["Silent burnout", "Missed commitments", "Watch"],
+    ["Governance bypass", "Side-channel decisions", "Warning"],
+    ["Risk drift", "Concerns never logged", "Watch"],
+    ["Onboarding amnesia", "New hires rebuild history", "Clear"]
+  ];
+
+  return (
+    <div className="visual-panel collapse-pattern-visual" aria-label="Sera organizational health monitor visual">
+      <div className="visual-header">
+        <span className="eyebrow">Operating health</span>
+        <strong>Sera quietly watches for collapse patterns before they become crises.</strong>
+      </div>
+      <div className="collapse-monitor-grid">
+        <div className="collapse-monitor-copy">
+          <h3>Not a philosophy lesson. An early-warning system.</h3>
+          <p>
+            Sera scans reviewed meetings and email context for practical signs of organizational drift: repeated
+            decisions, role confusion, invisible ownership, unlogged risks, and context bottlenecks.
+          </p>
+          <div className="collapse-signal-summary">
+            <span>12 signals reviewed</span>
+            <span>4 routed to owner</span>
+            <span>0 trusted without approval</span>
+          </div>
+        </div>
+        <div className="collapse-pattern-list">
+          {patterns.map(([name, signal, status]) => (
+            <div className={status === "Warning" ? "collapse-pattern-row warning" : "collapse-pattern-row"} key={name}>
+              <CircleAlert size={16} aria-hidden="true" />
+              <div>
+                <strong>{name}</strong>
+                <small>{signal}</small>
+              </div>
+              <span>{status}</span>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+}
+
 export function DatabaseMapVisual() {
   const core = [
     "Knowledge Base",

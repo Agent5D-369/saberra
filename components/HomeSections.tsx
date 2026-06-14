@@ -36,21 +36,25 @@ export function Hero() {
     <section className="hero">
       <div className="container hero-grid">
         <div>
-          <div className="hero-eyebrow">Done-for-you AI Secretary</div>
-          <h1>Ask Sera what your organization already knows.</h1>
-          <p className="hero-tagline">Saberra helps your organization stop paying the invisible tax of forgetting.</p>
+          <div className="hero-eyebrow">Operating memory for teams that cannot afford to forget</div>
+          <h1>Stop paying the invisible tax of forgetting.</h1>
+          <p className="hero-tagline">
+            Saberra installs a living institutional memory so your team stops losing decisions, context, and clarity
+            every time something changes.
+          </p>
           <div className="cta-row">
             <CTAButton href="/audit">Take the free Memory Audit</CTAButton>
             <CTAButton href="/demo" variant="secondary">
-              See Sera organize chaos
+              Watch Sera work
             </CTAButton>
           </div>
           <p className="cta-note">10 questions. Find out exactly where your organization is leaking.</p>
           <p className="hero-positioning">
-            We install a living institutional memory layer for meeting-heavy teams. Plugs into Google Workspace
-            and Notion — or we provision the foundation as paid setup. No new tools or workflows for your team.
+            Not a knowledge base. A knowledge system that runs itself: Sera extracts, proposes, routes for human
+            approval, and keeps the operating record searchable in tools your organization controls.
           </p>
           <div className="trust-chips">
+            <span className="trust-chip"><CheckCircle size={11} aria-hidden="true" /> 76 decisions tracked in week 2</span>
             <span className="trust-chip"><Workflow size={11} aria-hidden="true" /> No workflow change for your team</span>
             <span className="trust-chip"><Lock size={11} aria-hidden="true" /> Data stays in your accounts</span>
             <span className="trust-chip"><CheckCircle size={11} aria-hidden="true" /> AI drafts. Humans approve.</span>
@@ -74,12 +78,12 @@ export function Hero() {
             />
           </div>
           <div className="hero-vsl-meta">
-            <span className="hero-vsl-label">10-min overview</span>
+            <span className="hero-vsl-label">Full overview</span>
             <span className="hero-vsl-proof"><CheckCircle size={13} aria-hidden="true" /> Human-reviewed memory</span>
             <span className="hero-vsl-proof"><ShieldCheck size={13} aria-hidden="true" /> Your data, your workspace</span>
           </div>
           <p className="hero-vsl-caption">
-            In 10 minutes: watch Sera extract decisions from a real meeting, route them through human review, and answer from approved memory. No polished demo environment. Real operating context.
+            Watch Sera extract decisions from a real meeting, route them through human review, and answer from approved memory. The 90-second before/after cut is the next asset to publish.
           </p>
         </div>
       </div>
@@ -686,7 +690,7 @@ export function LeadMagnets() {
             <div className="cta-row">
               <CTAButton href="/audit">Take the free Memory Audit</CTAButton>
               <CTAButton href="/demo" variant="secondary">
-                See Sera organize chaos
+                Watch Sera work
               </CTAButton>
             </div>
           </article>
@@ -707,7 +711,7 @@ export function LeadMagnets() {
                 Open the demo hub
               </CTAButton>
               <CTAButton href="/demo" variant="secondary">
-                See Sera organize chaos
+                Watch Sera work
               </CTAButton>
             </div>
           </article>
@@ -731,4 +735,69 @@ export function FoundingOffer() {
       <div className="container">
         <CTABand
           title="Founding Memory Partner Program: limited spots."
-          copy="We onboard a limited number of teams each month with full founder-led deployment: done-for-you setup, a memory audit before and after, human approval workflow design, and direct founder access for the first 90 da
+          copy="We onboard a limited number of teams each month with full founder-led deployment: done-for-you setup, a memory audit before and after, human approval workflow design, and direct founder access for the first 90 days. If you've been nodding through this page, that's the signal."
+          primary="Apply for a founding spot"
+          primaryHref="/founding-access"
+          secondary="Watch Sera work"
+          secondaryHref="/demo"
+        />
+        <div className="grid-3" style={{ marginTop: 16 }}>
+          {criteria.map((item) => (
+            <div className="card" key={item}>
+              <CheckCircle size={18} color="#6FB7B7" aria-hidden="true" /> {item}
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+export function FAQ() {
+  return (
+    <section className="section tight">
+      <div className="container">
+        <SectionHeader eyebrow="FAQ" title="The questions you're already asking." />
+        <div className="grid-2 split">
+          {faqs.map(([question, answer]) => (
+            <article className="card" key={question}>
+              <h3>{question}</h3>
+              <p>{answer}</p>
+            </article>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+export function FinalCTA() {
+  return (
+    <section className="section">
+      <div className="container">
+        <CTABand
+          title="Ready to stop losing context?"
+          copy="Take the free Memory Audit and find out exactly where your team is leaking. Results in 3 minutes."
+          primary="Take the free Memory Audit"
+          primaryHref="/audit"
+          secondary="Book a 25-minute setup call"
+          secondaryHref="/demo"
+        />
+      </div>
+    </section>
+  );
+}
+
+export function SeraDemoSection() {
+  return (
+    <section className="section tight">
+      <div className="container">
+        <SectionHeader eyebrow="Sera" title="Ask Sera what your team already knows." />
+        <p style={{ color: "#d5dddf", marginBottom: 32, maxWidth: 640 }}>
+          This is what it looks like when your organization can actually answer.
+        </p>
+        <SeraDemo />
+      </div>
+    </section>
+  );
+}

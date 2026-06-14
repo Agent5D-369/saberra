@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { SeraDemoSection, TrustSection } from "@/components/HomeSections";
-import { CTABand, SectionHeader, SeraPortrait } from "@/components/UI";
+import { CTABand, SectionHeader, SeraScene } from "@/components/UI";
 import { SeraEvidenceVisual } from "@/components/VisualPanels";
 
 export const metadata: Metadata = {
@@ -22,8 +22,8 @@ export default function SeraPage() {
               roles, policies, and governance records for human review inside your private memory system.
             </p>
           </div>
-          <div className="sera-hero-frame">
-            <SeraPortrait variant="environment" size="lg" />
+          <div className="sera-hero-frame sera-hero-frame-scene">
+            <SeraScene variant="memory" priority />
             <div className="sera-hero-note">
               <strong>Sera</strong>
               <span>AI organizational operator inside Saberra</span>
@@ -38,17 +38,20 @@ export default function SeraPage() {
         </div>
       </section>
       <section className="section tight">
-        <div className="container split">
-          <SectionHeader title="Operating intelligence needs a trusted record.">
-            Sera can only be as useful as the memory underneath her. Saberra makes that memory structured, reviewed, and
-            source-backed before Sera uses it.
-          </SectionHeader>
-          <ul className="list">
-            <li>Sera proposes structured records from meetings and emails.</li>
-            <li>Humans approve what becomes trusted organizational memory.</li>
-            <li>Every answer is designed to point back to sources your team can inspect.</li>
-            <li>Sera is useful for decisions, roles, risks, tasks, policies, projects, and history.</li>
-          </ul>
+        <div className="container sera-record-layout">
+          <SeraScene variant="cards" />
+          <div>
+            <SectionHeader title="Operating intelligence needs a trusted record.">
+              Sera can only be as useful as the memory underneath her. Saberra makes that memory structured, reviewed, and
+              source-backed before Sera uses it.
+            </SectionHeader>
+            <ul className="list">
+              <li>Sera proposes structured records from meetings and emails.</li>
+              <li>Humans approve what becomes trusted organizational memory.</li>
+              <li>Every answer is designed to point back to sources your team can inspect.</li>
+              <li>Sera is useful for decisions, roles, risks, tasks, policies, projects, and history.</li>
+            </ul>
+          </div>
         </div>
       </section>
       <section className="section tight alt">

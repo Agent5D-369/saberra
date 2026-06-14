@@ -15,6 +15,7 @@ const tiers = [
       "Living Memory Hub backend",
       "Human approval workflow design",
       "Direct founder access for 90 days",
+      "Workspace setup assessment included",
       "Founding pricing locked for 12 months"
     ]
   },
@@ -29,6 +30,7 @@ const tiers = [
       "Sera Q&A",
       "Living Memory Hub backend",
       "Human approval workflow",
+      "Google Workspace or Notion provisioning scoped separately if needed",
       "Operating intelligence support"
     ]
   },
@@ -42,6 +44,7 @@ const tiers = [
       "Expanded schema tuning for your context",
       "Review queue training",
       "Founder-led onboarding",
+      "Workspace cleanup or migration plan available",
       "Monthly memory health review",
       "All Core features included"
     ]
@@ -68,7 +71,8 @@ export function PricingCards() {
       <div className="container">
         <SectionHeader title="Done-for-you deployment pricing.">
           Saberra is not instant self-serve software. Every deployment includes a guided setup inside your own tool
-          accounts, so your organizational record stays inspectable, editable, and yours.
+          accounts, so your organizational record stays inspectable, editable, and yours. If the required workspace
+          foundation does not exist yet, we can scope provisioning, migration, cleanup, or custom backend work separately.
         </SectionHeader>
 
         {/* Cost callout ABOVE tiers — feel the cost before you see the price */}

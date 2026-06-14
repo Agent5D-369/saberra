@@ -9,6 +9,7 @@ import {
   FAQ,
   Hero,
   PainCards,
+  OperatingHealthSection,
   ProcessFlow,
   SeraDemoSection,
   SocialProof,
@@ -18,9 +19,9 @@ import {
 import { siteUrl } from "@/lib/site";
 
 export const metadata: Metadata = {
-  title: "Saberra | AI Organizational Intelligence Infrastructure",
+  title: "Saberra | Done-for-You AI Organizational Memory",
   description:
-    "Saberra gives your organization Sera, the AI Secretary that turns meetings and emails into human-reviewed operating intelligence.",
+    "Saberra gives your organization Sera, the AI memory operator that turns meetings and emails into human-reviewed decisions, tasks, risks, roles, and context.",
   alternates: { canonical: "/" }
 };
 
@@ -40,7 +41,7 @@ export default function HomePage() {
         applicationCategory: "BusinessApplication",
         operatingSystem: "Web",
         description:
-          "AI Organizational Intelligence Infrastructure that turns meetings and emails into structured, human-reviewed operating intelligence."
+          "Done-for-you AI organizational memory system that turns meetings and emails into structured, human-reviewed operating intelligence."
       },
       {
         "@type": "Product",
@@ -74,6 +75,7 @@ export default function HomePage() {
       <SocialProof />
       <CompetitiveComparison />
       <TrustSection />
+      <OperatingHealthSection />
       <DataSovereigntySection />
       <AudienceCards />
       <SeraDemoSection />

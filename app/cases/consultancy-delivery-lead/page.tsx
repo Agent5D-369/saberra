@@ -4,7 +4,7 @@ import { SegmentMemoryVisual } from "@/components/VisualPanels";
 import { siteUrl } from "@/lib/site";
 
 export const metadata: Metadata = {
-  title: "Case Study: Consultancy Delivery Lead Transition",
+  title: "Representative Case Study: Consultancy Delivery Lead Transition",
   description:
     "How a boutique consultancy used Saberra to preserve client context, delivery decisions, and relationship history through a delivery lead transition. New lead had full client context by week two.",
   alternates: { canonical: "/cases/consultancy-delivery-lead" }
@@ -51,11 +51,15 @@ export default function ConsultancyTransitionCasePage() {
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify({"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Home", "item": "https://saberra.com"}, {"@type": "ListItem", "position": 2, "name": "Case Studies", "item": "https://saberra.com/cases"}, {"@type": "ListItem", "position": 3, "name": "Consultancy Delivery Lead", "item": "https://saberra.com/cases/consultancy-delivery-lead"}]}) }} />
       <section className="page-hero">
         <div className="container">
-          <div className="eyebrow">Case study: Boutique consultancy</div>
+          <div className="eyebrow">Representative case study: Boutique consultancy</div>
           <h1>The delivery lead left. The client did not notice for three weeks.</h1>
           <p>
             A boutique consultancy used Saberra to capture delivery lead context across 8 active client engagements
             before a planned transition. The incoming lead had full client context by the end of week two.
+          </p>
+          <p className="case-placeholder-note">
+            Placeholder conversion story based on Saberra&apos;s target deployment patterns. Replace with named client
+            proof when approved.
           </p>
         </div>
       </section>

@@ -18,7 +18,7 @@ export const formspreeForms = {
 
 export const navItems = [
   { href: "/how-it-works", label: "How it works" },
-  { href: "/sera", label: "Ask Sera" },
+  { href: "/demo", label: "See a demo" },
   { href: "/calculator", label: "Calculator" },
   { href: "/pricing", label: "Pricing" },
   { href: "/audit", label: "Free Audit" }
@@ -82,7 +82,7 @@ export const faqs = [
   ],
   [
     "Where does our data live?",
-    "In your accounts. Saberra is a configured system, not a database your team cannot see. Your Living Memory Hub lives in your own Notion workspace. Your tool accounts stay yours. Every record Sera has ever touched is inspectable, editable, and governable by your team."
+    "In accounts your organization controls. Saberra is a configured system, not a database your team cannot see. The standard Living Memory Hub lives in your own Notion workspace, and your tool accounts stay yours. If you do not already have the right foundation, we can provision or clean up the Google Workspace and Notion setup as additional implementation scope."
   ],
   [
     "Does Sera make things up?",
@@ -94,7 +94,7 @@ export const faqs = [
   ],
   [
     "What tools are required?",
-    "Google Workspace and Google Meet are native. Notion is the default memory backend. The full setup also uses an AI provider account, Railway for the pipeline, and a dedicated capture inbox. Transcripts or summaries from Zoom, Teams, or other platforms can be processed when emailed into the capture inbox."
+    "Google Workspace and Google Meet are native, and Notion is the default memory backend because it keeps records inspectable for nontechnical teams. The full setup also uses an AI provider account, Railway for the pipeline, and a dedicated capture inbox. If your team is not already on that stack, setup, migration, workspace cleanup, or account provisioning can be scoped as paid implementation work. Transcripts or summaries from Zoom, Teams, or other platforms can be processed when emailed into the capture inbox."
   ],
   [
     "How long does setup take?",
@@ -106,6 +106,6 @@ export const faqs = [
   ],
   [
     "Who is Saberra for?",
-    "Teams of 15 to 200 people on Google Workspace and Notion that are already feeling the cost of lost decisions, unclear ownership, slow onboarding, or key-person knowledge dependency. If the pain is real, the fit is usually strong."
+    "Teams of 15 to 200 people feeling the cost of lost decisions, unclear ownership, slow onboarding, repeated debates, or key-person knowledge dependency. Existing Google Workspace and Notion teams are fastest to deploy. Teams willing to adopt that foundation, or scope a custom backend, can still be a strong fit."
   ]
 ];

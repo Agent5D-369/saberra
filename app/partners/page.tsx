@@ -5,9 +5,9 @@ import { PartnerReferralForm } from "@/components/LeadForms";
 import { CTABand, SectionHeader } from "@/components/UI";
 
 export const metadata: Metadata = {
-  title: "Saberra Partner Program &mdash; Earn 20% for Referrals",
+  title: "Saberra Channel Partner Program",
   description:
-    "Refer teams that need organizational memory infrastructure. Earn 20% of setup fees and 15% of first-year recurring. Built for Notion consultants, fractional COOs, and governance advisors.",
+    "Add Saberra to your Notion, Google Workspace, or operations consulting practice as a managed institutional memory layer for clients.",
   alternates: { canonical: "/partners" },
   keywords: [
     "Saberra partner program",
@@ -47,16 +47,16 @@ export default function PartnersPage() {
       <section className="page-hero">
         <div className="container split">
           <div>
-            <div className="eyebrow">Partner referrals</div>
-            <h1>Know a team that cannot afford to forget?</h1>
+            <div className="eyebrow">Channel partners</div>
+            <h1>Add Saberra to your Notion or Workspace practice.</h1>
             <p>
-              Saberra works best when a trusted advisor can see the pattern before the team has language for it:
-              decisions get buried, role history disappears, context lives in a few people, and nobody wants another tool
-              to manage.
+              Your clients already paid you to organize the workspace. Saberra adds the active memory layer: Sera
+              extracts decisions, tasks, risks, and context from meetings and email so the system stays current after
+              your engagement ends.
             </p>
             <div className="cta-row">
               <a className="btn btn-primary" href="#partner-form">
-                Refer a team
+                Apply as a partner
               </a>
               <a className="btn btn-secondary" href="/audit">
                 Send the Memory Audit
@@ -66,18 +66,18 @@ export default function PartnersPage() {
           <EditorialVisual
             src="/editorial-partner-network.svg"
             alt="A trusted advisor network visual showing referral paths into Saberra."
-            eyebrow="Trusted network"
-            title="The best referrals come from people who see the risk early."
-            copy="Partners do not need to sell software. They need to recognize when a team is running without durable memory."
+            eyebrow="Implementation channel"
+            title="You keep the client relationship. Saberra runs the memory layer."
+            copy="Built for Notion consultants, Workspace resellers, fractional operators, and governance advisors with clients who need more than a static knowledge base."
           />
         </div>
       </section>
 
       <section className="section tight">
         <div className="container">
-          <SectionHeader eyebrow="Who it is for" title="A private referral path for high-trust advisors.">
-            This is for people who already advise teams where memory loss creates real operational risk: repeated
-            decisions, founder bottlenecks, stale Notion records, and painful handoffs.
+          <SectionHeader eyebrow="Who it is for" title="A channel path for implementation partners.">
+            This is for partners whose clients need a memory loop that stays updated: Notion consultants, Google
+            Workspace resellers, fractional COOs, Chiefs of Staff, and advisors who already see the cost of lost context.
           </SectionHeader>
           <div className="grid-4">
             {partners.map((partner) => {
@@ -120,7 +120,7 @@ export default function PartnersPage() {
       {/* ── COMMISSION STRUCTURE ───────────────────────────────── */}
       <section className="section tight">
         <div className="container">
-          <SectionHeader eyebrow="Commission structure" title="Earn 20% for every team you introduce." />
+          <SectionHeader eyebrow="Partner economics" title="Add a recurring memory layer to client engagements." />
           <div className="grid-2 split">
             <article className="card" style={{ borderLeft: "3px solid #D6A24A" }}>
               <DollarSign color="#D6A24A" size={26} aria-hidden="true" />
@@ -128,7 +128,7 @@ export default function PartnersPage() {
               <ul className="list" style={{ marginTop: 14 }}>
                 <li><CheckCircle size={15} color="#D6A24A" aria-hidden="true" /> 20% of the setup fee, paid at 30 days post-deployment</li>
                 <li><CheckCircle size={15} color="#D6A24A" aria-hidden="true" /> 15% of monthly recurring for the first 12 months</li>
-                <li><CheckCircle size={15} color="#D6A24A" aria-hidden="true" /> No minimums. No exclusivity. No client management required.</li>
+                <li><CheckCircle size={15} color="#D6A24A" aria-hidden="true" /> No minimums. No exclusivity. You keep the consulting relationship.</li>
               </ul>
             </article>
             <article className="card">
@@ -140,7 +140,7 @@ export default function PartnersPage() {
                 <li><CheckCircle size={15} color="#6FB7B7" aria-hidden="true" /> Year-one total: <strong style={{ color: "#D6A24A" }}>$2,600</strong> from one introduction</li>
               </ul>
               <p style={{ marginTop: 12, fontSize: "0.85rem", color: "#6a8a90" }}>
-                You do none of the deployment work. We handle onboarding, setup, and client management.
+              We handle the AI layer and memory deployment. You stay the trusted advisor for the workspace.
               </p>
             </article>
           </div>
@@ -150,11 +150,11 @@ export default function PartnersPage() {
       <section id="partner-form" className="section tight">
         <div className="container split">
           <div>
-            <div className="eyebrow">Referral form</div>
-            <h2 className="serif">Submit a referral or apply to become a partner.</h2>
+            <div className="eyebrow">Partner form</div>
+            <h2 className="serif">Apply to add Saberra to your practice.</h2>
             <p>
-              A warm referral or a direct introduction both work. Fill in what you know. We will follow up directly
-              with you, not with the referred team, unless you indicate otherwise.
+              Tell us what kind of clients you serve and where Saberra could fit into your implementation motion. Warm
+              referrals still work, but this page is built for channel partners who want a repeatable offer.
             </p>
             <p style={{ marginTop: 12 }}>
               Not ready to refer yet? Send the Memory Audit to any team you suspect is leaking and let them find out
