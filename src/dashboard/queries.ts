@@ -294,13 +294,13 @@ export interface SystemConfig {
 }
 
 export const COLLAPSE_PATTERNS = [
-  'No Shared Vision',
-  'Poor Governance',
+  'Interpersonal Conflict & Human Complexity',
+  'No Shared Vision, No Shared Future',
+  'Poor Governance & Power Shadows',
   'Financial Fragility',
-  'Interpersonal Conflict',
-  'Burnout',
-  'Wrong People',
-  'Scale Trap',
+  'Burnout & Loss of Commitment',
+  'The Wrong People Problem',
+  'The Scale Trap',
 ] as const;
 
 export type CollapsePatternName = typeof COLLAPSE_PATTERNS[number];

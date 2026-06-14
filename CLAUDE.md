@@ -81,7 +81,7 @@ Env var prefix: `NOTION_DB_`
 | `ROLE_ASSIGNMENTS` | Role Assignments | Person→Role assignments. Fields: Energization Level (Energized/Willing/Unwilling) |
 | `TASKS` | Tasks | Action items. Fields: Purpose Alignment (only when GPS active + canon_impact=true) |
 | `DECISION_CANDIDATES` | Decision Candidates | Decisions. Fields: Implementation Status (default Not Started), Implemented Date, Purpose Alignment |
-| `RISKS` | Risks | Flagged risks. Fields: Review Date (auto-calculated: High=+30d, Medium=+90d); Status options: Open / Acknowledged / Mitigated / Accepted / Closed; Collapse Pattern risks use `Collapse Pattern Type` select — seven patterns in canonical order: 1-No Shared Vision, 2-Poor Governance, 3-Financial Fragility, 4-Interpersonal Conflict, 5-Burnout, 6-Wrong People, 7-Scale Trap; Related Decisions and Related Tasks relation fields link contributing records |
+| `RISKS` | Risks | Flagged risks. Fields: Review Date (auto-calculated: High=+30d, Medium=+90d); Status options: Open / Acknowledged / Mitigated / Accepted / Closed; Collapse Pattern risks use `Collapse Pattern Type` select — seven patterns in canonical order: 1-Interpersonal Conflict & Human Complexity, 2-No Shared Vision No Shared Future, 3-Poor Governance & Power Shadows, 4-Financial Fragility, 5-Burnout & Loss of Commitment, 6-The Wrong People Problem, 7-The Scale Trap; Related Decisions and Related Tasks relation fields link contributing records |
 | `MEMORY_REVIEW_QUEUE` | Memory Review Queue | Memory candidates for human review |
 | `CANON_CHANGE_REQUESTS` | Canon Change Requests | Proposed CCOS canon changes (always Pending Review) |
 | `CCOS_LEDGER_ENTRIES` | CCOS Ledger Entries | Governance actions (Draft only) |

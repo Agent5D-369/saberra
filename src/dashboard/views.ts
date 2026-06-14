@@ -1347,23 +1347,23 @@ const SERA_AVATAR_IMG = `<img class="sera-avatar" src="data:image/jpeg;base64,/9
 // ── Collapse Health section builder ──────────────────────────────────────────
 
 const PATTERN_ICONS: Record<string, string> = {
-  'No Shared Vision':    '&#127919;',
-  'Poor Governance':     '&#9878;&#65039;',
-  'Financial Fragility': '&#128200;',
-  'Interpersonal Conflict': '&#9889;',
-  'Burnout':             '&#128293;',
-  'Wrong People':        '&#129533;',
-  'Scale Trap':          '&#128259;',
+  'Interpersonal Conflict & Human Complexity': '&#9889;',
+  'No Shared Vision, No Shared Future':        '&#127919;',
+  'Poor Governance & Power Shadows':           '&#9878;&#65039;',
+  'Financial Fragility':                       '&#128200;',
+  'Burnout & Loss of Commitment':              '&#128293;',
+  'The Wrong People Problem':                  '&#129533;',
+  'The Scale Trap':                            '&#128259;',
 };
 
 const PATTERN_DESCRIPTIONS: Record<string, string> = {
-  'No Shared Vision':    'Disagreement about purpose or direction',
-  'Poor Governance':     'Role ambiguity, repeated decisions, bypassed process',
-  'Financial Fragility': 'Cash flow concerns, runway pressure',
-  'Interpersonal Conflict': 'Named tension between individuals',
-  'Burnout':             'Overwhelm, missed commitments, withdrawal signals',
-  'Wrong People':        'Skill gaps, role-holder misalignment',
-  'Scale Trap':          'Coordination failures, capacity bottlenecks',
+  'Interpersonal Conflict & Human Complexity': 'Conflict avoidance, unresolved tensions, withdrawal signals',
+  'No Shared Vision, No Shared Future':        'Disagreement about purpose, direction, or what we are building',
+  'Poor Governance & Power Shadows':           'Informal hierarchy, role ambiguity, bypassed process',
+  'Financial Fragility':                       'Cash flow concerns, unreciprocated labor, runway pressure',
+  'Burnout & Loss of Commitment':              'Overwhelm, missed commitments, emotional labor overload',
+  'The Wrong People Problem':                  'Culture-fit gaps, misaligned expectations, screening failures',
+  'The Scale Trap':                            'Coordination failures, intimacy lost to growth, capacity bottlenecks',
 };
 
 function buildCollapseHealthSection(d: DashboardData, ui: UiStrings): string {
